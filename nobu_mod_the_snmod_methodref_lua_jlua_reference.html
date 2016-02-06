@@ -1,0 +1,4531 @@
+<H2>Lua 5.1 リファレンスマニュアル</H2>
+
+<H2>目次</H2>
+<UL>
+    <LI><A HREF="#quick">索引</A>
+    <P>
+    <LI><A HREF="">Top</A>
+    <LI><A HREF="#0">0 - 日本語訳について</A>
+    <LI><A HREF="#1">1 - 概要</A>
+    <LI><A HREF="#2">2 - 言語</A>
+    <UL>
+        <LI><A HREF="#2.1">2.1 - 字句の構成</A>
+        <LI><A HREF="#2.2">2.2 - 値と型</A>
+        <UL>
+            <LI><A HREF="#2.2.1">2.2.1 - 変換</A>
+        </UL>
+        <LI><A HREF="#2.3">2.3 - 変数</A>
+        <LI><A HREF="#2.4">2.4 - 文</A>
+        <UL>
+            <LI><A HREF="#2.4.1">2.4.1 - チャンク</A>
+            <LI><A HREF="#2.4.2">2.4.2 - ブロック</A>
+            <LI><A HREF="#2.4.3">2.4.3 - 代入</A>
+            <LI><A HREF="#2.4.4">2.4.4 - 制御構造</A>
+            <LI><A HREF="#2.4.5">2.4.5 - for文</A>
+            <LI><A HREF="#2.4.6">2.4.6 - 文としての関数呼び出し</A>
+            <LI><A HREF="#2.4.7">2.4.7 - ローカル宣言</A>
+        </UL>
+        <LI><A HREF="#2.5">2.5 - 式</A>
+        <UL>
+            <LI><A HREF="#2.5.1">2.5.1 - 算術演算子</A>
+            <LI><A HREF="#2.5.2">2.5.2 - 関係演算子</A>
+            <LI><A HREF="#2.5.3">2.5.3 - 論理演算子</A>
+            <LI><A HREF="#2.5.4">2.5.4 - 連結</A>
+            <LI><A HREF="#2.5.5">2.5.5 - 長さ演算子</A>
+            <LI><A HREF="#2.5.6">2.5.6 - 優先順位</A>
+            <LI><A HREF="#2.5.7">2.5.7 - テーブルコンストラクタ</A>
+            <LI><A HREF="#2.5.8">2.5.8 - 関数呼び出し</A>
+            <LI><A HREF="#2.5.9">2.5.9 - 関数定義</A>
+        </UL>
+        <LI><A HREF="#2.6">2.6 - 可視ルール</A>
+        <LI><A HREF="#2.7">2.7 - エラー処理</A>
+        <LI><A HREF="#2.8">2.8 - メタテーブル</A>
+        <LI><A HREF="#2.9">2.9 - 環境</A>
+        <LI><A HREF="#2.10">2.10 - ガベージコレクション</A>
+        <UL>
+            <LI><A HREF="#2.10.1">2.10.1 - ガベージコレクションメタメソッド</A>
+            <LI><A HREF="#2.10.2">2.10.2 - 弱参照テーブル</A>
+        </UL>
+        <LI><A HREF="#2.11">2.11 - コルーチン</A>
+    </UL>
+    <LI><A HREF="#3">3 - アプリケーションプログラムインタフェイス</A>
+    <UL>
+        <LI><A HREF="#3.1">3.1 - スタック</A>
+        <LI><A HREF="#3.2">3.2 - スタックサイズ</A>
+        <LI><A HREF="#3.3">3.3 - 擬似インデックス</A>
+        <LI><A HREF="#3.4">3.4 - Cのクロージャ</A>
+        <LI><A HREF="#3.5">3.5 - レジストリ</A>
+        <LI><A HREF="#3.6">3.6 - Cでのエラー処理</A>
+        <LI><A HREF="#3.7">3.7 - 関数と型</A>
+        <LI><A HREF="#3.8">3.8 - デバッグインタフェイス</A>
+    </UL>
+    <LI><A HREF="#4">4 - 補助ライブラリ</A>
+    <UL>
+        <LI><A HREF="#4.1">4.1 - 関数と型</A>
+    </UL>
+    <LI><A HREF="#5">5 - 標準ライブラリ</A>
+    <UL>
+        <LI><A HREF="#5.1">5.1 - 基本関数</A>
+        <LI><A HREF="#5.2">5.2 - コルーチン操作</A>
+        <LI><A HREF="#5.3">5.3 - モジュール</A>
+        <LI><A HREF="#5.4">5.4 - 文字列操作</A>
+        <LI><A HREF="#5.5">5.5 - テーブル操作</A>
+        <LI><A HREF="#5.6">5.6 - 数学関数</A>
+        <LI><A HREF="#5.7">5.7 - 入出力機能</A>
+        <LI><A HREF="#5.8">5.8 - OS機能</A>
+        <LI><A HREF="#5.9">5.9 - デバッグライブラリ</A>
+    </UL>
+    <LI><A HREF="#6">6 - スタンドアロンのLua</A>
+    <LI><A HREF="#incompat">前バージョンとの非互換</A>
+    <LI><A HREF="#BNF">Luaの完全な構文</A>
+</UL>
+
+<H2><A NAME="quick">索引</A></H2>
+<TABLE>
+    <TR VALIGN="top">
+        <TD WIDTH="35%">
+        <H3><A NAME="functions">関数</A></H3>
+        <A HREF="#pdf-_G">_G</A><BR>
+        <A HREF="#pdf-_VERSION">_VERSION</A><BR>
+        <A HREF="#pdf-assert">assert</A><BR>
+        <A HREF="#pdf-collectgarbage">collectgarbage</A><BR>
+        <A HREF="#pdf-coroutine.create">coroutine.create</A><BR>
+        <A HREF="#pdf-coroutine.resume">coroutine.resume</A><BR>
+        <A HREF="#pdf-coroutine.running">coroutine.running</A><BR>
+        <A HREF="#pdf-coroutine.status">coroutine.status</A><BR>
+        <A HREF="#pdf-coroutine.wrap">coroutine.wrap</A><BR>
+        <A HREF="#pdf-coroutine.yield">coroutine.yield</A><BR>
+        <A HREF="#pdf-debug.debug">debug.debug</A><BR>
+        <A HREF="#pdf-debug.getfenv">debug.getfenv</A><BR>
+        <A HREF="#pdf-debug.gethook">debug.gethook</A><BR>
+        <A HREF="#pdf-debug.getinfo">debug.getinfo</A><BR>
+        <A HREF="#pdf-debug.getlocal">debug.getlocal</A><BR>
+        <A HREF="#pdf-debug.getmetatable">debug.getmetatable</A><BR>
+        <A HREF="#pdf-debug.getregistry">debug.getregistry</A><BR>
+        <A HREF="#pdf-debug.getupvalue">debug.getupvalue</A><BR>
+        <A HREF="#pdf-debug.setfenv">debug.setfenv</A><BR>
+        <A HREF="#pdf-debug.sethook">debug.sethook</A><BR>
+        <A HREF="#pdf-debug.setlocal">debug.setlocal</A><BR>
+        <A HREF="#pdf-debug.setmetatable">debug.setmetatable</A><BR>
+        <A HREF="#pdf-debug.setupvalue">debug.setupvalue</A><BR>
+        <A HREF="#pdf-debug.traceback">debug.traceback</A><BR>
+        <A HREF="#pdf-dofile">dofile</A><BR>
+        <A HREF="#pdf-error">error</A><BR>
+        <A HREF="#pdf-file:close">file:close</A><BR>
+        <A HREF="#pdf-file:flush">file:flush</A><BR>
+        <A HREF="#pdf-file:lines">file:lines</A><BR>
+        <A HREF="#pdf-file:read">file:read</A><BR>
+        <A HREF="#pdf-file:seek">file:seek</A><BR>
+        <A HREF="#pdf-file:setvbuf">file:setvbuf</A><BR>
+        <A HREF="#pdf-file:write">file:write</A><BR>
+        <A HREF="#pdf-getfenv">getfenv</A><BR>
+        <A HREF="#pdf-getmetatable">getmetatable</A><BR>
+        <A HREF="#pdf-io.close">io.close</A><BR>
+        <A HREF="#pdf-io.flush">io.flush</A><BR>
+        <A HREF="#pdf-io.input">io.input</A><BR>
+        <A HREF="#pdf-io.lines">io.lines</A><BR>
+        <A HREF="#pdf-io.open">io.open</A><BR>
+        <A HREF="#pdf-io.output">io.output</A><BR>
+        <A HREF="#pdf-io.popen">io.popen</A><BR>
+        <A HREF="#pdf-io.read">io.read</A><BR>
+        <A HREF="#pdf-io.tmpfile">io.tmpfile</A><BR>
+        <A HREF="#pdf-io.type">io.type</A><BR>
+        <A HREF="#pdf-io.write">io.write</A><BR>
+        <A HREF="#pdf-ipairs">ipairs</A><BR>
+        <A HREF="#pdf-load">load</A><BR>
+        <A HREF="#pdf-loadfile">loadfile</A><BR>
+        <A HREF="#pdf-loadstring">loadstring</A><BR>
+        <A HREF="#pdf-math.abs">math.abs</A><BR>
+        <A HREF="#pdf-math.acos">math.acos</A><BR>
+        <A HREF="#pdf-math.asin">math.asin</A><BR>
+        <A HREF="#pdf-math.atan2">math.atan2</A><BR>
+        <A HREF="#pdf-math.atan">math.atan</A><BR>
+        <A HREF="#pdf-math.ceil">math.ceil</A><BR>
+        <A HREF="#pdf-math.cosh">math.cosh</A><BR>
+        <A HREF="#pdf-math.cos">math.cos</A><BR>
+        <A HREF="#pdf-math.deg">math.deg</A><BR>
+        <A HREF="#pdf-math.exp">math.exp</A><BR>
+        <A HREF="#pdf-math.floor">math.floor</A><BR>
+        <A HREF="#pdf-math.fmod">math.fmod</A><BR>
+        <A HREF="#pdf-math.frexp">math.frexp</A><BR>
+        <A HREF="#pdf-math.ldexp">math.ldexp</A><BR>
+        <A HREF="#pdf-math.log10">math.log10</A><BR>
+        <A HREF="#pdf-math.log">math.log</A><BR>
+        <A HREF="#pdf-math.max">math.max</A><BR>
+        <A HREF="#pdf-math.min">math.min</A><BR>
+        <A HREF="#pdf-math.modf">math.modf</A><BR>
+        <A HREF="#pdf-math.pow">math.pow</A><BR>
+        <A HREF="#pdf-math.rad">math.rad</A><BR>
+        <A HREF="#pdf-math.random">math.random</A><BR>
+        <A HREF="#pdf-math.randomseed">math.randomseed</A><BR>
+        <A HREF="#pdf-math.sinh">math.sinh</A><BR>
+        <A HREF="#pdf-math.sin">math.sin</A><BR>
+        <A HREF="#pdf-math.sqrt">math.sqrt</A><BR>
+        <A HREF="#pdf-math.tanh">math.tanh</A><BR>
+        <A HREF="#pdf-math.tan">math.tan</A><BR>
+        <A HREF="#pdf-module">module</A><BR>
+        <A HREF="#pdf-next">next</A><BR>
+        <A HREF="#pdf-os.clock">os.clock</A><BR>
+        <A HREF="#pdf-os.date">os.date</A><BR>
+        <A HREF="#pdf-os.difftime">os.difftime</A><BR>
+        <A HREF="#pdf-os.execute">os.execute</A><BR>
+        <A HREF="#pdf-os.exit">os.exit</A><BR>
+        <A HREF="#pdf-os.getenv">os.getenv</A><BR>
+        <A HREF="#pdf-os.remove">os.remove</A><BR>
+        <A HREF="#pdf-os.rename">os.rename</A><BR>
+        <A HREF="#pdf-os.setlocale">os.setlocale</A><BR>
+        <A HREF="#pdf-os.time">os.time</A><BR>
+        <A HREF="#pdf-os.tmpname">os.tmpname</A><BR>
+        <A HREF="#pdf-package.cpath">package.cpath</A><BR>
+        <A HREF="#pdf-package.loaded">package.loaded</A><BR>
+        <A HREF="#pdf-package.loadlib">package.loadlib</A><BR>
+        <A HREF="#pdf-package.path">package.path</A><BR>
+        <A HREF="#pdf-package.preload">package.preload</A><BR>
+        <A HREF="#pdf-package.seeall">package.seeall</A><BR>
+        <A HREF="#pdf-pairs">pairs</A><BR>
+        <A HREF="#pdf-pcall">pcall</A><BR>
+        <A HREF="#pdf-print">print</A><BR>
+        <A HREF="#pdf-rawequal">rawequal</A><BR>
+        <A HREF="#pdf-rawget">rawget</A><BR>
+        <A HREF="#pdf-rawset">rawset</A><BR>
+        <A HREF="#pdf-require">require</A><BR>
+        <A HREF="#pdf-select">select</A><BR>
+        <A HREF="#pdf-setfenv">setfenv</A><BR>
+        <A HREF="#pdf-setmetatable">setmetatable</A><BR>
+        <A HREF="#pdf-string.byte">string.byte</A><BR>
+        <A HREF="#pdf-string.char">string.char</A><BR>
+        <A HREF="#pdf-string.dump">string.dump</A><BR>
+        <A HREF="#pdf-string.find">string.find</A><BR>
+        <A HREF="#pdf-string.format">string.format</A><BR>
+        <A HREF="#pdf-string.gmatch">string.gmatch</A><BR>
+        <A HREF="#pdf-string.gsub">string.gsub</A><BR>
+        <A HREF="#pdf-string.len">string.len</A><BR>
+        <A HREF="#pdf-string.lower">string.lower</A><BR>
+        <A HREF="#pdf-string.match">string.match</A><BR>
+        <A HREF="#pdf-string.rep">string.rep</A><BR>
+        <A HREF="#pdf-string.reverse">string.reverse</A><BR>
+        <A HREF="#pdf-string.sub">string.sub</A><BR>
+        <A HREF="#pdf-string.upper">string.upper</A><BR>
+        <A HREF="#pdf-table.concat">table.concat</A><BR>
+        <A HREF="#pdf-table.insert">table.insert</A><BR>
+        <A HREF="#pdf-table.maxn">table.maxn</A><BR>
+        <A HREF="#pdf-table.remove">table.remove</A><BR>
+        <A HREF="#pdf-table.sort">table.sort</A><BR>
+        <A HREF="#pdf-tonumber">tonumber</A><BR>
+        <A HREF="#pdf-tostring">tostring</A><BR>
+        <A HREF="#pdf-type">type</A><BR>
+        <A HREF="#pdf-unpack">unpack</A><BR>
+        <A HREF="#pdf-xpcall">xpcall</A><BR>
+
+        </TD>
+        <TD>
+        <H3>API</H3>
+        <A HREF="#lua_Alloc">lua_Alloc</A><BR>
+        <A HREF="#lua_CFunction">lua_CFunction</A><BR>
+        <A HREF="#lua_Debug">lua_Debug</A><BR>
+        <A HREF="#lua_Hook">lua_Hook</A><BR>
+        <A HREF="#lua_Integer">lua_Integer</A><BR>
+        <A HREF="#lua_Number">lua_Number</A><BR>
+        <A HREF="#lua_Reader">lua_Reader</A><BR>
+        <A HREF="#lua_State">lua_State</A><BR>
+        <A HREF="#lua_Writer">lua_Writer</A><BR>
+        <A HREF="#lua_atpanic">lua_atpanic</A><BR>
+        <A HREF="#lua_call">lua_call</A><BR>
+        <A HREF="#lua_checkstack">lua_checkstack</A><BR>
+        <A HREF="#lua_close">lua_close</A><BR>
+        <A HREF="#lua_concat">lua_concat</A><BR>
+        <A HREF="#lua_cpcall">lua_cpcall</A><BR>
+        <A HREF="#lua_createtable">lua_createtable</A><BR>
+        <A HREF="#lua_dump">lua_dump</A><BR>
+        <A HREF="#lua_equal">lua_equal</A><BR>
+        <A HREF="#lua_error">lua_error</A><BR>
+        <A HREF="#lua_gc">lua_gc</A><BR>
+        <A HREF="#lua_getallocf">lua_getallocf</A><BR>
+        <A HREF="#lua_getfenv">lua_getfenv</A><BR>
+        <A HREF="#lua_getfield">lua_getfield</A><BR>
+        <A HREF="#lua_getglobal">lua_getglobal</A><BR>
+        <A HREF="#lua_gethook">lua_gethook</A><BR>
+        <A HREF="#lua_gethookcount">lua_gethookcount</A><BR>
+        <A HREF="#lua_gethookmask">lua_gethookmask</A><BR>
+        <A HREF="#lua_getinfo">lua_getinfo</A><BR>
+        <A HREF="#lua_getlocal">lua_getlocal</A><BR>
+        <A HREF="#lua_getmetatable">lua_getmetatable</A><BR>
+        <A HREF="#lua_getstack">lua_getstack</A><BR>
+        <A HREF="#lua_gettable">lua_gettable</A><BR>
+        <A HREF="#lua_gettop">lua_gettop</A><BR>
+        <A HREF="#lua_getupvalue">lua_getupvalue</A><BR>
+        <A HREF="#lua_insert">lua_insert</A><BR>
+        <A HREF="#lua_isboolean">lua_isboolean</A><BR>
+        <A HREF="#lua_iscfunction">lua_iscfunction</A><BR>
+        <A HREF="#lua_isfunction">lua_isfunction</A><BR>
+        <A HREF="#lua_islightuserdata">lua_islightuserdata</A><BR>
+        <A HREF="#lua_isnil">lua_isnil</A><BR>
+        <A HREF="#lua_isnumber">lua_isnumber</A><BR>
+        <A HREF="#lua_isstring">lua_isstring</A><BR>
+        <A HREF="#lua_istable">lua_istable</A><BR>
+        <A HREF="#lua_isthread">lua_isthread</A><BR>
+        <A HREF="#lua_isuserdata">lua_isuserdata</A><BR>
+        <A HREF="#lua_lessthan">lua_lessthan</A><BR>
+        <A HREF="#lua_load">lua_load</A><BR>
+        <A HREF="#lua_newstate">lua_newstate</A><BR>
+        <A HREF="#lua_newtable">lua_newtable</A><BR>
+        <A HREF="#lua_newthread">lua_newthread</A><BR>
+        <A HREF="#lua_newuserdata">lua_newuserdata</A><BR>
+        <A HREF="#lua_next">lua_next</A><BR>
+        <A HREF="#lua_objlen">lua_objlen</A><BR>
+        <A HREF="#lua_pcall">lua_pcall</A><BR>
+        <A HREF="#lua_pop">lua_pop</A><BR>
+        <A HREF="#lua_pushboolean">lua_pushboolean</A><BR>
+        <A HREF="#lua_pushcclosure">lua_pushcclosure</A><BR>
+        <A HREF="#lua_pushcfunction">lua_pushcfunction</A><BR>
+        <A HREF="#lua_pushfstring">lua_pushfstring</A><BR>
+        <A HREF="#lua_pushinteger">lua_pushinteger</A><BR>
+        <A HREF="#lua_pushlightuserdata">lua_pushlightuserdata</A><BR>
+        <A HREF="#lua_pushlstring">lua_pushlstring</A><BR>
+        <A HREF="#lua_pushnil">lua_pushnil</A><BR>
+        <A HREF="#lua_pushnumber">lua_pushnumber</A><BR>
+        <A HREF="#lua_pushstring">lua_pushstring</A><BR>
+        <A HREF="#lua_pushthread">lua_pushthread</A><BR>
+        <A HREF="#lua_pushvalue">lua_pushvalue</A><BR>
+        <A HREF="#lua_pushvfstring">lua_pushvfstring</A><BR>
+        <A HREF="#lua_rawequal">lua_rawequal</A><BR>
+        <A HREF="#lua_rawget">lua_rawget</A><BR>
+        <A HREF="#lua_rawgeti">lua_rawgeti</A><BR>
+        <A HREF="#lua_rawset">lua_rawset</A><BR>
+        <A HREF="#lua_rawseti">lua_rawseti</A><BR>
+        <A HREF="#lua_register">lua_register</A><BR>
+        <A HREF="#lua_remove">lua_remove</A><BR>
+        <A HREF="#lua_replace">lua_replace</A><BR>
+        <A HREF="#lua_resume">lua_resume</A><BR>
+        <A HREF="#lua_setallocf">lua_setallocf</A><BR>
+        <A HREF="#lua_setfenv">lua_setfenv</A><BR>
+        <A HREF="#lua_setfield">lua_setfield</A><BR>
+        <A HREF="#lua_setglobal">lua_setglobal</A><BR>
+        <A HREF="#lua_sethook">lua_sethook</A><BR>
+        <A HREF="#lua_setlocal">lua_setlocal</A><BR>
+        <A HREF="#lua_setmetatable">lua_setmetatable</A><BR>
+        <A HREF="#lua_settable">lua_settable</A><BR>
+        <A HREF="#lua_settop">lua_settop</A><BR>
+        <A HREF="#lua_setupvalue">lua_setupvalue</A><BR>
+        <A HREF="#lua_status">lua_status</A><BR>
+        <A HREF="#lua_toboolean">lua_toboolean</A><BR>
+        <A HREF="#lua_tocfunction">lua_tocfunction</A><BR>
+        <A HREF="#lua_tointeger">lua_tointeger</A><BR>
+        <A HREF="#lua_tolstring">lua_tolstring</A><BR>
+        <A HREF="#lua_tonumber">lua_tonumber</A><BR>
+        <A HREF="#lua_topointer">lua_topointer</A><BR>
+        <A HREF="#lua_tostring">lua_tostring</A><BR>
+        <A HREF="#lua_tothread">lua_tothread</A><BR>
+        <A HREF="#lua_touserdata">lua_touserdata</A><BR>
+        <A HREF="#lua_type">lua_type</A><BR>
+        <A HREF="#lua_typename">lua_typename</A><BR>
+        <A HREF="#lua_xmove">lua_xmove</A><BR>
+        <A HREF="#lua_yield">lua_yield</A><BR>
+
+        </TD>
+        <TD>
+        <H3>補助ライブラリ</H3>
+        <A HREF="#luaL_Buffer">luaL_Buffer</A><BR>
+        <A HREF="#luaL_Reg">luaL_Reg</A><BR>
+        <A HREF="#luaL_addchar">luaL_addchar</A><BR>
+        <A HREF="#luaL_addlstring">luaL_addlstring</A><BR>
+        <A HREF="#luaL_addsize">luaL_addsize</A><BR>
+        <A HREF="#luaL_addstring">luaL_addstring</A><BR>
+        <A HREF="#luaL_addvalue">luaL_addvalue</A><BR>
+        <A HREF="#luaL_argcheck">luaL_argcheck</A><BR>
+        <A HREF="#luaL_argerror">luaL_argerror</A><BR>
+        <A HREF="#luaL_buffinit">luaL_buffinit</A><BR>
+        <A HREF="#luaL_callmeta">luaL_callmeta</A><BR>
+        <A HREF="#luaL_checkany">luaL_checkany</A><BR>
+        <A HREF="#luaL_checkint">luaL_checkint</A><BR>
+        <A HREF="#luaL_checkinteger">luaL_checkinteger</A><BR>
+        <A HREF="#luaL_checklong">luaL_checklong</A><BR>
+        <A HREF="#luaL_checklstring">luaL_checklstring</A><BR>
+        <A HREF="#luaL_checknumber">luaL_checknumber</A><BR>
+        <A HREF="#luaL_checkoption">luaL_checkoption</A><BR>
+        <A HREF="#luaL_checkstack">luaL_checkstack</A><BR>
+        <A HREF="#luaL_checkstring">luaL_checkstring</A><BR>
+        <A HREF="#luaL_checktype">luaL_checktype</A><BR>
+        <A HREF="#luaL_checkudata">luaL_checkudata</A><BR>
+        <A HREF="#luaL_error">luaL_error</A><BR>
+        <A HREF="#luaL_getmetafield">luaL_getmetafield</A><BR>
+        <A HREF="#luaL_getmetatable">luaL_getmetatable</A><BR>
+        <A HREF="#luaL_gsub">luaL_gsub</A><BR>
+        <A HREF="#luaL_loadbuffer">luaL_loadbuffer</A><BR>
+        <A HREF="#luaL_loadfile">luaL_loadfile</A><BR>
+        <A HREF="#luaL_loadstring">luaL_loadstring</A><BR>
+        <A HREF="#luaL_newmetatable">luaL_newmetatable</A><BR>
+        <A HREF="#luaL_newstate">luaL_newstate</A><BR>
+        <A HREF="#luaL_openlibs">luaL_openlibs</A><BR>
+        <A HREF="#luaL_optint">luaL_optint</A><BR>
+        <A HREF="#luaL_optinteger">luaL_optinteger</A><BR>
+        <A HREF="#luaL_optlong">luaL_optlong</A><BR>
+        <A HREF="#luaL_optlstring">luaL_optlstring</A><BR>
+        <A HREF="#luaL_optnumber">luaL_optnumber</A><BR>
+        <A HREF="#luaL_optstring">luaL_optstring</A><BR>
+        <A HREF="#luaL_prepbuffer">luaL_prepbuffer</A><BR>
+        <A HREF="#luaL_pushresult">luaL_pushresult</A><BR>
+        <A HREF="#luaL_ref">luaL_ref</A><BR>
+        <A HREF="#luaL_register">luaL_register</A><BR>
+        <A HREF="#luaL_typename">luaL_typename</A><BR>
+        <A HREF="#luaL_typerror">luaL_typerror</A><BR>
+        <A HREF="#luaL_unref">luaL_unref</A><BR>
+        <A HREF="#luaL_where">luaL_where</A><BR>
+
+        </TD>
+    </TR>
+</TABLE>
+<P>
+
+<HR>
+<SMALL> 最終更新: Fri Feb 10 17:15:37 BRST 2006 </SMALL>
+
+<hr></hr>
+<h1><a href="http://www.lua.org/"><img src="lua.gif" alt="" border="0"></img></a> Lua 5.1 リファレンスマニュアル</h1>
+
+by Roberto Ierusalimschy, Luiz Henrique de Figueiredo, Waldemar Celes
+<p><small> <a href="http://www.lua.org/copyright.html">Copyright</a> &copy; 2006 Lua.org, PUC-Rio. All rights reserved. </small>
+<hr></hr>
+
+<p>
+<p><!-- ====================================================================== --> <a name="0">
+<h1>0 - 日本語訳について</h1>
+</a>
+<p>この文書は、 <a href="http://www.lua.org/manual/5.1/manual.html">Lua 5.1 Reference Manual</a> を原著者に無断で日本語に訳した、非公式の Lua 5.1 リファレンスマニュアルである。 <a name="1"></a>
+<h1>1 - 概要</h1>
+
+<p>Luaは拡張プログラミング言語である。 データ記述機能を持ち、汎用の手続き型プログラミングをサポートするようデザインされた。 オブジェクト指向プログラミング、関数型プログラミング、データ駆動型プログラミングもサポートしている。 Luaは、パワフルで軽いスクリプト言語として、それらが必要なあらゆるプログラムに使われることを意図している。 Luaは <em>クリーンな</em> C
+(つまり、ANSI C と C++ の共通のサブセット) で書かれ、ライブラリとして実装されている。
+
+<p>拡張言語であるため、Luaは「メイン」プログラムを持たない。 ホストクライアント (<em>エンベッディングプログラム</em>、あるいは単に<em>ホスト</em> とも呼ぶ) に <em>組み込まれて</em> 動くだけである。 このホストプログラムは、Luaコードを実行する関数を呼び出したり、Luaの変数を読み書きしたり、Luaから呼ばれるCの関数を登録したりできる。
+Cの関数を使ってカスタマイズすることで、共通の構文を持つプログラミング言語で様々な領域を広範囲にカバーすることができる。 Luaのディストリビューションには <code>lua</code> と呼ばれるサンプルのホストプログラムが含まれている。 これはLuaライブラリを使った完全なスタンドアロンのLuaインタプリタを提供している。
+
+<p>Luaはフリーソフトウェアであり、ライセンスにも書かれているように、いかなる保証もなくあるがまま提供される。 このマニュアルに記述されている実装はLuaの公式ウェブサイト <code>www.lua.org</code> で提供されている。
+
+<p>他のすべてのリファレンスマニュアルと同様、この文書はあちこちが無味乾燥である。 Luaのデザインの背後にある決定についての議論は、Luaのウェブサイトにある技術文書を参照のこと。 Luaによるプログラミングの詳しい紹介は、Roberto著 <em>Programming in Lua</em> を参照。
+
+<p><a name="language"></a><a name="2"></a>
+<h1>2 - 言語</h1>
+
+<p>このセクションでは、Luaの字句、構文、意味論について記述する。 言い換えると、このセクションでは、どういったトークンが有効か、それらをどう組み合わせられるのか、そしてその組み合わせは何を意味するのかについて記述している。
+
+<p>言語構造は一般的な拡張BNF記法を使って説明する。 {<em>a</em>} は <em>a</em> の0回以上の繰り返し、[<em>a</em>] は <em>a</em> が省略可能であることを表す。 非終端記号は <em>italic</em> で表され、キーワードは <b>bold</b>、他の終端記号はシングルクォートで囲まれた <code>type
+writer</code> フォントで表現される。 Luaの完全な構文はこのマニュアルの最後にある。
+
+<p><a name="lexical"></a><a name="2.1"></a>
+<h2>2.1 - 字句の構成</h2>
+
+<p>Luaの <em>名前</em> (<em>識別子</em> とも呼ばれる) は、文字、数字、アンダースコアを組み合わせた任意の文字列である。 ただし数字で始まってはならない。 これは多くの言語の名前の定義に一致する。 「文字」の定義は現在のロケールに依存する。 現在のロケールでアルファベットとみなされる文字はどれも識別子に使える。 識別子は名前変数やテーブルフィールドに使われる。
+
+<p>以下の <em>キーワード</em> は予約されており、名前としては使えない。 <pre>
+       and       break     do        else      elseif
+       end       false     for       function  if
+       in        local     nil       not       or
+       repeat    return    then      true      until     while
+</pre>
+
+<p>Lua は大文字小文字を区別する言語である。 <code>and</code> は予約語だが、<code>And</code> と <code>AND</code> は、2つの異なった、有効な名前である。 慣習的に、アンダースコアと大文字で始まる名前 (例えば <a href="#pdf-_VERSION"><code>_VERSION</code></a>) は、
+Luaが使う内部のグローバル変数として予約されている。
+
+<p>以下の文字列は、その他のトークンである。 <pre>
+       +     -     *     /     %     ^     #
+       ==    ~=    &#060;=    >=    &#060;     >     =
+       (     )     {     }     [     ]
+       ;     :     ,     .     ..    ...
+</pre>
+
+<p><em>文字列リテラル</em> は対になるシングルクォートかダブルクォートで囲まれ、 以下の C のようなエスケープシーケンスを含むことができる。
+<ul>
+    <li><b><code>\a</code></b> --- ベル
+    <li><b><code>\b</code></b> --- バックスペース
+    <li><b><code>\f</code></b> --- 改ページ
+    <li><b><code>\n</code></b> --- 改行
+    <li><b><code>\r</code></b> --- 復帰
+    <li><b><code>\t</code></b> --- 水平タブ
+    <li><b><code>\v</code></b> --- 垂直タブ
+    <li><b><code>\\</code></b> --- バックスラッシュ (円記号)
+    <li><b><code>\&quot;</code></b> --- 引用符 (ダブルクォート)
+    <li><b><code>\'</code></b> --- アポストロフィ (シングルクォート)
+</ul>
+<p>上記に加えて、 `<code>\</code><em>改行</em>&acute; (バックスラッシュに本物の改行が続いたもの) を記述して文字列中に改行を含めることができる。 さらに `<code>\</code><em>ddd</em>&acute; (dddは最大3桁の10進数) というエスケープシーケンスを使って 文字列中の文字をそのコード値で指定することもできる。
+(数値エスケープの後に数字が続く場合は、ぴったり3桁使って表現しなければならない。) Luaの文字列は `<code>\0</code>&acute; で表されるゼロを含み、いかなる8ビット値も含むことができる。
+
+<p>ダブル(またはシングル)クォートで囲まれた文字列リテラルの中に、 ダブル(またはシングル)クォート、改行、バックスラッシュ、または埋め込まれたゼロを置くためには、 エスケープシーケンスを使わなければならない。 他のすべての文字は直接リテラルの中に入れて構わない (ファイルシステムに対しては制御文字が問題を起こすかもしれないが、Luaは大丈夫である。)
+
+<p>文字列リテラルは <em>長括弧</em> で囲む長い形式を使って定義することもできる。 <em><em>n</em> 段の開き長括弧</em> は、 開き角括弧に <em>n</em> 個のイコールと、さらに開き角括弧を続けたものである。 つまり、0段の開き長括弧は <code>[[</code> と書き、 1段の開き長括弧は <code>[=[</code>
+と書き、以下同様である。 <em>閉じ長括弧</em> も同様である。 例えば4段の閉じ長括弧は <code>]====]</code> と書く。 長い文字列は任意の段数の開き長括弧で始まり、同じ段数の閉じ長括弧で終わる。 この角カッコ形式のリテラルは、複数行に渡って記述できる。 エスケープシーケンスは一切解釈されず、異なる段数の閉じ長括弧は無視する。
+これは、正しい段数の閉じ長括弧と埋め込まれたゼロ以外の任意の内容を入れられる。
+
+<p>便利なように、開き長括弧のすぐ後に改行が続いたときは、その改行は文字列に含まれない。 例えば、ASCII (つまり `<code>a</code>&acute; が97、改行が10、`<code>1</code>&acute; が49であるような文字コード) が使われているシステムでは、 以下の4つのリテラルは同じ文字列を表現している。 <pre>
+      (1)   'alo\n123"'
+      (2)   "alo\n123\""
+      (3)   '\97lo\10\04923"'
+      (4)   [[alo
+            123"]]
+      (5)   [==[
+            alo
+            123"]==]
+</pre><!--"-->
+
+<p><em>数値定数</em> には省略可能な小数部と省略可能な指数部を書くことができる。 Luaは接頭辞 <code>0x</code> を付けた整数の16進定数も受け付ける。 有効な数値定数の例を挙げると <pre>
+       3       3.0     3.1416  314.16e-2   0.31416E1  0xff  0x56
+</pre>
+
+<p><em>コメント</em> は文字列の外ならどこでも、二つのハイフン (<code>--</code>) で始めることができる。 もし <code>--</code> の直後に開き長括弧以外のテキストがあれば、そのコメントは <em>短いコメント</em> であり、行末まで続く。 そうでなければ、それは <em>長いコメント</em> であり、対応する閉じ長括弧まで続く。
+長いコメントはコードを一時的に無効にするためによく使われる。
+
+<p><a name="TypesSec"></a><a name="2.2"></a>
+<h2>2.2 - 値と型</h2>
+
+<p>Luaは <em>動的な型の言語</em> である。 つまり、変数は型を持たず、値が型を持つ。 型定義の構文はない。 すべての値は自分自身で型を保持している。
+
+<p>Luaのすべての値は <em>ファーストクラスの値</em> である。 つまり、いかなる値も変数に格納でき、他の関数に引数で渡すことができ、戻り値として返すことができる。
+
+<p>Luaには8つの基本型がある。 <em>nil</em>、<em>ブーリアン</em>、<em>数値</em>、<em>文字列</em>、<em>関数</em>、<em>ユーザーデータ</em>、<em>スレッド</em>、<em>テーブル</em> である。 <em>nil</em> は <b>nil</b>
+値の型である。その主な性質は他のいかなる値とも異なることであり、通常、役に立つ値がないことを表す。 <em>ブーリアン</em> は <b>false</b> と <b>true</b> の値を持つ型である。 <b>nil</b> と <b>false</b> は共に条件判断で偽となり、他の値は真となる。 <em>数値</em> は実数 (double) を表現する。
+(しかし数値の内部表現としてfloatやlongなど他の型を使うようLuaインタプリタをビルドし直すのは簡単である。 ファイル <code>luaconf.h</code> を参照。) <em>文字列</em> は文字の配列を表現する。 Luaは8ビットクリーンであり、 文字列にはゼロ (`<code>\0</code>&acute;) を含むいかなる8ビット文字も含むことができる (<a
+    href="#lexical">2.1</a> を参照)。
+
+<p>LuaはLuaで書かれた関数もCで書かれた関数も呼べる (<a href="#functioncall">2.5.8</a> を参照)。
+
+<p><em>ユーザーデータ</em> は任意のCのデータをLuaの変数に格納するために用意された。 この型は生のメモリブロックに相当し、代入と等価比較を除いて、Luaでは演算が定義されていない。 しかしながら、<em>メタテーブル</em> を用いることで、 プログラマはユーザーデータに対する演算を定義することができる (<a href="#metatable">2.8</a>
+を参照)。 ユーザーデータはLua内で作ったり変更することはできず、CのAPIを通してのみ可能である。 これは完全にホストプログラムに所有されたデータであることを保証する。
+
+<p><em>スレッド</em> は実行されているそれぞれのスレッドを表現し、コルーチンを実装するために使われる (<a href="#coroutine">2.11</a> を参照)。 LuaのスレッドとOSのスレッドを混同しないように。 Luaはスレッドをサポートしないシステム上でもコルーチンをサポートする。
+
+<p><em>テーブル</em> は連想配列である。 すなわち数値だけでなく任意の値 (<b>nil</b> を除く) をキーにできる配列である。 テーブルは <em>異種混合</em> できる。 つまりあらゆる型の値 (<b>nil</b> を除く) を持つことができる。 テーブルはLuaの唯一のデータ構造であり、
+普通の配列の他、記号表、集合、レコード、グラフ、ツリーなどを表現するために使われる。 レコードを表現するときは、フィールド名をインデックスとして使う。 このための <code>a.name</code> という表現が <code>a["name"]</code> のシンタックスシュガーとして用意されている。 また、Luaでテーブルを作るための便利な表現がいくつかある (<a
+    href="#tableconstructor">2.5.7</a> を参照)。
+
+<p>インデックスと同様、テーブルフィールドの値には任意の型 (<b>nil</b> を除く) を格納できる。 特に、関数がファーストクラスであるため、テーブルフィールドは関数を格納することができる。 そのためテーブルは <em>メソッド</em> を持つことができる (<a href="#func-def">2.5.9</a> を参照)。
+
+<p>テーブル、関数、スレッド、ユーザーデータの値は <em>オブジェクト</em> である。 変数はこれらの実際の値は<em>持たず</em>、それらを <em>参照</em> しているだけである。 代入、引数渡し、関数の戻り値は、常に値への参照を扱い、値のコピーは行われない。
+
+<p>ライブラリ関数 <code>type</code> は与えられた値の型を表す文字列を返す。
+
+<p><a name="coercion"></a><a name="2.2.1"></a>
+<h3>2.2.1 - 変換</h3>
+
+<p>Luaは文字列と数値を実行時に自動的に変換する。 すべての数学演算は、文字列に適用されると、一般的な変換ルールに基づいてその文字列を数値に変換しようとする。 逆に、文字列が期待されるところで数値が使れると、その数値は一般的な形式の文字列に変換される。 数値が文字列に変換される方法を完璧にコントロールする場合は、 文字列ライブラリの <code>format</code> 関数を使う
+(<a href="#pdf-string.format"><code>string.format</code></a> を参照)。
+
+<p><a name="variables"></a><a name="2.3"></a>
+<h2>2.3 - 変数</h2>
+
+<p>変数は値を格納する場所である。 Luaには、グローバル変数、ローカル変数、テーブルフィールドの三種類の変数がある。
+
+<p>単発の名前はグローバル変数かローカル変数を表す (または関数の仮引数かもしれないが、それはローカル変数の一種である)。 <pre>
+  var ::= Name
+</pre>
+
+<p>(<a href="#lexical">2.1</a> を参照) で定義されているように、名前は識別子を表す。
+
+<p>明示的にローカルと宣言されない限り、変数はグローバルとみなされる (<a href="#localvar">2.4.7</a> を参照)。 ローカル変数は <em>レキシカルスコープ</em> を持ち、 そのスコープ内で定義された関数から自由にアクセスできる (<a href="#visibility">2.6</a> を参照)。
+
+<p>最初の代入が行われる前の変数の値は <b>nil</b> である。
+
+<p>テーブルをインデックス付けするためには角カッコを使う。 <pre>
+  var ::= prefixexp `<b>[</b>&acute; exp `<b>]</b>&acute;
+</pre>
+<p>最初の式 (<em>prefixexp</em>) はテーブル、 二番目の式 (<em>exp</em>) はテーブル内のエントリを指定する値でなければならない。 テーブルのインデックスを指定する式は限定された構文を持つ。 詳細は <a href="#expressions">2.5</a> を参照。
+
+<p>構文 <code>var.Name</code> は <code>var["Name"]</code> の単なるシンタックスシュガーであり、 テーブルフィールドを示すために使う。 <pre>
+  var ::= prefixexp `<b>.</b>&acute; Name
+</pre>
+
+<p>グローバル変数とテーブルフィールドへアクセスする効果はメタテーブルによって変えられる。 インデックス付き変数 <code>t[i]</code> へのアクセスは <code>gettable_event(t,i)</code> の呼び出しと等価である (<code>gettable_event</code> 関数の完全な説明は <a href="#metatable">2.8</a>
+を参照。 この関数はLuaで定義したり呼ぶことはできず、単に説明のため用いているだけである)。
+
+<p>すべてのグローバル変数は、<em>環境テーブル</em> または単に <em>環境</em> (<a href="#environ">2.9</a> を参照) と呼ばれる通常のLuaのテーブル内に、フィールドとして存在している。 各関数はそれぞれ独自に環境への参照を持ち、 その関数内でのすべてのグローバル変数は、その環境テーブルを参照する。
+関数が作られたとき、関数は、それが作られた関数から見える環境を受け継ぐ。 Luaの関数の環境テーブルを取得するには <a href="#pdf-getfenv"><code>getfenv</code></a> を呼ぶ。 変更するには <a href="#pdf-setfenv"><code>setfenv</code></a> を呼ぶ。 (Cの関数の環境はデバッグライブラリでのみ操作できる (<a
+    href="#libdebug">5.9</a> を参照)。)
+
+<p>グローバル変数 <code>x</code> へのアクセスは <code>_env.x</code> と等価であり、 以下と等価である。 <pre>
+       gettable_event(_env, "x")
+</pre>
+<p>ただし、<code>_env</code> は関数が実行されている環境を表す (<code>gettable_event</code> 関数の完全な説明は <a href="#metatable">2.8</a> を参照。 この関数はLuaで定義したり読んだりできない。 同様に変数 <code>_env</code> はLuaで定義されていない。
+これはただ説明のために用いているだけである)。
+
+<p><a name="stats"></a><a name="2.4"></a>
+<h2>2.4 - 文</h2>
+
+<p>LuaはPascalやCと同じように一般的な文のセットをサポートしている。 代入、制御構造、関数呼び出し、テーブルコンストラクタや変数の宣言などである。
+
+<p><a name="chunks"></a><a name="2.4.1"></a>
+<h3>2.4.1 - チャンク</h3>
+
+<p>Luaの実行の単位は <em>チャンク</em> と呼ばれる。 チャンクは、単純に、順番に実行される文の連なりである。 それぞれの文末には省略可能なセミコロンを置いても良い。 <pre>
+  chunk ::= {stat [`<b>;</b>&acute;]}
+</pre> 空文は存在しないため、`<code>;;</code>&acute; は許されていない。
+
+<p>Luaはチャンクを、可変個の引数を持つ無名関数の本体として扱っている (<a href="#func-def">2.5.9</a> を参照)。 従って、チャンクはローカル変数を宣言でき、引数を受け取ることができ、戻り値を返せる。
+
+<p>チャンクはファイルやホストプログラム内の文字列として格納されているであろう。 チャンクが実行されるとき、まず仮想マシンの命令にコンパイルされ、それからコンパイル済みコードが仮想マシンのインタプリタによって実行される。
+
+<p>チャンクはバイナリ形式のコンパイル済みコードであっても良い。 詳細は <code>luac</code> プログラムを参照。 ソースプログラムとコンパイル済み形式はどちらを用いても良い。 Luaは自動的にファイル形式を検出し、適切に振る舞う。
+
+
+<p><a name="2.4.2"></a>
+<h3>2.4.2 - ブロック</h3>
+<p>文の列はブロックである。 構文的には、ブロックはチャンクと等しい。 <pre>
+  block ::= chunk
+</pre>
+
+<p>ブロックは明示的に単一の文とすることもある。 <pre>
+  stat ::= <b>do</b> block <b>end</b>
+</pre>
+<p>明示的なブロックは変数宣言スコープをコントロールするのに便利である。 明示的なブロックはまた、 他のブロックの途中に <b>return</b> 文や <b>break</b> 文を入れるために使うこともある。
+
+<p><a name="assignment"></a><a name="2.4.3"></a>
+<h3>2.4.3 - 代入</h3>
+
+<p>Luaは多重代入を許している。 だから、代入文では左辺に変数リスト、右辺に式リストを書く。 どちらのリストもそれぞれの要素をカンマで区切る。 <pre>
+  stat ::= varlist1 `<b>=</b>&acute; explist1
+  varlist1 ::= var {`<b>,</b>&acute; var}
+  explist1 ::= exp {`<b>,</b>&acute; exp}
+</pre>
+<p>式については <a href="#expressions">2.5</a> で議論する。
+
+<p>代入の前に、値リストは変数リストの長さに調節される。 もし必要な数よりも値が多ければ、余分な値は捨てられる。 もし必要な数よりも値が少なければ、必要なだけ <b>nil</b> が追加される。 もし式リストの最後が関数呼び出しなら、調節の前に、その関数のすべての戻り値が値リストに追加される (ただし呼び出しをカッコで囲った場合を除く、<a href="#expressions">2.5</a>
+を参照)。
+
+<p>代入文は、まずすべての式を評価し、それから、代入が行われる。 だから、このコード <pre>
+       i = 3
+       i, a[i] = i+1, 20
+</pre> は、<code>i</code> に4が代入される前に <code>a[i]</code> の <code>i</code> が (3に) 評価されるため、 <code>a[3]</code> に20が代入される。 <code>a[4]</code> は何の影響もない。 同様に、 <pre>
+       x, y = y, x
+</pre> は <code>x</code> と <code>y</code> の値を交換する。
+
+<p>グローバル変数とテーブルフィールドへの代入の効果は、メタテーブルによって変えられる。 インデックス付き変数への代入 <code>t[i] = val</code> は <code>settable_event(t,i,val)</code> と等価である (<code>settable_event</code> 関数の完全な記述は <a href="#metatable">2.8</a>
+を参照。 この関数はLuaで定義したり呼ぶことはできず、 ただ説明のため用いているだけである)。
+
+<p>グローバル変数への代入 <code>x = val</code> は代入 <code>_env.x = val</code> と等価であり、 以下と等価である。 <pre>
+       settable_event(_env, "x", val)
+</pre>
+<p>ただし、<code>_env</code> は関数が実行されている環境を表す (変数 <code>_env</code> はLuaに定義されていない。 これはただ説明のために用いているだけである)。
+
+<p><a name="control"></a><a name="2.4.4"></a>
+<h3>2.4.4 - 制御構造</h3>
+<p>制御構造 <b>if</b>、<b>while</b>、<b>repeat</b> は一般的な意味とよく知られた構文をしている。 <pre>
+  stat ::= <b>while</b> exp <b>do</b> block <b>end</b>
+  stat ::= <b>repeat</b> block <b>until</b> exp
+  stat ::= <b>if</b> exp <b>then</b> block {<b>elseif</b> exp <b>then</b> block} [<b>else</b> block] <b>end</b>
+</pre>
+<p>Luaには <b>for</b> 文もある。 これは2つの種類がある (<a href="#for">2.4.5</a> を参照)。
+
+<p>制御構造の条件式は任意の値をとれる。 <b>false</b> と <b>nil</b> は共に偽である。 <b>nil</b> と <b>false</b> 以外のすべての値は真になる (特に、数値の0や空文字列は真であることに注意)。
+
+<p><b>repeat</b>--<b>until</b> ループでは、 内側のブロックは <b>until</b> キーワードのところではなく条件式の後に終わる。 つまり、条件式はループブロックの内側で宣言されたローカル変数を参照できる。
+
+<p><b>return</b> 文は関数やチャンク (これはただの関数である) から値を返すために使う。 関数やチャンクは1個以上の値を返すことができる。 <b>return</b> 文の構文は以下の通り。 <pre>
+  stat ::= <b>return</b> [explist1]
+</pre>
+
+<p><b>break</b> 文は <b>while</b>、<b>repeat</b>、<b>for</b> ループの実行を終了し、 ループの次までスキップする。 <pre>
+  stat ::= <b>break</b>
+</pre>
+<p><b>break</b> は最も内側のループを終わらせる。
+
+<p><b>return</b> 文と <b>break</b> 文はブロックの <em>最後</em> の文としてのみ書くことが許される。 <b>return</b> や <b>break</b> をブロックの途中で使うことが本当に必要なら、 明示的な内部ブロックを使う次のような慣用句を使えば良い。 <pre>
+    do return end
+    do break end
+</pre> これで <b>return</b> も <b>break</b> も (内部) ブロックの最後の文になる。
+
+<p><a name="for"></a><a name="2.4.5"></a>
+<h3>2.4.5 - for文</h3>
+
+<p><b>for</b> 文には、数値用と汎用の2つの形式がある。
+
+<p>数値用 <b>for</b> ループは制御変数が等差数列を辿ってコードブロックを繰り返す。 以下がその構文である。 <pre>
+  stat ::= <b>for</b> Name `<b>=</b>&acute; exp `<b>,</b>&acute; exp [`<b>,</b>&acute; exp] <b>do</b> block <b>end</b>
+</pre>
+<p><em>block</em> は <em>name</em> が最初の <em>exp</em> で始まって二番目の<em>exp</em> に達するまで、 三番目の <em>exp</em> ずつ進む間、繰り返される。 より正確には、次のような <b>for</b> 文 <pre>
+       for var = e1, e2, e3 do block end
+</pre> は次のコードに等しい。 <pre>
+       do
+         local _var, _limit, _step = tonumber(e1), tonumber(e2), tonumber(e3)
+         if not (_var and _limit and _step) then error() end
+         while (_step>0 and _var&#060;=_limit) or (_step&#060;=0 and _var>=_limit) do
+           local var = _var
+           block
+           _var = _var + _step
+         end
+       end
+</pre>
+<p>以下の点に注意:
+<ul>
+    <li>3つの制御式はループが始まる前に一度だけ評価される。これらは数値でなければならない。
+    <li><code>_var</code>、<code>_limit</code>、<code>_step</code> は見えない変数である。 この名前は説明のために用いられているだけである。
+    <li>もし三番目の式 (ステップ) が省略されたら、1が使われる。
+    <li><b>for</b> ループを脱出するためには <b>break</b> を使う。
+    <li>ループ変数 <code>var</code> はループ内でローカルである。 <b>for</b> 文の外側でその値を使うことはできない。 もしループ変数 <code>var</code> の値が必要なら、 ループを出る前に別の変数に代入する必要がある。
+</ul>
+
+<p>汎用 <b>for</b> 文は <em>イテレータ</em> と呼ばれる関数を通して働く。 それぞれの繰り返しについて、新しい値を生成するためにイテレータ関数が呼ばれ、<b>nil</b> になったところで止まる。 汎用 <b>for</b> ループは以下の構文である。 <pre>
+  stat ::= <b>for</b> Name {`<b>,</b>&acute; Name} <b>in</b> explist1 <b>do</b> block <b>end</b>
+</pre>
+<p>次のような <b>for</b> 文 <pre>
+       for var_1, ..., var_n in explist do block end
+</pre> は次のコードと等価である。 <pre>
+       do
+         local _f, _s, _var = explist
+         while true do
+           local var_1, ... , var_n = _f(_s, _var)
+           _var = var_1
+           if _var == nil then break end
+           block
+         end
+       end
+</pre>
+<p>以下の点に注意:
+<ul>
+    <li><code>explist</code> は一度だけ評価され、 <em>イテレータ</em> 関数、<em>状態</em>、<em>繰り返し変数</em> の初期値、でなければならない。
+    <li><code>_f</code>、<code>_s</code>、<code>_var</code> は見えない変数である。 この名前は説明のために用いられているだけである。
+    <li><b>for</b> ループを脱出するためには <b>break</b> を使う。
+    <li>ループ変数 <code>var</code> はループ内でローカルである。 <b>for</b> 文の外側でその値を使うことはできない。 もしループ変数 <code>var</code> の値が必要なら、 ループを出る前に別の変数に代入する必要がある。
+</ul>
+
+<p><a name="funcstat"></a><a name="2.4.6"></a>
+<h3>2.4.6 - 文としての関数呼び出し</h3>
+<p>副作用を許しているため、関数呼び出しは文として実行できる。 <pre>
+  stat ::= functioncall
+</pre>
+<p>この場合、戻り値はすべて捨てられる。 関数呼び出しは <a href="#functioncall">2.5.8</a> で説明する。
+
+<p><a name="localvar"></a><a name="2.4.7"></a>
+<h3>2.4.7 - ローカル宣言</h3>
+<p>ローカル変数はブロックの中どこででも宣言できる。 宣言は初期値の代入を伴ってもよい。 <pre>
+  stat ::= <b>local</b> namelist [`<b>=</b>&acute; explist1]
+</pre>
+<p>もしあれば、多重代入と同じ構文で初期値が代入される (<a href="#assignment">2.4.3</a> を参照)。 そうでなければ、変数はすべて <b>nil</b> で初期化される。
+
+<p>チャンクもまたブロックであるから (<a href="#chunks">2.4.1</a> を参照)、 明示的なブロックの外側のチャンクでもローカル変数を宣言できる。 そのようなローカル変数のスコープはチャンクの終わりまで続く。
+
+<p>ローカル変数の可視ルールは <a href="#visibility">2.6</a> で説明する。
+
+<p><a name="expressions"></a><a name="2.5"></a>
+<h2>2.5 - 式</h2>
+
+<p>Luaの基本の式を以下に示す。 <pre>
+  exp ::= prefixexp
+  exp ::= <b>nil</b> | <b>false</b> | <b>true</b>
+  exp ::= Number
+  exp ::= String
+  exp ::= function
+  exp ::= tableconstructor
+  exp ::= `<b>...</b>&acute;
+  exp ::= exp binop exp
+  exp ::= unop exp
+  prefixexp ::= var | functioncall | `<b>(</b>&acute; exp `<b>)</b>&acute;
+</pre>
+
+<p>数値と文字列リテラルは <a href="#lexical">2.1</a> で説明した。 変数は <a href="#variables">2.3</a> で説明した。 関数定義は <a href="#func-def">2.5.9</a> で説明する。 関数呼び出しは <a href="#functioncall">2.5.8</a> で説明する。 テーブルコンストラクタは <a
+    href="#tableconstructor">2.5.7</a> で説明する。 3つのドットで表される可変引数式は、可変引数関数の中でだけ使える。 これは <a href="#func-def">2.5.9</a> で説明する。
+
+<p>二項演算子は算術演算子 (<a href="#arith">2.5.1</a> を参照)、 関係演算子 (<a href="#rel-ops">2.5.2</a> を参照)、 論理演算子 (<a href="#logic">2.5.3</a> を参照) がある。 単項演算子は単項マイナス (<a href="#arith">2.5.1</a> を参照)、 単項 <b>not</b>
+(<a href="#logic">2.5.3</a> を参照)、 そして単項 <em>長さ演算子</em> (<a href="#len-op">2.5.5</a> を参照) がある。
+
+<p>関数呼び出しと可変引数式は複数の値を返す。 式が文として使われた場合 (<a href="#funcstat">2.4.6</a> を参照) (関数呼び出しに対してのみ可能)、 結果のリストはゼロ個に調節され、つまりすべての戻り値が捨てられる。 他の式の中やリストの途中で使われた場合は、 結果のリストは1個に調節され、残りはすべて捨てられる。
+式がリストの最後の要素として使われた場合は、 調節は行われない (カッコで囲った場合を除く)。
+
+<p>いくつか例を挙げる。 <pre>
+       f()                -- 戻り値は0個に調節される
+       g(f(), x)          -- f()の戻り値は1個に調節される
+       g(x, f())          -- xに加えてf()のすべての戻り値をgに渡す
+       a,b,c = f(), x     -- f()の戻り値は1個に調節される (そしてcにはnilが入る)
+       a,b = ...          -- aに可変引数の最初の値、bに2番目の値が入る
+                          -- (対応する引数がなかった場合、a、bにはnilが入る)
+       a,b,c = x, f()     -- f()の戻り値は2個に調節される
+       a,b,c = f()        -- f()の戻り値は3個に調節される
+       return f()         -- f()の戻り値をすべて返す
+       return ...         -- 渡された可変引数をすべて返す
+       return x,y,f()     -- x、yとf()のすべての戻り値を返す
+       {f()}              -- f()のすべての戻り値からなるリストを作る
+       {...}              -- 渡された可変引数すべての値からなるリストを作る
+       {f(), nil}         -- f()の戻り値が1個に調節される
+</pre>
+
+<p>カッコに囲まれた式は常にただ1つの値を返す。 つまり、たとえ <code>f</code> が複数の値を返しても、<code>(f(x,y,z))</code> は常に単一の値となる。 <code>(f(x,y,z))</code> の値は、<code>f</code> が返す最初の値である。 あるいは <code>f</code> が何も返さなければ、<b>nil</b> となる。
+
+<p><a name="arith"></a><a name="2.5.1"></a>
+<h3>2.5.1 - 算術演算子</h3>
+
+<p>Luaは一般的な算術演算子をサポートしている。 <code>+</code> (加算)、 <code>-</code> (減算)、<code>*</code> (乗算)、 <code>/</code> (除算)、<code>%</code> (剰余)、<code>^</code> (累乗)、 および単項の <code>-</code> (符号反転)。
+もしオペランドが数値、あるいは数値に変換できる文字列 (<a href="#coercion">2.2.1</a>を参照) なら、すべての演算は通常の意味を持つ。 累乗は任意の指数に対して動作する。 例えば、<code>x^(-0.5)</code> は <code>x</code> の平方根の逆数を計算する。 剰余は以下のように定義されている。 <pre>
+       a % b == a - math.floor(a/b)*b
+</pre> つまり、負の無限大に向かって丸められた割り算の余りである。
+
+<p><a name="rel-ops"></a><a name="2.5.2"></a>
+<h3>2.5.2 - 関係演算子</h3>
+<p>Luaの関係演算子は以下の通りである。 <pre>
+       ==    ~=    &#060;     >     &#060;=    >=
+</pre>
+<p>これらの演算子は常に <b>false</b> か <b>true</b> いずれかの結果を返す。
+
+<p>等価 (<code>==</code>) はまずオペランドの型を比較する。 もし型が異なっていたら、結果は <b>false</b> である。 そうでなければ、オペランドの値が比較される。 数値と文字列は一般的な方法で比較する。 オブジェクト (テーブル、ユーザーデータ、スレッド、関数) は <em>参照</em> を比較し、 2つのオブジェクトが <em>同じ</em>
+オブジェクトである場合だけを等しいとみなす。 新しいオブジェクト (テーブル、ユーザーデータ、関数) を作ったときは常に、 この新しいオブジェクトは、以前に存在していたオブジェクトと異なる。
+
+<p>"eq"メタメソッドを使って、テーブルやユーザーデータをLuaが比較する方法を変えられる (<a href="#metatable">2.8</a> を参照)。
+
+<p><a href="#coercion">2.2.1</a> の変換ルールは等価比較には適用されない。 そのため、<code>"0"==0</code> は <b>false</b> に評価され、 <code>t[0]</code> と <code>t["0"]</code> は異なったテーブルエントリを示す。
+
+<p>演算子 <code>~=</code> は正確に等価 (<code>==</code>) の否定である。
+
+<p>関係演算子は次のように働く。 引数が両方数値ならば、それらは適切に比較される。 もし両方の引数が文字列ならば、現在のロケールに従ってその値が比較される。そうでなければ、Luaは"lt"または"le"メタメソッドを試みる (<a href="#metatable">2.8</a> を参照)。
+
+<p><a name="logic"></a><a name="2.5.3"></a>
+<h3>2.5.3 - 論理演算子</h3>
+<p>Luaの論理演算子は次の通りである。 <pre>
+       and   or    not
+</pre>
+<p>制御構造 (<a href="#control">2.4.4</a> を参照) と同じく、 すべての論理演算子は <b>false</b> と <b>nil</b> の両方を偽、それ以外のすべてを真とみなす。
+
+<p>否定演算子 <b>not</b> は常に <b>false</b> か <b>true</b> を返す。 論理積演算子 <b>and</b> は、最初の引数が <b>false</b> か <b>nil</b> ならその値を返し、そうでなければ二番目の引数を返す。 論理和演算子 <b>or</b> は最初の引数が <b>false</b> か <b>nil</b>
+以外ならその値を返し、そうでなければ二番目の引数を返す。 <b>and</b> と <b>or</b> は共にショートカット評価を行う。 つまり、二番目のオペランドは、それが必要なときだけ評価される。 いくつかの例を示す。 <pre>
+       10 or 20            --&gt; 10
+       10 or error()       --&gt; 10
+       nil or "a"          --&gt; "a"
+       nil and 10          --&gt; nil
+       false and error()   --&gt; false
+       false and nil       --&gt; false
+       false or nil        --&gt; nil
+       10 and 20           --&gt; 20
+</pre> (このマニュアルでは `<code>--></code>&acute; で式の結果を示す。)
+
+<p><a name="concat"></a><a name="2.5.4"></a>
+<h3>2.5.4 - 連結</h3>
+<p>Luaの文字列連結演算子はふたつのドット (`<code>..</code>&acute;) で表す。 もし両方のオペランドが文字列か数値なら、それらは <a href="#coercion">2.2.1</a> で述べたルールに従って文字列に変換される。 そうでなければ、"concat"メタメソッドが呼ばれる (<a href="#metatable">2.8</a> を参照)。
+
+<p><a name="len-op"></a><a name="2.5.5"></a>
+<h3>2.5.5 - 長さ演算子</h3>
+
+<p>長さ演算子は単項演算子 <code>#</code> で表される。 文字列の長さはそのバイト数である (つまり、各文字が1バイトだとした場合の、文字列の長さである)。
+
+<p>テーブル <code>t</code> の長さは、 <code>t[n]</code> が <b>nil</b> でなく <code>t[n+1]</code> が <b>nil</b> であるような整数 <code>n</code> と定義されている。 また、<code>t[1]</code> が <b>nil</b> なら <code>n</code> はゼロになりうる。 nil
+でない値が1から <code>n</code> まで格納されている普通の配列では、 その長さは最後のインデックス <code>n</code> を正しく返す。 配列に「穴」がある場合 (つまり間に <b>nil</b> がある場合)、 <code>#t</code> はどれかの <b>nil</b> のひとつ前を返すかもしれない (つまり、その <b>nil</b>
+が配列の終わりであるように見えるのだ)。
+
+<p><a name="2.5.6"></a>
+<h3>2.5.6 - 優先順位</h3>
+<p>Luaでの演算子の優先順位を以下の表に示す。 優先順位は低い方から順に <pre>
+       or
+       and
+       &#060;     >     &#060;=    >=    ~=    ==
+       ..
+       +     -
+       *     /     %
+       not   #     - (unary)
+       ^
+</pre>
+<p>普通通りに、カッコを使って式の優先順位を変えることができる。 連結 (`<code>..</code>&acute;) と累乗 (`<code>^</code>&acute;) は右結合である。 他の二項演算子はすべて左結合である。
+
+<p><a name="tableconstructor"></a><a name="2.5.7"></a>
+<h3>2.5.7 - テーブルコンストラクタ</h3>
+<p>テーブルコンストラクタはテーブルを作る式である。 コンストラクタが評価されるたびに新しいテーブルが作られる。 空のテーブルを作ることも、いくつかのフィールドに初期値を持ったテーブルを作ることもできる。 コンストラクタの構文は以下の通りである。 <pre>
+  tableconstructor ::= `<b>{</b>&acute; [fieldlist] `<b>}</b>&acute;
+  fieldlist ::= field {fieldsep field} [fieldsep]
+  field ::= `<b>[</b>&acute; exp `<b>]</b>&acute; `<b>=</b>&acute; exp | Name `<b>=</b>&acute; exp | exp
+  fieldsep ::= `<b>,</b>&acute; | `<b>;</b>&acute;
+</pre>
+
+<p><code>[exp1] = exp2</code> 形式のフィールドは、 キー <code>exp1</code> と値 <code>exp2</code> を持つエントリをテーブルに追加する。 <code>name = exp</code> 形式のフィールドは <code>["name"] = exp</code> と等価である。 最後の <code>exp</code>
+形式のフィールドは、<code>[i] = exp</code> と同じである。 ここで <code>i</code> は1から始まる連続した整数であり、他の形式のフィールドはこのカウンタに影響を与えない。 例えば <pre>
+       a = { [f(1)] = g; "x", "y"; x = 1, f(x), [30] = 23; 45 }
+</pre> は以下と等価である。 <pre>
+       do
+         local t = {}
+         t[f(1)] = g
+         t[1] = "x"         -- 最初のexp
+         t[2] = "y"         -- 2番目のexp
+         t.x = 1            -- temp["x"] = 1
+         t[3] = f(x)        -- 3番目のexp
+         t[30] = 23
+         t[4] = 45          -- 4番目のexp
+         a = t
+       end
+</pre>
+
+<p>もし最後のフィールドが <code>exp</code> 形式で、その式が関数呼び出しか可変引数式であれば、 その戻り値がすべてリストに追加される (<a href="#functioncall">2.5.8</a> を参照)。 これを避けるには、関数呼び出し(あるいは可変引数式)をカッコで囲む (<a href="#expressions">2.5</a> を参照)。
+
+<p>自動生成コードに便利なように、各フィールドの終わりに省略可能なセミコロンを付けても良い。
+
+<p><a name="functioncall"></a><a name="2.5.8"></a>
+<h3>2.5.8 - 関数呼び出し</h3>
+<p>Luaの関数呼び出しは以下の構文である。 <pre>
+  functioncall ::= prefixexp args
+</pre>
+<p>関数呼び出しでは、 まず <em>prefixexp</em> と <em>args</em> が評価される。 もし <em>prefixexp</em> の値が <em>関数</em> であれば、与えられた引数でその関数が呼ばれる。 そうでなければ、<em>prefixexp</em> の "call" メタメソッドが呼ばれる。 そのとき <em>prefixexp</em>
+が最初の引数として渡され、二番目以降に元々の引数が続く (<a href="#metatable">2.8</a> を参照)。
+
+<p>書式 <pre>
+  functioncall ::= prefixexp `<b>:</b>&acute; Name args
+</pre> は「メソッド」と呼ばれる。 呼び出し <code>v:name(...)</code> は <code>v.name(v, ...)</code> のシンタックスシュガーであり、 <code>v</code> の評価がただ一度である点だけが異なる。
+
+<p>引数は以下の構文を持つ。 <pre>
+  args ::= `<b>(</b>&acute; [explist1] `<b>)</b>&acute;
+  args ::= tableconstructor
+  args ::= String
+</pre>
+<p>引数のすべての式は呼び出し前に評価される。 <code>f{...}</code> は <code>f({...})</code> のシンタックスシュガーであり、新しいテーブルひとつが引数となる。 <code>f'...'</code> (および <code>f"..."</code> や <code>f[[...]]</code>) は <code>f('...')</code>
+のシンタックスシュガーであり、引数は文字列リテラルひとつである。
+
+<p>Luaのフリーフォーマット構文の例外として、 関数呼び出しの `<code>(</code>&acute; の直前で改行することはできない。 この制限によって言語の曖昧さが避けられる。 つまり、この制限がなかった場合、もし次のように書くと <pre>
+       a = f
+       (g).x(a)
+</pre>
+<p>Luaは単一の式 <code>a = f(g).x(a)</code> と解釈したかもしれない。 この場合、2つの文にしたければ間にセミコロンが必要である。 だか実際には、<code>f</code> を呼びたければ <code>(g)</code> の前の改行を取り除かなければならない。
+
+<p><code>return</code> <em>functioncall</em> のような呼び出し形式は <em>終端呼び出し</em> と呼ばれる。 Luaは <em>終端呼び出し最適化</em> (または <em>終端再帰最適化</em>) を実装している。 終端呼び出しでは、呼び出された関数は呼び出し側関数のスタックエントリを再利用する。
+その結果、終端呼び出しのネスト数の制限なしに (無限に再帰呼び出しして) プログラムを実行できる。 しかしながら、終端呼び出しは呼び出し側関数に関するデバッグ情報を消してしまう。 終端呼び出しは、単一の関数呼び出しで <b>return</b> するという特別な状況でのみ起こることに注意。 この構文では、呼び出した関数の戻り値がそのまま呼び出し側関数の戻り値になる。
+よって、以下の例はどれも終端呼び出しではない。 <pre>
+       return (f(x))        -- 戻り値が1個に調節されている
+       return 2 * f(x)      -- 戻り値が加工されている
+       return x, f(x)       -- 戻り値が追加されている
+       f(x); return         -- 戻り値が捨てられている
+       return x or f(x)     -- 戻り値が1個に調節されている
+</pre>
+
+<p><a name="func-def"></a><a name="2.5.9"></a>
+<h3>2.5.9 - 関数定義</h3>
+
+<p>関数定義の構文を以下に示す。 <pre>
+  function ::= <b>function</b> funcbody
+  funcbody ::= `<b>(</b>&acute; [parlist1] `<b>)</b>&acute; block <b>end</b>
+</pre>
+
+<p clsss="ja">以下のシンタックスシュガーは関数定義を単純化する。 <pre>
+  stat ::= <b>function</b> funcname funcbody
+  stat ::= <b>local</b> <b>function</b> Name funcbody
+  funcname ::= Name {`<b>.</b>&acute; Name} [`<b>:</b>&acute; Name]
+</pre>
+<p>以下の文 <pre>
+       function f () ... end
+</pre> は次のように変換される。 <pre>
+       f = function () ... end
+</pre>
+<p>以下の文 <pre>
+       function t.a.b.c.f () ... end
+</pre> は次のように変換される。 <pre>
+       t.a.b.c.f = function () ... end
+</pre>
+<p>以下の文 <pre>
+       local function f () ... end
+</pre> は次のように変換される。 <pre>
+       local f; f = function () ... end
+</pre> 次のようにではない。 <pre>
+       local f = function () ... end
+</pre> (この違いは、関数の中で <code>f</code> を参照できるかどうかである。)
+
+<p>関数定義は実行可能な式であり、<em>関数</em> 型の値を持つ。 Luaがチャンクをコンパイルすると、 その中にある関数の本体もコンパイルされる。 そして、Luaが関数定義を実行したとき、 関数は <em>インスタンス化</em> (または <em>クローズ</em>) される。 この関数インスタンス (または <em>クロージャ</em>) は式の最終的な値である。
+同じ関数の異なるインスタンスは異なるローカル変数と異なる環境テーブルを参照する場合がある。
+
+<p>仮引数はローカル変数として振る舞い、渡された実引数の値で初期化される。 <pre>
+  parlist1 ::= namelist [`<b>,</b>&acute; `<b>...</b>&acute;]  |  `<b>...</b>&acute;
+</pre>
+<p>関数が呼ばれると、実引数リストは仮引数リストの長さに調節される。 ただし、仮引数リストの最後が3つのドット (`<code>...</code>&acute;) である <em>可変引数</em> の場合を除く。 可変引数では実引数が調節されず、 代わりに余分の実引数はすべて <em>可変引数式</em> によって関数に渡される。 可変引数式もまた3つのドットで書く。
+この式の値は、すべての余分の実引数からなるリストである。 これは複数の戻り値を持つ関数に似ている。 可変引数式が他の式の中やリストの途中で使われた場合は、 結果のリストは要素が1個に調節される。 リストの最後の要素で使われた場合は、 調節は行われない(カッコで囲った場合を除く)。
+
+<p>例として、以下の定義を考える。 <pre>
+       function f(a, b) end
+       function g(a, b, ...) end
+       function r() return 1,2,3 end
+</pre>
+<p>この場合、実引数から仮引数と可変引数式へ以下のようにマッピングされる。 <pre>
+       呼び出し         仮引数
+
+       f(3)             a=3, b=nil
+       f(3, 4)          a=3, b=4
+       f(3, 4, 5)       a=3, b=4
+       f(r(), 10)       a=1, b=10
+       f(r())           a=1, b=2
+
+       g(3)             a=3, b=nil, ... -->  (なし)
+       g(3, 4)          a=3, b=4,   ... -->  (なし)
+       g(3, 4, 5, 8)    a=3, b=4,   ... -->  5  8
+       g(5, r())        a=5, b=1,   ... -->  2  3
+</pre>
+
+<p>関数の結果を返すには <b>return</b> 文を使う (<a href="#control">2.4.4</a> を参照)。 <b>return</b> 文に出会わずに制御が関数の終わりまで達したら、関数は何も返さない。
+
+<p><em>コロン</em> 構文を使って <em>メソッド</em> を定義できる。 メソッドとは、暗黙の引数 <code>self</code> を余分に持つ関数である。 つまり、以下の構文 <pre>
+       function t.a.b.c:f (...) ... end
+</pre> は、以下の文のシンタックスシュガーである。 <pre>
+       t.a.b.c.f = function (self, ...) ... end
+</pre>
+
+<p><a name="visibility"></a><a name="2.6"></a>
+<h2>2.6 - 可視ルール</h2>
+
+<p>Luaはレキシカルスコープを持つ言語である。 変数のスコープは、それが宣言された文の <em>次</em> から始まり、 その宣言を含む最も内側のブロックのendで終わる。 以下の例を考えよう。 <pre>
+  x = 10                -- グローバル変数
+  do                    -- 新しいブロック
+    local x = x         -- 新しい変数 `x'、値は 10
+    print(x)            --&gt; 10
+    x = x+1
+    do                  -- 別のブロック
+      local x = x+1     -- 別の新しい `x'
+      print(x)          --&gt; 12
+    end
+    print(x)            --&gt; 11
+  end
+  print(x)              --&gt; 10  (グローバル変数)
+</pre>
+<p><code>local x = x</code> のような宣言に注意。 新しく定義された <code>x</code> はまだスコープに入っていないので、 右辺の <code>x</code> は外側の変数を参照する。
+
+<p>レキシカルスコープのルールにより、 ローカル変数はそのスコープの内側に定義された関数から自由にアクセスできる。 内部関数から使われるローカル変数は、 内部関数の中では <em>上位値</em> または <em>外部ローカル変数</em> と呼ばれる。
+
+<p><b>local</b> 文を実行するたびに新しいローカル変数が宣言されることに注意。 以下の例を考えよ。 <pre>
+  a = {}
+  local x = 20
+  for i=1,10 do
+    local y = 0
+    a[i] = function () y=y+1; return x+y end
+  end
+</pre>
+<p>このループは10個のクロージャ (つまり匿名関数の10個のインスタンス) を作る。 クロージャはすべて同じ <code>x</code> を共有するが、 それぞれ異なった <code>y</code> を持つ。
+
+<p><a name="error"></a><a name="2.7"></a>
+<h2>2.7 - エラー処理</h2>
+
+<p>Luaは組み込み拡張言語であるから、 すべてのLuaアクションはホストプログラムのCのコードがLuaライブラリの関数を呼ぶことによってスタートする (<a href="#lua_pcall"><code>lua_pcall</code></a> を参照)。 Luaのコンパイル中や実行中でエラーが起きたときは、制御がCに返され、 適切な動作を行うことができる
+(例えばエラーメッセージを出すとか)。
+
+<p>Luaコードは <a href="#pdf-error"><code>error</code></a> 関数を呼ぶことで明示的にエラーを起こすことができる。 もしLua内でエラーを捕らえる必要があれば、 <a href="#pdf-pcall"><code>pcall</code></a> 関数を使えばよい。
+
+<p><a name="metatable"></a><a name="2.8"></a>
+<h2>2.8 - メタテーブル</h2>
+
+<p>Luaのどの値も <em>メタテーブル</em> を持つことができる。 <em>メタテーブル</em> はLuaの通常のテーブルであるが、 その値に対して特殊な演算をしたときの挙動を定義する。 メタテーブルのフィールドを設定することで、オブジェクトの動作をいくつかの面で変えることができる。 例えば、数値以外の値が加算のオペランドになったとき、 Luaはメタテーブルの <code>"__add"</code>
+フィールドをチェックする。 もしそれが見つかれば、加算を行うためにその関数が呼ばれる。
+
+<p>メタテーブルのキーを <em>イベント</em>、値を <em>メタメソッド</em> と呼ぶ。 前の例でいうと、<code>"add"</code> がイベントで、加算を行う関数がメタメソッドである。
+
+<p><a href="#pdf-getmetatable"><code>getmetatable</code></a> 関数で任意の値のメタテーブルを取り出すことができる。
+
+<p>テーブルのメタテーブルは <a href="#pdf-setmetatable"><code>setmetatable</code></a> 関数で変更できる。 他の型のメタテーブルをLuaで変えることはできない (デバッグライブラリを除く)。 そのためにはCのAPIを使わなければならない。
+
+<p>テーブルとユーザーデータは独立したメタテーブルを持つことができる (複数のテーブルやユーザーデータが同じメタテーブルを共有することもできる)。 他の型の値は、型ごとに単一のメタテーブルを共有する。 つまりすべての数値に対してひとつだけメタテーブルが存在し、 すべての文字列に対してひとつだけメタテーブルが存在し、 以下同様である。
+
+<p>メタテーブルは、算術演算、関係比較、連結、長さ演算子、インデックス付けについて、オブジェクトがどう振る舞うかを制御する。 また、ユーザーオブジェクトに関しては、オブジェクトがガベージコレクトされたときに呼ばれる関数も定義できる。 各演算には <em>イベント</em> と呼ばれる特殊なキーが関連付けられている。 Luaが値に対してこれらの演算を行うとき、
+その値がメタテーブルを持っていてイベントが設定されているかチェックされる。 キーに割り当てられた値 (<em>メタメソッド</em>) はLuaがその演算をどう行うかをコントロールする。
+
+<p>メタテーブルがコントロールできる演算を以下に示す。 各演算は関連付けられた名前で区別される。 各演算のキーは、その名前の前に2つのアンダースコア `<code>__</code>&acute; が付く文字列である。 例えば、"add"演算のキーは、文字列 <code>"__add"</code> である。
+これらの演算の効果は、いかに演算が実行されるかを記述したLuaの関数で説明する。
+
+<p>ここにLuaのコードを示しているのは、単に説明のためである。 実際はインタプリタにハードコードされており、この擬似コードよりも効率的に動作する。 ここで使われている関数 (<a href="#pdf-rawget"><code>rawget</code></a>、<a href="#pdf-tonumber"><code>tonumber</code></a> など) は <a
+    href="#predefined">5.1</a> に記述されている。 与えられたオブジェクトのメタメソッドを取り出すコードとして、以下の表現を用いているが、 <pre>
+  metatable(obj)[event]
+</pre> これは次のように読んでもらいたい。 <pre>
+  rawget(metatable(obj) or {}, event)
+</pre>
+<p>つまり、メタメソッドへのアクセスで他のメタメソッドを呼び出すことはなく、 オブジェクトがメタメソッドを持っていなくてもエラーを起こすことはない (その場合は単に <b>nil</b> を返す)。
+
+<p>
+<ul>
+    <li><b>"add":</b> <code>+</code> 演算。
+
+    <p>以下の <code>getbinhandler</code> 関数は二項演算でLuaがどのようにハンドラを選ぶかを定義する。 まずLuaは最初のオペランドについて試みる。 もしその型が、その演算についてハンドラを定義していなければ、 二番目のオペランドを試みる。 <pre>
+ function getbinhandler (op1, op2, event)
+   return metatable(op1)[event] or metatable(op2)[event]
+ end
+</pre>
+    <p>この関数を使って <code>op1 + op2</code> の挙動を示すと、 <pre>
+ function add_event (op1, op2)
+   local o1, o2 = tonumber(op1), tonumber(op2)
+   if o1 and o2 then  -- 両方のオペランドが数値か?
+     return o1 + o2   -- この `+&acute; はプリミティブな加算
+   else  -- 少なくとも片方は数値ではない
+     local h = getbinhandler(op1, op2, "__add")
+     if h then
+       -- 両方のオペランドに対してハンドラを呼ぶ
+       return h(op1, op2)
+     else  -- ハンドラがない、デフォルトの動作
+       error("...")
+     end
+   end
+ end
+</pre>
+
+    <p>
+    <li><b>"sub":</b> <code>-</code> 演算。 "add"演算と同じように動作する。
+
+    <p>
+    <li><b>"mul":</b> <code>*</code> 演算。 "add"演算と同じように動作する。
+
+    <p>
+    <li><b>"div":</b> <code>*</code> 演算。 "add"演算と同じように動作する。
+
+    <p>
+    <li><b>"mod":</b> <code>%</code> 演算。 "add"演算と同じように動作する。 Behavior similar to the "add" operation, プリミティブ演算として <code>o1 - floor(o1/o2)*o2</code> を使う。
+
+    <p>
+    <li><b>"pow":</b> <code>^</code> (累乗) 演算。 "add"演算と同じように動作する。 プリミティブ演算として関数 <code>pow</code> (Cの数学ライブラリ) を使う。
+
+    <p>
+    <li><b>"unm":</b> 単項 <code>-</code> 演算。 <pre>
+ function unm_event (op)
+   local o = tonumber(op)
+   if o then  -- オペランドは数値か？
+     return -o  -- この `-&acute; はプリミティブな符号反転
+   else  -- オペランドは数値でない
+     -- オペランドからハンドラを取り出す
+     local h = metatable(op).__unm
+     if h then
+       -- オペランドに対してハンドラを呼ぶ
+       return h(op)
+     else  -- ハンドラがない、デフォルトの動作
+       error("...")
+     end
+   end
+ end
+</pre>
+
+    <p>
+    <li><b>"concat":</b> <code>..</code> (連結) 演算。 <pre>
+ function concat_event (op1, op2)
+   if (type(op1) == "string" or type(op1) == "number") and
+      (type(op2) == "string" or type(op2) == "number") then
+     return op1 .. op2  -- プリミティブ文字列連結
+   else
+     local h = getbinhandler(op1, op2, "__concat")
+     if h then
+       return h(op1, op2)
+     else
+       error("...")
+     end
+   end
+ end
+</pre>
+
+    <p>
+    <li><b>"len":</b> <code>#</code> 演算。 <pre>
+ function len_event (op)
+   if type(op) == "string" then
+     return strlen(op)         -- プリミティブの文字列長
+   elseif type(op) == "table" then
+     return #op                -- プリミティブのテーブル長
+   else
+     local h = metatable(op).__len
+     if h then
+       -- オペランドに対してハンドラを呼ぶ
+       return h(op)
+     else  -- ハンドラがない、デフォルトの動作
+       error("...")
+     end
+   end
+ end
+</pre> テーブルの長さの説明は <a href="#len-op">2.5.5</a> を参照。
+
+    <p>
+    <li><b>"eq":</b> <code>==</code> 演算。 関数 <code>getcomphandler</code> は、比較演算子のメタメソッドをLuaがどのように選ぶかを定義する。 両方のオブジェクトが同じ型で、その演算に対して同じメタメソッドを持つ場合だけ、 メタメソッドが選択される。 <pre>
+ function getcomphandler (op1, op2, event)
+   if type(op1) ~= type(op2) then return nil end
+   local mm1 = metatable(op1)[event]
+   local mm2 = metatable(op2)[event]
+   if mm1 == mm2 then return mm1 else return nil end
+ end
+</pre> "eq"イベントは次のように定義される。 <pre>
+ function eq_event (op1, op2)
+   if type(op1) ~= type(op2) then  -- 型が異なるか?
+     return false   -- 異なるオブジェクト
+   end
+   if op1 == op2 then   -- プリミティブのイコール
+     return true   -- オブジェクトは等しい
+   end
+   -- メタメソッドを試す
+   local h = getcomphandler(op1, op2, "__eq")
+   if h then
+     return h(op1, op2)
+   else
+     return false
+   end
+ end
+</pre> <code>a ~= b</code> は <code>not (a == b)</code> と等価である。
+
+    <p>
+    <li><b>"lt":</b> <code>&#060;</code> 演算。 <pre>
+ function lt_event (op1, op2)
+   if type(op1) == "number" and type(op2) == "number" then
+     return op1 &#060; op2   -- 数値の比較
+   elseif type(op1) == "string" and type(op2) == "string" then
+     return op1 &#060; op2   -- 辞書順の比較
+   else
+     local h = getcomphandler(op1, op2, "__lt")
+     if h then
+       return h(op1, op2)
+     else
+       error("...");
+     end
+   end
+ end
+</pre> <code>a &gt; b</code> は <code>b &#060; a</code> と等価である.
+
+    <p>
+    <li><b>"le":</b> <code>&#060;=</code> 演算。 <pre>
+ function le_event (op1, op2)
+   if type(op1) == "number" and type(op2) == "number" then
+     return op1 &#060;= op2   -- 数値の比較
+   elseif type(op1) == "string" and type(op2) == "string" then
+     return op1 &#060;= op2   -- 辞書順の比較
+   else
+     local h = getcomphandler(op1, op2, "__le")
+     if h then
+       return h(op1, op2)
+     else
+       h = getcomphandler(op1, op2, "__lt")
+       if h then
+         return not h(op2, op1)
+       else
+         error("...");
+       end
+     end
+   end
+ end
+</pre> <code>a &gt;= b</code> は <code>b &#060;= a</code> と等価である。 "le"メタメソッドがなければ、 Luaは <code>a &#060;= b</code> を <code>not (b &#060; a)</code> とみなして"lt"を試みることに注意。
+
+    <p>
+    <li><b>"index":</b> <code>table[key]</code> インデックスアクセス。 <pre>
+ function gettable_event (table, key)
+   local h
+   if type(table) == "table" then
+     local v = rawget(table, key)
+     if v ~= nil then return v end
+     h = metatable(table).__index
+     if h == nil then return nil end
+   else
+     h = metatable(table).__index
+     if h == nil then
+       error("...");
+     end
+   end
+   if type(h) == "function" then
+     return h(table, key)      -- ハンドラを呼ぶか、
+   else return h[key]          -- 演算を繰り返す
+   end
+ end
+</pre>
+
+    <p>
+    <li><b>"newindex":</b> <code>table[key] = value</code> インデックス代入。 <pre>
+ function settable_event (table, key, value)
+   local h
+   if type(table) == "table" then
+     local v = rawget(table, key)
+     if v ~= nil then rawset(table, key, value); return end
+     h = metatable(table).__newindex
+     if h == nil then rawset(table, key, value); return end
+   else
+     h = metatable(table).__newindex
+     if h == nil then
+       error("...");
+     end
+   end
+   if type(h) == "function" then
+     return h(table, key,value)    -- ハンドラを呼ぶか、
+   else h[key] = value             -- 演算を繰り返す。
+   end
+ end
+</pre>
+
+    <p>
+    <li><b>"call":</b> 値を関数呼び出ししたときに呼ばれる。 <pre>
+ function function_event (func, ...)
+   if type(func) == "function" then
+     return func(...)   -- プリミティブの関数呼び出し
+   else
+     local h = metatable(func).__call
+     if h then
+       return h(func, ...)
+     else
+       error("...")
+     end
+   end
+ end
+</pre>
+
+    <p>
+</ul>
+
+<p><a name="environ"></a><a name="2.9"></a>
+<h2>2.9 - 環境</h2>
+
+<p>スレッド、関数、ユーザーデータ型のオブジェクトは、 メタテーブルに加えてもうひとつ、 関連付けれられたテーブルを持つ。 これを <em>環境</em> と呼ぶ。 メタテーブル同様、環境も普通のテーブルである。
+
+<p>ユーザーデータに関連付けられた環境はLuaにとっては意味を持たない。 これはプログラマのために、 ユーザーデータにテーブルを関連付ける機能として存在するだけである。
+
+<p>スレッドに関連付けられた環境は <em>グローバル環境</em> と呼ぶ。 これは、スレッドと、スレッドが作成した (<a href="#pdf-loadfile"><code>loadfile</code></a>、<a href="#pdf-loadstring"><code>loadstring</code></a> または <a href="#pdf-load"><code>load</code></a>
+を使って) ネストされていない関数のデフォルトの環境として使われ、 Cのコードで直接アクセスできる (<a href="#pseudo-index">3.3</a> を参照)。
+
+<p>Cの関数に関連付けられた環境はCのコードで直接アクセスできる (<a href="#pseudo-index">3.3</a> を参照)。 またその関数で作成する他のCの関数のデフォルトの環境として使われる。
+
+<p>Luaの関数に関連付けられた環境は、 その関数の中でアクセスするグローバル変数を解決するために使われる (<a href="#variables">2.3</a> を参照)。 またその関数で作成する他のLuaの関数のデフォルトの環境として使われる。
+
+<p><a href="#pdf-setfenv"><code>setfenv</code></a> を呼ぶと走行中のスレッドや Lua の関数の環境を変更できる。 <a href="#pdf-getfenv"><code>getfenv</code></a> を呼ぶと走行中のスレッドや Lua の関数の環境を取得できる。 他のオブジェクト (ユーザーデータ、Cの関数、他のスレッド)
+の環境を操作するには、CのAPIを使わなければならない。
+
+<p><a name="GC"></a><a name="2.10"></a>
+<h2>2.10 - ガベージコレクション</h2>
+
+<p>Luaは自動的にメモリを管理する。 つまり、新しいオブジェクトのためのメモリ確保や、オブジェクトが要らなくなったときの解放について、悩まなくてよい。 Luaは死んだオブジェクト (もうアクセスできなくなったオブジェクト) を回収する <em>ガベージコレクタ</em> を時々実行することで、自動的にメモリを管理する。
+テーブル、ユーザーデータ、関数、スレッド、文字列といったすべてのLuaオブジェクトは自動管理の対象である。
+
+<p>Luaはインクリメンタルマークアンドスイープコレクタを実装している。 ガベージコレクションの周期を制御するために2つの数値、 </em>ガベージコレクタ停止値</em> と <em>ガベージコレクタステップ係数</em> を使うことができる。
+
+<p>ガベージコレクタ停止値は、 どれだけ経ったら新しいサイクルを開始するかを制御する。 値が大きいほどコレクタが消極的になる。 1より小さな値にすると、コレクタがすぐに新しいサイクルを開始する。 2にすると、使われているメモリの合計が2倍になったらコレクタが新しいサイクルを開始する。
+
+<p>ステップ係数は、メモリ確保に対するコレクタの相対速度を制御する。 値が大きいほどコレクタは積極的になるが、 各インクリメンタルステップのサイズが大きくなる。 1より小さな値にすると、コレクタは非常に遅くなり、結果としてサイクルが終わらないかもしれない。 デフォルトの2では、メモリ確保の「2倍」の速度でコレクタが動作する。
+
+<p>Cの <a href="#lua_gc"><code>lua_gc</code></a> か Luaの <a href="#pdf-collectgarbage"><code>collectgarbage</code></a> を呼ぶと、これらの値を変更できる。 いずれもパーセント値で引数を取る (従って 100 を渡すと 1.00 を意味する)。
+これらの関数でコレクタを直接制御できる (停止させたり再開させたり)。
+
+<p><a name="2.10.1"></a>
+<h3>2.10.1 - ガベージコレクションメタメソッド</h3>
+
+<p>CのAPIを使う場合、ユーザーデータにガベージコレクタメタメソッドを設定できる (<a href="#metatable">2.8</a>を参照)。 このメタメソッドは <em>ファイナライザ</em> と呼ばれることもある。 ファイナライザはLuaのガベージコレクタを外部リソースと共に使えるようにする
+(ファイルやネットワーク接続、データベース接続などを閉じたり、独自に確保したメモリを解放するとか)。
+
+<p>メタテーブルに <code>__gc</code> フィールドを持つユーザーデータがガベージになっても、ガベージコレクタはそれをすぐには回収しない。 その代わり、Luaはそれをリストに入れる。 他のオブジェクトの回収が終わったあと、Luaはリスト内のユーザーデータに対して以下の関数と同等のことを行う。 <pre>
+ function gc_event (udata)
+   local h = metatable(udata).__gc
+   if h then
+     h(udata)
+   end
+ end
+</pre>
+
+<p>各ガベージコレクションサイクルの終わりに、 作られたときと <em>逆の順番で</em> ユーザーデータのファイナライザが呼ばれる。 つまり、最初に呼ばれるファイナライザは、一番最近に作られたユーザーデータのものである。
+
+<p><a name="weak-table"></a><a name="2.10.2"></a>
+<h3>2.10.2 - 弱参照テーブル</h3>
+
+<p><em>弱参照テーブル</em> は <em>弱参照</em> な要素を持つテーブルである。 弱参照はガベージコレクタに無視される。 言い換えると、オブジェクトへの参照が弱参照のみであれば、ガベージコレクタはそのオブジェクトを回収してしまう。
+
+<p>弱参照テーブルは、キー、値、あるいはその両方が弱参照である。 弱参照キーを持つテーブルは、キーは回収されるが、その値は回収されない。 弱参照キーと弱参照値の両方を持つテーブルでは、キーも値も回収の対象になる。 キーと値のどちらか一方が回収されると、キーと値のペア全体がテーブルから除去される。 テーブルの弱参照の性質は、メタテーブルの <code>__mode</code>
+フィールドで制御できる。 もし <code>__mode</code> フィールドが文字列で、文字 `<code>k</code>&acute; が含まれていたら、テーブルのキーが弱参照となる。 もし <code>__mode</code> フィールドが文字 `<code>v</code>&acute; を含んでいたら、テーブルの値が弱参照となる。
+
+<p>メタテーブルとして使った後に、そのテーブルの <code>__mode</code> フィールドの値を変更するべきではない。 このメタテーブルで制御されているテーブルの弱参照の挙動が未定義となる。
+
+<p><a name="coroutine"></a><a name="2.11"></a>
+<h2>2.11 - コルーチン</h2>
+
+<p>Luaはコルーチンをサポートしている。 <em>協調的マルチスレッド</em> と呼ばれることもある。 Luaのコルーチンは独立に実行されるスレッドを表現している。 マルチスレッドシステムのスレッドとは違って、 コルーチンはyield関数を呼んで明示的に実行を中断しなければならない。
+
+<p>コルーチンを作るには <code>coroutine.create</code> を呼ぶ。 これはひとつだけ引数をとり、それにコルーチンのメイン関数を渡す。 <code>create</code> 関数は新しいコルーチンを作成し、その <em>スレッド</em> オブジェクトを返す。 コルーチンはすぐには実行されない。
+
+<p><a href="#pdf-coroutine.create"><code>coroutine.create</code></a> から返されたスレッドを最初の引数に渡して最初に <code>coroutine.resume</code> を呼んだとき、 そのメイン関数の最初の行からコルーチンの実行が始まる。 <a href="#pdf-coroutine.resume"><code>coroutine.resume</code></a>
+に余分の引数を指定すると、それらはコルーチンのメイン関数に渡される。 コルーチンが開始されたら、終わりに達するか <em>yield</em> を呼ぶまで実行される。
+
+<p>コルーチンは2つの方法で実行を終われる。 メイン関数からreturnして (明示的にか、最後の命令が終わって暗黙的にか) 正常終了したときと、 保護されないエラーが起きて異常終了したときである。 最初の場合では、<b>true</b> と、メイン関数からの戻り値を、<a href="#pdf-coroutine.resume"><code>coroutine.resume</code></a>
+が返す。 エラーの場合は、<a href="#pdf-coroutine.resume"><code>coroutine.resume</code></a> は <b>false</b> とエラーメッセージを返す。
+
+<p>コルーチンは <code>coroutine.yield</code> を呼ぶことで中断される。 コルーチンが中断されると、対応する <a href="#pdf-coroutine.resume"><code>coroutine.resume</code></a> からすぐに戻る。 コルーチンの中で呼ばれた関数の中で中断されても同様である
+(つまり、メイン関数から直接的/間接的に呼ばれた、メイン関数以外の関数の中でも)。 この場合も、<a href="#pdf-coroutine.resume"><code>coroutine.resume</code></a> は <b>true</b> を返す。 <a href="#pdf-coroutine.yield"><code>coroutine.yield</code></a>
+に引数が渡されていれば、それも返される。 次に同じコルーチンをresumeすると、中断した場所から実行が再開される。 <a href="#pdf-coroutine.resume"><code>coroutine.resume</code></a> に余分な引数を渡すと、<a href="#pdf-coroutine.yield"><code>coroutine.yield</code></a>
+からそれらが返される。
+
+<p><code>coroutine.wrap</code> 関数は <a href="#pdf-coroutine.create"><code>coroutine.create</code></a> と同様にコルーチンを作成するが、 コルーチン自身を返すのではなく、コルーチンをresumeする関数を返す。 その関数に渡された引数は <a
+    href="#pdf-coroutine.resume"><code>coroutine.resume</code></a> に追加の引数として渡される。 <a href="#pdf-coroutine.resume"><code>coroutine.resume</code></a> からの戻り値は、最初のひとつ (ブーリアン型のエラーコード) を除いた残りが返される。 <a
+    href="#pdf-coroutine.resume"><code>coroutine.resume</code></a> と違って、 この関数はエラーを捕らえることはなく、内部で起きたエラーは呼び出した側に伝搬する。
+
+<p>例として、次のコードを考える。 <pre>
+function foo (a)
+  print("foo", a)
+  return coroutine.yield(2*a)
+end
+
+co = coroutine.create(function (a,b)
+      print("co-body", a, b)
+      local r = foo(a+1)
+      print("co-body", r)
+      local r, s = coroutine.yield(a+b, a-b)
+      print("co-body", r, s)
+      return b, "end"
+end)
+
+print("main", coroutine.resume(co, 1, 10))
+print("main", coroutine.resume(co, "r"))
+print("main", coroutine.resume(co, "x", "y"))
+print("main", coroutine.resume(co, "x", "y"))
+</pre> これを実行すると、以下の出力を得る。 <pre>
+co-body 1       10
+foo     2
+main    true    4
+co-body r
+main    true    11      -9
+co-body x       y
+main    true    10      end
+main    false   cannot resume dead coroutine
+</pre>
+
+<p><a name="API"></a><a name="3"></a>
+<h1>3 - アプリケーションプログラムインタフェイス</h1>
+
+<p>このセクションではLuaのためのCのAPIを説明する。 これは、ホストプログラムがLuaに働きかけるためのCの関数のセットである。 すべてのAPI関数と、関連する型、定数は、ヘッダーファイル <code>lua.h</code> で定義されている。
+
+<p>このマニュアルでは「関数」という言葉を使うが、代わりにマクロとして提供されているものもある。 そのようなマクロはすべて、各引数がちょうど一度だけ評価され、いかなる隠れた副作用も発生しない (ただし最初の引数を除く。ここには常にLuaステートを渡す)。
+
+<p>ほとんどのCのライブラリと同様に、 LuaのAPI関数は引数の妥当性や一貫性をチェックしない。 しかし、ファイル <code>luaconf.h</code> の中のマクロ <code>luai_apicheck</code> を適切に定義してLuaを再コンパイルすると、この動作を変更できる。
+
+<p><a name="3.1"></a>
+<h2>3.1 - スタック</h2>
+
+<p>LuaはCとの間で値を受け渡しするために <em>仮想スタック</em> を使う。 スタック内の各要素は、Luaの値 (<b>nil</b>、数値、文字列など) を表している。
+
+<p>LuaがCを呼ぶときは、以前のスタックの状態やまだアクティブなCの関数が使っているスタックに影響されないように、新しいスタックを用意する。 このスタックはCの関数に渡された引数が格納されており、 Cの関数から呼び出し側に返す戻り値を格納するためにも使われる (<a href="#lua_CFunction"><code>lua_CFunction</code></a> を参照)。
+
+<p>利便性のため、ほとんどの問い合わせ用API関数は厳密なスタックの規則に従っていない。 代わりに、<em>インデックス</em> を使って、スタック内の任意の要素にアクセスできる。 プラスのインデックスはスタック内の <em>絶対</em> 位置を表し (<em>1</em> から始まる)、 マイナスのインデックスはスタックトップからの相対 <em>オフセット</em> を表す。
+具体的に言うと、スタックに <em>n</em> 個の要素があるとして、 インデックス1は最初の要素 (つまり、空のスタックに最初に積まれた要素) を表し、 インデックス <em>n</em> は最後の要素を表す。 インデックス-1も最後の要素 (つまりスタックトップにある要素) を表し、 インデックス <em>-n</em> は最初の要素を表す。 <em>有効な</em>
+インデックスは1からスタックトップの間だけである (つまり <code>1 &#060;= abs(index) &#060;= top</code>)。
+
+<p><a name="3.2"></a>
+<h2>3.2 - スタックサイズ</h2>
+
+<p>LuaのAPIを使うときは、一貫性を保証する責任がある。 特に、<em>スタックオーバーフローに気を付けなければならない</em>。 スタックサイズを伸ばすためには関数 <a href="#lua_checkstack"><code>lua_checkstack</code></a> を使う。
+
+<p>LuaがCを呼ぶときは、 最低でも全体で <code>LUA_MINSTACK</code> 個のスタック要素が利用可能である。 <code>LUA_MINSTACK</code> は20に定義されており、 スタックにどんどん要素を積むようなループがあったりしなければ、 普通はスタック空間を気にしなくても良い。
+
+<p>多くの問い合わせ関数には、スタック空間内で利用可能な任意のインデックス値を使える。 つまり、<a href="#lua_checkstack"><code>lua_checkstack</code></a> を使って設定できる最大スタックの長さまでのインデックスである。 このようなインデックスは <em>受け入れ可能なインデックス</em> と呼ぶ。 もっと正確には、<em>受け入れ可能なインデックス</em>
+は以下のように定義される。 <pre>
+     (index &#060; 0 &#038;&#038; abs(index) &#060;= top) || (index > 0 &#038;&#038; index &#060;= stackspace)
+</pre> 0は決して受け入れ可能なインデックスにならない。
+
+<p><a name="pseudo-index"></a><a name="3.3"></a>
+<h2>3.3 - 擬似インデックス</h2>
+
+<p>特に明記されていなければ、 どの関数も <em>疑似インデックス</em> と呼ばれる有効なインデックスを受け付ける。 これはスタック内に無いいくつかのLuaの値にCのコードからアクセスするためのものである。 疑似インデックスは、スレッドの環境、関数の環境、レジストリ、Cの関数の上位値にアクセスするために使う (<a href="#c-closure">3.4</a> を参照)。
+
+<p>スレッドの環境 (グローバル変数がある場所) は常に擬似インデックス <code>LUA_GLOBALSINDEX</code> の位置にある。 走行中のCの関数の環境は常に擬似インデックス <code>LUA_ENVIRONINDEX</code> の位置にある。
+
+<p>グローバル変数の値にアクセスしたり変更するためには、 環境テーブルに対して普通のテーブル操作を行う。 例えば、グローバル変数の値にアクセスするには以下を行う。 <pre>
+       lua_getfield(L, LUA_GLOBALSINDEX, varname);
+</pre>
+
+<p><a name="c-closure"></a><a name="3.4"></a>
+<h2>3.4 - Cのクロージャ</h2>
+
+<p>Cの関数を作成するとき、いくつかの値を関連付けて <em>Cのクロージャ</em> を作ることができる。 これらの値は <em>上位値</em> と呼ばれ、 その関数が呼ばれたときにいつでもアクセスできる。 (<a href="#lua_pushcclosure"><code>lua_pushcclosure</code></a> を参照)。
+
+<p>Cの関数が呼ばれると、特別な疑似インデックスにこれらの値が配置される。 これらの疑似インデックスはマクロ <code>lua_upvalueindex</code> で生成される。 関数に関連付けられた最初の値は <code>lua_upvalueindex(1)</code> の位置にあり、残りも同様である。 現在の関数の上位値の数よりも大きい <em>n</em> で <code>lua_upvalueindex(<em>n</em>)</code>
+を呼び出しても、 受け入れ可能な (ただし有効でない) インデックスが生成される。
+
+<p><a name="registry"></a><a name="3.5"></a>
+<h2>3.5 - レジストリ</h2>
+
+<p>Luaはレジストリを提供している。 これは定義済みのテーブルで、好きなLuaの値を格納するためにCのコードから使うことができる。 このテーブルは常に疑似インデックス <code>LUA_REGISTRYINDEX</code> に置かれている。 どのCのライブラリもデータを保持するためにこのテーブルを使えるが、 衝突を避けるため他のライブラリが使っていないキーを選ぶ必要がある。
+典型的には、ライブラリ名を含む文字列とか、自分のコードで使っているCオブジェクトのアドレスを持つライトユーザーデータを、キーとして使うと良い。
+
+<p>レジストリ内の整数キーは、補助ライブラリで実装されているリファレンスメカニズムで使われており、それゆえ他の目的に使うべきでない。
+
+<p><a name="3.6"></a>
+<h2>3.6 - Cでのエラー処理</h2>
+
+<p>内部的に、Luaはエラー処理のためにCの <code>longjmp</code> の機能を使う。 (C++を使っているのなら、例外を使うこともできる。<code>luaconf.h</code> ファイルを参照。) Luaがエラーに直面すると (メモリ不足とか、型エラーとか、構文エラーとか、実行時エラーなど)、 エラーを <em>発生</em>
+させ、つまるところロングジャンプが行われる。 <em>保護された環境</em> は復帰点をセットするために <code>setjmp</code> を使い、 エラーは最も最近作られたアクティブ復帰点にジャンプすることになる。
+
+<p>APIのほとんどの関数はエラー、例えばメモリ確保エラーなどを起こす可能性がある。 以下の関数は保護モード (つまり、実行するために保護された環境を作る) で実行するため、決してエラーを起こさない。 <a href="#lua_newstate"><code>lua_newstate</code></a>, <a href="#lua_close"><code>lua_close</code></a>,
+<a href="#lua_load"><code>lua_load</code></a>, <a href="#lua_pcall"><code>lua_pcall</code></a>, and <a href="#lua_cpcall"><code>lua_cpcall</code></a>。
+
+<p><a href="#lua_error"><code>lua_error</code></a> を呼ぶと、CのコードからLuaのエラーを発生させることが出来る。
+
+<p><a name="3.7"></a>
+<h2>3.7 - 関数と型</h2>
+
+<p>以下にCのAPIのすべての関数と型をアルファベット順に示す。
+
+<p><a name="lua_Alloc"></a>
+<hr></hr>
+<h3><code>lua_Alloc</code></h3>
+<pre>
+          typedef void * (*lua_Alloc) (void *ud,
+                                       void *ptr,
+                                       size_t osize,
+                                       size_t nsize);
+
+</pre>
+
+
+<p>Luaステートが使うメモリアロケータ関数の型である。 メモリアロケータ関数は <code>realloc</code> に似た機能を提供しなければならないが、 まったく同じではない。 引数は以下の通り。 <code>ud</code>: <a href="#lua_newstate"><code>lua_newstate</code></a> に渡されたポインタ。 <code>ptr</code>:
+割り当て/再割り当て/解放するブロックへのポインタ。 <code>osize</code>: 元のブロックサイズ。 <code>nsize</code>: 新しいブロックサイズ。 <code>osize</code> がゼロの場合、またその場合に限り、<code>ptr</code> は NULLになる。 <code>nsize</code> がゼロの場合、アロケータは <code>NULL</code>
+を返さなければならない。 <code>osize</code> がゼロでない場合、<code>ptr</code> が指すメモリブロックを解放すべきである。 <code>nsize</code> がゼロでない場合、要求を満たせなければアロケータは <code>NULL</code> を返す。 <code>nsize</code> がゼロでなく <code>osize</code>
+がゼロの場合、アロケータは <code>malloc</code> のように振る舞うべきである。 <code>nsize</code> と <code>osize</code> が共にゼロでない場合、 <code>osize >=nsize</code> であれば、Luaはアロケータが決して失敗しないものと仮定している。
+
+<p>アロケータ関数の簡単な実装を示そう。 これは <a href="#lua_newstate"><code>lua_newstate</code></a> が補助ライブラリで使っている。 <pre>
+static void *l_alloc (void *ud, void *ptr, size_t osize, size_t nsize) {
+  (void)ud;     /* not used */
+  (void)osize;  /* not used */
+  if (nsize == 0) {
+    free(ptr);  /* ANSIはfree(NULL)は効果がないと規定している */
+    return NULL;
+  }
+  else
+    /* ANSIはrealloc(NULL, size)はmalloc(size)と同じと規定している */
+    return realloc(ptr, nsize);
+}
+</pre>
+
+<p><a name="lua_atpanic"></a>
+<hr></hr>
+<h3><code>lua_atpanic</code></h3>
+<pre>
+          lua_CFunction lua_atpanic (lua_State *L, lua_CFunction panicf);
+</pre>
+
+
+<p>新しいパニック関数を設定し、古いものを返す。
+
+<p>保護された環境の外側でエラーが起きると、Luaは <em>パニック関数</em> を呼び、それから <code>exit(EXIT_FAILURE)</code> を呼んでホストアプリケーションを終了する。 パニック関数が戻らなければ(例えばロングジャンプするとかで)、終了しないようにできる。
+
+<p>パニック関数はスタックの一番上にあるエラーメッセージにアクセスできる。
+
+<p><a name="lua_call"></a>
+<hr></hr>
+<h3><code>lua_call</code></h3>
+<pre>
+          void lua_call (lua_State *L, int nargs, int nresults);
+</pre>
+
+
+<p>関数を呼ぶ。
+
+<p>関数を呼ぶには、以下の手順に従わなければならない。 まず、呼びたい関数をスタックに積む。 次に、その関数に渡す引数を順番通りに積む。 つまり最初の引数を最初に積む。 最後に、<a href="#lua_call"><code>lua_call</code></a> を呼ぶ。 <code>nargs</code> はスタックに積んだ引数の数である。
+すべての引数と関数の値は関数を呼んだときにスタックから取り除かれる。 関数が戻るとき、スタックに戻り値が積まれる。 戻り値の数は <code>nresults</code> 個に調節される。 ただし <code>nresults</code> が <code>LUA_MULTRET</code> の場合は調節されない。 この場合、関数の <em>すべての</em> 戻り値が積まれる。
+Luaは戻り値をスタック空間に合うようにする。 関数の戻り値は順番通りに (最初の戻り値が最初に) スタックに積まれる。 従って呼び出し後のスタックの一番上は、その最後の戻り値である。
+
+<p>呼び出した関数の中で起きたエラーは上に伝搬される(<code>longjmp</code>を使って)。
+
+<p>以下のLuaコードと等価なことをホストプログラムからはどうすれば良いのかの例を示す。 <pre>
+       a = f("how", t.x, 14)
+</pre> これをCで書くと: <pre>
+    lua_getfield(L, LUA_GLOBALSINDEX, "f");          /* 呼ぶ関数 */
+    lua_pushstring(L, "how");                                 /* 最初の引数 */
+    lua_getfield(L, LUA_GLOBALSINDEX, "t");            /* テーブル`t' */
+    lua_getfield(L, -1, "x");                 /* t.xの結果(2番目の引数)を積む */
+    lua_remove(L, -2);                           /* スタックから `t' を取り除く */
+    lua_pushinteger(L, 14);                                   /* 3番目の引数 */
+    lua_call(L, 3, 1);         /* 3個の引数と1個の戻り値で関数を呼ぶ */
+    lua_setfield(L, LUA_GLOBALSINDEX, "a");        /* グローバル変数 `a' に代入 */
+</pre> 上のコードは「整合が取れている」ことに注目。 最終的にスタックは元の状態に戻っている。 これは良いプログラミング作法であると考えられる。
+
+<p><a name="lua_CFunction"></a>
+<hr></hr>
+<h3><code>lua_CFunction</code></h3>
+<pre>
+          typedef int (*lua_CFunction) (lua_State *L);
+</pre>
+
+
+<p>Cの関数の型。
+
+<p>適切にLuaとやりとりするに、Cの関数は、 引数と戻り値の受け渡し方法を定義する以下の手順に従わなければならない。 Cの関数はLuaからの引数をスタックに順番通り受け取る (最初の引数が最初に積まれる)。 つまり、関数の開始時点では、 <a href="#lua_gettop(L)"><code>lua_gettop(L)</code></a> は関数が受け取った引数の数を返す。
+最初の引数(もしあれば)はインデックス1で、最後の引数はインデックス <a href="#lua_gettop(L)"><code>lua_gettop(L)</code></a> である。 Luaに値を返すには、Cの関数は単にスタックにその値を順番通り (最初の戻り値を最初に) 積み、戻り値の数を返すだけで良い。 戻り値より下のスタックにある余計な値はすべてLuaによって捨てられる。
+Luaの関数と同様、Luaから呼ばれるCの関数でも、たくさんの戻り値を返すことができる。
+
+<p>例として、可変個の数値の引数を取り、その平均と合計を返す関数を以下に示す。 <pre>
+       static int foo (lua_State *L) {
+         int n = lua_gettop(L);    /* 引数の数 */
+         lua_Number sum = 0;
+         int i;
+         for (i = 1; i &#060;= n; i++) {
+           if (!lua_isnumber(L, i)) {
+             lua_pushstring(L, "関数 `average' の引数が正しくありません");
+             lua_error(L);
+           }
+           sum += lua_tonumber(L, i);
+         }
+         lua_pushnumber(L, sum/n);        /* 最初の戻り値 */
+         lua_pushnumber(L, sum);         /* 2番目の戻り値 */
+         return 2;                   /* 戻り値の数 */
+       }
+</pre>
+
+<p><a name="lua_checkstack"></a>
+<hr></hr>
+<h3><code>lua_checkstack</code></h3>
+<pre>
+          int lua_checkstack (lua_State *L, int extra);
+</pre>
+
+
+<p>スタックに少なくとも <code>extra</code> 個の空きスロットがあることを保証する。 もしスタックをそのサイズまで伸ばせなければ false を返す。 スタックがすでに指定された長さよりも長ければ、 わざわざスタックを縮めたりせず、何も変えない。
+
+<p><a name="lua_close"></a>
+<hr></hr>
+<h3><code>lua_close</code></h3>
+<pre>
+          void lua_close (lua_State *L);
+</pre>
+
+
+<p>渡されたLuaステート内のすべてのオブジェクトを破棄し (もしあればガベージコレクションメタメソッドも呼び)、 ステート内で使われていたすべての動的メモリを解放する。 プラットフォームによっては、 ホストプログラムが終了するときにすべてのリソースが自動的に解放されるため、 この関数を呼ぶ必要がないかもしれない。 一方、デーモンやウェブサーバのような長時間実行するプログラムでは、
+消費リソースが増大するのを避けるために、 必要なくなったステートはすぐに解放する必要があるだろう。
+
+<p><a name="lua_concat"></a>
+<hr></hr>
+<h3><code>lua_concat</code></h3>
+<pre>
+          void lua_concat (lua_State *L, int n);
+</pre>
+
+
+<p>スタックトップから <code>n</code> 個の値を連結し、それらを取り除き、結果をスタックトップに載せる。 もし <code>n</code> が1ならは、結果はその1つの文字列である (要するに何もしない)。 もし <code>n</code> が0ならば、結果は空文字列である。 連結は通常のLuaの意味論に従って行われる (<a href="#concat">2.5.4</a>
+を参照)。
+
+<p><a name="lua_cpcall"></a>
+<hr></hr>
+<h3><code>lua_cpcall</code></h3>
+<pre>
+          int lua_cpcall (lua_State *L, lua_CFunction func, void *ud);
+</pre>
+
+
+<p>Cの関数 <code>func</code> を保護モードで呼ぶ。 <code>func</code> はスタックに1個の引数、<code>ud</code> を持つライトユーザーデータが載った状態で開始する。 エラーが起こった場合、 <a href="#lua_cpcall"><code>lua_cpcall</code></a> は <a href="#lua_pcall"><code>lua_pcall</code></a>
+と同じエラーコードを返し、エラーオブジェクトをスタックトップに置く。 そうでなければ0を返し、スタックは何も変えない。 <code>func</code> から返される値はすべて捨てられる。
+
+<p><a name="lua_createtable"></a>
+<hr></hr>
+<h3><code>lua_createtable</code></h3>
+<pre>
+          void lua_createtable (lua_State *L, int narr, int nrec);
+</pre>
+
+
+<p>新しい空のテーブルを作り、スタックに積む。 この新しいテーブルは <code>narr</code> 個の配列要素と <code>nrec</code> 個の非配列要素のための割り当て済み空間を持っている。 この事前割り当ては、そのテーブルがたくさんの要素を持つであろうとわかっている場合に役に立つ。 それ以外の場合は、関数 <a href="#lua_newtable"><code>lua_newtable</code></a>
+を使っても良い。
+
+<p><a name="lua_dump"></a>
+<hr></hr>
+<h3><code>lua_dump</code></h3>
+<pre>
+          int lua_dump (lua_State *L, lua_Writer writer, void *data);
+</pre>
+
+
+<p>関数をバイナリチャンクとしてダンプする。 スタックトップにLuaの関数を1つ受け取り、1つのバイナリチャンクを生成する。 これは、再びロードされたとき、ダンプされたものと同等の関数を作る。 チャンクの各部を生成するとき、 <a href="#lua_dump"><code>lua_dump</code></a> はそれらを書き込むために関数 <code>writer</code> (<a
+    href="#lua_Writer"><code>lua_Writer</code></a> を参照) を、<code>data</code> を与えて呼ぶ。
+
+<p>戻り値は writer の最後の呼び出しが返したエラーコードである。 0はエラーなしを表す。
+
+<p>この関数はスタックからLuaの関数を取り除かない。
+
+<p><a name="lua_equal"></a>
+<hr></hr>
+<h3><code>lua_equal</code></h3>
+<pre>
+          int lua_equal (lua_State *L, int index1, int index2);
+</pre>
+
+
+<p>受け入れ可能なインデックス <code>index1</code> と <code>index2</code> の位置にある2つの値が等しければ1を返す。 そうでなければ0を返す。 どちらかのインデックスが有効でないときも0を返す。 比較はLuaの <code>==</code> 演算子の意味論に従って行われる (つまり、メタメソッドを呼ぶ場合がある)。
+
+<p><a name="lua_error"></a>
+<hr></hr>
+<h3><code>lua_error</code></h3>
+<pre>
+          int lua_error (lua_State *L);
+</pre>
+
+
+<p>Luaエラーを生成する。 呼ぶ前に、エラーメッセージ (実際にはどんな型の値でも良い) をスタックトップに置かなければならない。 この関数はロングジャンプを行うので、決して戻ってこない (<a href="#pdf-luaL_error"><code>luaL_error</code></a> を参照)。
+
+<p><a name="lua_gc"></a>
+<hr></hr>
+<h3><code>lua_gc</code></h3>
+<pre>
+          int lua_gc (lua_State *L, int what, int data);
+</pre>
+
+
+<p>ガベージコレクタを制御する。
+
+<p>この関数は引数 <code>what</code> の値に応じていくつかの仕事を行う。
+<ul>
+    <li><code>LUA_GCSTOP</code>--- ガベージコレクタを停止させる。
+    <li><code>LUA_GCRESTART</code>--- ガベージコレクタを再開させる。
+    <li><code>LUA_GCCOLLECT</code>--- フルガベージコレクションサイクルを実行する。
+    <li><code>LUA_GCCOUNT</code>--- Luaが使っている現在のメモリ量を (キロバイトで) 返す。
+    <li><code>LUA_GCCOUNTB</code>--- Luaが使っている現在のメモリ量のバイト数を1024で割った余りを返す。
+    <li><code>LUA_GCSTEP</code>--- ガベージコレクションのインクリメンタルステップひとつを実行する。 ステップの「サイズ」は <code>data</code> で制御する。 大きな値は大きなステップを意味するが、具体的には定まっていない。 ステップサイズを制御したければ、 <code>data</code> の値を実験的に調整しなければならない。
+    そのステップでガベージコレクションサイクルが終われば、この関数は1を返す。
+    <li><code>LUA_GCSETPAUSE</code>--- コレクタの <em>停止値</em> (see <a href="#GC">2.10</a> を参照) の新しい値として <code>data</code> ÷100を設定する。 関数は以前の停止値を返す。
+    <li><code>LUA_GCSETSTEPMUL</code>--- コレクタの <em>ステップ係数</em> (<a href="#GC">2.10</a> を参照) の新しい値として <code>引数</code> ÷100を設定する。 関数は以前のステップ係数の値を返す。
+</ul>
+
+<p><a name="lua_getallocf"></a>
+<hr></hr>
+<h3><code>lua_getallocf</code></h3>
+<pre>
+          lua_Alloc lua_getallocf (lua_State *L, void **ud);
+</pre>
+
+
+<p>渡されたステートのメモリアロケータ関数を返す。 <code>ud</code> が <code>NULL</code> でなければ、 Luaは <a href="#lua_newstate"><code>lua_newstate</code></a> に渡されたポインタを <code>*ud</code> に格納する。
+
+<p><a name="lua_getfenv"></a>
+<hr></hr>
+<h3><code>lua_getfenv</code></h3>
+<pre>
+          void lua_getfenv (lua_State *L, int index);
+</pre>
+
+
+<p>指定したインデックスの値の環境テーブルをスタックに積む。
+
+<p><a name="lua_getfield"></a>
+<hr></hr>
+<h3><code>lua_getfield</code></h3>
+<pre>
+          void lua_getfield (lua_State *L, int index, const char *k);
+</pre>
+
+
+<p>値 <code>t[k]</code> をスタックに積む。 ただし <code>t</code> は指定した有効なインデックス <code>index</code> の値である。 Luaの中でと同様に、この関数は "index" イベントのメタメソッドを呼ぶ場合がある (<a href="#metatable">2.8</a> を参照)。
+
+<p><a name="lua_getglobal"></a>
+<hr></hr>
+<h3><code>lua_getglobal</code></h3>
+<pre>
+          void lua_getglobal (lua_State *L, const char *name);
+</pre>
+
+
+<p>グローバル変数 <code>name</code> の値をスタックに積む。 これはマクロとして定義されている。 <pre>
+#define lua_getglobal(L,s)  lua_getfield(L, LUA_GLOBALSINDEX, s)
+</pre>
+
+<p><a name="lua_getmetatable"></a>
+<hr></hr>
+<h3><code>lua_getmetatable</code></h3>
+<pre>
+          int lua_getmetatable (lua_State *L, int index);
+</pre>
+
+
+<p>指定した受け入れ可能なインデックスの値のメタテーブルをスタックに積む。 インデックスが有効でないか、その値がメタテーブルを持っていなければ、 この関数は0を返し、スタックには何も積まない。
+
+<p><a name="lua_gettable"></a>
+<hr></hr>
+<h3><code>lua_gettable</code></h3>
+<pre>
+          void lua_gettable (lua_State *L, int index);
+</pre>
+
+
+<p>値 <code>t[k]</code> をスタックに積む。 ただし <code>t</code> は渡された有効なインデックス <code>index</code> の値で、 <code>k</code> はスタックトップの値である。
+
+<p>この関数はスタックからキーを (そこに結果を置く前に) 取り除く。 Luaの中でと同様に、この関数は "index" イベントのメタメソッドを呼ぶ場合がある (<a href="#metatable">2.8</a> を参照)。
+
+<p><a name="lua_gettop"></a>
+<hr></hr>
+<h3><code>lua_gettop</code></h3>
+<pre>
+          int lua_gettop (lua_State *L);
+</pre>
+
+
+<p>スタックトップの要素のインデックスを返す。 インデックスは1から始まるので、この戻り値はスタックの要素数と等しい (そしてゼロはスタックが空であることを意味する)。
+
+<p><a name="lua_insert"></a>
+<hr></hr>
+<h3><code>lua_insert</code></h3>
+<pre>
+          void lua_insert (lua_State *L, int index);
+</pre>
+
+
+<p>指定した位置より上の要素をずらして空きスペースを作り、スタックトップの要素をその位置に移動する。 疑似インデックスは、実際のスタック位置ではないため、指定できない。
+
+<p><a name="lua_Integer"></a>
+<hr></hr>
+<h3><code>lua_Integer</code></h3>
+<pre>
+          typedef ptrdiff_t lua_Integer;
+</pre>
+
+
+<p>整数値を表現するための、Lua APIで使われる型。
+
+<p>デフォルトでは <code>ptrdiff_t</code> である。 これは通常、マシンが「快適に」扱える最大の整数型である。
+
+<p><a name="lua_isboolean"></a>
+<hr></hr>
+<h3><code>lua_isboolean</code></h3>
+<pre>
+          int lua_isboolean (lua_State *L, int index);
+</pre>
+
+
+<p>指定した受け入れ可能なインデックスの値がブーリアン型であれば1、そうでなければ0を返す。
+
+<p><a name="lua_iscfunction"></a>
+<hr></hr>
+<h3><code>lua_iscfunction</code></h3>
+<pre>
+          int lua_iscfunction (lua_State *L, int index);
+</pre>
+
+
+<p>指定した受け入れ可能なインデックスの値がCの関数であれば1、そうでなければ0を返す。
+
+<p><a name="lua_isfunction"></a>
+<hr></hr>
+<h3><code>lua_isfunction</code></h3>
+<pre>
+          int lua_isfunction (lua_State *L, int index);
+</pre>
+
+
+<p>指定した受け入れ可能なインデックスの値が関数 (CかLuaどちらかの) であれば1、そうでなければ0を返す。
+
+<p><a name="lua_islightuserdata"></a>
+<hr></hr>
+<h3><code>lua_islightuserdata</code></h3>
+<pre>
+          int lua_islightuserdata (lua_State *L, int index);
+</pre>
+
+
+<p>指定した受け入れ可能なインデックスの値がライトユーザーデータであれば1、そうでなければ0を返す。
+
+<p><a name="lua_isnil"></a>
+<hr></hr>
+<h3><code>lua_isnil</code></h3>
+<pre>
+          int lua_isnil (lua_State *L, int index);
+</pre>
+
+
+<p>指定した受け入れ可能なインデックスの値が <b>nil</b> であれば1、そうでなければ0を返す。
+
+<p><a name="lua_isnumber"></a>
+<hr></hr>
+<h3><code>lua_isnumber</code></h3>
+<pre>
+          int lua_isnumber (lua_State *L, int index);
+</pre>
+
+
+<p>指定した受け入れ可能なインデックスの値が数値か、数値に変換できる文字列であれば1、そうでなければ0を返す。
+
+<p><a name="lua_isstring"></a>
+<hr></hr>
+<h3><code>lua_isstring</code></h3>
+<pre>
+          int lua_isstring (lua_State *L, int index);
+</pre>
+
+
+<p>指定した受け入れ可能なインデックスの値が文字列か数値であれば1、そうでなければ0を返す。 (数値の場合、それは文字列に変換される)
+
+<p><a name="lua_istable"></a>
+<hr></hr>
+<h3><code>lua_istable</code></h3>
+<pre>
+          int lua_istable (lua_State *L, int index);
+</pre>
+
+
+<p>指定した受け入れ可能なインデックスの値がテーブルであれば1、そうでなければ0を返す。
+
+<p><a name="lua_isthread"></a>
+<hr></hr>
+<h3><code>lua_isthread</code></h3>
+<pre>
+          int lua_isthread (lua_State *L, int index);
+</pre>
+
+
+<p>指定した受け入れ可能なインデックスの値がスレッドであれば1、そうでなければ0を返す。
+
+<p><a name="lua_isuserdata"></a>
+<hr></hr>
+<h3><code>lua_isuserdata</code></h3>
+<pre>
+          int lua_isuserdata (lua_State *L, int index);
+</pre>
+
+
+<p>指定した受け入れ可能なインデックスの値がユーザーデータ (フルかライトどちらかの) であれば1、そうでなければ0を返す。
+
+<p><a name="lua_lessthan"></a>
+<hr></hr>
+<h3><code>lua_lessthan</code></h3>
+<pre>
+          int lua_lessthan (lua_State *L, int index1, int index2);
+</pre>
+
+
+<p>受け入れ可能なインデックス <code>index1</code> の値が受け入れ可能なインデックス <code>index2</code> の値よりも小さければ1、そうでなければ0を返す。 どちらかのインデックスが有効でない場合も0を返す。 比較はLuaの <code>&#060;</code> 演算子の意味論に従って行われる (つまり、メタメソッドを呼ぶ場合がある)。
+
+<p><a name="lua_load"></a>
+<hr></hr>
+<h3><code>lua_load</code></h3>
+<pre>
+          int lua_load (lua_State *L, lua_Reader reader, void *data,
+                                      const char *chunkname);
+
+</pre>
+
+
+<p>Luaチャンクをロードする。 エラーがなければ、 <a href="#lua_load"><code>lua_load</code></a> はコンパイルしたチャンクをLuaの関数としてスタックトップに積む。 そうでなければ、エラーメッセージを積む。 <a href="#lua_load"><code>lua_load</code></a> の戻り値は以下の通り。
+<ul>
+    <li>0 --- エラーなし。
+    <li><code>LUA_ERRSYNTAX</code> --- コンパイル時に構文エラーが発生。
+    <li><code>LUA_ERRMEM</code> --- メモリ割り当てエラー。
+</ul>
+
+<p><a href="#lua_load"><code>lua_load</code></a> はチャンクがテキストかバイナリかを自動的に検出し、それに応じてチャンクをロードする (プログラム <code>luac</code> を参照)。
+
+<p><a href="#lua_load"><code>lua_load</code></a> はチャンクを読み込むためにユーザが提供する <code>reader</code> 関数を使う (see <a href="#lua_Reader"><code>lua_Reader</code></a> を参照)。 <code>data</code> 引数はそのリーダ関数に渡される値である。
+
+<p><code>chunkname</code> 引数はチャンクに名前を与える。 これはエラーメッセージやデバッグ情報で使われる (<a href="#debugI">3.8</a> を参照)。
+
+<p><a name="lua_newstate"></a>
+<hr></hr>
+<h3><code>lua_newstate</code></h3>
+<pre>
+          lua_State *lua_newstate (lua_Alloc f, void *ud);
+</pre>
+
+
+<p>新しい独立したステートを作る。 ステートを作れなければ (メモリ不足のために)、<code>NULL</code> を返す。 引数 <code>f</code> はアロケータ関数である。 Luaはこのステートのためのすべてのメモリ確保をこの関数を使って行う。 2番目の引数 <code>ud</code> は、そのアロケータに毎回渡されるポインタである。
+
+<p><a name="lua_newtable"></a>
+<hr></hr>
+<h3><code>lua_newtable</code></h3>
+<pre>
+          void lua_newtable (lua_State *L);
+</pre>
+
+
+<p>新しい空のテーブルを作ってスタックに積む。 <code>lua_createtable(L, 0, 0)</code> と同等である。
+
+<p><a name="lua_newthread"></a>
+<hr></hr>
+<h3><code>lua_newthread</code></h3>
+<pre>
+          lua_State *lua_newthread (lua_State *L);
+</pre>
+
+
+<p>新しいスレッドを作ってスタックに積み、 その新しいスレッドを表す <a href="#lua_State"><code>lua_State</code></a> へのポインタを返す。 この関数が返した新しいステートは元のステートとすべてのグローバルオブジェクト (テーブルとか) を共有するが、独立した実行スタックを持つ。
+
+<p>スレッドを閉じたり破棄する明示的な関数はない。 スレッドは他のLuaオブジェクト同様、ガベージコレクションの対象である。
+
+<p><a name="lua_newuserdata"></a>
+<hr></hr>
+<h3><code>lua_newuserdata</code></h3>
+<pre>
+          void *lua_newuserdata (lua_State *L, size_t size);
+</pre>
+
+
+<p>この関数は指定されたサイズのメモリブロックを割り当て、 そのアドレスを持つ新しいフルユーザーデータをスタックに積み、 そのアドレスを返す。
+
+<p>ユーザーデータはLua内でCの値を表現する。 <em>フルユーザーデータ</em> はメモリブロックを表す。 これは (テーブルと同じように) オブジェクトである。 作成する必要があり、独自のメタテーブルを持つことができ、 ガベージコレクションされるのを検出できる。 フルユーザーデータは (rawequalの下では) それ自身と比較したときだけ等しい。
+
+<p>Luaが <code>gc</code> メタメソッドを持つフルユーザーデータを回収するとき、 Luaはメタメソッドを呼び、ユーザーデータにファイナライズ済みの印を付ける。 このユーザーデータがもう一度回収されると、Luaは対応するメモリを解放する。
+
+<p><a name="lua_next"></a>
+<hr></hr>
+<h3><code>lua_next</code></h3>
+<pre>
+          int lua_next (lua_State *L, int index);
+</pre>
+
+
+<p>スタックからキーを取り出し。 指定したインデックスのテーブルからキー・値のペア (取り出したキーの「次」のペア) を積む。 これ以上要素がなければ、 <a href="#lua_next"><code>lua_next</code></a> は (何も積まずに) 0を返す。
+
+<p>典型的な巡回は次のようになる。 <pre>
+       /* テーブルはスタックの `t' の位置にあるとする */
+       lua_pushnil(L);  /* 最初のキー */
+       while (lua_next(L, t) != 0) {
+         /* 「キー」インデックス-2、「値」はインデックス-1の位置にある */
+         printf("%s - %s\n",
+           lua_typename(L, lua_type(L, -2)), lua_typename(L, lua_type(L, -1)));
+         lua_pop(L, 1);  /* 「値」を除去し、「キー」は次の繰り返しのために残す */
+       }
+</pre>
+
+<p>テーブルを巡回する間、 キーが本物の文字列であるかどうか判らないなら、キーに対して直接 <a href="#lua_tolstring"><code>lua_tolstring</code></a> を呼んではならない。 <a href="#lua_tolstring"><code>lua_tolstring</code></a> は指定したインデックスにある値を <em>変える</em>
+ため、次の <a href="#lua_next"><code>lua_next</code></a> の呼び出しを混乱させることを覚えておくように。
+
+<p><a name="lua_Number"></a>
+<hr></hr>
+<h3><code>lua_Number</code></h3>
+<pre>
+          typedef double lua_Number;
+</pre>
+
+
+<p>Luaの数値の型。 デフォルトでは、これはdoubleであるが、 <code>luaconf.h</code> で変えることができる。
+
+<p>コンフィギュレーションファイルを変更することで、 Luaが数値に対して他の型 (floatやlongなど) を使うようにできる。
+
+<p><a name="lua_objlen"></a>
+<hr></hr>
+<h3><code>lua_objlen</code></h3>
+<pre>
+          size_t lua_objlen (lua_State *L, int index);
+</pre>
+
+
+<p>指定した受け入れ可能なインデックスの値の「長さ」を返す。 文字列の場合はその文字列の長さ、 テーブルの場合は長さ演算子 (`<code>#</code>&acute;) の結果、 ユーザーデータの場合は割り当てられたメモリブロックのサイズ、 それ以外の場合は0を返す。
+
+<p><a name="lua_pcall"></a>
+<hr></hr>
+<h3><code>lua_pcall</code></h3>
+<pre>
+          lua_pcall (lua_State *L, int nargs, int nresults, int errfunc);
+</pre>
+
+
+<p>関数を保護モードで呼ぶ。
+
+<p><code>nargs</code> と <code>nresults</code> は <a href="#lua_call"><code>lua_call</code></a> と同じである。 もしエラーがなければ <a href="#lua_pcall"><code>lua_pcall</code></a> は <a href="#lua_call"><code>lua_call</code></a>
+とまったく同じように動作する。 しかし、何かエラーが起きた場合は、 <a href="#lua_pcall"><code>lua_pcall</code></a> はそれを捕らえて、 1つの値 (エラーメッセージ) をスタックに積んでエラーコードを返す。 <a href="#lua_call"><code>lua_call</code></a> 同様、 <a href="#lua_pcall"><code>lua_pcall</code></a>
+は常に関数とその引数をスタックから取り除く。
+
+<p>もし <code>errfunc</code> が0であれば、スタックに返されたエラーメッセージは正確に元のエラーメッセージである。 そうでなければ、<code>errfunc</code> は <code>エラーハンドラ関数</code> のスタックインデックスを指定する (現在の実装では、疑似インデックスは指定できない)。
+実行時エラーが起きると、エラーメッセージを引数としてこの関数が呼ばれ、 その戻り値が <a href="#lua_pcall"><code>lua_pcall</code></a> から返されるエラーメッセージとなる。
+
+<p>典型的には、エラーハンドラ関数は、エラーメッセージにスタックトレースのようなデバッグ情報を付け加えるのに使う。 そういった情報は <a href="#lua_pcall"><code>lua_pcall</code></a> から戻った後にはもうスタックから除去されているため、集めることができない。
+
+<p><a href="#lua_pcall"><code>lua_pcall</code></a> 関数は成功時は0を返し、 エラーの場合は以下のエラーコードのいずれかを返す (<code>lua.h</code> で定義されている)。
+<ul>
+    <li><code>LUA_ERRRUN</code> --- 実行時エラー。
+    <li><code>LUA_ERRMEM</code> --- メモリ確保エラー。 このようなエラーでは、Luaはエラーハンドラ関数を呼ばない。
+    <li><code>LUA_ERRERR</code> --- エラーハンドラ関数実行中のエラー。
+</ul>
+
+<p><a name="lua_pop"></a>
+<hr></hr>
+<h3><code>lua_pop</code></h3>
+<pre>
+          void lua_pop (lua_State *L, int n);
+</pre>
+
+
+<p>スタックから <code>n</code> 個の要素を取り除く。
+
+<p><a name="lua_pushboolean"></a>
+<hr></hr>
+<h3><code>lua_pushboolean</code></h3>
+<pre>
+          void lua_pushboolean (lua_State *L, int b);
+</pre>
+
+
+<p>値 <code>b</code> のブーリアン値をスタックに積む。
+
+<p><a name="lua_pushcclosure"></a>
+<hr></hr>
+<h3><code>lua_pushcclosure</code></h3>
+<pre>
+          void lua_pushcclosure (lua_State *L, lua_CFunction fn, int n);
+</pre>
+
+
+<p>新しいCのクロージャをスタックに積む。
+
+<p>Cの関数を作るとき、いくつかの値を関連付けて <em>Cのクロージャ</em> を作ることができる (see <a href="#c-closure">3.4</a>)。 これらの値はその関数が呼ばれたときにいつでもアクセスできる。 Cの関数に値を関連付けるには、 まずそれらの値をスタックに積む (複数の値がある場合は、最初の値を最初に積む)。 次に <a
+    href="#lua_pushcclosure"><code>lua_pushcclosure</code></a>を呼び、 Cの関数を作ってスタックにプッシュする。 引数 <code>n</code> は関数に関連付ける値の数を示す。 <a href="#lua_pushcclosure"><code>lua_pushcclosure</code></a>
+はスタックからそれらの値を取り除く。
+
+<p><a name="lua_pushcfunction"></a>
+<hr></hr>
+<h3><code>lua_pushcfunction</code></h3>
+<pre>
+          void lua_pushcfunction (lua_State *L, lua_CFunction f);
+</pre>
+
+
+<p>Cの関数をスタックに積む。 この関数はCの関数へのポインタを受け取り、<code>関数</code> 型のLua値をスタックに積む。 この値が呼ばれると、対応するCの関数が呼ばれる。
+
+<p>Luaに登録する関数は引数と戻り値を受け渡すために、 正しい手順に従わなければ鳴らない (<a href="#lua_CFunction"><code>lua_CFunction</code></a> を参照)。
+
+<p><code>lua_pushcfunction(L, f)</code> の呼び出しは <code>lua_pushcclosure(L, f, 0)</code> と同等である。
+
+<p><a name="lua_pushfstring"></a>
+<hr></hr>
+<h3><code>lua_pushfstring</code></h3>
+<pre>
+          const char *lua_pushfstring (lua_State *L, const char *fmt, ...);
+</pre>
+
+
+<p>書式化文字列をスタックに積み、この文字列を指すポインタを返す。 これはCの関数 <code>sprintf</code> に似ているが、いくつか重要な違いがある。
+<ul>
+    <li>結果を格納する空間を割り当てる必要がない。 結果はLuaの文字列であり、Luaはメモリの確保を (そしてガベージコレクションによる解放も) 自分で行う。
+    <li>変換指定子はかなり制限されている。 フラグや幅、精度は指定できない。 変換師は単純な <pre>
+`<code>%%</code>&acute; (文字 `<code>%</code>&acute;)
+`<code>%s</code>&acute; (長さ制限のないゼロ終端文字列)
+`<code>%f</code>&acute; (<a href="#lua_Number"><code>lua_Number</code></a>)
+`<code>%p</code>&acute; (16進数としてのポインタ)
+`<code>%d</code>&acute; (<code>int</code>)
+`<code>%c</code>&acute; (文字としての <code>int</code>)
+</pre> だけが使える。
+</ul>
+
+<p><a name="lua_pushinteger"></a>
+<hr></hr>
+<h3><code>lua_pushinteger</code></h3>
+<pre>
+          void lua_pushinteger (lua_State *L, lua_Integer n);
+</pre>
+
+
+<p>値 <code>n</code> を持つ数値をスタックに積む。
+
+<p><a name="lua_pushlightuserdata"></a>
+<hr></hr>
+<h3><code>lua_pushlightuserdata</code></h3>
+<pre>
+          void lua_pushlightuserdata (lua_State *L, void *p);
+</pre>
+
+
+<p>ライトユーザーデータをスタックに積む。
+
+<p>ユーザーデータはLua内でCの値を表現する。 <em>ライトユーザーデータ</em> はポインタを表す。 それは (数値と同じように) 値である。 作成はせず、メタテーブルも持たず、(作成しないので) 回収もされない。 ライトユーザーデータは、同じCのアドレスを持つ「どの」ライトユーザーデータとも等しい。
+
+<p><a name="lua_pushlstring"></a>
+<hr></hr>
+<h3><code>lua_pushlstring</code></h3>
+<pre>
+          void lua_pushlstring (lua_State *L, const char *s, size_t len);
+</pre>
+
+
+<p><code>s</code> が指すサイズ <code>len</code> の文字列をスタックに積む。 Luaは与えられた文字列を内部的にコピーする (または再利用する) ため、 <code>s</code>が指すメモリは関数が戻ったあとすぐに解放あるいは再利用してよい。 文字列は埋め込まれたゼロを含んでいても良い。
+
+<p><a name="lua_pushnil"></a>
+<hr></hr>
+<h3><code>lua_pushnil</code></h3>
+<pre>
+          void lua_pushnil (lua_State *L);
+</pre>
+
+
+<p>nil値をスタックに積む。
+
+<p><a name="lua_pushnumber"></a>
+<hr></hr>
+<h3><code>lua_pushnumber</code></h3>
+<pre>
+          void lua_pushnumber (lua_State *L, lua_Number n);
+</pre>
+
+
+<p>値 <code>n</code> を持つ数値をスタックに積む。
+
+<p><a name="lua_pushstring"></a>
+<hr></hr>
+<h3><code>lua_pushstring</code></h3>
+<pre>
+          void lua_pushstring (lua_State *L, const char *s);
+</pre>
+
+
+<p><code>s</code>が指すゼロ終端文字列をスタックに積む。 Luaは与えられた文字列を内部的にコピーする (または再利用する) ため、 <code>s</code> が指すメモリを関数が戻ったあとすぐに解放あるいは再利用してよい。 文字列は埋め込まれたゼロを含むことができない。 最初のゼロで終端するものと仮定される。
+
+<p><a name="lua_pushthread"></a>
+<hr></hr>
+<h3><code>lua_pushthread</code></h3>
+<pre>
+          void lua_pushthread (lua_State *L);
+</pre>
+
+
+<p><code>L</code>が表すスレッドをスタックに積む。
+
+<p><a name="lua_pushvalue"></a>
+<hr></hr>
+<h3><code>lua_pushvalue</code></h3>
+<pre>
+          void lua_pushvalue (lua_State *L, int index);
+</pre>
+
+
+<p>指定した有効なインデックスにある要素のコピーをスタックに積む。
+
+<p><a name="lua_pushvfstring"></a>
+<hr></hr>
+<h3><code>lua_pushvfstring</code></h3>
+<pre>
+          const char *lua_pushvfstring (lua_State *L, const char *fmt, va_list argp);
+</pre>
+
+
+<p><a href="#lua_pushfstring"><code>lua_pushfstring</code></a> と同じであるが、 可変引数の代わりに <code>va_list</code> を渡す点が異なる。
+
+<p><a name="lua_rawequal"></a>
+<hr></hr>
+<h3><code>lua_rawequal</code></h3>
+<pre>
+          int lua_rawequal (lua_State *L, int index1, int index2);
+</pre>
+
+
+<p>受け入れ可能なインデックス <code>index1</code> と <code>index2</code> が プリミティブに等しい (つまりメタメソッドを呼ばない) とき1を返す。 そうでなければ0を返す。 どちらかのインデックスが有効でないときも0を返す。
+
+<p><a name="lua_rawget"></a>
+<hr></hr>
+<h3><code>lua_rawget</code></h3>
+<pre>
+          void lua_rawget (lua_State *L, int index);
+</pre>
+
+
+<p><a href="#lua_gettable"><code>lua_gettable</code></a> と同じであるが、 生のアクセスを行う (つまりメタメソッドを呼ばない) 点が異なる。
+
+<p><a name="lua_rawgeti"></a>
+<hr></hr>
+<h3><code>lua_rawgeti</code></h3>
+<pre>
+          void lua_rawgeti (lua_State *L, int index, int n);
+</pre>
+
+
+<p>値 <code>t[n]</code> をスタックに積む。 ただし <code>t</code> は指定した有効なインデックス <code>index</code> の値である。 これは生のアクセスを行う。 つまりメタメソッドを呼ばない。
+
+<p><a name="lua_rawset"></a>
+<hr></hr>
+<h3><code>lua_rawset</code></h3>
+<pre>
+          void lua_rawset (lua_State *L, int index);
+</pre>
+
+
+<p><a href="#lua_settable"><code>lua_settable</code></a> と同じであるが、 生の代入である点が異なる (メタメソッドを呼ばない)。
+
+<p><a name="lua_rawseti"></a>
+<hr></hr>
+<h3><code>lua_rawseti</code></h3>
+<pre>
+          void lua_rawseti (lua_State *L, int index, int n);
+</pre>
+
+
+<p><code>t[n] = v</code> と同じことを行う。 ただし <code>t</code> は指定した有効なインデックス <code>index</code> の値で、 <code>v</code> はスタックトップの値である。
+
+<p>この関数は値をスタックから取り除く。 これは生の代入を行う。 つまりメタメソッドを呼ばない。
+
+<p><a name="lua_Reader"></a>
+<hr></hr>
+<h3><code>lua_Reader</code></h3>
+<pre>
+          typedef const char * (*lua_Reader)
+                               (lua_State *L, void *data, size_t *size);
+
+</pre>
+
+
+<p><a href="#lua_load"><code>lua_load</code></a> で使うリーダー関数。 チャンクの新たなピースが必要になるたびに、<code>data</code> 引数を付けてリーダーが呼ばれる。 リーダーはチャンクの新たなピースを埋めたメモリブロックを指すポインタを返し、 その長さを <code>size</code> にセットしなければならない。
+ブロックはリーダー関数がもう一度呼ばれるまで存在しなければならない。 チャンクの最後に達したことを伝えるには <code>NULL</code> を返す。 リーダー関数は1以上の任意のサイズのピースを返すことができる。
+
+<p><a name="lua_register"></a>
+<hr></hr>
+<h3><code>lua_register</code></h3>
+<pre>
+          void lua_register (lua_State *L, const char *name, lua_CFunction f);
+</pre>
+
+
+<p>Cの関数 <code>f</code> をグローバル変数 <code>name</code> の新しい値としてセットする。 これはマクロとして定義されている。 <pre>
+#define lua_register(L,n,f)  (lua_pushcfunction(L, f), lua_setglobal(L, n))
+</pre>
+
+<p><a name="lua_remove"></a>
+<hr></hr>
+<h3><code>lua_remove</code></h3>
+<pre>
+          void lua_remove (lua_State *L, int index);
+</pre>
+
+
+<p>指定した有効なインデックスの要素を取り除き、 上の要素をずらして隙間を埋める。 疑似インデックスは、実際のスタック位置でないため、指定できない。
+
+<p><a name="lua_replace"></a>
+<hr></hr>
+<h3><code>lua_replace</code></h3>
+<pre>
+          void lua_replace (lua_State *L, int index);
+</pre>
+
+
+<p>スタックトップの要素を指定した位置へ移動する。 スタックトップの値は取り除く。 他のどの要素もずらさない。 つまり指定した位置の値を置き換える。
+
+<p><a name="lua_resume"></a>
+<hr></hr>
+<h3><code>lua_resume</code></h3>
+<pre>
+          int lua_resume (lua_State *L, int narg);
+</pre>
+
+
+<p>指定したスレッドのコルーチンを再開する。
+
+<p>コルーチンを開始するためには、まず新しいスレッドを作る (<a href="#lua_newthread"><code>lua_newthread</code></a> を参照)。 次にメイン関数と任意個の引数をスタックに積み、 <code>nargs</code> に引数の数を渡して。 <a href="#lua_resume"><code>lua_resume</code></a>
+を呼ぶ。 コルーチンが中断されたり実行終了したら、呼び出しから戻る。 戻ってきたとき、スタックには <a href="#lua_yield"><code>lua_yield</code></a> に渡された値か、本体の関数から返された値がすべて積まれている。 コルーチンがyieldした場合、<a href="#lua_resume"><code>lua_resume</code></a> は <a
+    href="#pdf-LUA_YIELD"><code>LUA_YIELD</code></a> を返す。 コルーチンがエラーなく実行終了した場合は0を返す。 エラーが起きた場合はエラーコードを返す (<a href="#lua_pcall"><code>lua_pcall</code></a> を参照)。
+エラーの場合、スタックは巻き戻されておらず、従ってその上でデバッグAPIを使うことができる。 スタックトップにエラーメッセージが置かれる。 コルーチンを再開するには、<code>yied</code> から返される結果として渡す値だけをスタックに起き、 <a href="#lua_resume"><code>lua_resume</code></a> を呼ぶ。
+
+<p><a name="lua_setallocf"></a>
+<hr></hr>
+<h3><code>lua_setallocf</code></h3>
+<pre>
+          void lua_setallocf (lua_State *L, lua_Alloc f, void *ud);
+</pre>
+
+
+<p>指定されたステートのアロケータ関数を <code>f</code> と <code>ud</code> に変更する。
+
+<p><a name="lua_setfenv"></a>
+<hr></hr>
+<h3><code>lua_setfenv</code></h3>
+<pre>
+          int lua_setfenv (lua_State *L, int index);
+</pre>
+
+
+<p>スタックからテーブルを取り除き、指定したインデックスの値の新しい環境として設定する。 指定したインデックスの値が関数、スレッド、ユーザーデータのどれでもなければ、 <a href="#lua_setfenv"><code>lua_setfenv</code></a> は0を返す。 そうでなければ1を返す。
+
+<p><a name="lua_setfield"></a>
+<hr></hr>
+<h3><code>lua_setfield</code></h3>
+<pre>
+          void lua_setfield (lua_State *L, int index, const char *k);
+</pre>
+
+
+<p><code>t[k] = v</code> を実行する。 ただし <code>t</code> は指定した有効なインデックス <code>index</code> の値で、 <code>v</code> はスタックトップの値である。
+
+<p>この関数は値をスタックから除去する。 Luaの中でのように、この関数は "newindex" イベントのメタメソッドを呼ぶ場合がある (<a href="#metatable">2.8</a> を参照)。
+
+<p><a name="lua_setglobal"></a>
+<hr></hr>
+<h3><code>lua_setglobal</code></h3>
+<pre>
+          void lua_setglobal (lua_State *L, const char *name);
+</pre>
+
+
+<p>スタックから値を取り除き、それをグローバル変数 <code>name</code> の新しい値として設定する。 これはマクロとして定義されている。 <pre>
+#define lua_setglobal(L,s)   lua_setfield(L, LUA_GLOBALSINDEX, s)
+</pre>
+
+<p><a name="lua_setmetatable"></a>
+<hr></hr>
+<h3><code>lua_setmetatable</code></h3>
+<pre>
+          int lua_setmetatable (lua_State *L, int index);
+</pre>
+
+
+<p>スタックからテーブルを取り除き、それを指定した受け入れ可能なインデックスの値の新しいメタテーブルとして設定する。
+
+<p><a name="lua_settable"></a>
+<hr></hr>
+<h3><code>lua_settable</code></h3>
+<pre>
+          void lua_settable (lua_State *L, int index);
+</pre>
+
+
+<p><code>t[k] = v</code> を実行する。 ただし <code>t</code> は指定した有効なインデックス <code>index</code> の値で、 <code>v</code> はスタックトップの値で、 <code>k</code> はそのひとつ下の値である。
+
+<p>この関数はキーと値の両方をスタックから取り除く。 Luaの中でのように、この関数は "newindex" イベントのメタメソッドを呼ぶ場合がある (<a href="#metatable">2.8</a> を参照)。
+
+<p><a name="lua_settop"></a>
+<hr></hr>
+<h3><code>lua_settop</code></h3>
+<pre>
+          void lua_settop (lua_State *L, int index);
+</pre>
+
+
+<p>任意の受け入れ可能なインデックスまたは0を受け取り、 スタックトップをそのインデックスに設定する。 新しいトップが古いものより大きければ、新しい要素は <b>nil</b> で埋められる。 <code>index</code> が0の場合は、スタック要素がすべて削除される。
+
+<p><a name="lua_State"></a>
+<hr></hr>
+<h3><code>lua_State</code></h3>
+<pre>
+          typedef struct lua_State lua_State;
+</pre>
+
+
+<p>Luaインタプリタの状態全体を保持する不透明な構造体。 Luaライブラリはグローバル変数を使っていないので、完全に再入可能である。 ステートに関するすべての情報はこの構造体に保持されている。
+
+<p>このステートへのポインタは、 無からLuaステートを作成する <a href="#lua_newstate"><code>lua_newstate</code></a> を除いて、 ライブラリのすべての関数で最初の引数として渡さなければならない。
+
+<p><a name="lua_status"></a>
+<hr></hr>
+<h3><code>lua_status</code></h3>
+<pre>
+          int lua_status (lua_State *L);
+</pre>
+
+
+<p>スレッド <code>L</code> の状態を返す。
+
+<p>通常のスレッドの状態は0である。 スレッドがエラー終了していればエラーコード、 スレッドが中断していれば <code>LUA_YIELD</code> を返す。
+
+<p><a name="lua_toboolean"></a>
+<hr></hr>
+<h3><code>lua_toboolean</code></h3>
+<pre>
+          int lua_toboolean (lua_State *L, int index);
+</pre>
+
+
+<p>指定した受け入れ可能なインデックスの値をCのブーリアン値 (0または1) に変換する。 Luaでの条件判断と同様に、 <a href="#lua_toboolean"><code>lua_toboolean</code></a> は <b>false</b> と <b>nil</b> 以外のすべての値に対して1を返し、 そうでなければ0を返す。
+有効でないインデックスを指定した場合も0を返す。 もし本当のブーリアン値だけを調べたい場合は、 <a href="#lua_isboolean"><code>lua_isboolean</code></a> で値の型を判定すること。
+
+<p><a name="lua_tocfunction"></a>
+<hr></hr>
+<h3><code>lua_tocfunction</code></h3>
+<pre>
+          lua_CFunction lua_tocfunction (lua_State *L, int index);
+</pre>
+
+
+<p>指定した受け入れ可能なインデックスの値をCの関数に変換する。 この値はCの関数でなければならなず、それ以外では <code>NULL</code> を返す。
+
+<p><a name="lua_tointeger"></a>
+<hr></hr>
+<h3><code>lua_tointeger</code></h3>
+<pre>
+          lua_Integer lua_tointeger (lua_State *L, int idx);
+</pre>
+
+
+<p>指定した受け入れ可能なインデックスのLuaの値を符号付き整数型 <a href="#lua_Integer"><code>lua_Integer</code></a> に変換する。 このLuaの値は数値か、数値に変換できる文字列でなければならない (<a href="#coercion">2.2.1</a> を参照)。 それ以外の場合、<a href="#lua_tointeger"><code>lua_tointeger</code></a>
+は0を返す。
+
+<p>数値が整数でなければ、何らかの未規定な方法で整数に丸める。
+
+<p><a name="lua_tolstring"></a>
+<hr></hr>
+<h3><code>lua_tolstring</code></h3>
+<pre>
+          const char *lua_tolstring (lua_State *L, int index, size_t *len);
+</pre>
+
+
+<p>指定した受け入れ可能なインデックスのLuaの値を文字列 (<code>const char*</code>) に変換する。 もし <code>len</code> が <code>NULL</code> でなければ、 <code>*len</code> に文字列の長さも設定される。 このLuaの値は文字列か数値でなければならず、 それ以外の場合、この関数は <code>NULL</code>
+を返す。 もしその値が数値であれば、 <a href="#lua_tolstring"><code>lua_tolstring</code></a> はスタック内のその実際の値を文字列に <em>変換する</em> (この変換はテーブル巡回中のキーに対して <a href="#lua_tolstring"><code>lua_tolstring</code></a> を使ったときに <a
+    href="#lua_next"><code>lua_next</code></a> を混乱させる)。
+
+<p><a href="#lua_tolstring"><code>lua_tolstring</code></a> はLuaステート内部の文字列を指す、完全にアラインメントされたポインタを返す。 この文字列は、その最後に必ずゼロ (`<code>\0</code>&acute;) を持つ (Cでよくやるように) が、 その途中にもゼロを含むことがある。
+Luaはガベージコレクションを持っているため、 <a href="#lua_tolstring"><code>lua_tolstring</code></a> の返したポインタが、その値がスタックから取り除かれた後も有効であり続けるという保証はない。
+
+<p><a name="lua_tonumber"></a>
+<hr></hr>
+<h3><code>lua_tonumber</code></h3>
+<pre>
+          lua_Number lua_tonumber (lua_State *L, int index);
+</pre>
+
+
+<p>指定した受け入れ可能なインデックスにあるLuaの値を数値に変換する (<a href="#lua_Number"><code>lua_Number</code></a> を参照)。 このLuaの値は数値か、数値に変換できる文字列でなければならない (<a href="#coercion">2.2.1</a> を参照)。 それ以外の場合、<a href="#lua_tonumber"><code>lua_tonumber</code></a>
+は0を返す。
+
+<p><a name="lua_topointer"></a>
+<hr></hr>
+<h3><code>lua_topointer</code></h3>
+<pre>
+          const void *lua_topointer (lua_State *L, int index);
+</pre>
+
+
+<p>指定した受け入れ可能なインデックスの値をCの汎用ポインタ (<code>void*</code>) に変換する。 この値は、ユーザーデータ、テーブル、スレッド、関数のいずれかである。 それ以外なら <a href="#lua_topointer"><code>lua_topointer</code></a> は <code>NULL</code> を返す。
+Luaは異なるオブジェクトに対しては異なるポインタを返すことを保証する。 ポインタからその元の値に変換する直接的な方法は無い。
+
+<p>典型的には、この関数はデバッグ情報のためにだけ使われる。
+
+<p><a name="lua_tostring"></a>
+<hr></hr>
+<h3><code>lua_tostring</code></h3>
+<pre>
+          const char *lua_tostring (lua_State *L, int index);
+</pre>
+
+
+<p><code>len</code> に <code>NULL</code> を渡して <a href="#lua_tolstring"><code>lua_tolstring</code></a> を呼ぶのと同じ。
+
+<p><a name="lua_tothread"></a>
+<hr></hr>
+<h3><code>lua_tothread</code></h3>
+<pre>
+          lua_State *lua_tothread (lua_State *L, int index);
+</pre>
+
+
+<p>指定した受け入れ可能なインデックスの値をLuaのスレッド (<code>lua_State*</code> で表される) に変換する。 この値はスレッドでなければならず、それ以外では <code>NULL</code> を返す。
+
+<p><a name="lua_touserdata"></a>
+<hr></hr>
+<h3><code>lua_touserdata</code></h3>
+<pre>
+          void *lua_touserdata (lua_State *L, int index);
+</pre>
+
+
+<p>指定した受け入れ可能なインデックスの値がフルユーザーデータであれば、そのブロックのアドレスを返す。 ライトユーザーデータであれば、そのポインタを返す。 どちらでもなければ <code>NULL</code> を返す。
+
+<p><a name="lua_type"></a>
+<hr></hr>
+<h3><code>lua_type</code></h3>
+<pre>
+          int lua_type (lua_State *L, int index);
+</pre>
+
+
+<p>指定した受け入れ可能なインデックスの値の型を返す。 有効でないインデックス (つまりその位置に要素がない) の場合は <code>LUA_TNONE</code> を返す。 <a href="#lua_type"><code>lua_type</code></a> が返す型は <code>lua.h</code> で定義されている以下の定数である。 <pre>
+<code>LUA_TNIL</code>
+<code>LUA_TNUMBER</code>
+<code>LUA_TBOOLEAN</code>
+<code>LUA_TSTRING</code>
+<code>LUA_TTABLE</code>
+<code>LUA_TFUNCTION</code>
+<code>LUA_TUSERDATA</code>
+<code>LUA_TTHREAD</code>
+<code>LUA_TLIGHTUSERDATA</code>
+</pre>
+
+<p><a name="lua_typename"></a>
+<hr></hr>
+<h3><code>lua_typename</code></h3>
+<pre>
+          const char *lua_typename  (lua_State *L, int tp);
+</pre>
+
+
+<p><code>tp</code> が示す型の名前を返す。 <code>tp</code> は <a href="#lua_type"><code>lua_type</code></a> が返す値のいずれかでなければならない。
+
+<p><a name="lua_Writer"></a>
+<hr></hr>
+<h3><code>lua_Writer</code></h3>
+<pre>
+          typedef int (*lua_Writer)
+                          (lua_State *L, const void* p, size_t sz, void* ud);
+
+</pre>
+
+
+<p><a href="#lua_dump"><code>lua_dump</code></a> で使うライター関数。 新しいチャンクのピースが生成されるたびに、 書き込みバッファ (<code>p</code>)、そのサイズ (<code>sz</code>)、 および <a href="#lua_dump"><code>lua_dump</code></a> に渡した <code>data</code>
+引数を渡して <a href="#lua_dump"><code>lua_dump</code></a> がライターを呼ぶ。
+
+<p>ライターはエラーコードを返す。 0はエラーなしを意味する。 それ以外の値はエラーを意味し、 <a href="#lua_dump"><code>lua_dump</code></a> にそれ以上ライターを呼ぶのをやめさせる。
+
+<p><a name="lua_xmove"></a>
+<hr></hr>
+<h3><code>lua_xmove</code></h3>
+<pre>
+          void lua_xmove (lua_State *from, lua_State *to, int n);
+</pre>
+
+
+<p><em>同じ</em> グローバルステートの異なるスレッド間で値を交換する。
+
+<p>この関数は <code>from</code> のスタックから <code>n</code> 個の値を取り出し、 それらを <code>to</code> のスタックに積む。
+
+<p><a name="lua_yield"></a>
+<hr></hr>
+<h3><code>lua_yield</code></h3>
+<pre>
+          int lua_yield  (lua_State *L, int nresults);
+</pre>
+
+
+<p>コルーチンを中断する。
+
+<p>この関数は以下のようにCの関数のreturn式でだけ呼べる。 <pre>
+       return lua_yield (L, nresults);
+</pre> Cの関数がこの方法で <a href="#lua_yield"><code>lua_yield</code></a> を呼ぶとコルーチンの実行は中断され、 このコルーチンを開始した <a href="#lua_resume"><code>lua_resume</code></a> の呼び出しから戻る。 引数 <code>nresults</code> は <a
+    href="#lua_resume"><code>lua_resume</code></a> から返したいスタック上の値の数である。
+
+<p><a name="debugI"></a><a name="3.8"></a>
+<h2>3.8 - デバッグインタフェイス</h2>
+
+<p>Luaは組み込みのデバッグ機能を持っていない。 代わりに、そのための関数と <em>フック</em> による特殊なインタフェイスを提供している。 このインタフェイスで、様々な種類のデバッガ、プロファイラ、およびインタプリタの「内部情報」を必要とするその他のツールを作れるようになっている。
+
+<p><a name="lua_Debug"></a>
+<hr></hr>
+<h3><code>lua_Debug</code></h3>
+<pre>
+          typedef struct lua_Debug {
+            int event;
+            const char *name;           /* (n) */
+            const char *namewhat;       /* (n) */
+            const char *what;           /* (S) */
+            const char *source;         /* (S) */
+            int currentline;            /* (l) */
+            int nups;                   /* (u) 上位値の数 */
+            int linedefined;            /* (S) */
+            int lastlinedefined;        /* (S) */
+            char short_src[LUA_IDSIZE]; /* (S) */
+            /* private part */
+            ...
+          } lua_Debug;
+
+</pre>
+
+
+<p>アクティブな関数に関する色々な情報を格納するのに使う構造体。 <a href="#lua_getstack"><code>lua_getstack</code></a> は後で使うために、この構造体の内部用メンバだけを埋める。 <a href="#lua_Debug"><code>lua_Debug</code></a> の他のフィールドを役に立つ情報で埋めるには、<a
+    href="#lua_getinfo"><code>lua_getinfo</code></a> を呼ぶ。
+
+<p><a href="#lua_Debug"><code>lua_Debug</code></a> の各フィールドは以下のような意味を持っている。
+<ul>
+    <li><b><code>source</code></b> --- 関数が文字列中で定義されたならば、その文字列である。 関数がファイル中で定義されたならば、`<code>@</code>&acute; で始まり、その後にファイル名が続く。
+
+    <p>
+    <li><b><code>short_src</code></b> --- エラーメッセージに使う「可読」バージョンの <code>source</code>。
+
+    <p>
+    <li><b><code>linedefined</code></b> --- 関数定義の開始位置の行番号。
+
+    <p>
+    <li><b><code>lastlinedefined</code></b> --- 関数定義の終了位置の行番号。
+
+    <p>
+    <li><b><code>what</code></b> --- Luaの関数なら <code>"Lua"</code>、 Cの関数なら <code>"C"</code>、 チャンクのメイン部であれば <code>"main"</code>、 関数が終端呼び出ししたならば <code>"tail"</code>。
+    最後のケースでは、Luaはこの関数について他に何の情報も持っていない。
+
+    <p>
+    <li><b><code>currentline</code></b> --- 現在実行中の行番号。 この情報が利用可能でなければ、<code>currentline</code> は <em>-1</em> に設定される。
+
+    <p>
+    <li><b><code>name</code></b> --- その関数に対する適当な名前。 Luaの関数はファーストクラスの値であるため、固定の名前は持っていない。 複数のグローバル変数に格納されている関数もあれば、テーブルフィールドにのみ格納されているものもある。 <code>lua_getinfo</code>
+    は、その関数がどのように呼ばれたかを調べ、良さそうな名前を探す。 名前が見つからなければ、<code>name</code> は <code>NULL</code> に設定される。
+
+    <p>
+    <li><b><code>namewhat</code></b> --- <code>name</code> フィールドを説明する。 <code>namewhat</code> は、どのように関数が呼ばれたかによって、以下のいずれかになる。 <code>"global"</code>, <code>"local"</code>, <code>"method"</code>, <code>"field"</code>,
+    <code>"upvalue"</code>, or <code>""</code> (空文字列。他に適当なものがなければこれを使う)。
+
+    <p>
+    <li><b><code>nups</code></b> --- その関数の上位値の数。
+
+    <p>
+</ul>
+
+<p><a name="lua_gethook"></a>
+<hr></hr>
+<h3><code>lua_gethook</code></h3>
+<pre>
+          lua_Hook lua_gethook (lua_State *L);
+</pre>
+
+
+<p>現在のフック関数を返す。
+
+<p><a name="lua_gethookcount"></a>
+<hr></hr>
+<h3><code>lua_gethookcount</code></h3>
+<pre>
+          int lua_gethookcount (lua_State *L);
+</pre>
+
+
+<p>現在のフックカウントを返す。
+
+<p><a name="lua_gethookmask"></a>
+<hr></hr>
+<h3><code>lua_gethookmask</code></h3>
+<pre>
+          int lua_gethookmask (lua_State *L);
+</pre>
+
+
+<p>現在のフックマスクを返す。
+
+<p><a name="lua_getinfo"></a>
+<hr></hr>
+<h3><code>lua_getinfo</code></h3>
+<pre>
+          int lua_getinfo (lua_State *L, const char *what, lua_Debug *ar);
+</pre>
+
+
+<p><a href="#lua_Debug"><code>lua_Debug</code></a> の各フィールドを役に立つ情報で埋める。
+
+<p>エラー (例えば <code>what</code> に不正なを指定したとか) のときは0を返す。 文字列 <code>what</code> の各文字は、構造体 <code>ar</code> のどのフィールドを埋めるかを選択する。 これは <a href="#lua_Debug"><code>lua_Debug</code></a> の定義で括弧内に書かれた文字で指示する。 `<code>S</code>&acute;
+はフィールド <code>source</code>, <code>linedefined</code>, <code>lastlinedefined</code>, <code>what</code> を埋め、 `<code>l</code>&acute; はフィールド <code>currentline</code> を埋め、以下同様。 さらに、`<code>f</code>&acute;
+を指定すると、指定されたレベルで走っている関数をスタックに積む。
+
+<p>アクティブでない (スタック中にない) 関数の情報を得るには、 それをスタックに積んで <code>what</code> を文字 '&gt;' で始まる文字列にする。 例えば、関数 <code>f</code> が定義された行番号を知りたい場合は、次のように書く。 <pre>
+       lua_Debug ar;
+       lua_getfield(L, LUA_GLOBALSINDEX, "f");  /* グローバル変数 `f' を取得 */
+       lua_getinfo(L, ">S", &#038;ar);
+       printf("%d\n", ar.linedefined);
+</pre>
+
+<p><a name="lua_getlocal"></a>
+<hr></hr>
+<h3><code>lua_getlocal</code></h3>
+<pre>
+          const char *lua_getlocal (lua_State *L, const lua_Debug *ar, int n);
+</pre>
+
+
+<p>指定したアクティベーションレコードのローカル変数についての情報を得る。 引数 <code>ar</code> には、事前に <a href="#lua_getstack"><code>lua_getstack</code></a> を呼んで埋めるか、フック (<a href="#lua_Hook"><code>lua_Hook</code></a> を参照)
+に渡された引数を使うかして、有効なアクティベーションレコードを与えなければならない。 インデックス <code>n</code> は調べるローカル変数を指定する (1が最初の引数か最初のアクティブなローカル変数で、最後のアクティブなローカル変数まである)。 <a href="#lua_getlocal"><code>lua_getlocal</code></a>
+はその変数の値をスタックに積み、その名前を返す。
+
+<p>`<code>(</code>&acute; (開き括弧) で始まる変数名は内部変数を表している (ループ制御変数、テンポラリ変数、Cの関数のローカル変数など)。
+
+<p>インデックスがアクティブなローカル変数の数より大きいときは、(何も積まずに) <code>NULL</code> を返す。
+
+<p><a name="lua_getstack"></a>
+<hr></hr>
+<h3><code>lua_getstack</code></h3>
+<pre>
+          int lua_getstack (lua_State *L, int level, lua_Debug *ar);
+</pre>
+
+
+<p>インタプリタランタイムスタックに関する情報を取得する。
+
+<p>この関数は <a href="#lua_Debug"><code>lua_Debug</code></a> の一部を、 指定したレベルで実行中の関数の <em>アクティベーションレコード</em> で埋める。 レベル0は現在走っている関数で、レベル <em>n+1</em> はレベル <em>n</em> の呼び出し元の関数である。 エラーがなければ <a
+    href="#lua_getstack"><code>lua_getstack</code></a> は1を返す。 スタックの深さよりも大きいレベルが指定された場合は0を返す。
+
+<p><a name="lua_getupvalue"></a>
+<hr></hr>
+<h3><code>lua_getupvalue</code></h3>
+<pre>
+          const char *lua_getupvalue (lua_State *L, int funcindex, int n);
+</pre>
+
+
+<p>クロージャの上位値に関する情報を取得する。 (Luaの関数の上位値は、その関数が使っている外部ローカル変数で、クロージャに取り込まれたもの。) <a href="#lua_getupvalue"><code>lua_getupvalue</code></a> はインデックス <code>n</code> の上位値を取得し、その値をスタックに積み、その名前を返す。 <code>funcindex</code>
+はスタック中のそのクロージャを指す。 (上位値は関数全体に渡って有効であり、特定の順序も持たない。そのため不定の順序で番号付けられている。)
+
+<p>インデックスが上位値の数より大きい場合は、(何も積まずに) <code>NULL</code> を返す。 Cの関数では、どの上位値に対してもその名前に空文字列 <code>""</code> を返す。
+
+<p><a name="lua_Hook"></a>
+<hr></hr>
+<h3><code>lua_Hook</code></h3>
+<pre>
+          typedef void (*lua_Hook) (lua_State *L, lua_Debug *ar);
+</pre>
+
+
+<p>デバッグフック関数の型。
+
+<p>フックが呼ばれたとき、<code>ar</code> 引数の <code>event</code> フィールドに フックを起動したイベントが格納されている。 Luaはこれらのイベントを以下の定数で識別する。 <code>LUA_HOOKCALL</code>, <code>LUA_HOOKRET</code>, <code>LUA_HOOKTAILRET</code>, <code>LUA_HOOKLINE</code>,
+<code>LUA_HOOKCOUNT</code>。 さらにlineイベントでは、フィールド <code>currentline</code> も設定される。 <code>ar</code> の他のフィールドを得るには、 <a href="#lua_getinfo"><code>lua_getinfo</code></a> を呼ぶ必要がある。 returnイベントでは、<code>event</code>
+は通常の <code>LUA_HOOKRET</code> の他に <code>LUA_HOOKTAILRET</code> が設定される場合がある。 後者はLuaが終端呼び出しした関数からの復帰をシミュレートしたもので、 この場合 <a href="#lua_getinfo"><code>lua_getinfo</code></a> は役に立たない。
+
+<p>Luaがフックを実行している間、他のフック呼び出しは向こうになる。 従って、フック内でLuaの関数やチャンクを呼び出した場合、フックを呼ばずに実行される。
+
+<p><a name="lua_sethook"></a>
+<hr></hr>
+<h3><code>lua_sethook</code></h3>
+<pre>
+          int lua_sethook (lua_State *L, lua_Hook func, int mask, int count);
+</pre>
+
+
+<p>デバッグフック関数を設定する。
+
+<p><code>func</code> はフック関数を指定する。 <code>mask</code> はどのイベントでフックが呼ばれるかを定数 <code>LUA_MASKCALL</code>, <code>LUA_MASKRET</code>, <code>LUA_MASKLINE</code>, <code>LUA_MASKCOUNT</code> の論理和で指定する。 <code>count</code>
+引数はmaskが <code>LUA_MASKCOUNT</code> を含むときだけ意味を持つ。 それぞれのイベントについて以下の状況でフックが呼ばれる。
+<ul>
+    <li><b>callフック</b> は関数を呼ぶときに呼ばれる。 フックは新しい関数に入った直後、その関数が引数を取得する前に呼ばれる。
+    <li><b>returnフック</b> は関数から戻るときに呼ばれる。 フックは関数から離れる直後に呼ばれる。 戻り値にはアクセスできない。
+    <li><b>lineフック</b> はインタプリタが新しい行のコードの実行を開始しようとしているとき、 および同じ行内でもジャンプが行われたときに呼ばれる (このイベントはLuaの関数を実行している間だけ起こる)。
+    <li><b>countフック</b> はインタプリタが <code>count</code> 命令を実行した直後に呼ばれる (このイベントはLuaの関数を実行している間だけ起こる)。
+</ul>
+
+<p><code>mask</code> にゼロを設定すればフックが無効になる。
+
+<p><a name="lua_setlocal"></a>
+<hr></hr>
+<h3><code>lua_setlocal</code></h3>
+<pre>
+          const char *lua_setlocal (lua_State *L, const lua_Debug *ar, int n);
+</pre>
+
+
+<p>指定したアクティベーションレコードのローカル変数の値を設定する。 引数 <code>ar</code> および <code>n</code> は <a href="#lua_getlocal"><code>lua_getlocal</code></a> と同じである (<a href="#lua_getlocal"><code>lua_getlocal</code></a>
+を参照)。 この関数は<a href="#lua_setlocal"><code>lua_setlocal</code></a> はスタックトップの値をその変数に格納し、その名前を返す。 またその値をスタックから取り除く。
+
+<p>インデックスがアクティブなローカル変数の数よりも大きければ、(何も取り除かずに) <code>NULL</code> を返す。
+
+<p><a name="lua_setupvalue"></a>
+<hr></hr>
+<h3><code>lua_setupvalue</code></h3>
+<pre>
+          const char *lua_setupvalue (lua_State *L, int funcindex, int n);
+</pre>
+
+
+<p>クロージャの上位値の値を設定する。 引数 <code>funcindex</code> および <code>n</code> は <a href="#lua_getupvalue"><code>lua_getupvalue</code></a> と同じである (<a href="#lua_getupvalue"><code>lua_getupvalue</code></a>
+を参照)。 この関数はスタックトップの値をその上位値に格納し、その名前を返す。 またその値をスタックから取り除く。
+
+<p>インデックスが上位値の数よりも大きければ、(何も取り除かずに) <code>NULL</code> を返す。
+
+<p><a name="4"></a>
+<h1>4 - 補助ライブラリ</h1>
+
+<p><em>補助ライブラリ</em> はCとLuaのインタフェイスとなるいくつかの便利な関数を提供する。 基本APIはCとLuaの対話の基本的な関数を提供するが、補助ライブラリはいくつかの共通の作業をする高レベルな関数を提供する。
+
+<p>補助ライブラリのすべての関数はヘッダーファイル <code>lauxlib.h</code> に定義され、接頭語 <code>luaL_</code> が付いている。
+
+<p>補助ライブラリのすべての関数は基本APIの上に構築されており、そのためこのAPIでできないことは何も提供していない。
+
+<p>補助ライブラリにはCの関数の引数をチェックするための関数がいくつかある。 これらは常に <code>luaL_check*</code> または <code>luaL_opt*</code> という名前である。 これらの関数はチェックが妥当(satisfied?)でなかったときエラーを生成する。 エラーメッセージは引数で書式化される (<code>"bad
+argument #1"</code> など) ため、 他のスタック値に対してこれらの関数を使うべきではない。
+
+<p><a name="4.1"></a>
+<h2>4.1 - 関数と型</h2>
+
+<p>補助ライブラリのすべての関数と型をアルファベット順に示す。
+
+<p><a name="luaL_addchar"></a>
+<hr></hr>
+<h3><code>luaL_addchar</code></h3>
+<pre>
+          void luaL_addchar (luaL_Buffer B, char c);
+</pre>
+
+
+<p>文字 <code>c</code> をバッファ <code>B</code> に追加する (<a href="#luaL_Buffer"><code>luaL_Buffer</code></a> を参照)。
+
+<p><a name="luaL_addlstring"></a>
+<hr></hr>
+<h3><code>luaL_addlstring</code></h3>
+<pre>
+          void luaL_addlstring (luaL_Buffer *B, const char *s, size_t l);
+</pre>
+
+
+<p><code>s</code> が指す長さ <code>l</code> の文字列をバッファ <code>B</code> に追加する。 (<a href="#luaL_Buffer"><code>luaL_Buffer</code></a> を参照)。 文字列は埋め込まれたゼロを含んでいても良い。
+
+<p><a name="luaL_addsize"></a>
+<hr></hr>
+<h3><code>luaL_addsize</code></h3>
+<pre>
+          void luaL_addsize (luaL_Buffer B, size_t n);
+</pre>
+
+
+<p>バッファエリア (<a href="#luaL_prepbuffer"><code>luaL_prepbuffer</code></a> を参照) に前回コピーされた長さ <code>n</code> の文字列をバッファ <code>B</codE> に追加する。 (<a href="#luaL_Buffer"><code>luaL_Buffer</code></a> を参照)。
+
+<p><a name="luaL_addstring"></a>
+<hr></hr>
+<h3><code>luaL_addstring</code></h3>
+<pre>
+          void luaL_addstring (luaL_Buffer *B, const char *s);
+</pre>
+
+
+<p><code>s</code> が指すゼロ終端文字列をバッファ <code>B</code> に追加する (<a href="#luaL_Buffer"><code>luaL_Buffer</code></a> を参照)。 文字列に埋め込まれたゼロを含むことはできない。
+
+<p><a name="luaL_addvalue"></a>
+<hr></hr>
+<h3><code>luaL_addvalue</code></h3>
+<pre>
+          void luaL_addvalue (luaL_Buffer *B);
+</pre>
+
+
+<p>スタックトップの値をバッファ <code>B</code> に追加する (<a href="#luaL_Buffer"><code>luaL_Buffer</code></a> を参照)。 その値はスタックから取り除かれる。
+
+<p>これはバッファに追加する値をスタックから取る唯一の文字列バッファ用関数である。
+
+<p><a name="luaL_argcheck"></a>
+<hr></hr>
+<h3><code>luaL_argcheck</code></h3>
+<pre>
+          void luaL_argcheck (lua_State *L, int cond, int numarg,
+                              const char *extramsg);
+</pre>
+
+
+<p><code>cond</code> が真であることを確認する。 もし違ったら、メッセージ <code>"bad argument #&#060;numarg> to &#060;func> (&#060;extramsg>)"</code> のエラーを生成する。 ただし <code>func</code> はコールスタックから取得する。
+
+<p><a name="luaL_argerror"></a>
+<hr></hr>
+<h3><code>luaL_argerror</code></h3>
+<pre>
+          int luaL_argerror (lua_State *L, int numarg, const char *extramsg);
+</pre>
+
+
+<p>メッセージ <code>"bad argument #&#060;numarg> to &#060;func> (&#060;extramsg>)"</code> のエラーを生成する。 ただし <code>func</code> はコールスタックから取得する。
+
+<p>この関数は決して戻らないが、 Cの関数で <code>return luaL_argerror ...</code> として使うのが慣習である。
+
+<p><a name="luaL_Buffer"></a>
+<hr></hr>
+<h3><code>luaL_Buffer</code></h3>
+<pre>
+          typedef struct luaL_Buffer luaL_Buffer;
+</pre>
+
+
+<p><em>文字列バッファ</em> の型。
+
+<p>文字列バッファはCのコードでLuaの文字列片(strings piecemeal)を組み立てるのに使う。 これは以下のように使用する。
+<ul>
+    <li>まず <a href="#luaL_Buffer"><code>luaL_Buffer</code></a> 型の変数 <code>b</code> を宣言する。
+    <li>次に <code>luaL_buffinit(L, &#038;b)</code> を呼んでそれを初期化する。
+    <li>そして <code>luaL_add*</code> 関数のどれかを使ってバッファに文字列片を追加する。
+    <li>最後に <code>luaL_pushresult(&#038;b)</code> を呼ぶ。 これは最終的な文字列をスタックトップに残す。
+</ul>
+
+<p>通常の操作をしている間、 文字列バッファはいくつかのスタックスロットを使う。 従ってバッファを使っている間は、スタックトップがどこにあるか判っていると仮定できない。 バッファ操作の正しい(successive)呼び出しの間、整合が取れている限りはスタックを使うことができる。 つまり、バッファ操作を呼び出すときは、 スタックが前回バッファ操作した直後と同じ高さでなければならない。 (<a
+    href="#luaL_addvalue"><code>luaL_addvalue</code></a> はこのルールの唯一の例外である。) <a href="#luaL_pushresult"><code>luaL_pushresult</code></a> を呼んだあと、 スタックはバッファが初期化される前の高さに戻り、その上に最終的な文字列が積まれる。
+
+<p><a name="luaL_buffinit"></a>
+<hr></hr>
+<h3><code>luaL_buffinit</code></h3>
+<pre>
+          void luaL_buffinit (lua_State *L, luaL_Buffer *B);
+</pre>
+
+
+<p>バッファ <code>B</code> を初期化する。 この関数はいかなる空間も割り当てない。 バッファは変数として宣言しなければならない (<a href="#luaL_Buffer"><code>luaL_Buffer</code></a> を参照)。
+
+<p><a name="luaL_callmeta"></a>
+<hr></hr>
+<h3><code>luaL_callmeta</code></h3>
+<pre>
+          int luaL_callmeta (lua_State *L, int obj, const char *e);
+</pre>
+
+
+<p>メタメソッドを呼ぶ。
+
+<p>インデックス <code>obj</code> のオブジェクトがメタテーブルを持っていて、 このメタテーブルがフィールド <code>e</code> を持っていれば、 この関数はこのフィールドを呼び出し、引数としてそのオブジェクトを渡す。 この場合、この関数は1を返し、呼び出しの戻り値をスタックに積む。 メタテーブルがないかメタメソッドがない場合、 この関数は
+(スタックに何も積まずに) 0を返す。
+
+<p><a name="luaL_checkany"></a>
+<hr></hr>
+<h3><code>luaL_checkany</code></h3>
+<pre>
+          void luaL_checkany (lua_State *L, int narg);
+</pre>
+
+
+<p>関数が位置 <code>arg</code> に任意の型 (<b>nil</b> を含む) の引数を持つかチェックする。
+
+<p><a name="luaL_checkint"></a>
+<hr></hr>
+<h3><code>luaL_checkint</code></h3>
+<pre>
+          int luaL_checkint (lua_State *L, int narg);
+</pre>
+
+
+<p>関数の第 <code>narg</code> 引数が数値であるかをチェックし、 その値を <code>int</code> にキャストして返す。
+
+<p><a name="luaL_checkinteger"></a>
+<hr></hr>
+<h3><code>luaL_checkinteger</code></h3>
+<pre>
+          lua_Integer luaL_checkinteger (lua_State *L, int narg);
+</pre>
+
+
+<p>関数の第 <code>narg</code> 引数が数値であるかをチェックし、 その値を <a href="#lua_Integer"><code>lua_Integer</code></a> にキャストして返す。
+
+<p><a name="luaL_checklong"></a>
+<hr></hr>
+<h3><code>luaL_checklong</code></h3>
+<pre>
+          long luaL_checklong (lua_State *L, int narg);
+</pre>
+
+
+<p>関数の第 <code>narg</code> 引数が数値であるかをチェックし、 その値を <code>long</code> にキャストして返す。
+
+<p><a name="luaL_checklstring"></a>
+<hr></hr>
+<h3><code>luaL_checklstring</code></h3>
+<pre>
+          const char *luaL_checklstring (lua_State *L, int narg, size_t *l);
+</pre>
+
+
+<p>関数の第 <code>narg</code> 引数が文字列であるかをチェックし、その文字列を返す。 <code>l</code> が <code>NULL</code> でなければ、 <code>*l</code> に文字列の長さを格納する。
+
+<p><a name="luaL_checknumber"></a>
+<hr></hr>
+<h3><code>luaL_checknumber</code></h3>
+<pre>
+          lua_Number luaL_checknumber (lua_State *L, int narg);
+</pre>
+
+
+<p>関数の第 <code>narg</code> 引数が数値であるかをチェックし、 その数値を返す。
+
+<p><a name="luaL_checkoption"></a>
+<hr></hr>
+<h3><code>luaL_checkoption</code></h3>
+<pre>
+          int luaL_checkoption (lua_State *L, int narg, const char *def,
+                                const char *const lst[]);
+</pre>
+
+
+<p>関数の第 <code>narg</code> 引数が文字列であるかチェックし、 配列 <code>lst</code> (NULL終端でなければならない) からその文字列を検索する。 <code>def</code> が <code>NULL</code> でなければ、 関数が第 <code>narg</code> 引数を持たないかその引数が <b>nil</b>
+であった場合のデフォルト値として使う。
+
+<p>文字列が見つかった配列インデックスを返す。 引数が文字列でないか文字列が見つからなければエラーを発生する。
+
+<p>この関数は文字列をCの列挙型に変換するのに役に立つ。 Luaのライブラリにおける通常の慣例では、オプションを選択するのに、数値でなく文字列を使う。
+
+<p><a name="luaL_checkstack"></a>
+<hr></hr>
+<h3><code>luaL_checkstack</code></h3>
+<pre>
+          void luaL_checkstack (lua_State *L, int sz, const char *msg);
+</pre>
+
+
+<p>スタックサイズを <code>top + sz</code> 個の要素に伸ばす。 スタックがそのサイズに伸ばせなければエラーを発生する。 <code>msg</code> はそのエラーメッセージに入れる追加の文字列である。
+
+<p><a name="luaL_checkstring"></a>
+<hr></hr>
+<h3><code>luaL_checkstring</code></h3>
+<pre>
+          const char *luaL_checkstring (lua_State *L, int narg);
+</pre>
+
+
+<p>関数の第 <code>narg</code> 引数が文字列であるかチェックし、その文字列を返す。
+
+<p><a name="luaL_checktype"></a>
+<hr></hr>
+<h3><code>luaL_checktype</code></h3>
+<pre>
+          void luaL_checktype (lua_State *L, int narg, int t);
+</pre>
+
+
+<p>関数の第 <code>narg</code> 引数が型 <code>t</code> であるかチェックする。
+
+<p><a name="luaL_checkudata"></a>
+<hr></hr>
+<h3><code>luaL_checkudata</code></h3>
+<pre>
+          void *luaL_checkudata (lua_State *L, int narg, const char *tname);
+</pre>
+
+
+<p>関数の第 <code>narg</code> 引数が型 <code>tname</code> のユーザーデータであるかチェックする (<a href="#luaL_newmetatable"><code>luaL_newmetatable</code></a> を参照)。
+
+<p><a name="luaL_error"></a>
+<hr></hr>
+<h3><code>luaL_error</code></h3>
+<pre>
+          int luaL_error (lua_State *L, const char *fmt, ...);
+</pre>
+
+
+<p>エラーを発生させる。 エラーメッセージの書式は <code>fmt</code> と追加の引数で与えられる。 これは <a href="#lua_pushfstring"><code>lua_pushfstring</code></a> のと同じルールに従う。 また、メッセージの最初にエラーが発生したファイル名と行番号を、それらの情報が利用可能ならば、追加する。
+
+<p>この関数は決して戻らないが、 Cの関数で <code>return luaL_error ...</code> のように使うのが慣例である。
+
+<p><a name="luaL_getmetafield"></a>
+<hr></hr>
+<h3><code>luaL_getmetafield</code></h3>
+<pre>
+          int luaL_getmetafield (lua_State *L, int obj, const char *e);
+</pre>
+
+
+<p>インデックス <code>obj</code> のオブジェクトのメタテーブルのフィールド <code>e</code> をスタックに積む。 そのオブジェクトがメタテーブルを持っていないか、メタテーブルがそのフィールドを持っていなければ 0 を返して何も積まない。
+
+<p><a name="luaL_getmetatable"></a>
+<hr></hr>
+<h3><code>luaL_getmetatable</code></h3>
+<pre>
+          void luaL_getmetatable (lua_State *L, const char *tname);
+</pre>
+
+
+<p>レジストリの名前 <code>tname</code> に関連付けられたメタテーブルをスタックに積む (<a href="#luaL_newmetatable"><code>luaL_newmetatable</code></a> を参照)。
+
+<p><a name="luaL_gsub"></a>
+<hr></hr>
+<h3><code>luaL_gsub</code></h3>
+<pre>
+          const char *luaL_gsub (lua_State *L, const char *s,
+                                 const char *p, const char *r);
+</pre>
+
+
+<p>文字列 <code>s</code> 中の文字列 <code>p</code> をすべて文字列 <code>r</code> で置換したコピーを作る。 その結果の文字列をスタックに積み、それを返す。
+
+<p><a name="luaL_loadbuffer"></a>
+<hr></hr>
+<h3><code>luaL_loadbuffer</code></h3>
+<pre>
+          int luaL_loadbuffer (lua_State *L, const char *buff,
+                               size_t sz, const char *name);
+</pre>
+
+
+<p>Luaのチャンクとしてバッファをロードする。 この関数は <a href="#lua_load"><code>lua_load</code></a> を使って <code>buff</code> が指すサイズ <code>sz</code> のバッファに格納されているチャンクをロードする。
+
+<p>この関数は <a href="#lua_load"><code>lua_load</code></a> と同じ結果を返す。 <code>name</code> はデバッグ情報やエラーメッセージで使うチャンク名である。
+
+<p><a name="luaL_loadfile"></a>
+<hr></hr>
+<h3><code>luaL_loadfile</code></h3>
+<pre>
+          int luaL_loadfile (lua_State *L, const char *filename);
+</pre>
+
+
+<p>Luaのチャンクとしてファイルをロードする。 この関数は <a href="#lua_load"><code>lua_load</code></a> を使って名前 <code>filename</code> のファイルに格納されているチャンクをロードする。 <code>filename</code> が <code>NULL</code> の場合は標準入力から読み込む。 ファイルが
+<code>#</code> で始まっていたら、その最初の行を無視する。
+
+<p>この関数は <a href="#lua_load"><code>lua_load</code></a> と同じ結果を返すが、 追加のエラーコードとしてファイルを開けなかったり読めなかった場合は <code>LUA_ERRFILE</code> を返す。
+
+<p><a name="luaL_loadstring"></a>
+<hr></hr>
+<h3><code>luaL_loadstring</code></h3>
+<pre>
+          int luaL_loadstring (lua_State *L, const char *s);
+</pre>
+
+
+<p>Luaのチャンクとして文字列をロードする。 この関数は <a href="#lua_load"><code>lua_load</code></a> を使ってゼロ終端文字列 <code>s</code> に格納されているチャンクをロードする。
+
+<p>この関数は <a href="#lua_load"><code>lua_load</code></a> と同じ結果を返す。
+
+<p><a name="luaL_newmetatable"></a>
+<hr></hr>
+<h3><code>luaL_newmetatable</code></h3>
+<pre>
+          int luaL_newmetatable (lua_State *L, const char *tname);
+</pre>
+
+
+<p>レジストリにキー <code>tname</code> がすでにあれば 0 を返す。 そうでなければ、ユーザーデータのメタテーブルとして使う新しいテーブルを作り、 それをレジストリにキー <code>tname</code> と共に追加して 1 を返す。
+
+<p>どちらの場合もレジストリの <code>tname</code> に関連付けられた最終的な値をスタックに積む。
+
+<p><a name="luaL_newstate"></a>
+<hr></hr>
+<h3><code>luaL_newstate</code></h3>
+<pre>
+          lua_State *luaL_newstate (void);
+</pre>
+
+
+<p>標準のCの <code>realloc</code> 関数をベースにしたアロケータ関数を使って <a href="#lua_newstate"><code>lua_newstate</code></a> を呼び、新しいLuaステートを作成する。 また、致命的エラーの場合に標準エラー出力にエラーメッセージを出力するパニック関数 (<a href="#lua_atpanic"><code>lua_atpanic</code></a>
+を参照) を設定する。
+
+<p>新しいステートを返す。 メモリ確保エラーの場合は <code>NULL</code> を返す。
+
+<p><a name="luaL_openlibs"></a>
+<hr></hr>
+<h3><code>luaL_openlibs</code></h3>
+<pre>
+          void luaL_openlibs (lua_State *L);
+</pre>
+
+
+<p>指定したステートにすべての標準Luaライブラリを開く。
+
+<p><a name="luaL_optint"></a>
+<hr></hr>
+<h3><code>luaL_optint</code></h3>
+<pre>
+          int luaL_optint (lua_State *L, int narg, int d);
+</pre>
+
+
+<p>関数の第 <code>narg</code> 引数が数値であれば、その数値を <code>int</code> にキャストして返す。 その引数が存在しないか <b>nil</b> であれば、<code>d</code> を返す。 さもなくばエラーを発生する。
+
+<p><a name="luaL_optinteger"></a>
+<hr></hr>
+<h3><code>luaL_optinteger</code></h3>
+<pre>
+          lua_Integer luaL_optinteger (lua_State *L, int narg, lua_Integer d);
+</pre>
+
+
+<p>関数の第 <code>narg</code> 引数が数値であれば、 その数値を <a href="#lua_Integer"><code>lua_Integer</code></a> にキャストして返す。 その引数が存在しないか <b>nil</b> であれば、<code>d</code> を返す。 さもなくばエラーを発生する。
+
+<p><a name="luaL_optlong"></a>
+<hr></hr>
+<h3><code>luaL_optlong</code></h3>
+<pre>
+          long luaL_optlong (lua_State *L, int narg, long d);
+</pre>
+
+
+<p>関数の第 <code>narg</code> 引数が数値であれば、その数値を <code>long</code> にキャストして返す。 その引数が存在しないか <b>nil</b> であれば、<code>d</code> を返す。 さもなくばエラーを発生する。
+
+<p><a name="luaL_optlstring"></a>
+<hr></hr>
+<h3><code>luaL_optlstring</code></h3>
+<pre>
+          const char *luaL_optlstring (lua_State *L, int narg,
+                                       const char *d, size_t *l);
+</pre>
+
+
+<p>関数の第 <code>narg</code> 引数が文字列であれば、その文字列を返す。 引数が存在しないか <b>nil</b> であれば、<code>d</code> を返す。 さもなくばエラーを発生する。
+
+<p><code>l</code> が <code>NULL</code> でなければ、結果の長さを <code>*l</code> に格納する。
+
+<p><a name="luaL_optnumber"></a>
+<hr></hr>
+<h3><code>luaL_optnumber</code></h3>
+<pre>
+          lua_Number luaL_optnumber (lua_State *L, int narg, lua_Number d);
+</pre>
+
+
+<p>関数の第 <code>narg</code> 引数が数値であれば、その数値を返す。 その引数が存在しないか <b>nil</b> であれば、<code>d</code> を返す。 さもなくばエラーを発生する。
+
+<p><a name="luaL_optstring"></a>
+<hr></hr>
+<h3><code>luaL_optstring</code></h3>
+<pre>
+          const char *luaL_optstring (lua_State *L, int narg, const char *d);
+</pre>
+
+
+<p>関数の第 <code>narg</code> 引数が文字列であれば、その文字列を返す。 その引数が存在しないか <b>nil</b> であれば、<code>d</code> を返す。 さもなくばエラーを発生する。
+
+<p><a name="luaL_prepbuffer"></a>
+<hr></hr>
+<h3><code>luaL_prepbuffer</code></h3>
+<pre>
+          char *luaL_prepbuffer (luaL_Buffer *B);
+</pre>
+
+
+<p>バッファ <code>B</code> に追加するための文字列を格納できる、 サイズ <code>LUAL_BUFFERSIZE</code> の領域のアドレスを返す (<a href="#luaL_Buffer"><code>luaL_Buffer</code></a> を参照)。 文字列をこの領域に格納したあと、文字列のサイズを渡して <a
+    href="#luaL_addsize"><code>luaL_addsize</code></a> を呼び、実際にバッファに追加しなければならない。
+
+<p><a name="luaL_pushresult"></a>
+<hr></hr>
+<h3><code>luaL_pushresult</code></h3>
+<pre>
+          void luaL_pushresult (luaL_Buffer *B);
+</pre>
+
+
+<p>スタックトップに最終的な文字列を残してバッファ <code>B</code> の使用を終える。
+
+<p><a name="luaL_ref"></a>
+<hr></hr>
+<h3><code>luaL_ref</code></h3>
+<pre>
+          int luaL_ref (lua_State *L, int t);
+</pre>
+
+
+<p>インデックス <code>t</code> のテーブルにスタックトップのオブジェクトに対する <em>リファレンス</em> を作成し、それを返す(そしてオブジェクトをスタックから取り除く)。
+
+<p>リファレンスは一意な整数のキーである。 テーブル <code>t</code> に整数キーを手動で追加しなければ、 <a href="#luaL_ref"><code>luaL_ref</code></a> は返すキーの一意性を保証する。 <code>lua_rawgeti(L, t, r)</code> を呼ぶと、リファレンス <code>r</code>
+が参照するオブジェクトを取得できる。 <a href="#luaL_unref"><code>luaL_unref</code></a> はリファレンスとそれに関連付けられたオブジェクトを解放する。
+
+<p>スタックトップのオブジェクトが <b>nil</b> の場合、 <a href="#luaL_ref"><code>luaL_ref</code></a> は定数 <code>LUA_REFNIL</code> を返す。 定数 <code>LUA_NOREF</code> は <a href="#luaL_ref"><code>luaL_ref</code></a>
+が返すいかなるリファレンスとも異なることが保証されている。
+
+<p><a name="luaL_Reg"></a>
+<hr></hr>
+<h3><code>luaL_Reg</code></h3>
+<pre>
+          typedef struct luaL_Reg {
+            const char *name;
+            lua_CFunction func;
+          } luaL_Reg;
+
+</pre>
+
+
+<p><a href="#luaL_register"><code>luaL_register</code></a> が登録する関数の配列の型。 <code>name</code> は関数の名前で、<code>func</code> は関数へのポインタである。 <a href="#luaL_Reg"><code>luaL_Reg</code></a> の配列は <code>name</code>
+と <code>func</code> が共に <code>NULL</code> である番兵エントリで終わらなければならない。
+
+<p><a name="luaL_register"></a>
+<hr></hr>
+<h3><code>luaL_register</code></h3>
+<pre>
+          void luaL_register (lua_State *L, const char *libname,
+                              const luaL_Reg *l);
+</pre>
+
+
+<p>ライブラリを開く。
+
+<p><code>libname</code> に <code>NULL</code> を渡して呼ぶと、 単純にリスト <code>l</code> (<a href="#luaL_Reg"><code>luaL_Reg</code></a> を参照) の関数をすべてスタックトップのテーブルに登録する。
+
+<p><code>libname</code> がNULLでなければ、 新しいテーブル <code>t</code> を作成し、 それをグローバル変数 <code>libname</code> の値として設定し、 <code>package.loaded[libname]</code> の値として設定し、 そしてリスト <code>l</code> の関数をすべてそこに登録する。 もし <code>package.loaded[libname]</code>
+か変数 <code>libname</code> にテーブルが存在すれば、 新しいテーブルを作る代わりにそれを再利用する。
+
+<p>いずれの場合も、この関数はスタックトップにそのテーブルを置く。
+
+<p><a name="luaL_typename"></a>
+<hr></hr>
+<h3><code>luaL_typename</code></h3>
+<pre>
+          const char *luaL_typename (lua_State *L, int idx);
+</pre>
+
+
+<p>インデックス <code>idx</code> の値の型の名前を返す。
+
+<p><a name="luaL_typerror"></a>
+<hr></hr>
+<h3><code>luaL_typerror</code></h3>
+<pre>
+          int luaL_typerror (lua_State *L, int narg, const char *tname);
+</pre>
+
+
+<p><pre>
+&#060;location>: bad argument &#060;narg> to &#060;function> (&#060;tname> expected, got &#060;realt>)
+</pre> のようなメッセージのエラーを生成する。 ただし <code>&#060;location></code> は <a href="#luaL_where"><code>luaL_where</code></a> によって生成されたもので、 <code>&#060;function></code> は現在の関数の名前、 and <code>&#060;realt></code>
+は実引数の型名である。
+
+<p><a name="luaL_unref"></a>
+<hr></hr>
+<h3><code>luaL_unref</code></h3>
+<pre>
+          void luaL_unref (lua_State *L, int t, int ref);
+</pre>
+
+
+<p>インデックス <code>t</code> のテーブルからリファレンス <code>ref</code> を解放する (<a href="#luaL_ref"><code>luaL_ref</code></a> を参照)。 エントリがテーブルから取り除かれるので、参照されていたオブジェクトは回収され得る。 リファレンス <code>ref</code> も再利用するために解放される。
+
+<p><code>ref</code> が <code>LUA_NOREF</code> または <code>LUA_REFNIL</code> の場合、 <a href="#luaL_unref"><code>luaL_unref</code></a> は何もしない。
+
+<p><a name="luaL_where"></a>
+<hr></hr>
+<h3><code>luaL_where</code></h3>
+<pre>
+          void luaL_where (lua_State *L, int lvl);
+</pre>
+
+
+<p>コールスタックのレベル <code>lvl</code> の制御の現在位置を識別する文字列をスタックに積む。 典型的にこの文字列は <code>&#060;chunkname>:&#060;currentline>:</code> のような書式になっている。 レベル0は実行中の関数、 レベル1は実行中の関数の呼び出し元の関数、 以下同様である。
+
+<p>この関数はエラーメッセージの接頭辞を構築するために使う。
+
+<p><a name="libraries"></a><a name="5"></a>
+<h1>5 - 標準ライブラリ</h1>
+
+<p>Lua標準ライブラリは、CのAPIを使って直接実装された便利な関数を提供する。 いくつかは言語の本質的なサービスを提供するものであり (例えば <a href="#pdf-type"><code>type</code></a> や <a href="#pdf-getmetatable"><code>getmetatable</code></a>)、
+残りは「外部の」サービスへのアクセスを提供するものである (例えば I/O)。 また、Lua自身で実装可能であるが、便利さやパフォーマンス要求のためにCで実装されたものもある (例えば <code>sort</code>)。
+
+<p>すべてのライブラリは公開されているCのAPIを使って実装されており、独立したCのモジュールで提供されている。 現在、Luaには以下の標準ライブラリがある。
+<ul>
+    <li>基本ライブラリ
+    <li>パッケージライブラリ
+    <li>文字列操作
+    <li>テーブル操作
+    <li>数学関数 (sin、logなど)
+    <li>入出力
+    <li>OS機能
+    <li>デバッグ機能
+</ul>
+基本ライブラリとパッケージライブラリ以外は、 それぞれのライブラリが、 グローバルテーブルのフィールドか、そのオブジェクトのメソッドとして、そのすべての関数を提供している。
+
+<p>これらのライブラリを使うには、Cのホストプログラムで すべての標準ライブラリを開く <code>luaL_openlibs</code> を呼ばなければならない。 代わりに、 <code>luaopen_base</code> (基本ライブラリ用)、 <code>luaopen_package</code> (パッケージライブラリ用)、 <code>luaopen_string</code>
+(文字列ライブラリ用)、 <code>luaopen_table</code> (テーブルライブラリ用)、 <code>luaopen_math</code> (数学ライブラリ用)、 <code>luaopen_io</code> (I/OライブラリとOSライブラリ用)、 <code>luaopen_debug</code> (デバッグライブラリ用) を呼んで個別に開くこともできる。 これらは <code>lualib.h</code>
+に定義されているが、 直接呼ぶべきではなく、他のLuaのC関数と同様に ---- 例えば <code>lua_call</code> を使って ---- 呼ばなければならない。
+
+<p><a name="predefined"><a name="5.1">
+<h2>5.1 - 基本関数</h2>
+</a></a>
+
+<p>基本ライブラリはLuaへのコアな機能を提供する。 アプリケーションにこのライブラリを含めない場合は、その機能を提供する代わりの実装を用意する必要があるか慎重に調べるべきである。
+
+<p><a name="pdf-assert"></a>
+<hr></hr>
+<h3><code>assert (v [, message])</code></h3>
+引数 <code>v</code> が偽 (すなわち <b>nil</b> または <b>false</b>) であればエラーを発生させる。 そうでなければ、そのすべての引数を返す。 <code>message</code> はエラーメッセージを指定する。 省略された場合は "assertion failed!" である。
+
+<p><a name="pdf-collectgarbage"></a>
+<hr></hr>
+<h3><code>collectgarbage (opt [, arg])</code></h3>
+<p>この関数はガベージコレクタへの汎用インタフェイスである。 最初の引数 <code>opt</code> によって異なる機能を実行する。
+<ul>
+    <li><b>"stop"</b> --- ガベージコレクタを停止する。
+    <li><b>"restart"</b> --- ガベージコレクタを再開する。
+    <li><b>"collect"</b> --- フルガベージコレクションサイクルを実行する。
+    <li><b>"count"</b> --- Luaが使っているメモリの合計を(キロバイトで)返す。
+    <li><b>"step"</b> --- ガベージコレクションステップひとつを実行する。 ステップの「サイズ」は <code>arg</code> で制御する。 大きな値は大きなステップを意味するが、具体的には定まっていない。 ステップサイズを制御したければ、 <code>arg</code> の値を実験的に調整しなければならない。
+    このステップでコレクションサイクルが終わった場合は <b>true</b> を返す。
+    <li><b>"steppause"</b> --- コレクタの停止値 (<a href="#GC">2.10</a> を参照) の新しい値を <code>arg</code>÷100に設定する。
+    <li><b>"setstepmul"</b> --- コレクタの <em>ステップ係数</em> の新しい値を <code>arg</code>÷100に設定する (<a href="#GC">2.10</a> を参照)。
+</ul>
+
+<p><a name="pdf-dofile"></a>
+<hr></hr>
+<h3><code>dofile (filename)</code></h3>
+ファイルを開き、その内容をLuaチャンクとして実行する。 引数が指定されなければ、標準入力 (<code>stdin</code>) から読み取って実行する。 dofileはチャンクから返されたすべての値をそのまま返す。 エラーが起きた場合は、呼び出し側に伝搬される (つまり <code>dofile</code> は保護モードで動くのではない)。
+
+<p><a name="pdf-error"></a>
+<hr></hr>
+<h3><code>error (message [, level])</code></h3>
+
+最後に保護された関数呼び出しを終了し、<code>message</code> をエラーメッセージとして返す。 関数 <code>error</code> は戻らない。
+
+<p>通常、<code>error</code> はメッセージの先頭にエラーの位置に関する何らかの情報を追加する。 <code>level</code> 引数は、エラーメッセージがエラー位置をどのように得るかを指定する。 レベル1では (デフォルト)、<code>error</code> 関数を呼んだ場所がエラー位置である。 レベル2は <code>error</code>
+を呼んだ関数を呼んだ位置を指す。 以下同様である。 レベル0を渡すとメッセージにエラー位置情報を追加しない。
+
+<p><a name="pdf-_G"></a>
+<hr></hr>
+<h3><code>_G</code></h3>
+グローバル環境を保持するグローバル変数である (関数ではない)。 つまり、<code>_G._G = _G</code> である。 Lua自身はこの変数を使用しないので、この値を変更しても環境には何の影響もなく、逆もまた同じである (環境を変えるには <a href="#pdf-setfenv"><code>setfenv</code></a> を使う)。
+
+<p><a name="pdf-getfenv"></a>
+<hr></hr>
+<h3><code>getfenv (f)</code></h3>
+関数の現在の環境を返す。 <code>f</code> はLuaの関数か、関数のスタックレベルを示す数値である。 レベル1は<code>getfenv</code>を呼んだ関数である。 もし与えられた関数がLuaの関数でなかったり、<code>f</code>が0の場合は、<code>getfenv</code> はグローバル環境を返す。 <code>f</code> のデフォルト値は1である。
+
+<p><a name="pdf-getmetatable"></a>
+<hr></hr>
+<h3><code>getmetatable (object)</code></h3>
+
+<p>もし <code>object</code> がメタテーブルを持っていなければ <b>nil</b> を返す。 もしobjectのメタテーブルが <code>"__metatable"</code> フィールドを持っていれば、その値を返す。 そうでなければobjectのメタテーブルを返す。
+
+<p><a name="pdf-ipairs"></a>
+<hr></hr>
+<h3><code>ipairs (t)</code></h3>
+
+<p>3つの値、イテレータ関数、テーブル <code>t</code>、および0を返す。 <pre>
+       for i,v in ipairs(t) do ... end
+</pre> は (<code>1,t[1]</code>)、(<code>2,t[2]</code>)、…のペアを、最初に値にnilが現れるまで繰り返す。
+
+<p>巡回中にテーブルを変更する際の注意は <a href="#pdf-next"><code>next</code></a> を参照。
+
+<p><a name="pdf-load"></a>
+<hr></hr>
+<h3><code>load (func [, chunkname])</code></h3>
+
+<p>そのピースを取得する関数 <code>func</code> を使ってチャンクをロードする。 <code>func</code> は前回の戻り値と連結する文字列を返さなければならない。 <b>nil</b> を返す (または戻り値なし) とチャンクの終わりを知らせる。
+
+<p>エラーがなければ、コンパイルされたチャンクが関数として返され、 そうでなければ <b>nil</b> とエラーメッセージが返される。 返された関数の環境はグローバル環境である。
+
+<p><code>chunkname</code> はエラーメッセージやデバッグ情報のためのチャンク名を指定する。
+
+<p><a name="pdf-loadfile"></a>
+<hr></hr>
+<h3><code>loadfile ([filename])</code></h3>
+
+<p><a href="#pdf-load"><code>load</code></a> と同じであるが、 ファイル <code>filename</code> からチャンクを読み込む。 ファイル名を与えなければ標準入力から読み込む。
+
+<p><a name="pdf-loadstring"></a>
+<hr></hr>
+<h3><code>loadstring (string [, chunkname])</code></h3>
+
+<p><a href="#pdf-load"><code>load</code></a> と同じであるが、 指定した文字列からチャンクを読み込む。
+
+<p>与えられた文字列をロードして実行するには、以下の慣用句を使う。 <pre>
+      assert(loadstring(s))()
+</pre>
+
+<p><a name="pdf-next"></a>
+<hr></hr>
+<h3><code>next (table [, index])</code></h3>
+
+<p>テーブルの全フィールドを巡回するための関数である。 最初の引数はテーブルを、二番目の引数はこのテーブルのインデックスを渡す。 <code>next</code> はテーブル内の次のインデックスと、その値を返す。 二番目の引数に <b>nil</b> を渡すと、初期インデックスとその値が返される。 最後のインデックスで呼び出すか、空のテーブルに対して <b>nil</b>
+で呼び出すと、 <code>next</code> は <b>nil</b> を返す。 二番目の引数が省略された場合は <b>nil</b> と解釈される。 特に、<code>next(t)</code> を使うとテーブルが空かどうか調べることができる。
+
+<p>Luaにはフィールドの宣言がない。 テーブル内にフィールドが存在しないのと、<b>nil</b> 値が格納されたフィールドには、何の違いも無い。 ゆえに、<code>next</code> は <b>nil</b> でない値を持つフィールドのみを考慮する。 インデックスが列挙される順番は、<em>数値のインデックスに対しても</em>、不定である
+(数値順にテーブルを巡回するには、数値用の <b>for</b> 文や <a href="#pdf-ipairs"><code>ipairs</code></a> 関数を使う)。
+
+<p>テーブルの巡回中に、もし存在していないフィールドに新たに値が割り当てられたら、<code>next</code> の動作は <em>未定義</em> である。 しかし既存のフィールドは変更してもよい。 特に、既存のフィールドを消去するのは構わない。
+
+<p><a name="pdf-pairs"></a>
+<hr></hr>
+<h3><code>pairs (t)</code></h3>
+
+<p>3つの値、<a href="#pdf-next"><code>next</code></a> 関数、テーブル <code>t</code>、<b>nil</b> を返す。 <pre>
+       for k,v in pairs(t) do ... end
+</pre> はテーブル <code>t</code> のすべてのキー・値ペアについて繰り返す。
+
+<p>巡回中にテーブルを変更する際の注意は <a href="#pdf-next"><code>next</code></a> を参照。 +
+<p><a name="pdf-pcall"></a>
+<hr></hr>
+<h3><code>pcall (f, arg1, arg2, ...)</code></h3>
+
+<p>保護モードで、与えられた引数で <code>f</code> を呼び出す。 つまり <code>f</code> の内部で発生したエラーは伝搬されず、 代わりに <code>pcall</code> がエラーを捕らえ、ステータスコードを返す。 最初の引数はステータスコード (ブーリアン型) で、エラーなしに呼び出しが成功したときは真を返す。 その場合、<code>f</code>
+の戻り値もすべて、最初の戻り値に続いて返される。 エラーが起こった場合、<code>pcall</code> は <b>false</b> とエラーメッセージを返す。
+
+<p><a name="pdf-print"></a>
+<hr></hr>
+<h3><code>print (e1, e2, ...)</code></h3>
+引数をいくつでも取ることができ、それらの値を <a href="#pdf-tostring"><code>tostring</code></a> で文字列に変換してから標準出力 (<code>stdout</code>) に表示する。 <code>print</code> は書式化出力を意図したものではなく、 典型的にはデバッグのために、値を表示する簡単な方法として用意されているだけである。
+書式化出力には <a href="#pdf-string.format"><code>string.format</code></a> を使う。
+
+<p><a name="pdf-rawequal"></a>
+<hr></hr>
+<h3><code>rawequal (v1, v2)</code></h3>
+メタメソッドを呼ぶことなしに <code>v1</code> と <code>v2</code> が等しいかどうか調べる。 ブーリアンを返す。
+
+<p><a name="pdf-rawget"></a>
+<hr></hr>
+<h3><code>rawget (table, index)</code></h3>
+メタメソッドを呼ぶことなしに <code>table[index]</code> の本当の値を得る。 <code>table</code> はテーブルでなければならない。 <code>index</code> は <b>nil</b> 以外のどんな値でも良い。
+
+<p><a name="pdf-rawset"></a>
+<hr></hr>
+<h3><code>rawset (table, index, value)</code></h3>
+メタメソッドを呼ぶことなしに <code>table[index]</code> に <code>value</code> をセットする。 <code>table</code> はテーブルでなければならない。 <code>index</code> は <b>nil</b> 以外のどんな値でも良い。 <code>value</code> はどんなLuaの値でも良い。
+
+<p><a name="pdf-select"></a>
+<hr></hr>
+<h3><code>select (index, ...)</code></h3>
+
+<p><code>index</code> が数値であれば、 <code>index</code> 番目以降の引数をすべて返す。 そうでなければ、<code>index</code> は文字列 <code>"#"</code> でなければならない。 この場合 <code>select</code> は受け取った余分の引数の合計数を返す。
+
+<p><a name="setfenv"></a><a name="pdf-setfenv"></a>
+<hr></hr>
+<h3><code>setfenv (f, table)</code></h3>
+
+<p>指定された関数で使われる環境を変更する。 <code>f</code> はLuaの関数か、関数のスタックレベルを指定する数値である。 レベル1は <code>setfenv</code> を呼び出した関数を示す。 <code>setfenv</code> は与えられた関数を返す。
+
+<p>特殊なケースとして、<code>f</code>に0が与えられると、<code>setfenv</code> は走行中のスレッドの環境を変える。 この場合、<code>setfenv</code> は何も返さない。
+
+<p><a name="pdf-setmetatable"></a>
+<hr></hr>
+<h3><code>setmetatable (table, metatable)</code></h3>
+
+<p><code>table</code> のメタテーブルを変更する (Luaから他の型のメタテーブルを変更することはできない。Cからのみ可能である)。 もし <code>metatable</code> が <b>nil</b> であれば、<code>table</code> のメタテーブルは除去される。 元のメタテーブルが <code>"__metatable"</code>
+フィールドを持っていると、エラーを発する。
+
+<p>この関数は <code>table</code> を返す。
+
+<p><a name="pdf-tonumber"></a>
+<hr></hr>
+<h3><code>tonumber (e [, base])</code></h3>
+引数を数値に変換しようとする。 もし引数がすでに数値だったり、数値に変換可能な文字列であれば、<code>tonumber</code> は数値を返す。 そうでなければ <b>nil</b> を返す。
+
+<p>省略可能な引数は数値を解釈する際の基数を指定する。 基数は2から36の整数を指定できる。 10より大きい基数では、`<code>A</code>&acute;が10を表し、`<code>B</code>&acute;が11を表し、 以下同様に続き、`<code>Z</code>&acute;が35を表す (大文字でも小文字でも良い)。 基数が10 (デフォルト) の場合
+は、数値に小数部や指数部を付けることができる (<a href="#lexical">2.1</a> を参照)。 他の基数では、符号なしの整数のみを受け付ける。
+
+<p><a name="pdf-tostring"></a>
+<hr></hr>
+<h3><code>tostring (e)</code></h3>
+任意の型の引数を受け取り、理解しやすい形式の文字列に変換する。 数値が変換される方法を完全にコントロールする場合は <a href="#pdf-string.format"><code>string.format</code></a> を使う。
+
+<p>もし <code>e</code> のメタテーブルが <code>"__tostring"</code> フィールドを持っていたら、 <code>e</code> を引数に、その関連付けられた値が呼び出され、その戻り値が結果として使われる。
+
+<p><a name="pdf-type"></a>
+<hr></hr>
+<h3><code>type (v)</code></h3>
+値の型を文字列で返す。 この関数が返す値は以下のいずれかである。 <pre>
+    "nil" (という文字列。<b>nil</b> 値ではなく。)
+    "number"
+    "string"
+    "boolean"
+    "table"
+    "function"
+    "thread"
+    "userdata"
+</pre>
+
+<p><a name="pdf-unpack"></a>
+<hr></hr>
+<h3><code>unpack (list [, i [, j]])</code></h3>
+与えられたテーブルの要素を返す。 この関数は、以下のコードには固定の要素数しか書けないことを除いて、以下のコードと等価である。 <pre>
+  return list[i], list[i+1], ..., list[j]
+</pre> デフォルトでは、<code>i</code> は1で <code>j</code> は長さ演算子 (<a href="#len-op">2.5.5</a> を参照) 定義されているリストの長さである。
+
+<p><a name="pdf-_VERSION"></a>
+<hr></hr>
+<h3><code>_VERSION</code></h3>
+現在のインタプリタのバージョン文字列を保持しているグローバル変数 (関数ではない)。 この変数の現在の内容は <code>"Lua 5.1"</code> である。
+
+<p><a name="pdf-xpcall"></a>
+<hr></hr>
+<h3><code>xpcall (f, err)</code></h3>
+
+<p>この関数は <code>pcall</code> に似ているが、エラーハンドラを指定できる点が異なる。
+
+<p><code>xpcall</code> は保護モードで <code>f</code> を呼び出し、 <code>err</code> をエラーハンドラとして使う。 <code>f</code> の内部で発生したエラーは伝搬されない。 代わりに、<code>xpcall</code> がエラーを捕らえ、エラーオブジェクトを引数に <code>err</code> を呼ぶ。
+最初の戻り値はステータスコード (ブーリアン型) で、 エラーが起きなかった場合は true を返す。 その場合、最初の戻り値に続いて <code>f</code> の戻り値もすべて返される。 エラーが起きた場合、<code>xpcall</code> は <b>false</b> と <code>err</code> の戻り値を返す。
+
+<p><a name="5.2"></a>
+<h2>5.2 - コルーチン操作</h2>
+
+<p>コルーチン関連の操作は基本ライブラリのサブライブラリであり、テーブル <code>coroutine</code> 内に置かれている。 コルーチンに関する一般的な説明は <a href="#coroutine">2.11</a> を参照。
+
+<p><a name="pdf-coroutine.create"></a>
+<hr></hr>
+<h3><code>coroutine.create (f)</code></h3>
+
+<p><code>f</code> を本体とする新しいコルーチンを作る。 <code>f</code> はLuaの関数でなければならない。 <code>"thread"</code> 型の新しいコルーチンオブジェクトを返す。
+
+<p><a name="pdf-coroutine.resume"></a>
+<hr></hr>
+<h3><code>coroutine.resume (co [, val1, ..., valn])</code></h3>
+
+<p>コルーチン <code>co</code> の実行を開始/再開する。 コルーチンを最初にresumeしたとき、その本体の実行が開始される。 値 <code>val1</code>, ... は本体の関数に引数として渡される。 コルーチンが中断されていた場合、<code>resume</code> はそれを再開し、 yield からの戻り値として <code>val1</code>,
+... が渡される。
+
+<p>コルーチンがエラー無く実行されれば、 <code>resume</code> は <b>true</b> に加えて <code>yield</code> に渡された値 (コルーチンが中断された場合)、 もしくは本体の関数から返された値 (コルーチンが終了した場合) を返す。 エラーが起きたら、<code>resume</code> は <b>false</b>
+とエラーメッセージを返す。
+
+<p><a name="pdf-coroutine.running"></a>
+<hr></hr>
+<h3><code>coroutine.running ()</code></h3>
+
+<p>走行中のコルーチンを返す。 メインスレッドで呼ばれた場合は <b>nil</b> を返す。
+
+<p><a name="pdf-coroutine.status"></a>
+<hr></hr>
+<h3><code>coroutine.status (co)</code></h3>
+
+<p>コルーチン <code>co</code> の状態を文字列で返す。
+<p><code>"running"</code> ... コルーチンは走行中。 <code>"suspended"</code> ... コルーチンは <code>yield</code> の呼び出しで中断されているが、まだ実行中である。 <code>"normal"</code> ... コルーチンはアクティブであるが走行中でない(つまり他のコルーチンをresumeしている)。 <code>"dead"</code>
+... コルーチンの本体の関数が終了したか、エラーで停止した。</p>
+
+<p><a name="pdf-coroutine.wrap"></a>
+<hr></hr>
+<h3><code>coroutine.wrap (f)</code></h3>
+
+<p><code>f</code> を本体とする新しいコルーチンを作成する。 <code>f</code> はLuaの関数でなければならない。 <code>coroutine.wrap</code> は、呼ばれるたびにコルーチンを再開する関数を返す。 関数に渡された引数は <code>resume</code> に余分に渡される引数と同じ動作をし、 戻り値は <code>resume</code>
+から最初のブーリアンを除いた値と同じである。 もしエラーが起きた場合、エラーは伝搬する。
+
+<p><a name="pdf-coroutine.yield"></a>
+<hr></hr>
+<h3><code>coroutine.yield ([val1, ..., valn])</code></h3>
+
+<p>呼ばれたコルーチンの実行を中断する。 コルーチンは、Cの関数やメタメソッド、イテレータを中断することはできない。 <code>yield</code> に渡された引数は <code>resume</code> から追加の戻り値として返される。
+
+<p><a name="5.3"></a>
+<h2>5.3 - モジュール</h2>
+
+<p>Luaでモジュールを構築したりロードしたりする基本的な機能を提供する。 2つの関数 <a href="#pdf-require"><code>require</code></a> および <a href="#pdf-module"><code>module</code></a> はグローバル環境に直接エクスポートされる。 それ以外はすべてテーブル <code>package</code>
+にエクスポートされる。
+
+<p><a name="pdf-module"></a>
+<hr></hr>
+<h3><code>module (name [, ...])</code></h3>
+
+<p>モジュールを作成する。 <code>package.loaded[name]</code> にテーブルがあれば、 このテーブルがモジュールである。 そうでなければ、指定した名前のグローバルなテーブル <code>t</code> があれば、 このテーブルがモジュールである。 そうでなければ、新しいテーブル <code>t</code> を作成し、 グローバル変数 <code>name</code>
+の値と <code>package.loaded[name]</code> の値にそれを設定する。 またこの関数は指定された名前で <code>t._NAME</code> を、 モジュール (<code>t</code> それ自身) で <code>t._M</code> を、 パッケージ名 (完全なモジュール名から最後の部分を除いたもの、下記参照) で <code>t_PACKAGE</code>
+を初期化する。 最後に、<code>module</code> は現在の関数の新しい環境および <code>package.loaded[name]</code> の新しい値として <code>t</code> を設定する。 従って <a href="#pdf-require"><code>require</code></a> は <code>t</code> を返す。
+
+<p>もし <code>name</code> が複合名 (つまり、ドットで各部が区切られたもの) であれば、 <code>module</code> はそれぞれの部分についてテーブルを作る (または、すでに存在すれば再利用する)。 例えば、<code>name</code> が <code>a.b.c</code> の場合、 <code>module</code> はグローバル変数 <code>a</code>
+のフィールド <code>b</code> のフィールド <code>c</code> にモジュールテーブルを格納する。
+
+<p>この関数はモジュール名の後に省略可能な <em>オプション</em> を渡すことができる。 この各オプションはモジュール全体に適用される関数である。
+
+<p><a name="pdf-require"></a>
+<hr></hr>
+<h3><code>require (modname)</code></h3>
+
+<p>指定したモジュールをロードする。 この関数は <code>modname</code> がすでにロードされているかどうかを決定するために まずテーブル <code>package.loaded</code> を探す。 もしすでにロードされていれば、<code>require</code> は <code>package.loaded[modname]</code>
+に格納されている値を返す。 そうでなければ、モジュールの <em>ローダ</em> を探す。
+
+<p>ローダを探すために、 <code>require</code> はまず <code>package.preload[modname]</code> を問い合わせる。 もしそこに値があれば、この値 (関数であるべきである) がローダである。 そうでなければ、<code>require</code> は <code>package.path</code> に格納されているパスを使う
+Luaのローダを探す。 それも失敗したら、<code>package.cpath</code> に格納されているパスを使うCのローダを探す。 それもまた失敗したら、<em>オールインワンローダ</em> (下記参照) を試す。
+
+<p>Cのライブラリをロードする場合、 <code>require</code> はまずアプリケーションをそのライブラリとリンクするためのダイナミックリンク機能を使う。 次にこのライブラリ内からローダとして使うためのCの関数を探す。 このCの関数は <code>"luaopen_"</code> にモジュール名を付けた名前であるが、 ドットはアンダースコアに置換する。
+さらに、モジュール名にハイフンが含まれていれば、 その最初のハイフンまでの接頭辞は (ハイフンも含めて) 取り除かれる。 例えば、モジュール名が <code>a.v1-b.c</code> の場合、関数名は <code>luaopen_b_c</code> となる。
+
+<p><code>require</code> がLuaのライブラリにもCのライブラリにもモジュールを見つけられなければ、 <em>オールインワンローダ</em> を呼ぶ。 このローダはCのパスを見て、指定したモジュールのルート名に対するライブラリを探す。 例えば <code>a.b.c</code> が要求された場合、<code>a</code> というCのライブラリを探す。
+もし見つかれば、そのサブモジュールに対するオープン関数をその中から探す。 先の例でいうと、<code>luaopen_a_b_c</code> となる。 この機能により、いくつものCのサブモジュールをひとつのライブラリに納めることができる。 その場合でも各サブモジュールは、それぞれ独自のオープン関数を持つ。
+
+<p>ローダが見つかれば、 <code>require</code> は単一の引数 <code>modname</code> を渡してローダを呼ぶ。 ローダが何らかの値を返すと、 <code>require</code> はそれを <code>package.loaded[modname]</code> に格納する。 ローダが値を返さず、<code>package.loaded[modname]</code>
+に何の値も格納されていなければ、 <code>require</code> はこのエントリに <b>true</b> を格納する。 いずれにせよ、<code>require</code> は最終的な <code>package.loaded[modname]</code> の値を返す。
+
+<p>モジュールのロードまたは実行でエラーがあったり、そのモジュールのローダが見つからなければ、 <code>require</code> はエラーを発生する。
+
+<p><a name="pdf-package.cpath"></a>
+<hr></hr>
+<h3><code>package.cpath</code></h3>
+
+<p>Cのローダを探すために <a href="#pdf-require"><code>require</code></a> が使うパス。
+
+<p>Luaは環境変数 <code>LUA_CPATH</code> (に加えて、<code>luaconf.h</code> に定義されているもうひとつのデフォルトパス) を使って、 Luaのパス <a href="#pdf-package.path"><code>package.path</code></a> と同じ方法で Cのパス <code>package.cpath</code>
+を初期化する。
+
+<p><a name="pdf-package.loaded"></a>
+<hr></hr>
+<h3><code>package.loaded</code></h3>
+
+<p>すでにロードされたモジュールを管理するために <a href="#pdf-require"><code>require</code></a> が使うテーブル。 モジュール <code>modname</code> が要求され、 <code>package.loaded[modname]</code> が偽でなければ、 <a href="#pdf-require"><code>require</code></a>
+は単に、そこに格納されている値を返す。
+
+<p><a name="pdf-package.loadlib"></a>
+<hr></hr>
+<h3><code>package.loadlib (libname, funcname)</code></h3>
+
+<p>ホストプログラムをCのライブラリ <code>libname</code> と動的リンクする。 このライブラリの中で関数 <code>funcname</code> を探し、その関数をCの関数として返す (従って、<code>funcname</code> は呼び出し規約 (<a href="#lua_CFunction"><code>lua_CFunction</code></a>
+を参照) に従わなければならない)。
+
+<p>これは低レベルな関数であり、パッケージシステムやモジュールシステムを完全に迂回する。 <a href="#pdf-require"><code>require</code></a> と異なり、 パス探索を行ったり拡張子を自動的に付加したりしない。 <code>libname</code> はCのライブラリの完全なファイル名でなければならず、
+必要ならパスや拡張子も含めなければならない。 <code>funcname</code> はCのライブラリがエクスポートしている完全な名前でなければならない (使っているCコンパイラやリンカに依存するであろう)。
+
+<p>この関数はANSI Cのサポート範囲外である。 従って、これはいくつかのプラットフォーム (Windows, Linux, Mac OS X, Solaris, BSD, および <code>dlfcn</code> 標準をサポートする他のUnixシステム) でしか利用できない。
+
+<p><a name="pdf-package.path"></a>
+<hr></hr>
+<h3><code>package.path</code></h3>
+
+<p>Luaのローダを探すために <a href="#pdf-require"><code>require</code></a> が使うパス。
+
+<p>起動時にLuaは環境変数 <code>LUA_PATH</code> の値、 またはその環境変数が定義されていなければ <code>luaconf.h</code> で定義されているデフォルトパスで、この変数を初期化する。 環境変数の値に <code>";;"</code> があれば、それをデフォルトパスで置換する。
+
+<p>パスはセミコロンで区切られた一連の <em>テンプレート</em> である。 各テンプレートについて、 <a href="#pdf-require"><code>require</code></a> は テンプレート内の疑問符 (interrogation mark) を <code>ファイル名</code> に置換し、 結果のファイル名をロードしようと試みる。
+このファイル名は、モジュール名のドットを 「ディレクトリ区切り文字」 (Unixの <code>"/"</code> のような) で置き換えたものである。 例えば、Luaのパスが <pre>
+  "./?.lua;./?.lc;/usr/local/?/init.lua"
+</pre> であった場合、モジュール <code>foo</code> のLuaのローダの検索は、 ファイル <code>./foo.lua</code>、<code>./foo.lc</code>、 <code>/usr/local/foo/init.lua</code> のロードをこの順序で試みる。
+
+<p><a name="pdf-package.preload"></a>
+<hr></hr>
+<h3><code>package.preload</code></h3>
+
+<p>特定のモジュールのローダを格納するテーブル (<a href="#pdf-require"><code>require</code></a> を参照)。
+
+<p><a name="pdf-package.seeall"></a>
+<hr></hr>
+<h3><code>package.seeall (module)</code></h3>
+
+<p><code>__index</code> フィールドがグローバル環境を参照するメタテーブルを <code>module</code> にセットする。 従ってこのモジュールはグローバル環境から値を継承する。 関数 <a href="#pdf-module"><code>module</code></a> へのオプションとして使われる。
+
+<p><a name="5.4"></a>
+<h2>5.4 - 文字列操作</h2>
+<p>このライブラリは、検索や部分文字列の抽出、パターンマッチングといった、文字列操作のための一般的な機能を提供する。 Luaの文字列のインデックス付けは、最初の文字が1の位置である (Cのように0ではない)。 文字列の末尾から逆方向にマイナス値で指定することもできる。 つまり、最後の文字は <em>-1</em> の位置で示される。
+
+<p>文字列ライブラリはすべて、テーブル <code>string</code> 内の関数として提供される。 また、<code>__index</code> フィールドが自身を指す文字列用メタテーブルをセットする。 従って、文字列関数はオブジェクト指向スタイルで使うことができる。 例えば、<code>string.bytes(s, i)</code> は <code>s:byte(i)</code>
+と書くこともできる。
+
+<p><a name="pdf-string.byte"></a>
+<hr></hr>
+<h3><code>string.byte (s [, i [, j]])</code></h3>
+文字 <code>s[i]</code>, <code>s[i+1]</code>, ..., <code>s[j]</code> の内部コードの数値を返す。 <code>i</code> のデフォルトは1、 <code>j</code> のデフォルトは <code>i</code> である。
+
+<p>文字コードの数値は、プラットフォームを超えての可搬性がないことに注意。
+
+<p><a name="pdf-string.char"></a>
+<hr></hr>
+<h3><code>string.char (i1, i2, ...)</code></h3>
+0個以上の整数を指定できる。 各文字が与えられた引数と等しい内部コードを持ち、長さが引数の数に等しい、文字列を返す。
+
+<p>文字コードの数値は、プラットフォームを超えての可搬性がないことに注意。
+
+<p><a name="pdf-string.dump"></a>
+<hr></hr>
+<h3><code>string.dump (function)</code></h3>
+
+<p>指定された関数のバイナリ表現を保持する文字列を返す。 <a href="#pdf-loadstring"><code>loadstring</code></a> にこの文字列を渡すことで、関数のコピーを作ることができる。 <code>function</code> は上位値を持たないLua関数でなければならない。
+
+<p><a name="pdf-string.find"></a>
+<hr></hr>
+<h3><code>string.find (s, pattern [, init [, plain]])</code></h3>
+文字列 <code>s</code> 内で <code>pattern</code> の最初のマッチを探す。 もしマッチが見つかれば、<code>find</code> は <code>s</code> 内でこのパターンがマッチした開始位置と終了位置のインデックスを返す。 そうでなければ <b>nil</b> を返す。 三番目の省略可能な引数 <code>init</code>
+は検索開始位置を指定し、デフォルト値は1で、負の値も使える。 四番目の省略可能な引数 <code>plain</code> に <b>true</b> が指定されると、 パターンマッチング機能はオフになり、 <code>pattern</code> 中の「魔法の」文字は無くなって、ただの「部分文字列を検索する」操作になる。 <code>plain</code> を与える場合は <code>init</code>
+も与えなければならないことに注意。
+
+<p>もしパターン内にキャプチャが指定されていれば、 マッチ成功時にキャプチャされた文字列が2つのインデックスの後に返される。
+
+<p><a name="format"></a><a name="pdf-string.format"></a>
+<hr></hr>
+<h3><code>string.format (formatstring, e1, e2, ...)</code></h3>
+
+最初の引数 (文字列でなければならない) で指定された記述に従い、残りの可変個の引数を書式化して返す。 書式文字列は標準C関数のprintfファミリーと同じルールに従う。 ただし、 <code>*</code>、<code>l</code>、<code>L</code>、<code>n</code>、<code>p</code>、<code>h</code> はサポートされてなくて、追加の <code>q</code>
+がある点だけが異なる。 <code>q</code> オプションは、Luaインタプリタで安全に読み戻せる適切な形式の文字列に書式化する。 その文字列はダブルクォートの間に書かれ、 文字列中のダブルクォート、改行、埋め込まれたゼロ、バックスラッシュは正しくエスケープされる。 例えば、 <pre>
+       string.format('%q', 'a string with "quotes" and \n new line')
+</pre> は次のような文字列を生成する。 <pre>
+"a string with \"quotes\" and \
+ new line"
+</pre>
+
+<p><code>c</code>、<code>d</code>、<code>E</code>、<code>e</code>、<code>f</code>, <code>g</code>、<code>G</code>、<code>i</code>、<code>o</code>、<code>u</code>, <code>X</code>、<code>x</code>
+はすべて数値の引数を期待し、 <code>q</code> と <code>s</code> は文字列を期待する。
+
+<p>この関数は埋め込まれたゼロを含む文字列を受け付けない。
+
+<p><a name="pdf-string.gmatch"></a>
+<hr></hr>
+<h3><code>string.gmatch (s, pattern)</code></h3>
+
+<p>呼ばれるたびに文字列 <code>s</code> から <code>pattern</code> でキャプチャされた部分を次々と返すような、イテレータ関数を返す。
+
+<p><code>pattern</code> にキャプチャが指定されていなければ、それぞれの呼び出しごとに、マッチした文字列全体を返す。
+
+<p>例えば、以下のループでは <pre>
+  s = "hello world from Lua"
+  for w in string.gmatch(s, "%a+") do
+    print(w)
+  end
+</pre> 文字列 <code>s</code> のすべての単語について繰り返し、それぞれを別々の行に出力する。 次の例は、与えられた文字列から <code>key=value</code> のペアを集めてテーブルへ入れる。 <pre>
+  t = {}
+  s = "from=world, to=Lua"
+  for k, v in string.gmatch(s, "(%w+)=(%w+)") do
+    t[k] = v
+  end
+</pre>
+
+<p><a name="pdf-string.gsub"></a>
+<hr></hr>
+<h3><code>string.gsub (s, pattern, repl [, n])</code></h3>
+
+パターン <code>pattern</code> をすべて <code>repl</code> によって指定された置換文字列に置き換えた <code>s</code> のコピーを返す。 <code>repl</code> は文字列、テーブル、または関数でもよい。 <code>gsub</code> は二番目の値として、置換が行われた回数も返す。
+
+<p><code>repl</code> が文字列であれば、その値が置換に使われる。 文字 <code>%</code> はエスケープ文字として機能する。 <code>repl</code> 内に現れる <code>%</code><em>n</em> は (<em>n</em> は1から9)、 <em>n</em> 番目にキャプチャされた部分文字列を表す (以下を見よ)。 シーケンス <code>%0</code>
+はマッチ全体を表す。 シーケンス <code>%%</code> は1個の <code>%</code> を表す。
+
+<p><code>repl</code> がテーブルであれば、 そのテーブルは最初のキャプチャをキーとしてマッチのたびに問い合わせられる。 パターンにキャプチャがなければ、マッチ全体がキーとして使われる。
+
+<p><code>repl</code> が関数であれば、マッチが現れるたびにこの関数が呼ばれる。 関数にはキャプチャされた部分文字列が順番にすべて渡される。 パターンにキャプチャが指定されていなければ、マッチした全体が唯一の引数として渡される。 テーブル問い合わせまたは関数呼び出しから返された値が文字列か数値であれば、 それが置換文字列として使われる。 そうでなくて <b>false</b>
+か <b>nil</b> であれば、置換は行われない (つまり、文字列中の元のマッチが維持される)。
+
+<p>省略可能な最後の引数 <code>n</code> は置換が行われる最大回数を制限する。 例えば、<code>n</code> が1なら最初に現れる <code>pattern</code> だけが置換される。
+
+<p>いくつか例を示す。 <pre>
+   x = string.gsub("hello world", "(%w+)", "%1 %1")
+   --&gt; x="hello hello world world"
+
+   x = string.gsub("hello world", "%w+", "%0 %0", 1)
+   --&gt; x="hello hello world"
+
+   x = string.gsub("hello world from Lua", "(%w+)%s*(%w+)", "%2 %1")
+   --&gt; x="world hello Lua from"
+
+   x = string.gsub("home = $HOME, user = $USER", "%$(%w+)", os.getenv)
+   --&gt; x="home = /home/roberto, user = roberto"
+
+   x = string.gsub("4+5 = $return 4+5$", "%$(.-)%$", function (s)
+         return loadstring(s)()
+       end)
+   --&gt; x="4+5 = 9"
+
+   local t = {name="lua", version="5.1"}
+   x = string.gsub("$name%-$version.tar.gz", "%$(%w+)", t)
+   --> x="lua-5.1.tar.gz"
+</pre>
+
+<p><a name="pdf-string.len"></a>
+<hr></hr>
+<h3><code>string.len (s)</code></h3>
+文字列を受け取り、その長さを返す。 空文字列 <code>""</code> の長さは0である。 文字列中のゼロも数えるので、<code>"a\000b\000c"</code> の長さは5である。
+
+<p><a name="pdf-string.lower"></a>
+<hr></hr>
+<h3><code>string.lower (s)</code></h3>
+文字列を受け取り、その中の大文字をすべて小文字に変えた文字列のコピーを返す。 それ以外の文字は変化しない。 何が大文字であるかは現在のロケールに依存する。
+
+<p><a name="pdf-string.match"></a>
+<hr></hr>
+<h3><code>string.match (s, pattern [, init])</code></h3>
+文字列 <code>s</code> から <code>pattern</code> の最初の <em>マッチ</em> を探す。 見つかった場合、<code>match</code> はパターンのキャプチャを返し、 そうでなければ <b>nil</b> を返す。 <code>pattern</code> にキャプチャがなければ、マッチ全体が返される。 3つめの省略可能な数値の引数 <code>init</code>
+は検索を開始する位置を指定する。 デフォルト値は1で、負の値を指定してもよい。
+
+<p><a name="pdf-string.rep"></a>
+<hr></hr>
+<h3><code>string.rep (s, n)</code></h3>
+文字列 <code>s</code> のコピーを <code>n</code> 個連結した文字列を返す。
+
+<p><a name="pdf-string.reverse"></a>
+<hr></hr>
+<h3><code>string.reverse (s)</code></h3>
+文字列 <code>s</code> を反転した文字列を返す。
+
+<p><a name="pdf-string.sub"></a>
+<hr></hr>
+<h3><code>string.sub (s, i [, j])</code></h3>
+文字列 <code>s</code> の、位置 <code>i</code> から位置 <code>j</code> までの部分文字列を返す。 <code>i</code> にも <code>j</code> にも、負の値を使える。 <code>j</code> が省略されたときは <em>-1</em> とみなされる (つまり文字列の長さと同じ)。 特に、<code>string.sub(s,1,j)</code>
+は <code>s</code> の先頭から <code>j</code> 文字を取り出し、 <code>string.sub(s, -i)</code> は <code>s</code> の最後の <code>i</code> 文字を取り出す。
+
+<p><a name="pdf-string.upper"></a>
+<hr></hr>
+<h3><code>string.upper (s)</code></h3>
+文字列を受け取り、その中の小文字をすべて大文字に変えた文字列のコピーを返す。 それ以外の文字は変化しない。 何が小文字であるかは現在のロケールに依存する。
+
+<p><a name="pm"></a>
+<h3>Patterns</h3>
+
+<p><em>文字クラス</em> は文字の集合を表す。 以下の組み合わせを文字クラスの指定に使うことができる。
+<ul>
+    <li><b><em>x</em></b> (<em>x</em> は <em>魔法の文字</em> <code>^$()%.[]*+-?</code> 以外の文字) --- 文字 <em>x</em> それ自身を表す。
+    <li><b><code>.</code></b> --- (ドット) すべての文字を表す。
+    <li><b><code>%a</code></b> --- すべてのletterを表す。
+    <li><b><code>%c</code></b> --- すべての制御文字を表す。
+    <li><b><code>%d</code></b> --- すべての数字を表す。
+    <li><b><code>%l</code></b> --- すべての小文字を表す。
+    <li><b><code>%p</code></b> --- すべての区切り記号を表す。
+    <li><b><code>%s</code></b> --- すべての空白文字を表す。
+    <li><b><code>%u</code></b> --- すべての大文字を表す。
+    <li><b><code>%w</code></b> --- すべての英数文字を表す。
+    <li><b><code>%x</code></b> --- すべての十六進数字を表す。
+    <li><b><code>%z</code></b> --- 0として表現される文字を表す。
+    <li><b><code>%<em>x</em></code></b> (<em>x</em> は英数文字以外) --- 文字 <em>x</em> 自身を表す。 これは魔法の文字をエスケープする標準的な方法である。 いかなる区切り文字 (魔法の文字でなくても) は前に `%&acute; を付けることでそれ自身を表すことができる。
+
+    <p>
+    <li><b><code>[<em>set</em>]</code></b> --- <em>set</em> 内のすべての文字の和からなるクラスを表す。 終わりの文字と `<code>-</code>&acute; で繋げることで、文字の範囲を表す。 上で挙げた <code>%</code><em>x</em> 形式のすべてのクラスも、<em>set</em>
+    の中で使うことができる。 それ以外の <em>set</em> 内の文字は、それ自身を表す。 例えば、<code>[%w_]</code> (または <code>[_%w]</code>) は、すべての英数にアンダースコアを加えたものを表す。 <code>[0-7]</code> は八進数字を表し、 <code>[0-7%l%-]</code> は八進数字と小文字と `<code>-</code>&acute;
+    を表す。
+
+    <p>範囲とクラスの相互作用は未定義である。 つまり、<code>[%a-z]</code> や <code>[a-%%]</code> のようなパターンは意味を持たない。
+
+    <p>
+    <li><b><code>[^<em>set</em>]</code></b> --- <em>set</em> の補集合を表す。 <em>set</em> の内容は上で説明したものと同じである。
+</ul>
+ひとつの文字で表現されるクラス (<code>%a</code>、<code>%c</code>など) はすべて、対応する大文字は補集合を表す。 例えば <code>%S</code> は空白以外のすべての文字を表す。
+
+<p>文字、空白、その他の文字のグループの定義については、現在のロケールに依存する。 特に、クラス <code>[a-z]</code> は <code>%l</code> と等価ではないかもしれない。
+
+<p>
+<p><em>パターンの要素</em> は以下のいずれかである。
+<ul>
+    <li>単一の文字クラス。そのクラス内の文字ひとつにマッチする。
+    <li>単一の文字クラスに `<code>*</code>&acute; が続いたもの。 そのクラスの文字の0回以上の繰り返しにマッチする。 この繰り返し要素は、可能な限り長いシーケンスにマッチする。
+    <li>単一の文字クラスに `<code>+</code>&acute; が続いたもの。 そのクラスの文字の1回以上の繰り返しにマッチする。 この繰り返し要素は、可能な限り長いシーケンスにマッチする。
+    <li>単一の文字クラスに `<code>-</code>&acute; が続いたもの。 そのクラスの文字の0回以上の繰り返しにマッチする。 `<code>*</code>&acute; と異なり、この繰り返し要素は可能な限り <em>短い</em> シーケンスにマッチする。
+    <li>単一の文字クラスに `<code>?</code>&acute; が続いたもの。 そのクラスの文字の0回または1回の出現にマッチする。
+    <li><code>%</code><em>n</em> (<em>n</em> は1から9)。 これは、<em>n</em> 番目にキャプチャされた文字列にマッチするような要素である (下の説明を参照)。
+    <li><code>%b</code><em>xy</em> (<em>x</em> と <em>y</em> は異なる文字)。 これは <em>x</em> で始まって <em>y</em> で終わる文字列にマッチするような要素である。 <em>x</em> と <em>y</em> は <em>対応が取れる</em>。 つまり、文字列を左から右に読んでいって、 <em>x</em>
+    が現れるたびにカウントを <em>+1</em> し、<em>y</em> では <em>-1</em> したとき、 最後の <em>y</em> はカウントが0になる最初の <em>y</em> である。 例えば、要素 <code>%b()</code> はカッコの対応が取れた式にマッチする。
+</ul>
+
+<p><em>pattern</em> はパターン要素の列である。 パターンの最初に現れる `<code>^</code>&acute; は対象文字列の先頭にマッチを固定する。 パターンの最後に現れる `<code>$</code>&acute; は対象文字列の最後にマッチを固定する。 他の位置では、`<code>^</code>&acute; や `<code>$</code>&acute;
+は特別な意味を持たず、それ自身を表す。
+
+<p>パターンはカッコで囲まれたサブパターンを持つことができ、それらは <em>キャプチャ</em> と呼ばれる。 マッチが成功したとき、対象文字列の中でキャプチャにマッチした部分が保存 (<em>キャプチャ</em>) され、後で使うことができる。 キャプチャはその左カッコによって番号付けされる。 例えば、パターン <code>"(a*(.)%w(%s*))"</code> では、 <code>"a*(.)%w(%s*)"</code>
+にマッチする部分が最初のキャプチャとして保存され (だから1番になる)、 <code>"."</code> にマッチする文字が2番にキャプチャされ、 <code>"%s*"</code> にマッチする部分が3番になる。
+
+<p>特殊なケースとして、空キャプチャ <code>()</code> は文字列の現在位置 (数値) をキャプチャする。 例えば、文字列 <code>"flaaap"</code> にパターン <code>"()aa()"</code> を適用すると、 2つのキャプチャ3と5を得られる。
+
+<p>パターンには途中にゼロを含むことができない。代わりに <code>%z</code> を使う。
+
+<p><a name="5.5"></a>
+<h2>5.5 - テーブル操作</h2>
+このライブラリはテーブル操作のための一般的な機能を提供する。 テーブル <code>table</code> 内にすべての関数が提供される。 これらの関数でテーブルの「長さ」について言及するときは、 それは長さ演算子の結果を意味している。
+
+<p><a name="pdf-table.concat"></a>
+<hr></hr>
+<h3><code>table.concat (table [, sep [, i [, j]]])</code></h3>
+
+<code>table[i]..sep..table[i+1] ... sep..table[j]</code> を返す。 <code>sep</code> のデフォルト値は空文字列で、 <code>i</code> のデフォルト値は1、 <code>j</code> のデフォルト値はテーブルの長さである。 <code>i</code> が <code>j</code>
+よりも大きい場合は空文字列を返す。
+
+<p><a name="pdf-table.insert"></a>
+<hr></hr>
+<h3><code>table.insert (table, [pos,] value)</code></h3>
+
+<p><code>table</code> の位置 <code>pos</code> に要素 <code>value</code> を挿入する。 空きスペースが必要なら、他の要素を上にずらす。 <code>pos</code> のデフォルト値は <code>n+1</code> である。 <code>n</code> はテーブルの長さである (<a href="#len-op">2.5.5</a>
+を参照)。 <code>table.insert(t,x)</code> の呼び出しは、テーブル <code>t</code> の最後に <code>x</code> を挿入する。
+
+<p><a name="pdf-table.maxn"></a>
+<hr></hr>
+<h3><code>table.maxn (table)</code></h3>
+
+<p>指定したテーブルの最大の正の数値インデックスを返す。 テーブルが正の数値インデックスを持たなければゼロを返す。 (結果を得るために、この関数はテーブル全体を線形に巡回する。)
+
+<p><a name="pdf-table.remove"></a>
+<hr></hr>
+<h3><code>table.remove (table [, pos])</code></h3>
+
+<p><code>table</code> から位置 <code>pos</code> の要素を取り除き、 必要なら他の要素を下にずらして空白を埋める。 取り除かれた要素の値が返される。 <code>pos</code> のデフォルト値は <code>n</code> である。 <code>n</code> はテーブルの長さである。 <code>table.remove(t)</code>
+の呼び出しは、テーブル <code>t</code> の最後の要素を取り除く。
+
+<p><a name="pdf-table.sort"></a>
+<hr></hr>
+<h3><code>table.sort (table [, comp])</code></h3>
+<code>table[1]</code> から <code>table[n]</code> までのテーブル要素を、指定された順序で <em>その場で</em> ソートする。 <code>n</code> はテーブルの長さである。 <code>comp</code> を与える場合、それは関数でなくてはならず、テーブルの要素を2つ受け取り、最初の要素が二番目よりも小さいときに真を返さなければならない
+(ソート後、<code>not comp(a[i+1],a[i])</code> が真になる)。 <code>comp</code> が与えられなければ、標準のLuaの演算子 <code>&#060;</code> が代わりに使われる。
+
+<p>ソートのアルゴリズムは安定<em>でない</em>。 つまり、指定された順序において等しいと考えられる要素は、ソートによってその相対位置が変わるかもしれない。
+
+<p><a name="mathlib"></a><a name="5.6"></a>
+<h2>5.6 - 数学関数</h2>
+
+<p>このライブラリは標準C数学ライブラリへのインタフェイスである。 <code>math</code> テーブルの中にすべての関数が提供される。 このライブラリは以下の関数を提供する: <a name="pdf-math.abs"></a> <a name="pdf-math.acos"></a> <a name="pdf-math.asin"></a> <a
+    name="pdf-math.atan"></a> <a name="pdf-math.atan2"></a> <a name="pdf-math.ceil"></a> <a name="pdf-math.cos"></a> <a name="pdf-math.cosh"></a> <a name="pdf-math.deg"></a> <a name="pdf-math.exp"></a>
+<a name="pdf-math.floor"></a> <a name="pdf-math.fmod"></a> <a name="pdf-math.frexp"></a> <a name="pdf-math.ldexp"></a> <a name="pdf-math.log"></a> <a name="pdf-math.log10"></a> <a name="pdf-math.max"></a>
+<a name="pdf-math.min"></a> <a name="pdf-math.modf"></a> <a name="pdf-math.pow"></a> <a name="pdf-math.rad"></a> <a name="pdf-math.random"></a> <a name="pdf-math.randomseed"></a> <a
+    name="pdf-math.sin"></a> <a name="pdf-math.sinh"></a> <a name="pdf-math.sqrt"></a> <a name="pdf-math.tan"></a> <a name="pdf-math.tanh"></a> <pre>
+       math.abs     math.acos    math.asin    math.atan    math.atan2
+       math.ceil    math.cos     math.cosh    math.deg     math.exp
+       math.floor   math.fmod    math.frexp   math.ldexp   math.log
+       math.log10   math.max     math.min     math.modf    math.pow
+       math.rad     math.random  math.randomseed           math.sin
+       math.sinh    math.sqrt    math.tan     math.tanh
+</pre> 加えて、変数 <code>math.pi</code> と、値 <code>HUGE_VAL</code> を持つ変数 <code>math.huge</code> も提供される。 これらのほとんどは、Cライブラリの対応する関数への単なるインタフェイスである。 すべての三角関数はラジアンを使う。 関数 <code>math.deg</code> と <code>math.rad</code>
+はラジアンと度を変換する。
+
+<p>関数 <code>math.max</code> は引数の中の最大値を返す。 同様に <code>math.min</code> は最小値を求める。 共に1つ、2つ、あるいはもっとたくさんの引数を渡すことができる。
+
+<p>関数 <code>math.modf</code> はCの関数 <code>modf</code> に対応する。 これは2つの値、引数の整数部と小数部を返す。 関数 <code>math.frexp</code> も2つの値、 引数の正規化した小数部と指数部を返す。
+
+<p>関数 <code>math.random</code> と <code>math.randomseed</code> は ANSI C で提供される単純なランダム生成関数 <code>rand</code> と <code>srand</code> へのインタフェイスである (統計的な性質は保証されない)。 引数無しで呼ばれると、<code>math.random</code> は
+<em>[0,1)</em> の範囲の実数の疑似乱数を返す。 数値 <em>n</em> を渡すと、<code>math.random</code> は <em>[1,n]</em> の範囲の整数の疑似乱数を返す。 2つの引数 <em>l</em> と <em>u</em> を渡して呼んだときは、 <code>math.random</code> は <em>[l,u]</em>
+の範囲の整数の疑似乱数を返す。 <code>math.randomseed</code> 関数は疑似乱数発生器の「シード値」を設定する。 同じシード値からは同じ数列が生成される。
+
+<p><a name="libio"></a><a name="5.7"></a>
+<h2>5.7 - 入出力機能</h2>
+
+<p>I/Oライブラリは2つの異なったスタイルのファイル操作を提供する。 ひとつめは暗黙のファイルディスクリプタを使うもので、 それらはデフォルト入力ファイルとデフォルト出力ファイルに対して作用し、 すべての入出力操作はデフォルトファイルを通して行われる。 ふたつめのスタイルでは明示的なファイルディスクリプタを用いる。
+
+<p>暗黙のファイルディスクリプタを使う場合は、すべての操作はテーブル <code>io</code> で提供される。 明示的なファイルディスクリプタを使う場合は、 すべての操作は <a href="#pdf-io.open"><code>io.open</code></a> が返すファイルディスクリプタのメソッドとして提供される。
+
+<p>テーブル <code>io</code> は、 Cで使われる意味と同じの3つの定義済みファイルディスクリプタ <code>io.stdin</code>、<code>io.stdout</code>、<code>io.stderr</code> も提供する。
+
+<p>例外なく、すべてのI/O関数は失敗時に <b>nil</b> (および二番目の戻り値としてエラーメッセージ) を返し、 成功時は <b>nil</b> 以外の何らかの値を返す。
+
+<p><a name="pdf-io.close"></a>
+<hr></hr>
+<h3><code>io.close ([file])</code></h3>
+
+<p><code>file:close()</code> と等価である。 <code>file</code> が省略されると、デフォルト出力ファイルを閉じる。
+
+<p><a name="pdf-io.flush"></a>
+<hr></hr>
+<h3><code>io.flush ()</code></h3>
+
+<p>デフォルト出力ファイルに対する <code>file:flush</code> と等価である。
+
+<p><a name="pdf-io.input"></a>
+<hr></hr>
+<h3><code>io.input ([file])</code></h3>
+
+<p>ファイル名を与えて呼ぶと、その名前のファイルを (テキストモードで) 開き、 そのハンドルをデフォルト入力ファイルに設定する。 ファイルハンドルを与えて呼ぶと、単純にそのファイルハンドルがデフォルト入力ファイルに設定される。 引数無しで呼ぶと、現在のデフォルト入力ファイルを返す。
+
+<p>エラーが起きた場合、この関数はエラーコードを返す変わりにエラーを発する。
+
+<p><a name="pdf-io.lines"></a>
+<hr></hr>
+<h3><code>io.lines ([filename])</code></h3>
+
+<p>指定されたファイル名を読み込みモードで開き、 呼ばれるたびにファイルから1行ずつ返すイテレータ関数を返す。 つまり、 <pre>
+       for line in io.lines(filename) do ... end
+</pre> はファイルのすべての行について繰り返す。 イテレータ関数は、ファイルの終わりを検出すると <b>nil</b> を返し (ループを終えるため)、自動的にファイルを閉じる。
+
+<p><code>io.lines()</code> (ファイル名を渡さない) は <code>io.input():lines()</code> と等価である。 すなわち、デフォルト入力ファイルの各行について繰り返す。 この場合は、ループが終わってもファイルを閉じない。
+
+<p><a name="pdf-io.open"></a>
+<hr></hr>
+<h3><code>io.open (filename [, mode])</code></h3>
+
+<p>この関数は <code>mode</code> で指定されたモードでファイルを開く。 新しいファイルハンドルを返すか、エラーの場合は <b>nil</b> とエラーメッセージを返す。
+
+<p><code>mode</code> 文字列は以下のいずれかである。
+<ul>
+    <li><b>"r"</b> --- 読み込みモード (デフォルト)
+    <li><b>"w"</b> --- 書き込みモード
+    <li><b>"a"</b> --- 追記モード
+    <li><b>"r+"</b> --- 更新モード (以前のデータは消えない)
+    <li><b>"w+"</b> --- 更新モード (以前のデータはすべて消える)
+    <li><b>"a+"</b> --- 追記更新モード (以前のデータは消えない) ファイルの最後のだけ書き込みが許される。
+</ul>
+<code>mode</code> 文字列は最後に `<code>b</code>&acute; も付けることができ、 システムによってはバイナリモードでファイルを開くために必要である。 この文字列は標準Cの関数 <code>fopen</code> で使われるのと同じである。
+
+<p><a name="pdf-io.output"></a>
+<hr></hr>
+<h3><code>io.output ([file])</code></h3>
+
+<p><a href="#pdf-io.input"><code>io.input</code></a> と同じであるが、デフォルト出力ファイルに対する操作である。
+
+<p><a name="pdf-io.popen"></a>
+<hr></hr>
+<h3><code>io.popen ([prog [, mode]])</code></h3>
+
+<p>分離されたプロセスの中でプログラム <code>prog</code> を開始し、 このプログラムからのデータを読み込む (デフォルトの、<code>mode</code> が <code>"r"</code> の場合) ためか、このプログラムにデータを書き込む (<code>mode</code> が <code>"w"</code> の場合) ためのファイルハンドルを返す。
+
+<p>この関数はシステム依存であり、すべてのプラットフォームで利用可能なわけではない。
+
+<p><a name="pdf-io.read"></a>
+<hr></hr>
+<h3><code>io.read (format1, ...)</code></h3>
+
+<p><code>io.input():read</code> と等価である。
+
+<p><a name="pdf-io.tmpfile"></a>
+<hr></hr>
+<h3><code>io.tmpfile ()</code></h3>
+
+<p>テンポラリファイルのハンドルを返す。 このファイルは更新モードでオープンされ、プログラムの終了時に自動的に削除される。
+
+<p><a name="pdf-io.type"></a>
+<hr></hr>
+<h3><code>io.type (obj)</code></h3>
+
+<p><code>obj</code> が有効なファイルハンドルかどうかチェックする。 <code>obj</code> がオープンされているファイルハンドルなら、文字列 "file" を返す。 <code>obj</code> がクローズされたファイルハンドルなら、文字列 "closed file" を返す。 <code>obj</code> がファイルハンドルでなければ <b>nil</b>
+を返す。
+
+<p><a name="pdf-io.write"></a>
+<hr></hr>
+<h3><code>io.write (value1, ...)</code></h3>
+
+<p><code>io.output():write</code> と等価である。
+
+<p><a name="pdf-file:close"></a>
+<hr></hr>
+<h3><code>file:close ()</code></h3>
+
+<p><code>file</code> を閉じる。 ファイルハンドルがガベージコレクトされたときはそのファイルは自動的に閉じられるが、 それがいつ起きるかは予測不能であることに注意せよ。
+
+<p><a name="flush"></a><a name="pdf-file:flush"></a>
+<hr></hr>
+<h3><code>file:flush ()</code></h3>
+
+<p><code>file</code> に書き込まれたデータを保存する。
+
+<p><a name="pdf-file:lines"></a>
+<hr></hr>
+<h3><code>file:lines ()</code></h3>
+
+<p>呼ばれるたびにファイルから新しい行を返すイテレータ関数を返す。 つまり、 <pre>
+       for line in file:lines() do ... end
+</pre> はファイルのすべての行に対して繰り返す (<a href="#pdf-io.lines"><code>io.lines</code></a> と異なり、この関数はループの終わりでファイルを閉じない)。
+
+<p><a name="pdf-file:read"></a>
+<hr></hr>
+<h3><code>file:read (format1, ...)</code></h3>
+
+<p>何を読むかを指定する書式に従って、ファイル <code>file</code> から読み込む。 各書式について、読み込んだ文字を文字列 (または数値) として返し、 指定された書式でデータを読めなければ <b>nil</b> を返す。 書式を指定せずに呼ばれた場合は、次の行全体を読むデフォルトの書式が使われる (以下を参照)。
+
+<p>利用可能なフォーマットは次の通り。
+<ul>
+    <li><b>"*n"</b> は数値を読み込む。 これは文字列の変わりに数値を読み込む唯一の書式である。
+    <li><b>"*a"</b> は現在の位置から、残りのファイル全体を読み込む。 ファイルの終わりでは、空文字列を返す。
+    <li><b>"*l"</b> は次の行を読み込む (行末文字は飛ばす)。 ファイルの終わりでは <b>nil</b> を返す。これはデフォルトの書式である。
+    <li><b><em>数値</em></b> はその文字数からなる文字列を読み込む。 ファイルの終わりでは空文字列を返す。 数値がゼロの場合は、何も読み込まず、空文字列を返す。 ファイルの終わりでは <b>nil</b> を返す。
+</ul>
+
+<p><a name="pdf-file:seek"></a>
+<hr></hr>
+<h3><code>file:seek ([whence] [, offset])</code></h3>
+
+<p>ファイルの先頭から計ったファイル位置を設定/取得する。 位置は文字列 <code>whence</code> で指定された基準位置に <code>offset</code> を加えた値で示す。 <code>whence</code> は以下のいずれかである。
+<ul>
+    <li><b>"set"</b> --- 基準位置は0 (ファイルの先頭)
+    <li><b>"cur"</b> --- 基準位置は現在の位置
+    <li><b>"end"</b> --- 基準位置はファイルの終わり
+</ul>
+成功すると、関数 <code>seek</code> はファイル先頭からのバイト数で最終的なファイル位置を返す。 この関数が失敗すると <b>nil</b> とエラー文字列を返す。
+
+<p><code>whence</code> のデフォルト値は <code>"cur"</code> で、 <code>offset</code> は0である。 つまり、<code>file:seek()</code> の呼び出しは、何も変化させずに、現在の位置を返す。 <code>file:seek("set")</code> はファイルの先頭に位置を変更する (そして0を返す)。 <code>file:seek("end")</code>
+はファイルの終わりに位置を変更し、ファイルの長さを返す。
+
+<p><a name="pdf-file:setvbuf"></a>
+<hr></hr>
+<h3><code>file:setvbuf (mode [, size])</code></h3>
+
+<p>出力ファイルのバッファリングモードを設定する。 設定可能なモードは3つある。
+<ul>
+    <li><b>"no"</b> --- バッファリングなし。出力操作の結果はすべて即座に現れる。
+    <li><b>"full"</b> --- 完全バッファリング。出力操作はバッファが満杯の場合 (または明示的にそのファイルを <code>flush</code> した場合 (<a href="#flush">5.7</a> を参照)) だけ行われる。
+    <li><b>"line"</b> --- 行バッファリング。出力は改行を出力するか、いくつかのスペシャルファイル (端末デバイスとか) から入力するまでバッファされる。
+</ul>
+下の2つの場合では、 <code>sizes</code> でバッファのサイズをバイト単位で指定できる。 デフォルトのサイズは適当である。
+
+<p><a name="pdf-file:write"></a>
+<hr></hr>
+<h3><code>file:write (value1, ...)</code></h3>
+
+<p>引数のそれぞれの値を <code>file</code> に書き込む。 引数は文字列か数字でなければならない。 それ以外の値を書き込むには、 <code>write</code> の前に <a href="#pdf-tostring"><code>tostring</code></a> か <a href="#pdf-string.format"><code>string.format</code></a>
+を使う。
+
+<p><a name="libiosys"></a><a name="5.8"></a>
+<h2>5.8 - OS機能</h2>
+
+<p>このライブラリはテーブル <code>os</code> を通して提供される。
+
+<p><a name="pdf-os.clock"></a>
+<hr></hr>
+<h3><code>os.clock ()</code></h3>
+
+<p>プログラムが使ったCPU時間の概算値を秒で返す。
+
+<p><a name="pdf-os.date"></a>
+<hr></hr>
+<h3><code>os.date ([format [, time]])</code></h3>
+
+<p>与えられた文字列 <code>format</code> に従って書式化した日付と時刻を含む文字列、またはテーブルを返す。
+
+<p><code>time</code> 引数が存在すれば、それが書式化される時刻となる (この値の説明は <a href="#pdf-os.time"><code>os.time</code></a> 関数を参照)。 そうでなければ、<code>date</code> は現在時刻を書式化する。
+
+<p><code>format</code> が `<code>!</code>&acute; で始まっていたら、 日付は世界時 (Universal Time) で書式化される。 このオプション文字の後、 <code>format</code> が <code>*t</code> であれば、 <code>date</code> は以下のフィールドを持つテーブルを返す。
+<ul>
+    <li><code>year</code> (4桁の数値)
+    <li><code>month</code> (1--12)
+    <li><code>day</code> (1--31)
+    <li><code>hour</code> (0--23)
+    <li><code>min</code> (0--59)
+    <li><code>sec</code> (0--61)
+    <li><code>wday</code> (曜日、日曜日が1)
+    <li><code>yday</code> (1月1日から数えた日数)
+    <li><code>isdst</code> (夏時間を示すフラグ、ブーリアン)
+</ul>
+
+<p><code>format</code> が <code>*t</code> でなければ、 <code>date</code> は日付を文字列として返す。 Cの関数 <code>strftime</code> と同じルールに従って書式化される。
+
+<p>引数なしで呼ばれた場合、 <code>date</code> はホストシステムと現在のロケールに依存する一般的な日付と時刻の表現を返す。 (つまり、<code>os.date()</code> は <code>os.date("%c")</code> と等価である)。
+
+<p><a name="pdf-os.difftime"></a>
+<hr></hr>
+<h3><code>os.difftime (t2, t1)</code></h3>
+
+<p>時刻 <code>t1</code> から時刻 <code>t2</code> までの秒数を返す。 POSIX や Windows、その他のいくつかのシステムでは、 この値は <code>t2</code><em>-</em><code>t1</code> に等しい。
+
+<p><a name="pdf-os.execute"></a>
+<hr></hr>
+<h3><code>os.execute ([command])</code></h3>
+
+<p>この関数はCの関数 <code>system</code> と等価である。 <code>command</code> はOSのシェルによって実行されるコマンドを渡す。 システムに依存するステータスコードを返す。 <code>command</code> を省略すると、シェルが利用可能ならゼロ以外を返し、そうでなければゼロを返す。
+
+<p><a name="pdf-os.exit"></a>
+<hr></hr>
+<h3><code>os.exit ([code])</code></h3>
+
+<p>省略可能な <code>code</code> でCの関数 <code>exit</code> を呼んでホストプログラムを終了させる。 <code>code</code> のデフォルト値は成功を表すコードである。
+
+<p><a name="pdf-os.getenv"></a>
+<hr></hr>
+<h3><code>os.getenv (varname)</code></h3>
+
+<p>プロセスの環境変数 <code>varname</code> の値を返す。 変数が未定義なら <b>nil</b> を返す。
+
+<p><a name="pdf-os.remove"></a>
+<hr></hr>
+<h3><code>os.remove (filename)</code></h3>
+
+<p>指定された名前のファイルまたはディレクトリを消す。 消すディレクトリは空でなければならない。 この関数が失敗した場合は <b>nil</b> とエラーメッセージを返す。
+
+<p><a name="pdf-os.rename"></a>
+<hr></hr>
+<h3><code>os.rename (oldname, newname)</code></h3>
+
+<p><code>oldname</code> という名前のファイルまたはディレクトリを <code>newname</code> にリネームする。 この関数が失敗した場合は <b>nil</b> とエラーメッセージを返す。
+
+<p><a name="pdf-os.setlocale"></a>
+<hr></hr>
+<h3><code>os.setlocale (locale [, category])</code></h3>
+
+<p>プログラムの現在のロケールを設定する。 <code>locale</code> はロケールを表す文字列である。 <code>category</code> は変更したいカテゴリを表す省略可能な文字列で、以下のいずれかである。 <code>"all"</code>, <code>"collate"</code>, <code>"ctype"</code>, <code>"monetary"</code>,
+<code>"numeric"</code>, or <code>"time"</code>。 デフォルトのカテゴリは <code>"all"</code> である。 この関数は新しいロケールの名前を返す。 あるいは要求が受け付けられなければ <b>nil</b> を返す。
+
+<p><a name="pdf-os.time"></a>
+<hr></hr>
+<h3><code>os.time ([table])</code></h3>
+
+<p>引数無しで呼ばれたときは現在の時刻を返し、 引数がある場合は、与えられたテーブルで指定された日付と時刻を表す時刻を返す。 このテーブルはフィールド <code>year</code>, <code>month</code>, and <code>day</code> を持たなければならず、 省略可能だがフィールド <code>hour</code>, <code>min</code>,
+<code>sec</code>, and <code>isdst</code> があっても良い (これらのフィールドの説明は <a href="#pdf-os.date"><code>os.date</code></a> 関数を参照).
+
+<p>戻り値は数値であり、その意味はシステムに依存する。 POSIX や Windows、およびいくつかのシステムでは、 特定の開始時刻 (「エポック」)からの経過時間を秒で表している。 それ以外のシステムでは、その意味は不明であり、 <code>time</code> の戻り値は <code>date</code> と <code>difftime</code>
+の引数としてのみ使うことができる。
+
+<p><a name="pdf-os.tmpname"></a>
+<hr></hr>
+<h3><code>os.tmpname ()</code></h3>
+
+<p>テンポラリファイルとして使えるファイル名を返す。 このファイルは使う前に明示的にオープンする必要があり、 要らなくなったら明示的に削さなければならない。
+
+<p><a name="libdebug"></a><a name="5.9"></a>
+<h2>5.9 - デバッグライブラリ</h2>
+
+<p>このライブラリはLuaプログラムへのデバッグインタフェイスの機能を提供する。 このライブラリを使うときは注意すべきである。 ここで提供される関数はデバッグやそれに似たプロファイリングのようなタスクにのみ使うべきである。 普通のプログラミングツールとしてこれらを使う誘惑に抵抗するように。 これらは非常に遅い。 さらに言えば、いくつかの関数はLuaコードについてのいくつかの仮定
+(関数のローカル変数は他の関数からアクセスできないとか、ユーザーデータのメタテーブルはLuaから変更できないとか) を侵害し、安全なコードを危うくする恐れがある。
+
+<p>このライブラリのすべての関数は <code>debug</code> テーブル内に提供される。
+
+<p><a name="pdf-debug.debug"></a>
+<hr></hr>
+<h3><code>debug.debug ()</code></h3>
+
+<p>ユーザーとの対話モードに入り、ユーザーが入力した文字列を実行する。 単純なコマンドや他のデバッグ機能を使って、 ユーザーはグローバル変数やローカル変数を調べたり値を変更したり式を評価したりその他ができる。 ユーザーが <code>cont</code> だけの行を入力すると対話モードを終えて実行を継続する。
+
+<p><code>debug.debug</code> で実行されるコマンドは、 どの関数のレキシカルスコープにも入っていないので、 ローカル変数へは直接アクセスできないことに注意。
+
+<p><a name="pdf-debug.getfenv"></a>
+<hr></hr>
+<h3><code>debug.getfenv (o)</code></h3>
+オブジェクト <code>o</code> の環境を返す。
+
+<p><a name="pdf-debug.gethook"></a>
+<hr></hr>
+<h3><code>debug.gethook ()</code></h3>
+
+<p>現在のフック関数、フックマスク、フックカウント (<a href="#pdf-debug.sethook"><code>debug.sethook</code></a> 関数で設定されたもの) を返す。
+
+<p><a name="pdf-debug.getinfo"></a>
+<hr></hr>
+<h3><code>debug.getinfo (function [, what])</code></h3>
+
+<p>関数に関する情報をテーブルに入れて返す。 関数を直接指定するか数値を指定することができる。 数値は、関数が走っているコールスタックのレベルを意味し、 レベル0は現在の関数 (<code>getinfo</code> 自身)、 レベル1は <code>getinfo</code> を呼び出した関数で、以下同様。 <code>function</code>
+がアクティブな関数の数よりも大きい数値であれば <code>getinfo</code> は <b>nil</b> を返す。
+
+<p><code>what</code> はどのフィールドを埋めるかを記述する文字列で、 戻り値のテーブルには <a href="#lua_getinfo"><code>lua_getinfo</code></a> から返されるフィールドがすべて含まれている。 <code>what</code> のデフォルト値では有効なすべての情報を取得する。 もし存在すれば、`<code>f</code>&acute;
+オプションは <code>func</code> という名前のフィールドにその関数自身を入れる。
+
+<p>例えば、式 <code>debug.getinfo(1,"n").name</code> は現在の関数の名前を返す (もし適当な名前があれば)。 <code>debug.getinfo(print)</code> は <a href="#pdf-print"><code>print</code></a> 関数に関するすべての利用可能な情報を持つテーブルを返す。
+
+<p><a name="pdf-debug.getlocal"></a>
+<hr></hr>
+<h3><code>debug.getlocal (level, local)</code></h3>
+
+<p>スタックレベル <code>level</code> の関数の、インデックス <code>local</code> のローカル変数の、名前と値を返す。 最初の引数かローカル変数がインデックス1で、以下同様に最後の有効なローカル変数まで続く。 もし指定されたインデックスのローカル変数がなければ <b>nil</b> を返し、 <code>level</code>
+が範囲外であればエラーを発する (<a href="#pdf-debug.getinfo"><code>debug.getinfo</code></a> を使ってレベルが有効かどうかチェックできる)。
+
+<p>`<code>(</code>&acute; (開き括弧) で始まる変数名は内部的な変数 (ループ制御変数、一時変数、Cの関数のローカルなど) を表している。
+
+<p><a name="pdf-debug.getmetatable"></a>
+<hr></hr>
+<h3><code>debug.getmetatable (object)</code></h3>
+
+<p>指定した <code>object</code> のメタテーブルを返す。 メタテーブルを持っていなければ <b>nil</b> を返す。
+
+<p><a name="pdf-debug.getregistry"></a>
+<hr></hr>
+<h3><code>debug.getregistry ()</code></h3>
+
+<p>レジストリテーブル (<a href="#registry">3.5</a> を参照) を返す。
+
+<p><a name="pdf-debug.getupvalue"></a>
+<hr></hr>
+<h3><code>debug.getupvalue (func, up)</code></h3>
+
+<p>関数 <code>func</code> の、インデックス <code>up</code> の上位値の、名前と値を返す。 指定されたインデックスの上位値が存在しなければ <b>nil</b> を返す。
+
+<p><a name="pdf-debug.setfenv"></a>
+<hr></hr>
+<h3><code>debug.setfenv (object, table)</code></h3>
+
+<p>指定した <code>object</code> の環境を指定した <code>table</code> にする。
+
+<p><a name="pdf-debug.sethook"></a>
+<hr></hr>
+<h3><code>debug.sethook (hook, mask [, count])</code></h3>
+
+<p>指定された関数をフックに設定する。 文字列 <code>mask</code> と数値 <code>count</code> は、いつフックが呼ばれるかを記述する。 文字列maskは以下の文字からなる。
+<ul>
+    <li><b><code>"c"</code></b> --- フックはLuaが関数を呼ぶたびに呼ばれる。
+    <li><b><code>"r"</code></b> --- フックはLuaが関数から戻るたびに呼ばれる。
+    <li><b><code>"l"</code></b> --- フックはLuaがコードの新しい行に入るたびに呼ばれる。
+</ul>
+<code>count</code> がゼロでなければ、フックは <code>count</code> 命令が実行されるたびに、その直後に呼ばれる。
+
+<p>引数なしで呼ぶとフックは無効になる。
+
+<p>フックが呼ばれたとき、最初の引数はフックを起動したイベントを示す以下のいずれかの文字列である。 <code>"call"</code>, <code>"return"</code> <code>"tail return"</code>, <code>"line"</code>, <code>"count"</code>。
+lineイベントの場合、フックは二番目の引数に新しい行番号が得られる。 <code>"tail return"</code> を除いて、 フックの内部でレベル2の <code>getinfo</code> を呼べば、実行中の関数に関する情報をもっと得られる (レベル0は <code>getinfo</code> 関数自身で、レベル1はフック関数である)。 <code>"tail
+return"</code> はLuaが復帰をシミュレートしているだけであり、 <code>getinfo</code> は正しくないデータを返すだろう。
+
+<p><a name="pdf-debug.setlocal"></a>
+<hr></hr>
+<h3><code>debug.setlocal (level, local, value)</code></h3>
+
+<p>スタックレベル <code>level</code> の関数の、インデックス <code>local</code> のローカル変数に、値 <code>value</code> を格納する。 指定されたインデックスのローカル変数が存在しなければ <b>nil</b> を返し、 <code>level</code> が範囲外であればエラーを発する (<code>getinfo</code>
+を使ってレベルが有効かどうかチェックできる)。 そうでなければ、ローカル変数の名前を返す。
+
+<p><a name="pdf-debug.setmetatable"></a>
+<hr></hr>
+<h3><code>debug.setmetatable (object, table)</code></h3>
+
+<p>指定した <code>object</code> のメタテーブルを指定した <code>table</code> (<b>nil</b> でも良い) にする。
+
+<p><a name="pdf-debug.setupvalue"></a>
+<hr></hr>
+<h3><code>debug.setupvalue (func, up, value)</code></h3>
+
+<p>関数 <code>func</code> の、インデックス <code>up</code> の上位値に、値 <code>value</code> を格納する。 指定されたインデックスの上位値が存在しなければ <b>nil</b> を返す。 そうでなければ、上位値の名前を返す。
+
+<p><a name="pdf-debug.traceback"></a>
+<hr></hr>
+<h3><code>debug.traceback ([message])</code></h3>
+
+<p>コールスタックのトレースバックを出力した文字列を返す。 省略可能な <code>message</code> 文字列は、トレースバックの最初に付け加えられる。 この関数は典型的には、より良いエラーメッセージを生成するために <a href="#pdf-xpcall"><code>xpcall</code></a> と一緒に使われる。
+
+<p><a name="lua-sa"></a><a name="6"></a>
+<h1>6 - スタンドアロンのLua</h1>
+
+<p>LuaはCのホストプログラムに組み込まれる拡張言語としてデザインされたにも関わらず、 スタンドアロンの言語としてもよく使われる。 スタンドアロンの言語としてのLuaインタプリタは、単純に <code>lua</code> と呼ばれ、 標準のディストリビューションと共に提供されている。 スタンドアロンのインタプリタは、 デバッグライブラリを含むすべての標準ライブラリを持っている。
+使い方は以下の通り。 <pre>
+      lua [options] [script [args]]
+</pre> オプションは以下の通り。
+<ul>
+    <li><b><code>-</code> </b> ファイルの代わりに <code>stdin</code> から実行する。
+    <li><b><code>-e</code> <em>stat</em></b> 文字列 <em>stat</em> を実行する。
+    <li><b><code>-l</code> <em>mod</em></b> <em>mod</em> を "requires" する。
+    <li><b><code>-i</code></b> <em>script</em> を実行した後、対話モードに入る。
+    <li><b><code>-v</code></b> バージョン情報を出力する。
+    <li><b><code>--</code></b> オプションの処理を止める。
+    <li><b><code>-</code></b> オプションの処理を止め、<code>stdin</code> をファイルとして実行する。
+</ul>
+これらのオプションが処理されたあと、<code>lua</code> は指定された <em>script</em> に <em>args</em> を文字列として渡して実行する。 引数なしで呼ばれた場合、 <code>stdin</code> (標準入力) が端末であれば <code>lua -v -i</code>、 そうでなければ <code>lua -</code> として振る舞う。
+
+<p>どの引数も適用される前に、 インタプリタは環境変数 <code>LUA_INIT</code> を調べる。 その書式が @<em>filename</em> であれば、そのファイルを実行する。 そうでなければ、その文字列自身を実行する。
+
+<p><code>-i</code> 以外のすべてのオプションは順番に処理される。 例えば、以下のようなコマンドは <pre>
+       $ lua -e'a=1' -e 'print(a)' script.lua
+</pre> まず <code>a</code> に1を代入し、それから <code>a</code> の値 (つまり `<code>1</code>&acute;) を表示し、最後にファイル <code>script.lua</code> を実行する (ここで、<code>$</code> はシェルプロンプトである。キミのシェルプロンプトは違うかもしれない)。
+
+<p>スクリプトを実行する前に、<code>lua</code> はコマンドライン引数を <code>arg</code> という名前のグローバルなテーブルに格納する。 スクリプト名がインデックス0に格納され、 最初のｈきすうがスクリプト名の後のインデックス1に格納され、以下同様である。 スクリプト名の前のすべての引数 (つまり、インタプリタの名前やオプション)
+は負のインデックスに割り当てられる。 つまり、次のような場合 <pre>
+       $ lua -la b.lua t1 t2
+</pre> インタプリタはまずファイル <code>a.lua</code> を実行し、 次に以下のようなテーブルを作る。 <pre>
+       arg = { [-2] = "lua", [-1] = "-la",
+               [0] = "b.lua",
+               [1] = "t1", [2] = "t2" }
+</pre> そして最後にファイル <code>b.lua</code> を実行する。 スクリプトは引数として <code>arg[1]</code>, <code>arg[2]</code>, ... が渡されて呼ばれる。 可変引数式 `<code>...</code>&acute; を使って引数にアクセスすることもできる。
+
+<p>対話モードでは、不完全な文を書いたときは、それが完全な文になるまで待つ。
+
+<p>グローバル変数 <code>_PROMPT</code> が文字列を持っていれば、 その値がプロンプトに使われる。 同様に、グローバル変数 <code>_PROMPT2</code> が文字列を持っていれば、 その値が第二プロンプトに使われる (不完全な文である間使われる)。 つまり、プロンプトはコマンドラインから直に変更できる。 <pre>
+       $ lua -e"_PROMPT='myprompt> '" -i
+</pre> (外側のクォート対はシェルのための、内側はLuaのためのもの。) また、<code>_PROMPT</code> に代入することで、Luaのプログラムからも変更できる。 対話モードに入るには <code>-i</code> が要ることに注意。 そうでなければ、プログラムは <code>_PROMPT</code> に代入した直後に何も出力せず終わるであろう。
+
+<p>UnixシステムでスクリプトインタプリタとしてLuaを使えるようにするために、 スタンドアロンインタプリタはチャンクが <code>#</code> で始まっていれば最初の行をスキップする。 従って、<code>chmod +x</code> と <code>#!</code> 形式を使って、 Luaスクリプトを実行可能なプログラムにすることができる。 <pre>
+#!/usr/local/bin/lua
+</pre> (もちろん、キミのマシンではLuaインタプリタは違う場所にあるかもしれない。 もし <code>PATH</code> の通るところに <code>lua</code> があれば、 <pre>
+#!/usr/bin/env lua
+</pre> がより移植性の高い解決法である)。
+
+<p>
+<hr>
+<hr />
+
+<p>
+<p><a name="incompat"></a>
+<h1>前バージョンとの非互換</h1>
+
+<p>プログラムをLua5.0からLua5.1に移行する際に見つかるかもしれない非互換の一覧を示す。 ほとんどの非互換は適切なオプションを使ってコンパイルすることで避けられる (ファイル <code>luaconf.h</code> を参照)。 しかしながら、これらの互換用オプションはすべて次のバージョンのLuaでは削除される予定である。
+
+<p>
+<h2>バージョン5.0との非互換</h2>
+
+<p>
+<h3>言語の変更</h3>
+<ul>
+    <li>可変引数システムは、余分の引数を持つテーブルの疑似引数 <code>arg</code> から 可変引数式に変更された。 (<code>luaconf.h</code> のオプション <code>LUA_COMPAT_VARARG</code>)
+
+    <p>
+    <li><b>for</b> 文と <b>repeat</b> 文の暗黙の変数のスコープが微妙に変更された。
+
+    <p>
+    <li>長い文字列と長いコメントの構文 (<code>[[...]]</code>) はネストできなくなった。 この場合、新しい構文 (<code>[=[...]=]</code>) を使うことができる。 (<code>luaconf.h</code> のオプション <code>LUA_COMPAT_LSTR</code>)
+
+    <p>
+</ul>
+
+<p>
+<h3>ライブラリの変更</h3>
+<ul>
+
+    <p>
+    <li>関数 <code>string.gfind</code> は <a href="#pdf-string.gmatch"><code>string.gmatch</code></a> に名前が変更された。 (オプション <code>LUA_COMPAT_GFIND</code>)
+
+    <p>
+    <li><a href="#pdf-string.gsub"><code>string.gsub</code></a> の3番目の引数に関数を渡した場合、 この関数が <b>nil</b> または <b>false</b> を返すと、 空文字列でなくマッチした文字列全体に置換するようになった。
+
+    <p>
+    <li>関数 <code>table.setn</code> は廃止された。 関数 <code>table.getn</code> は新しい長さ演算子 (<code>#</code>) が対応する。 関数の代わりに演算子を使う。 (オプション <code>LUA_COMPAT_GETN</code>)
+
+    <p>
+    <li>関数 <code>loadlib</code> は <a href="#pdf-package.loadlib"><code>package.loadlib</code></a> に名前が変更された。 (オプション <code>LUA_COMPAT_LOADLIB</code>)
+
+    <p>
+    <li>関数 <code>math.mod</code> は <a href="#pdf-math.fmod"><code>math.fmod</code></a> に名前が変更された。 (オプション <code>LUA_COMPAT_MOD</code>)
+
+    <p>
+    <li>関数 <code>table.foreach</code> および <code>table.foreachi</code> は廃止された。 ループには代わりに <code>pairs</code> または <code>ipairs</code> を使う。
+
+    <p>
+    <li>新しいモジュールシステムを導入したため、 関数 <a href="#pdf-require"><code>require</code></a> に大幅な変更が行われた。 しかしながら、新しい動作は以前とほぼ互換性がある。 ただし <code>require</code> は <code>LUA_PATH</code> の代わりに <a
+        href="#pdf-package.path"><code>package.path</code></a> からパスを取得する。
+
+    <p>
+    <li>関数 <a href="#pdf-collectgarbage"><code>collectgarbage</code></a> の引数が変更された。 関数 <code>gcinfo</code> は廃止された。 代わりに <code>collectgarbage("count")</code> を使う。
+
+    <p>
+</ul>
+
+<p>
+<h3>APIの変更</h3>
+<ul>
+
+    <p>
+    <li>ライブラリを開く <code>luaopen_*</code> 関数は通常のCの関数のようには直接は呼べなくなった。 これらはLuaの関数のようにLuaを通して呼ばなければならない。
+
+    <p>
+    <li>関数 <code>lua_open</code> は、ユーザ独自のメモリ確保関数を指定できる <a href="#lua_newstate"><code>lua_newstate</code></a> に置き換えられた。 標準のメモリ確保関数 (<code>realloc</code> をベースとする) を使ってステートを作るには、 標準ライブラリの <a
+        href="#luaL_newstate"><code>luaL_newstate</code></a> を使う。
+
+    <p>
+    <li>関数 <code>luaL_getn</code> および <code>luaL_setn</code> (補助ライブラリにあった) は廃止された。 <code>luaL_getn</code> の代わりに <a href="#lua_objlen"><code>lua_objlen</code></a> を使う。 <code>luaL_setn</code>
+    の代わりは存在しない。
+
+    <p>
+    <li>関数 <code>luaL_openlib</code> は <a href="#luaL_register"><code>luaL_register</code></a> に置き換えられた。
+
+    <p>
+</ul>
+
+<a name="BNF">
+<h1>Luaの完全な構文</h1>
+</a>
+
+<p>Luaの完全な構文を拡張BNF記法で示す。 これは演算子の優先順位や、 <b>return</b> および <b>break</b> 文がブロックの <em>最後の</em> 文としてしか使えないといった いくつかの構文的制限は記述していない。
+
+<p>
+
+<p><pre>
+
+  chunk ::= {stat [`<b>;</b>&acute;]} [laststat[`<b>;</b>&acute;]]
+
+  block ::= chunk
+
+  stat ::=  varlist1 `<b>=</b>&acute; explist1  |
+     functioncall  |
+     <b>do</b> block <b>end</b>  |
+     <b>while</b> exp <b>do</b> block <b>end</b>  |
+     <b>repeat</b> block <b>until</b> exp  |
+     <b>if</b> exp <b>then</b> block {<b>elseif</b> exp <b>then</b> block} [<b>else</b> block] <b>end</b>  |
+     <b>for</b> Name `<b>=</b>&acute; exp `<b>,</b>&acute; exp [`<b>,</b>&acute; exp] <b>do</b> block <b>end</b>  |
+     <b>for</b> namelist <b>in</b> explist1 <b>do</b> block <b>end</b>  |
+     <b>function</b> funcname funcbody  |
+     <b>local</b> <b>function</b> Name funcbody  |
+     <b>local</b> namelist [`<b>=</b>&acute; explist1]
+
+  laststat ::= <b>return</b> [explist1]  |  <b>break</b>
+
+  funcname ::= Name {`<b>.</b>&acute; Name} [`<b>:</b>&acute; Name]
+
+  varlist1 ::= var {`<b>,</b>&acute; var}
+
+  var ::=  Name  |  prefixexp `<b>[</b>&acute; exp `<b>]</b>&acute;  |  prefixexp `<b>.</b>&acute; Name
+
+  namelist ::= Name {`<b>,</b>&acute; Name}
+
+  explist1 ::= {exp `<b>,</b>&acute;} exp
+
+  exp ::=  <b>nil</b>  |  <b>false</b>  |  <b>true</b>  |  Number  |  String  |  `<b>...</b>&acute;  |
+     function  |  prefixexp  |  tableconstructor  |  exp binop exp  |  unop exp
+
+  prefixexp ::= var  |  functioncall  |  `<b>(</b>&acute; exp `<b>)</b>&acute;
+
+  functioncall ::=  prefixexp args  |  prefixexp `<b>:</b>&acute; Name args
+
+  args ::=  `<b>(</b>&acute; [explist1] `<b>)</b>&acute;  |  tableconstructor  |  String
+
+  function ::= <b>function</b> funcbody
+
+  funcbody ::= `<b>(</b>&acute; [parlist1] `<b>)</b>&acute; block <b>end</b>
+
+  parlist1 ::= namelist [`<b>,</b>&acute; `<b>...</b>&acute;]  |  `<b>...</b>&acute;
+
+  tableconstructor ::= `<b>{</b>&acute; [fieldlist] `<b>}</b>&acute;
+
+  fieldlist ::= field {fieldsep field} [fieldsep]
+
+  field ::= `<b>[</b>&acute; exp `<b>]</b>&acute; `<b>=</b>&acute; exp  |  Name `<b>=</b>&acute; exp  |  exp
+
+  fieldsep ::= `<b>,</b>&acute;  |  `<b>;</b>&acute;
+
+  binop ::= `<b>+</b>&acute;  |  `<b>-</b>&acute;  |  `<b>*</b>&acute;  |  `<b>/</b>&acute;  |  `<b>^</b>&acute;  |  `<b>%</b>&acute;  |  `<b>..</b>&acute;  |
+     `<b>&#060;</b>&acute;  |  `<b>&#060;=</b>&acute;  |  `<b>></b>&acute;  |  `<b>>=</b>&acute;  |  `<b>==</b>&acute;  |  `<b>~=</b>&acute;  |
+     <b>and</b>  |  <b>or</b>
+
+  unop ::= `<b>-</b>&acute;  |  <b>not</b>  |  `<b>#</b>&acute;
+
+</pre>

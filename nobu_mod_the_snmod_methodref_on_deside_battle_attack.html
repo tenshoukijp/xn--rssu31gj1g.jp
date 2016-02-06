@@ -1,0 +1,63 @@
+%(hilight)s
+<h2><i class="fa fa-book fa-fw"></i>void カスタム::On_攻撃方法決定時《戦争画面》(int 主体武将番号, int 客体武将番号, 攻撃方法決定時型パラメタ パラメタ)</h2>
+<div class="code"><pre class="brush:cpp;">
+void カスタム::On_攻撃方法決定時《戦争画面》(int 主体武将番号, int 客体武将番号, 攻撃方法決定時型パラメタ パラメタ) {
+}
+</pre></div>
+<ul class="checklist">
+<li><h3>タイミング</h3>
+<ul>
+<li>各ユニットが、自らの意思(プレイヤの意思も含む)で、「攻撃方法を決定した際」に、呼び出される。<br>
+PC/NPC、無関係に実行される。<br>
+ただし、自らの意思ではない攻撃(混乱による攻撃等)では呼び出されない。(将来呼び出されるようにするかもしれない)<br>
+</ul>
+<li><h3>一般的用途</h3>
+<ul>
+<li>特定の攻撃方法の際に、何か処理を行いたい場合に利用する。<br>
+</ul>
+<li><h3>例①</h3>
+<div class="code"><pre class="brush:cpp;">
+void カスタム::On_攻撃方法決定時《戦争画面》(int 主体武将番号, int 客体武将番号, 攻撃方法決定時型パラメタ パラメタ) {
+  int iBushouID = 主体武将番号-1;
+  int iTargetID = 客体武将番号-1;
+
+  int 攻撃方法番号 = パラメタ.攻撃方法番号;
+  int 移動前 = パラメタ.移動前;
+
+  // 武将番号範囲チェック
+  if ( (0 &lt;= iBushouID &amp;&amp; iBushouID &lt; 最大数::武将情報::配列数) &amp;&amp;
+     (0 &lt;= iTargetID &amp;&amp; iTargetID &lt; 最大数::武将情報::配列数) ) {
+
+
+       デバッグ出力 &lt;&lt; &quot;誰が:&quot; &lt;&lt; Get_名前(iBushouID) &lt;&lt; endl;
+       デバッグ出力 &lt;&lt; &quot;誰に:&quot; &lt;&lt; Get_名前(iTargetID) &lt;&lt; endl;
+
+       if ( 移動前 ) {
+        デバッグ出力(&quot;移動前&quot;);
+       } else {
+        デバッグ出力(&quot;移動後&quot;);
+       }
+
+       if ( 攻撃方法番号 == 攻撃方法::攻撃 ) {
+         デバッグ出力(&quot;⇒攻撃&quot; );
+       }
+       else if ( 攻撃方法番号 == 攻撃方法::突撃 ) {
+         デバッグ出力(&quot;⇒突撃&quot; );
+       }
+       else if ( 攻撃方法番号 == 攻撃方法::鉄砲 ) {
+         デバッグ出力(&quot;⇒鉄砲&quot; );
+       }
+       else if ( 攻撃方法番号 == 攻撃方法::弓 ) {
+         デバッグ出力(&quot;⇒弓&quot; );
+       }
+       else if ( 攻撃方法番号 == 攻撃方法::大砲 ) {
+         デバッグ出力(&quot;⇒大砲&quot; );
+       }
+       else if ( 攻撃方法番号 == 攻撃方法::一斉攻撃 ) {
+         デバッグ出力(&quot;⇒一斉攻撃&quot; );
+       }
+
+  }
+}
+</pre></div>
+</ul>

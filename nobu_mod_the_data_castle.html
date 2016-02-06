@@ -1,0 +1,101 @@
+<h2><i class="fa fa-file-excel-o fa-fw"></i>城内マップのデータ構造</h2>
+<ul class="checklist">
+    <li>
+    <h3>概要</h3>
+    <p>下記は、城内マップのデータ構造を理解するための説明となります。<br>
+    このページは<a href="?page=nobu_mod_the_hexmap_editor">ヘックスマップエディタ</a>が出来る前に<br>
+    作成されたページとなります。<br>
+    現在、城を編集する上で、このページに記載されているようなデータのバイナリ構造に対する深い理解は特に必要ではなく、<br>
+    ヘックスエディタにて簡単に編集が可能となっています。<br>
+    </p>
+    <li>
+    <h3>ダウンロード</h3>
+    <dl>
+        <dt>
+        <div class="download_file">DOWNLOAD ⇒ <a href="%(file)s">CastlePrefab.zip</a>ファイル。</div>
+        </dt>
+        <dd>
+        <div class="update_time">└更新日 %(year)04d/%(mon)02d/%(mday)02d</div>
+        </dd>
+        <dt>
+    </dl>
+    <p>上記ダウンロードのExcelファイルは、便利に城を編集出来ようなツールではなく、<br>
+    城の構造を理解する上でのファイルとなります。<br>
+    </p>
+    <ul class="pointlist">
+        <li>
+        <h4>Excel</h4>
+        <p>城を考案したり、バイナリデータと比較する手作業用のファイルです。便利な機能は何もありません</p>
+        <li>
+        <h4>***.gif</h4>
+        <p>たくさんのGifファイル。データ内バイト値に、ファイル名を合わせてグラチップとしています。</p>
+        <li>
+        <h4>hexmap.nb6</h4>
+        <p>躑躅ヶ崎館のみ改変したhexmap.nb6。<br>
+        元々の城内マップはこちら<a href="http://www19.atwiki.jp/nobu6/pages/286.html">躑躅ヶ崎館を含む甲州城内地図一覧</a></p>
+        <li>
+    </ul>
+    <h3>詳細説明</h3>
+    <ul class="pointlist">
+        <li>
+        <h4>前提知識</h4>
+        <p>城には、ＩＤが振られています。全部で214個の城が存在します。<br>
+        実際には城名ではなく、城の場所に対してIDが振られているという感じです。<br>
+        金石城が1番目の城となり、七尾城が2番、以下続いてゆきます。<br>
+        これは、シナリオエディタの城の項目で調査可能ですので各自調べてください。<br>
+        </p>
+        <fieldset class="alert alert-warn"><legend>214箇所に215種類の城が存在する。</legend> 全部で214個の城が存在します。<br>
+        ヘックスエディタのCastleEditorにて確認できますが、<br>
+        厳密には城は214の箇所に<span class="negative">215種の籠城戦マップが存在</span>します。 大阪城と安土城は特別に籠城戦のマップが変化するためです。<br>
+        </fieldset>
+
+        <li>
+        <h4>hexmap.nb6</h4>
+        <p>城内マップは｢hexmap.nb6｣の中に入っています。 この｢hexmap.nb6｣は、<a href="page=nobu_mod_the_ls11archiever">LS11 Archier</a>によって解凍(Unpack)や圧縮(Pack)が可能です。 その構成は、以下のように３つに分けられます。「観音寺城＆大阪城」のデータが最後にまとまっています。</p>
+        <table width="800" style="border: solid 1px #000000; border-collapse: collapse; margin-left: 20px;" cellpadding="1" cellspacing="1">
+            <tr>
+                <td style="border: solid 1px #000000; border-collapse: collapse;" cellpadding="1" cellspacing="1">①</td>
+                <td style="border: solid 1px #000000; border-collapse: collapse;" cellpadding="1" cellspacing="1">グラフィックチップの組み合わせデータ</td>
+                <td style="border: solid 1px #000000; border-collapse: collapse;" cellpadding="1" cellspacing="1" nowrap>hexmap.952～hexmap.1165</td>
+                <td style="border: solid 1px #000000; border-collapse: collapse;" cellpadding="1" cellspacing="1">hexmap.952 が金石城(=ID:1)で開始、hexmap.953が七尾城ということになり、全部で214個あります。</td>
+            </tr>
+            <tr>
+                <td style="border: solid 1px #000000; border-collapse: collapse;" cellpadding="1" cellspacing="1">②</td>
+                <td style="border: solid 1px #000000; border-collapse: collapse;" cellpadding="1" cellspacing="1">実際何のオブジェクト(城・門・道・柵・水・平・荒・等）なのかのゲーム管理データ。<br>
+                移動可不可、通路のパス検索などにも利用されます。</td>
+                <td style="border: solid 1px #000000; border-collapse: collapse;" cellpadding="1" cellspacing="1" nowrap>hexmap.1166～hexmap.1379</td>
+                <td style="border: solid 1px #000000; border-collapse: collapse;" cellpadding="1" cellspacing="1">hexmap.1166 が金石城(=ID:1)で開始、hexmap.1167が七尾城ということになり、全部で214個あります。</td>
+            </tr>
+            <tr>
+                <td style="border: solid 1px #000000; border-collapse: collapse;" cellpadding="1" cellspacing="1">③</td>
+                <td style="border: solid 1px #000000; border-collapse: collapse;" cellpadding="1" cellspacing="1">階層のデータ。(城内外の１階、２階などの概念です。下の階から上の階への移動には制限が伴いますので必要となります)</td>
+                <td style="border: solid 1px #000000; border-collapse: collapse;" cellpadding="1" cellspacing="1" nowrap>hexmap.1380～hexmap.1593</td>
+                <td style="border: solid 1px #000000; border-collapse: collapse;" cellpadding="1" cellspacing="1">hexmap.1380 が金石城(=ID:1)で開始、hexmap.1381が七尾城ということになり、全部で214個あります。</td>
+            </tr>
+        </table>
+        <p>最後に1594～1596は、安土城 兼 大阪城のデータであり、それぞれ①②③に対応しています。</p>
+
+        <li>
+        <h4>マス目とデータ</h4>
+        <p><img src="./cnt_mod/mod_hexmap/cnt_img_castle_00.png"></p>
+        <li>
+        <h4>第１層</h4>
+        <p><img src="./cnt_mod/mod_hexmap/cnt_img_castle_01.png"></p>
+        <li>
+        <h4>第２層</h4>
+        <p><img src="./cnt_mod/mod_hexmap/cnt_img_castle_02.png"></p>
+        <li>
+        <h4>第３層</h4>
+        <p><img src="./cnt_mod/mod_hexmap/cnt_img_castle_03.png"></p>
+        <li>
+        <h4>チップの「役割」のデータ</h4>
+        <p>第１層～第３層までは、あくまで視覚的な｢見た目」の構成の話であり、<br>
+        ゲーム内で取り扱う計算対象となる、いわゆる「役割」としての構造データは以下のようになります。<br>
+        </p>
+        <p><img src="./cnt_mod/mod_hexmap/cnt_img_castle_04.png"><br>
+        </p>
+        <li>
+        <h4>チップの「高さ」のデータ</h4>
+        <p><img src="./cnt_mod/mod_hexmap/cnt_img_castle_05.png"></p>
+    </ul>
+</ul>

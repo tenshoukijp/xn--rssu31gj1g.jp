@@ -1,0 +1,750 @@
+%(hilight)s
+<h2><i class="fa fa-lightbulb-o fa-fw"></i>ScenarioModVer2 更新履歴 v2.4.0.0～v2.5.0.0</h2>
+
+<ul class="checklist">
+    <li>
+    <h3>v2.4.1.6 ⇒ v2.4.1.7</h3>
+    <ul class="pointlist">
+        <li>
+        <h4><span class="keyword">番号リスト型 Get_参戦の大名番号リスト【配列用】()</span></h4>
+        <p>を追加した。<br>
+        </p>
+        <p>現在行われている戦争に参加した大名勢力はどこなのか？ についての情報を得るものとなる。<br>
+        </p>
+
+        <fieldset class="alert alert-info"><legend>対象イベントハンドラの制限はない</legend>今回提示する以下の関数群のサンプル軍は、<br>
+        たまたま全て「On_残りターン変更《戦争画面》」イベントハンドラ内での記述となっているが、<br>
+        別段そのような使用制限事項は存在しない。<br>
+        戦争中に実行されるいかなるイベントハンドラ内においても(たとえば吹き出し直前イベントハンドラ等)、実行可能である。</fieldset>
+
+        <div class="code"><pre class="brush:cpp;">
+void カスタム::On_残りターン変更《戦争画面》(int 残りターン数) {
+  番号リスト型 dlist = Get_参戦の大名番号リスト【配列用】();
+
+  for each ( int iDaimyoID in dlist ) {
+    デバッグ出力 &lt;&lt; &quot;参戦大名番号【配列用】:&quot; &lt;&lt; iDaimyoID &lt;&lt; endl;
+    デバッグ出力 &lt;&lt; &quot;大名:&quot; &lt;&lt; Get_名字( p大名情報[iDaimyoID].大名【武将番号】-1 ) &lt;&lt; endl;
+  }
+}
+</pre></div>
+        <li>
+        <h4><span class="keyword">番号リスト型 Get_参戦の軍団番号リスト【配列用】()</span></h4>
+
+        <p>を追加した。</p>
+        <p>現在行われている戦争に参戦した軍団勢力はどこなのか？ についての情報を得る。<br>
+        </p>
+        <div class="code"><pre class="brush:cpp;">
+void カスタム::On_残りターン変更《戦争画面》(int 残りターン数) {
+  番号リスト型 glist = Get_参戦の軍団番号リスト【配列用】();
+
+  for each ( int iGundanID in glist ) {
+    デバッグ出力 &lt;&lt; &quot;参戦軍団番号【配列用】:&quot; &lt;&lt; iGundanID &lt;&lt; endl;
+    int iBushouID = p軍団情報[iGundanID].軍団長【武将番号】-1;
+    if ( 0 &lt;= iBushouID &amp;&amp; iBushouID &lt; 最大数::武将情報::配列数 ) {
+      デバッグ出力 &lt;&lt; &quot;軍団長:&quot; &lt;&lt; Get_名字(iBushouID)+Get_名前(iBushouID) &lt;&lt; endl;
+    }
+  }
+}
+</pre></div>
+        <li>
+        <h4><span class="keyword">Get_軍団の参戦立場(iGundanID)</span></h4>
+        <p>を追加した。</p>
+        <p>軍団の戦争への参戦立場 についての情報を得るものとなる。<br>
+        </p>
+        <div class="code"><pre class="brush:cpp;">
+void カスタム::On_残りターン変更《戦争画面》(int 残りターン数) {
+  番号リスト型 glist = Get_参戦の軍団番号リスト【配列用】();
+
+  for each ( int iGundanID in glist ) {
+
+    int iBushouID = p軍団情報[iGundanID].軍団長【武将番号】-1;
+
+    if ( 0 &lt;= iBushouID &amp;&amp; iBushouID &lt; 最大数::武将情報::配列数 ) {
+      デバッグ出力 &lt;&lt; &quot;軍団長:&quot; &lt;&lt; Get_名字(iBushouID)+Get_名前(iBushouID) &lt;&lt; endl;
+    }
+
+    // 軍団としての参戦立場を得る
+    int iTachiba = Get_軍団の参戦立場(iGundanID);
+
+    if ( iTachiba == 参戦立場::不明 ) {
+      デバッグ出力 &lt;&lt; &quot;立場:不明&quot; &lt;&lt; endl;
+    }
+    else if ( iTachiba == 参戦立場::攻撃軍 ) {
+      デバッグ出力 &lt;&lt; &quot;立場:攻撃軍&quot; &lt;&lt; endl;
+    }
+    else if ( iTachiba == 参戦立場::守備軍 ) {
+      デバッグ出力 &lt;&lt; &quot;立場:守備軍&quot; &lt;&lt; endl;
+    }
+    else if ( iTachiba == 参戦立場::攻撃の援軍 ) {
+      デバッグ出力 &lt;&lt; &quot;立場:攻撃の援軍&quot; &lt;&lt; endl;
+    }
+    else if ( iTachiba == 参戦立場::守備の援軍 ) {
+      デバッグ出力 &lt;&lt; &quot;立場:守備の援軍&quot; &lt;&lt; endl;
+    }
+    else if ( iTachiba == 参戦立場::中立軍 ) {
+      デバッグ出力 &lt;&lt; &quot;立場:中立軍&quot; &lt;&lt; endl;
+    }
+    デバッグ出力 &lt;&lt; &quot;------------------------&quot; &lt;&lt; endl;
+  }
+}
+</pre></div>
+        <li>
+        <h4><span class="keyword">Get_武将の参戦立場(iBushouID)</span></h4>
+        <p>を追加した。<br>
+        </p>
+        <p>武将の戦争への参戦立場 についての情報を得るものとなる。</p>
+        <div class="code"><pre class="brush:cpp;">
+void カスタム::On_残りターン変更《戦争画面》(int 残りターン数) {
+
+  if ( 残りターン &lt;= 29 ) {
+    番号リスト型 blist = Get_出陣中の武将番号リスト【配列用】();
+
+    for each ( int iBushouID in blist ) {
+
+      デバッグ出力 &lt;&lt; &quot;武将姓名:&quot; &lt;&lt; Get_名字(iBushouID)+Get_名前(iBushouID) &lt;&lt; endl;
+
+      // 武将としての参戦立場を得る
+      int iTachiba = Get_武将の参戦立場(iBushouID);
+
+      if ( iTachiba == 参戦立場::不明 ) {
+        デバッグ出力 &lt;&lt; &quot;立場:不明&quot; &lt;&lt; endl;
+      }
+      else if ( iTachiba == 参戦立場::攻撃軍 ) {
+        デバッグ出力 &lt;&lt; &quot;立場:攻撃軍&quot; &lt;&lt; endl;
+      }
+      else if ( iTachiba == 参戦立場::守備軍 ) {
+        デバッグ出力 &lt;&lt; &quot;立場:守備軍&quot; &lt;&lt; endl;
+      }
+      else if ( iTachiba == 参戦立場::攻撃の援軍 ) {
+        デバッグ出力 &lt;&lt; &quot;立場:攻撃の援軍&quot; &lt;&lt; endl;
+      }
+      else if ( iTachiba == 参戦立場::守備の援軍 ) {
+        デバッグ出力 &lt;&lt; &quot;立場:守備の援軍&quot; &lt;&lt; endl;
+      }
+      else if ( iTachiba == 参戦立場::中立軍 ) {
+        デバッグ出力 &lt;&lt; &quot;立場:中立軍&quot; &lt;&lt; endl;
+      }
+      デバッグ出力 &lt;&lt; &quot;------------------------&quot; &lt;&lt; endl;
+
+    }
+  }
+}
+</pre></div>
+        <li>
+        <h4><span class="keyword">Get_参戦軍団の指揮者(iGundanID)</span></h4>
+        <p>を追加した。<br>
+        </p>
+        <p>現在の戦争中において、該当軍団の戦場における指揮者は誰なのか？ の情報を得るものとなる。</p>
+        <div class="code"><pre class="brush:cpp;">
+void カスタム::On_残りターン変更《戦争画面》(int 残りターン数) {
+
+  if ( 残りターン数 &lt;= 29 ) {
+    番号リスト型 glist = Get_参戦の軍団番号リスト【配列用】();
+
+    for each ( int iGundanID in glist ) {
+      デバッグ出力 &lt;&lt; &quot;参戦軍団番号【配列用】:&quot; &lt;&lt; iGundanID &lt;&lt; endl;
+
+      int iBushouID = Get_参戦軍団の指揮者(iGundanID);
+
+      if ( 0 &lt;= iBushouID &amp;&amp; iBushouID &lt; 最大数::武将情報::配列数 ) {
+        デバッグ出力 &lt;&lt; &quot;指揮者:&quot; &lt;&lt; Get_名字(iBushouID)+Get_名前(iBushouID) &lt;&lt; endl;
+      }
+    }
+  }
+}
+</pre></div>
+    </ul>
+
+    <li>
+    <h3>v2.4.1.5 ⇒ v2.4.1.6</h3>
+    <p>戦場にて、「ターン変更時」に指定武将が退却を試みるコマンドが加えられた。</p>
+    <ul>
+        <li>
+        <h4><span class="keyword">Do_コマンド《戦争画面》《退却》(int 武将番号【配列用】)</span></h4>
+        <p>を追加した。<br>
+        </p>
+        <p><font color="red"><b>この関数はUIやメッセージ吹き出しを伴うため、</b></font><br>
+        On_残りターン変更《戦争画面》 イベントハンドラなど、<br>
+        <font color="red"><b>UIや吹き出しが出ても大丈夫なイベントハンドラ限定で使用可能である。</b></font></p>
+    </ul>
+
+
+    <li>
+    <h3>v2.4.1.4 ⇒ v2.4.1.5</h3>
+    <ul class="pointlist">
+
+        <li>
+        <h4><span class="keyword">bool Set_武将状態《→死亡》(int 死亡武将番号【配列用】, int 犯人武将番号【配列用】=-1)</span><br>
+        </h4>
+        <p>という、いかなる身分の武将でも正規手順にて死亡させることが可能な関数を追加した。<br>
+        </p>
+        <p>第2引数はあまり気にしなくても良く、特に指定する必要はない。<br>
+        </p>
+        <ul>
+            <li>この関数は死亡処理、及び、死亡後に必要な処理を天翔記仕様を踏襲して全て行う。<br>
+            <li><b>この関数自体は、「いかなる理由で死亡したのか？」のダイアログは当然出さない(出しようもない)ので、注意すること。</b><br>
+            病死したのか、戦死したのか、暗殺しに行ったら、逆に暗殺されたのか、<br>
+            それらは、別途、「情報ダイアログ表示」関数や、「確認ダイアログ表示」関数で、状況に応じて、<br>
+            プログラムを組む人間で判断し、必要であればダイアログや効果音を出す必要がある。<br>
+
+            <li>この関数は、<b>あくまでも、「死亡処理」と「それに伴う必要な後処理(例えば大名を殺したのであれば、引き継ぎ処理)」などを行う。</b>
+
+            <li>この関数はデリケートであるため、使用タイミングがかなり制限されるであろう。<br>
+            不用意なタイミングでこの関数を呼び出すと、処理が先へと進まなくなったり、不正に落ちたりといったこととなる。<br>
+            </li>
+        </ul>
+        <li>
+        <h4>メイン画面</h4>
+        <p>メイン画面では、通常下記のように、「On_軍団ターン変更」や、「On_プレイヤ担当ターン」など、<br>
+        <b>メイン画面の「ターン切り替わり目」系であれば安全</b>に呼び出せる。<br>
+        その他のタイミングは危険である。<br>
+        </p>
+        <ul class="arrowlist">
+            <li>
+            <h5>例①</h5>
+            <div class="code"><pre class="brush:cpp;">
+void カスタム::On_プレイヤ担当ターン《メイン画面》() {
+    int iBushouID = Get_武将番号【配列用】(&quot;織田信長&quot;);
+    Set_武将状態《→死亡》(iBushouID);
+}
+</pre></div>
+            <li>
+            <h5>例②</h5>
+            <div class="code"><pre class="brush:cpp;">
+void カスタム::On_軍団ターン変更《メイン画面》(int 軍団番号) {
+    int iBushouID = Get_武将番号【配列用】(&quot;毛利元就&quot;);
+    Set_武将状態《→死亡》(iBushouID);
+}
+</pre></div>
+        </ul>
+        <li>
+        <h4>戦争画面</h4>
+        <p><b>戦争画面では、<span class="keyword">On_噴出メッセージ直前</span></b>や<br>
+        <span class="keyword">On_残りターン変更《戦争画面》</span>時に安全に呼び出せる。<br>
+        <ul class="arrowlist">
+            <li>
+            <h5>例①</h5>
+            <div class="code"><pre class="brush:cpp;">
+string カスタム::On_噴出メッセージ直前(string 武将名, string 元メッセージ, メッセージ関連情報型 メッセージ関連情報) {
+
+  // 混乱をしかけたら勝手に死亡。
+  if ( 武将名 == &quot;真田幸隆&quot; &amp;&amp; Is_正規表現マッチ(元メッセージ, &quot;そうやすやすとは|技をもってしても|分別がつかなく&quot;) ) {
+    int iBushouID = Get_武将番号【配列用】(&quot;真田幸隆&quot;);
+    Set_武将状態《→死亡》(iBushouID);
+  }
+  // 変更しない場合&quot;&quot;
+  return &quot;&quot;;
+}
+</pre></div>
+
+            <li>
+            <h5>例②</h5>
+            <div class="code"><pre class="brush:cpp;">
+void カスタム::On_残りターン変更《戦争画面》(int 残りターン数) {
+    // ターン切り替わり時に今表示中の戦場マップの誰かが「フッ…」と死亡。
+    番号リスト型 list = Get_出陣中の武将番号リスト【配列用】《表示中マップ》();
+    if ( list.size() &gt; 0 ) {
+        Set_武将状態《→死亡》(list[0]);
+    }
+}
+</pre></div>
+        </ul>
+        <li>
+        <h4>武将の戦死と死亡状態</h4>
+        <p>武将が戦場で死亡したからといって、突然、<br>
+        </p>
+        <div class="code"><pre class="brush:cpp;">
+p武将戸籍情報[i].状態 == 状態::死亡<br>
+</pre></div>
+        <p>になったりはしないので注意すること!!<br>
+        </p>
+        <p>天翔記の本来の動作でも、そのようなことにはならない。<br>
+        </p>
+        <p>武将が戦場で死亡した場合、<br>
+        </p>
+
+        <div class="code"><pre class="brush:cpp;">
+p武将戸籍情報[i].戦死 == TRUE<br>
+</pre></div>
+        <p>というように「一端戦死」という状態となり、<br>
+        戦争が終わったタイミングで、初めて正式に、<br>
+        </p>
+        <div class="code"><pre class="brush:cpp;">
+p武将戸籍情報[i].状態 == 状態::死亡 となり、<br>
+</pre></div>
+        <p>代わりに、</p>
+        <div class="code"><pre class="brush:cpp;">
+p武将戸籍情報[i].戦死 == FALSE<br>
+</pre></div>
+        <p>と<b>値がFALSEへと戻る</b>。</p>
+    </ul>
+
+
+    <li>
+    <h3>v2.4.1.3 ⇒ v2.4.1.4</h3>
+    <p>フラグ関連の関数の返り値が、厳密過ぎて常に複雑な記述を強いられていたため<br>
+    実用シーンを考慮して、簡易な記述で済む返り値とした。</p>
+    <ul class="pointlist">
+        <li>
+        <h4><span class="keyword">int Set_フラグ( string フラグ名, int フラグ値, int フラグ枠)</span></h4>
+        <br>
+        <li>
+        <h4><span class="keyword">int Get_フラグ( string フラグ名, int フラグ枠)</span></h4>
+        <br>
+        <li>
+        <h4><span class="keyword">int Delete_フラグ( string フラグ名 )</span></h4>
+
+        <p>の３つの返り値の仕様が変更となった。<br>
+        </p>
+        <p>これまで、「未定義のフラグ」や「フラグ確保失敗時」などの際には-0xFFFFが返ってきていたが、<br>
+        運用がしづらいので、0を返すようにした。<br>
+        </p>
+    </ul>
+
+    <li>
+    <h3>v2.4.1.2 ⇒ v2.4.1.3</h3>
+    <p>ランダムな武将姓名、姫名を得る関数が追加された。<br>
+    </p>
+    <ul>
+        <li><span class="keyword">string Get_ランダム名字()</span>
+        <li><span class="keyword">string Get_ランダム名前()</span>
+        <li><span class="keyword">string Get_ランダム姫名前()</span>
+        <p>そのまま使えば、stringが返ってくるので、特に使い方を説明する必要はないだろう。<br>
+        </p>
+        <p>ランダム名字は3000パターンほどの武将名字から１つを選択。<br>
+        ランダム名前は10000パターンほどの武将名前から１つを選択。<br>
+        ランダム姫名は元々天翔記に存在する100パターンの仮想姫名から１つを選択。<br>
+        </p>
+    </ul>
+
+    <li>
+    <h3>v2.4.1.1→v2.4.1.2</h3>
+    <ul class="pointlist">
+        <li>
+        <h4><span class="keyword">選択官位ダイアログ表示</span></h4>
+        <p>の関数が実装された。<br>
+        使い方、考え方は、他と同じ。<br>
+        </p>
+        <p>以上で、選択○○ダイアログ表示は、天翔記ゲーム中に存在するものは全て実装された。<br>
+        </p>
+    </ul>
+
+    <li>
+    <h3>v2.4.1.1追記</h3>
+    <ul>
+        <li><span class="keyword">選択大名ダイアログ</span>
+        <li><span class="keyword">選択軍団ダイアログ</span>
+        <li><span class="keyword">選択城ダイアログ</span>
+        <li><span class="keyword">選択武将ダイアログ</span>
+        <li><span class="keyword">選択家宝ダイアログ</span>
+    </ul>
+    <p>は、いずれも「表示カラムを絞る」機能を持っている。 <br>
+    </p>
+    <ul class="pointlist">
+        <li>
+        <h4>例①</h4>
+        <div class="code"><pre class="brush:cpp;">
+  番号リスト型 ShowBushouList;
+
+  for ( int iBushouID=0; iBushouID &lt; 最大数::武将情報::配列数; iBushouID++ ) {
+    // 死んでなければ
+    if ( p武将戸籍情報[iBushouID].状態 != 状態::死亡 ) {
+      // すでに誕生していて、20歳以下 (まだ誕生してない人も532枠に居ることもあるため。)
+      if ( 0 &lt;= Get_武将年齢(iBushouID) &amp;&amp; Get_武将年齢(iBushouID) &lt;= 20 ) {
+        ShowBushouList.push_back(iBushouID);
+      }
+    }
+  }
+
+  int res = 選択武将ダイアログ表示(ShowBushouList, カラム::武将::年齢 | カラム::武将::意向 | カラム::武将::智才 );
+</pre></div>
+        <p><img src="./cnt_mod/mod_snmod/cnt_mod_scenario_mod_64.png"></p>
+    </ul>
+
+    <li>
+    <h3>v2.4.0.7→v2.4.1.1</h3>
+    <ul>
+        <li><span class="keyword">選択家宝ダイアログ表示</span>関数が追加された。<br>
+        <li><span class="keyword">選択武将ダイアログ表示</span>関数が追加された。<br>
+        <li><span class="keyword">選択城ダイアログ表示</span>関数が追加された。<br>
+        <p>考え方は、いずれも「選択軍団ダイアログ表示、選択大名ダイアログ表示」と同じなので、ここでは言及しない。<br>
+        </p>
+
+        <p>しかし、選択武将ダイアログについては、他と同じ「単数選択」だけではなく、「複数選択」タイプが存在する。</p>
+        <ul class="arrowlist">
+            <li>
+            <h5>単数型(他と同じ)</h5>
+            <span class="keyword">int 選択武将ダイアログ表示(番号リスト型 武将番号【配列用】リスト)</span> <br>
+            <h5>複数型</h5>
+            <span class="keyword">番号リスト型 選択武将ダイアログ表示&lt;num&gt;(番号リスト型 武将番号【配列用】リスト)</span> (<font color="red">numには最大で16まで指定が可能である。</font>) <br>
+        </ul>
+        <ul class="arrowlist">
+            <li>
+            <h5>例①</h5>
+            <div class="code"><pre class="brush:cpp;">
+  番号リスト型 ShowBushouList;
+
+  for ( int iBushouID=0; iBushouID &lt; 最大数::武将情報::配列数; iBushouID++ ) {
+    // 死んでなければ
+    if ( p武将戸籍情報[iBushouID].状態 != 状態::死亡 ) {
+      ShowBushouList.push_back(iBushouID);
+    }
+  }
+
+  // 最大10人まで選択することが可能な選択武将ダイアログ。
+  番号リスト型 SelectedBushouList = 選択武将ダイアログ表示&lt;10&gt;(ShowBushouList);
+
+  for each ( int iSelectedBushouID in SelectedBushouList ) {
+    デバッグ出力 &lt;&lt; iSelectedBushouID &lt;&lt; endl;
+  }
+</pre></div>
+        </ul>
+    </ul>
+
+    <li>
+    <h3>v2.4.0.7追記</h3>
+    <ul class="pointlist">
+        <li>
+        <h4><span class="keyword">int 選択軍団ダイアログ表示(番号リスト型 軍団番号【配列用】リスト)</span></h4>
+        <p>関数が追加された。</p>
+        <p>考え方は、「選択大名ダイアログ表示」と完全に同じである。<br>
+        </p>
+        <p><b>有効な選択結果が得られない、もしくは、選択軍団ダイアログを表示出来ないようなものを引数とした場合、0xFFFF</b>が返り値となる。<br>
+        </p>
+        <ul class="arrowlist">
+            <li>
+            <h5>例①</h5>
+            <div class="code"><pre class="brush:cpp;">
+  番号リスト型 myList;
+
+  myList.push_back(1); // 軍団番号【配列用】が1番という意味で追加
+  myList.push_back(10);// 軍団番号【配列用】が10番という意味で追加
+  int iSelectedGundanID = 選択軍団ダイアログ表示(myList);
+  if ( 0 &lt;= iSelectedGundanID &amp;&amp; iSelectedGundanID &lt; 最大数::軍団情報::配列数 ) {
+    デバッグ出力 &lt;&lt; &quot;軍団番号【配列用】:&quot; &lt;&lt; iSelectedGundanID &lt;&lt; &quot;が選択された。&quot; &lt;&lt; endl;
+  } else {
+    デバッグ出力 &lt;&lt; &quot;選択しなかった。もしくは、myListに有効な軍団を指定しなかった&quot; &lt;&lt; endl;
+  }
+</pre></div>
+            <p><img src="./cnt_mod/mod_snmod/cnt_mod_scenario_mod_62.png"><br>
+            </p>
+            <p>通常は、軍団番号【配列用】を直接指定するといったことはしないだろう。<br>
+            for ループを使いつつ、条件に一致する軍団を計算で出す形となるだろう。<br>
+            そんな中で最も利用シーンが多いのが「自勢力の軍団リストを得る」といった形である。<br>
+            それは以下のような形で簡単に得ることが可能だ。<br>
+            </p>
+            <li>
+            <h5>例②</h5>
+            <div class="code"><pre class="brush:cpp;">
+    番号リスト型 myList2;
+    int iDaimyoID = pターン情報.現在のターン【大名番号】-1;
+    myList2 = Get_大名麾下軍団番号リスト【配列用】( iDaimyoID );
+    int iSelectedDaimyoID2 = 選択軍団ダイアログ表示(myList2);
+</pre></div>
+        </ul>
+    </ul>
+
+    <li>
+    <h3>v2.4.0.5 ⇒ v2.4.0.7</h3>
+    <ul class="pointlist">
+        <li>
+        <h4>int 選択大名ダイアログ表示(番号リスト型 大名番号【配列用】リスト)</h4>
+        <p>関数が追加された。</p>
+        <p>有効な選択結果が得られない。もしくは、選択大名ダイアログを表示出来ないようなものを引数とした場合、0xFFFFが返り値となる。<br>
+        </p>
+        <ul class="arrowlist">
+            <li>
+            <h5>例①</h5>
+            <div class="code"><pre class="brush:cpp;">
+  番号リスト型 myList;
+
+  myList.push_back(1); // 大名番号【配列用】が1番という意味で追加
+  myList.push_back(10);// 大名番号【配列用】が10番という意味で追加
+  int iSelectedDaimyoID = 選択大名ダイアログ表示(myList);
+  if ( 0 &lt;= iSelectedDaimyoID &amp;&amp; iSelectedDaimyoID &lt; 最大数::大名情報::配列数 ) {
+    デバッグ出力 &lt;&lt; &quot;大名番号【配列用】:&quot; &lt;&lt; iSelectedDaimyoID &lt;&lt; &quot;が選択された。&quot; &lt;&lt; endl;
+  } else {
+    デバッグ出力 &lt;&lt; &quot;選択しなかった。もしくは、myListに有効な大名を指定しなかった&quot; &lt;&lt; endl;
+  }
+</pre></div>
+            <p><img src="./cnt_mod/mod_snmod/cnt_mod_scenario_mod_61.png"></p>
+            <p>通常は、大名番号【配列用】を直接指定するといったことはしないだろう。<br>
+            for ループを使いつつ、条件に一致する大名を計算で出す形となるだろう。<br>
+            </p>
+            <p>そんな中で最も利用シーンが多いのが「ターン大名以外の有効な大名のリスト」といった形である。<br>
+            それは以下のような形で簡単に得ることが可能だ。<br>
+            </p>
+            <li>
+            <h5>例②</h5>
+            <div class="code"><pre class="brush:cpp;">
+    番号リスト型 myList;
+    myList = Get_大名番号リスト【配列用】(FALSE); // FALSEを入れるとターン大名自身はリストから除外する。
+    int iSelectedDaimyoID2 = 選択大名ダイアログ表示(myList);
+</pre></div>
+            <p>また、友好値が60以上の大名リストといったカスタマイズリストを得たいこともあるだろう。<br>
+            そのような場合は、単純に for ループを使いつつ、条件に一致する大名を計算で出す形となる。<br>
+            </p>
+            <li>
+            <h5>例③</h5>
+            <div class="code"><pre class="brush:cpp;">
+  int myDaimyoID = pターン情報.現在のターン【大名番号】-1;
+
+  番号リスト型 orgList = Get_大名番号リスト【配列用】(FALSE);
+  番号リスト型 y60oList;
+  for each ( int iTargetDaimyoID in orgList ) {
+    if ( Get_友好関係( myDaimyoID, iTargetDaimyoID ) &gt;= 60 ) {
+      y60oList.push_back(iTargetDaimyoID);
+    }
+  }
+  int iSelectDaimyoID = 選択大名ダイアログ表示(y60oList);
+</pre></div>
+            <p><img src="./cnt_mod/mod_snmod/cnt_mod_scenario_mod_63.png"><br>
+            </p>
+            <p>さらには、例えば「武田信玄のターン」でありながらも、 「足利義輝の治める国」の視点から見た大名リストを見せたいと思うかも知れない。<br>
+            そういった場合は以下のようにする。<br>
+            </p>
+
+            <li>
+            <h5>例④</h5>
+            <div class="code"><pre class="brush:cpp;">
+    番号リスト型 myList;
+    myList = Get_大名番号リスト【配列用】();
+    int iSelectedDaimyoID2 = 選択大名ダイアログ表示(myList, 30); // 30 は足利義輝の大名番号だと仮定した場合(実際には決め打ちではなく計算が必要)
+</pre></div>
+        </ul>
+        <h3>v2.4.0.4→v2.4.0.5</h3>
+        <p>現代の時代の「都道府県」情報と天翔記とをリンクさせるための関数が数点追加された。</p>
+        <ul class="pointlist">
+            <li>
+            <h4><span class="keyword">int Get_城都道府県番号(int 城番号【配列用】)</span></h4>
+            <p>該当の「城」が属する都道府県番号を返す。<br>
+            返ってくる値は、「<a href="http://www.mhlw.go.jp/topics/2007/07/dl/tp0727-1d.pdf">都道府県番号</a>」である。<br>
+            </p>
+            <li>
+            <h4><span class="keyword">int Get_都道府県名(int 都道府県番号)</span></h4>
+            <p>都道府県番号を都道府県名にする関数である。<br>
+            返ってくる値は、都道府県番号に対応する都道府県の文字列である。<br>
+            </p>
+            <li>
+            <h4><span class="keyword">int Get_都道府県天気(int 都道府県番号)</span></h4>
+            <p>とある都道府県の「今日のリアルな天気」を得る関数である。<br>
+            返ってくる値は、都道府県番号に対応する本日(その瞬間の現実の日時の該当の都道府県)の天気の文字列である。<br>
+            </p>
+            <fieldset class="alert alert-info"><legend>インターネット接続必須</legend>この天気を得る機能はインターネットサービスに依存しているため、<br>
+            いつ使えなくなるかわからない。<br>
+            軽めのメッセージ程度に留め、大きなシステムをこの関数に基づいて構築するのはお勧めしません。</fieldset>
+        </ul>
+        <div class="code"><pre class="brush:cpp;">
+
+
+  {
+    // 城番号(配)→都道府県番号への変換
+    int 県番号 = Get_城都道府県番号(城配列番号::春日山城);
+
+    デバッグ出力 &lt;&lt; &quot;春日山城所在:&quot; &lt;&lt; Get_都道府県名(県番号) &lt;&lt; endl; // 番号→文字列にしてModDebuggerへ出力
+  }
+
+  {
+    int 県番号 = Get_城都道府県番号(城配列番号::室町御所);
+    デバッグ出力 &lt;&lt; &quot;室町御所の場所の所在:&quot; &lt;&lt; Get_都道府県名(県番号) &lt;&lt; endl; // 番号→文字列にしてModDebuggerへ出力
+
+
+  }
+
+  {
+    デバッグ出力 &lt;&lt; &quot;北海道(南部)の今日のリアル天気:&quot; &lt;&lt; Get_都道府県天気(都道府県::北海道) &lt;&lt; endl;
+    デバッグ出力 &lt;&lt; &quot;沖縄の今日のリアル天気:&quot; &lt;&lt; Get_都道府県天気(都道府県::沖縄県) &lt;&lt; endl;
+
+    // 城番号(配)→都道府県番号への変換
+    int 県番号 = Get_城都道府県番号(城配列番号::堺);
+    デバッグ出力 &lt;&lt; &quot;堺の場所の今日のリアルお天気:&quot; &lt;&lt; Get_都道府県天気(県番号) &lt;&lt; endl;
+
+  }
+</pre></div>
+        <li>
+        <h3>v2.4.0.3→v2.4.0.4</h3>
+        <p>とある年月日から「和暦」を得る関数が実装された。<br>
+        1334年の「建武」の時代から、現在の「平成」の時代まで対応されている。</p>
+        <ul class="pointlist">
+            <li>
+            <h4>和暦型 Get_和暦(int 年, int 月, int 日)</h4>
+        </ul>
+        <div class="code"><pre class="brush:cpp;">
+    和暦型 wa1 = Get_和暦(); // 引数に何も指定しなかったら、進行ゲーム中の現在の西暦年が指定されたとみなす。
+    デバッグ出力 &lt;&lt; wa1.元号 &lt;&lt; endl;
+    デバッグ出力 &lt;&lt; wa1.年 &lt;&lt; endl; // 和暦上で何年かの「数値」
+    デバッグ出力 &lt;&lt; wa1.年漢字 &lt;&lt; endl; // 和暦上で何年かの「漢字」。
+
+    // 西暦1600年の和暦を出す。天翔記と同じで、年のどこかで元号が変わっていたとしたら、新元号が常に返ってくる。
+    和暦型 wa2 = Get_和暦(1600);
+    デバッグ出力 &lt;&lt; wa2.元号 &lt;&lt; endl;
+    デバッグ出力 &lt;&lt; wa2.年 &lt;&lt; endl; // 和暦上で何年かの「数値」
+    デバッグ出力 &lt;&lt; wa2.年漢字 &lt;&lt; endl; // 和暦上で何年かの「漢字」。
+
+    // 西暦1570年２月１日の和暦を出す。引数指定はあくまで西暦の新暦ベースであり旧暦ベースではない。
+    // 月を指定した場合は、天翔記より厳密な元号を弾き出すこととなるので、天翔記の画面上の表示とは当然ズレることがある。
+    和暦型 wa3 = Get_和暦(1570, 2, 1);
+    デバッグ出力 &lt;&lt; wa3.元号 &lt;&lt; endl; // 年号の文字列。
+    デバッグ出力 &lt;&lt; wa3.年 &lt;&lt; endl; // 和暦上で何年かの「数値」
+    デバッグ出力 &lt;&lt; wa3.年漢字 &lt;&lt; endl; // 和暦上で何年かの「漢字」。
+</pre></div>
+        <li>
+        <h3>v2.4.0.2→v2.4.0.3</h3>
+        <p>以下の<font color="red">イベントハンドラや関数に渡す値、及び、渡ってくる値仕様が変更された。</font></p>
+        <ul>
+            <li><b>int カスタム::On_音楽再生直前(int 再生予定番号)</b><br>
+            <li><b>Get_再生音楽番号()</b><br>
+            <li><b>音楽再生(int 音楽番号)</b><br>
+        </ul>
+        <p><b>これまでこれらの関数は、「TSMod.iniのBGM分布」や神パッチの「BGM分布」より<font color="red">１つ小さな値</font>でやり取りされていた。</b><br>
+        しかし、それでは常に１つずれた番号となるため、使用しづらい。<br>
+        </p>
+        <p>そこで、<b>今バージョンからは、将来の使いやすさも見据えて、BGM分布番号と<font color="red">一致</font></b>させた。<br>
+        既存でBGM番号を数値にて直接指定して使用している場合は、指定番号の修正が必要となるので注意。<br>
+        </p>
+
+        <li>
+        <h3>v2.4.0.1→v2.4.0.2</h3>
+        <p><b>言葉遣い自動変格活用のAPI</b>が追加された。<br>
+        概ね<a href="http://www19.atwiki.jp/nobu6/pages/303.html">こちらの概念</a>を実装したものである。<br>
+        </p>
+        <p>これらのAPIは、不定な人物同士の会話メッセージを作成する際に、「自分・相手」の呼称や、語尾変化等をサポートするAPIです。<br>
+        後述のソース中の、i1stBushouID, i2ndBushouID を、様々な武将で試し、一体どのような概念なのか理解して使いましょう。<br>
+        男性・女性、上司・部下、年寄と若君主、様々な職業など、考慮されたメッセージへと変格活用されます。<br>
+        </p>
+        <p>非常に多数の関数に渡るため、ここでは、１つ１つピックアップしない。<br>
+        <span class="keyword">言葉遣い情報型.h</span>と、<span class="keyword">言葉遣い情報型.cpp</span>の中身を眺めて、なんとなく把握してください。<br>
+        <div class="code"><pre class="brush:cpp;">
+  int i1stBushouID = Get_武将番号【配列用】(顔番号::武田晴信); // 武田信玄
+  int i2ndBushouID = Get_武将番号【配列用】(顔番号::武田信繁); // 武田信繁
+
+  if ( 0 &lt;= i1stBushouID &amp;&amp; i1stBushouID &lt; 最大数::武将情報::配列数 &amp;&amp; 0 &lt;= i2ndBushouID &amp;&amp; i2ndBushouID &lt; 最大数::武将情報::配列数 ) {
+    string message1 = ％相手％(i1stBushouID, i2ndBushouID)+&quot;、商人に\x0A&quot;
+             &quot;米を売&quot;+％りましょう％(i1stBushouID, i2ndBushouID);
+
+    string message2 = ％ははは％(i1stBushouID, i2ndBushouID)+&quot;、&quot;+％相手％(i1stBushouID, i2ndBushouID)+&quot;\x0A&quot;
+              &quot;一度の失敗では\x0A&quot;
+              &quot;懲りぬよう&quot;+％です％(i1stBushouID, i2ndBushouID)+％な（２）％(i1stBushouID, i2ndBushouID);
+
+    string message3 = &quot;おのれ、&quot;+％罵倒相手％(i1stBushouID, i2ndBushouID)+&quot;\x0A&quot;
+              &quot;覚えておれ！&quot;;
+
+
+    デバッグ出力 &lt;&lt; message1 &lt;&lt; endl;
+    デバッグ出力 &lt;&lt; endl;
+    デバッグ出力 &lt;&lt; message2 &lt;&lt; endl;
+    デバッグ出力 &lt;&lt; endl;
+    デバッグ出力 &lt;&lt; message3 &lt;&lt; endl;
+  }
+</pre></div>
+        <p>１人称と２人称の関係により、以下のようにメッセージが変格する。</p>
+        <div class="code"><pre class="brush:ps;">
+信繁、商人に
+米を売ろう
+
+ははは、信繁
+一度の失敗では
+懲りぬようじゃな
+
+おのれ、信繁
+覚えておれ！
+</pre></div>
+        <div class="code"><pre class="brush:ps;">
+兄上、商人に
+米を売りましょう
+
+ははは、兄上
+一度の失敗では
+懲りぬようですな
+
+おのれ、晴信
+覚えておれ！
+</pre></div>
+        <div class="code"><pre class="brush:ps;">
+政虎様、商人に
+米を売りましょう
+
+わはは、政虎様
+一度の失敗では
+懲りぬようですな
+
+おのれ、くそ坊主
+覚えておれ！
+</pre></div>
+    </ul>
+
+    <li>
+    <h3>v2.3.7.5→v2.4.0.1</h3>
+    <p><b>セーブデータにも反映されるフラグ管理のためのAPI</b>が追加された。<br>
+    </p>
+    <ul class="pointlist">
+        <li>
+        <h4><span class="keyword">int Set_フラグ( string フラグ名, int フラグ値, int フラグ枠)</span></h4>
+        <li>
+        <h4><span class="keyword">int Get_フラグ( string フラグ名, int フラグ枠)</span></h4>
+        <li>
+        <h4><span class="keyword">int Delete_フラグ( string フラグ名 )</span> // フラグ解放(フラグ消滅。ゴミ掃除)<br>
+        </h4>
+        <fieldset class="alert alert-info"><legend>永続データに対して使うこと</legend>セーブデータに保存する必要がないフラグにこれらのAPIを使わないこと!!<br>
+        スピードが遅くなるだけです!!<br>
+        ゲームを終了して、セーブデータからロードする際に、値を復活させる必要があるデータに対してのみ利用すること。<br>
+        その必要がないフラグは普通に高速なC/C++の変数で管理してください。</fieldset>
+        <p><font color="red">全てのフラグは0で初期化されているので、わざわざSet_フラグで初期値を設定する必要がありません。</font><br>
+        (初期化してしまうと、実際にはそのフラグを利用しなかったとしてもセーブデータに残ってしまうので注意。)<br>
+        </p>
+        <p><font color="red">Get_フラグとDelete_フラグは、存在しないフラグ名を問い合わせると、「0」という値が返ってきます。</font></p>
+        <p>フラグはセーブデータへと保存されるため、無限数ではありません。<br>
+        ScenarioModや一般Modで<b>「セーブデータ１スロットあたり合計で3000ラベル」</b>使うことが出来ます。<br>
+        (セーブデータのスロットとは、下図の赤い四角。８つのスロットがある。)<br>
+        </p>
+        <p><img src="./cnt_mod/mod_snmod/cnt_mod_scenario_mod_21.png"><br>
+        </p>
+        <p>一般のフラグで連想するものとは異なり、ScenarioModでは、より高度なフラグ機能を有しており、<br>
+        <b>「１つのフラグ名で９つの値」を管理することが出来ます。</b><br>
+        </p>
+        <p>概念図は以下。<br>
+        </p>
+        <p>１つのフラグ名に、普通の数値を入れられる「メイン枠」、TRUE/FALSEのみを入れられる「Ａ枠～Ｈ枠」の合計９つの値が管理できる。<br>
+        </p>
+        <p><img src="./cnt_mod/mod_snmod/cnt_mod_scenario_mod_20.png"><br>
+        </p>
+        <p>これにより、非常に大きな、隔年に渡るようなイベントであっても、複数のフラグ名を使うようなことは無く、<br>
+        1つのフラグ名で、管理できます。<br>
+        </p>
+        <p><font color="red">フラグ名が迂闊に他者と被らないように、フラグラベルの最初の３文字程度はご自身のハンドル的な名前を付けておきましょう</font><br>
+        </p>
+        <ul class="arrowlist">
+            <li>
+            <h5>フラグの設定</h5>
+            <div class="code"><pre class="brush:cpp;">
+    Set_フラグ(&quot;TJP_EV01&quot;, 23 ); // フラグ名&quot;TJP_EV01&quot;のメイン枠に23という値を入れる。
+    Set_フラグ(&quot;TJP_EV01&quot;, TRUE, フラグ枠::Ｃ ); // フラグ名&quot;TJP_EV01&quot;のＣ枠にTRUEを入れる。
+</pre></div>
+
+            <li>
+            <h5>フラグの取得</h5>
+            <div class="code"><pre class="brush:cpp;">
+    /* 存在しないフラグ(Set_フラグしたことが無いフラグ)名を問い合わせた(Get_フラグした)際はFALSE(=0)が返ってくる。
+     */
+
+     //フラグ名&quot;TJP_EV01&quot;のフラグ枠::メインに23という値が入ってるか？ 比較演算子を省略しないこと。
+    if ( Get_フラグ(&quot;TJP_EV01&quot;) == 23 ) {
+        // ～
+    }
+
+    // フラグ枠::Ａ～Ｈについては、TRUE/FALSEと比較する。
+    if ( Get_フラグ(&quot;TJP_EV01&quot;, フラグ枠::Ｃ ) == &lt;font color=&quot;red&quot;&gt;TRUE&lt;/font&gt; ) {
+        // ～
+    }
+</pre></div>
+
+            <li>
+            <h5>フラグの解放(消滅・ゴミ掃除)</h5>
+            <div class="code"><pre class="brush:cpp;">
+    // フラグ名はScenarioMod、一般Modでみんなで共通で使って3000個まで。いわば共通資源。&lt;br&gt;
+    // セーブデータにフラグ状態を保存する必要がなくなったら、不要になったら消滅・解放すること。
+    Delete_フラグ(&quot;TJP_EV01&quot;);
+</pre></div>
+        </ul>
+    </ul>
+</ul>

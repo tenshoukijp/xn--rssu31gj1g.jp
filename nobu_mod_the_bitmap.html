@@ -1,0 +1,162 @@
+<h2><i class="fa fa-image fa-fw"></i>朝廷･外交･評定の背景画像を変更する</h2>
+<ul class="checklist">
+    <li>
+    <h3>概要</h3>
+    <p>朝廷･外交･評定画面を、別の(自作等の)画像へと入れ替えるツールの提供と、<br>
+    その使い方の説明となります。<br>
+    </p>
+    <p>このページの説明全体が、<a href="?page=nobu_mod_the_mainmap">背景のメインマップ画像の変更</a>と類似していますので、<br>
+    そちらも参考として下さい。 <br>
+    <p><img src="./cnt_mod/cnt_mod_bitmap_importer1.png"><br>
+    </p>
+    <li>
+    <h3>ダウンロード</h3>
+    <dl>
+        <dt>
+        <div class="download_file">DOWNLOAD ⇒ <a href="%(file)s">BitMapExpAndImp.zip</a>ファイル。</div>
+        </dt>
+        <dd>
+        <div class="update_time">└更新日 %(year)04d/%(mon)02d/%(mday)02d</div>
+        </dd>
+    </dl>
+    <p>このプログラムソースもメインマップの方のMapDataExpAndImp.zipに含まれて居ます。</p>
+    <li>
+    <h3>準備</h3>
+    <p>BitMapExpAndImp.zip を解凍し、天翔記フォルダのサブフォルダにbitmapといったサブディレクトリを作成し、<br>
+    その以下のように展開する。<br>
+    (※ディレクトリ名等は、実際には何でもかまいません。)<br>
+    <img src="./cnt_mod/cnt_mod_bitmap_importer4.png"><br>
+    <br>
+    </p>
+    <li>
+    <h3>使い方</h3>
+    <ul>
+        <li>後で元へと戻せるように、天翔記ディレクトリ内にある｢bitmap.n6p｣を一度適当にバックアップぐらいはとっておきましょう。 <br>
+        <li>天翔記ディレクトリ内にある｢bitmap.n6p｣を、bitmap(上の例の場合)ディレクトリ内にコピーします。 <br>
+        bitmapディレクトリがいわば、作業場となります。<br>
+        <li><b>指定のパレットで減色した、bitmap1.bmp, bitmap2.bmp, bitmap3.bmp</b>を用意し、同じくmapdataディレクトリ内に入れます。<br>
+        (デフォルトで元画像と同じものが３つサンプルとして入っています)
+        <li><b>BitMapImporter.exe を実行</b>します。(一瞬黒い画面が出てすぐ終わります)。bitmap.n6pが更新されます。
+        <li>(更新された)bitmap.n6p を天翔記ディレクトリ内にあるbitmap.n6pへと上書きする。<br>
+        <br>
+    </ul>
+    <li>
+    <h3>指定のパレットで減色した、３つの.bmpの用意の仕方</h3>
+    <ul>
+        <li>横縦640x448の画像を３種類用意します。朝廷・外交・評定の分。<br>
+        画像サイズは640x448となります。<br>
+        <li>指定のパレットで指定の色数(しかも207色という半端な数)で、ある程度綺麗に減色可能なアプリケーションを用意します。<br>
+        一般的には、Optpix / yukari となります。<br>
+        <li>ここでは、無料で手に入るという点で、yukariで解説します。<br>
+        <br>
+        <li>天翔記アップローダーからyukariをダウンロードします。 <br>
+        (※Windows XP で かつ、 ウィルスソフトが Macafeeの場合、ユーカリソフトがウィルス誤反応するかもしれない。 Windows7以降であれば、Macafeeでも問題ない。) <br>
+        ・ユーカリソフト（減色ソフト） <br>
+        <dl>
+            <dt>
+            <div class="download_file">DOWNLOAD ⇒ <a href="http://u7.getuploader.com/nobu6/download/110/yukari.zip">http://u7.getuploader.com/nobu6/download/110/yukari.zip</a></div>
+            </dt>
+        </dl>
+        <br>
+        <li>Flex.exeを実行してユーカリを立ち上げる <br>
+        <img src="./cnt_mod/mod_graphic/cnt_img_yukari01.png"> <br>
+        <br>
+        <br>
+        <li>メニューの <br>
+        「ファイル->開く」 で画面の背景にしたい大きな画像を開く。<b>横640×縦448</b>で固定。異なる場合は拡大･縮小するなり上下左右をうまくカットしてこのサイズにする。 <br>
+        <br>
+        <br>
+        <li>メニューの <br>
+        編集->減色 <br>
+        <br>
+        ・パレットカラーbmpファイルを指定する -> bitmapディレクトリ内にある <b>palette207_inner.bmp</b>を選択する。 <br>
+        <img src="./cnt_mod/cnt_mod_mapdata_importer5.png"><br>
+        ・other->207 を設定 <br>
+        ・ディザは｢アニメーション｣か｢gPeanos｣など。元の画像のテイストによって適切な設定は変化します。<br>
+        ・強←→弱は、通常は真ん中あたりか。お好みで。元の画像のテイストで変化させればＯＫ。 <br>
+        <br>
+        <br>
+        <li>OKを押すと、減色される。 <br>
+        <br>
+        <br>
+        <li>メニューから名前をつけて「bitmap1.bmp」～「bitmap3.bmp」のいずれかの名前で保存。 <br>
+        (これがそれぞれ春～冬に対応する)<br>
+        <br>
+        <li>保存したものが、(上の方の例では)bitmapディレクトリ以外に保存したなら、bitmapディレクトリに入れる。<br>
+        とにかく、<b>BitMapImporter.exe</b>と同じフォルダに入れる。</li>
+        <br>
+        <br>
+        <li>以後の画像の減色は、 <br>
+        <br>
+        新規ファイル読み込み <br>
+        <br>
+        編集→減色→OKボタンだけで減色できるようになります。<br>
+        (※ユーカリを再起動した場合には、再度｢パレットカラーbmpファイルを指定する｣を行ってください。) <br>
+    </ul>
+    <li>
+    <h3>主なエラー</h3>
+    <p>主に起きるのは２つのエラーです。エラーが起きるとエラーを表示した状態で止まります。</p>
+    <ul>
+        <li><b>画像のサイズが違う</b><br>
+        └640 x 448 である必要がある。
+        <li><b>画像の色数が違う</b><br>
+        └指定のパレット｢palette207_inner.***｣を使って、減色して下さい。
+    </ul>
+    <li>
+    <h3>カラーパレットのお話</h3>
+    <p>朝廷･外交･評定画面で必要となるパレット<br>
+    palette207_inner.bmp(or .act)<br>
+    カラーパレットはメイン画面のパレットに似ていますが、僅かに色身が異なるところが多々あります。<br>
+    <img src="./cnt_mod/cnt_mod_bitmap_importer3.png"><br>
+    <br>
+
+    天翔記全体のパレット<br>
+    palette256_inner.bmp(or .act)<br>
+    赤枠が、天翔記全体のパレットのうち、朝廷･外交･評定画面で使用されるパレット。 <br>
+    <img src="./cnt_mod/cnt_mod_bitmap_importer2.png"><br>
+    </p>
+    <li>
+    <h3>朝廷･外交･評定の背景の画像を出力する</h3>
+    <ul>
+        <li>BitMapExporter.exe となります。
+        <li>こちらは、bitmap.n6pにある｢朝廷･外交･評定」の画像をファイルへと出力するためのツールです。<br>
+        <table style="border: solid 1px #000000; border-collapse: collapse;" cellpadding="1" cellspacing="1" width="800">
+            <tr>
+                <td width="100">画像概要</td>
+                <td width="100">コマンド名</td>
+                <td width="100">出力ファイル名</td>
+                <td width="240">bitmap.n6p内でのスタート位置<br>
+                これは｢前に存在する画像の画素数を全て足しこんだもの｣だ。</td>
+                <td width="130">画像の横サイズ</td>
+                <td width="130">画像の縦サイズ</td>
+            </tr>
+            <tr>
+                <td>朝廷</td>
+                <td>BitmapExporter</td>
+                <td>output1.bmp</td>
+                <td>0</td>
+                <td>640</td>
+                <td>448</td>
+            </tr>
+            <tr>
+                <td>外交</td>
+                <td>BitmapExporter</td>
+                <td>output2.bmp</td>
+                <td>286720</td>
+                <td>640</td>
+                <td>448</td>
+            </tr>
+            <tr>
+                <td>評定</td>
+                <td>BitmapExporter</td>
+                <td>output3.bmp</td>
+                <td>573440</td>
+                <td>640</td>
+                <td>448</td>
+            </tr>
+        </table>
+        <br>
+        <br>
+        コマンド例：<b>BitMapExporter output2.bmp 286720 640 448</b>
+    </ul>
+</ul>

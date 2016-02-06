@@ -1,0 +1,201 @@
+%(hilight)s
+<h2><i class="fa fa-book fa-fw"></i>void カスタム::On_被ダメージ時(int 武将番号, int ダメージ兵数)</h2>
+<div class="code"><pre class="brush:cpp;">
+void カスタム::On_被ダメージ時(int 武将番号, int ダメージ兵数) {
+}
+</pre></div>
+<ul class="checklist">
+<li><h3>引数の補足</h3>
+<ul class="pointlist">
+    <li><h4>武将番号:</h4>
+    実際にダメージを受けた武将番号。<br>
+    <li><h4>ダメージ兵数:</h4>
+    ダメージを受けた兵数。<br>
+    int ix = 武将番号-1;<br>
+    p武将情報[ix].兵数; // ここはすでにダメージを受けた後の値が入っている。<br>
+</ul>
+<li><h3>タイミング</h3>
+<ul>
+    <li>武将の兵数がダメージを受けた際に呼び出される。<br>
+    <br>
+    このメソッドが呼び出された時点ですでに兵数は減った後の値となっている。<br>
+    よって<b>このメソッドが呼ばれた時点ですでに「p武将情報[ix].兵数」などの各種情報は兵数が減った後の情報</b>へとすでに更新されている。<br><br>
+    <li>戦闘画面における武将同士のダメージ、<br>
+    大砲等の巻添によるダメージ、<br>
+    農民の扇動によるダメージ<br>
+    メイン画面上での(戦争画面を伴わない)戦争によるダメージ などで、呼び出される。<br><br>
+    <li><b>このメソッドが呼び出された後、「兵数の０判定」が天翔記プログラム内部で行われる</b>ため、<br>
+    兵数０になったユニットの退却を防ぎたい場合は、このメソッド内部で兵数を増加しておけば(対象武将の兵数に代入しておけば)良い。<br><br>
+    <li>このメソッドそのものに、「攻撃側」のIDは引数として渡ってこない。<br>
+    それは「具体的な攻撃者が居ないダメージ」というものが存在するからである。<br>
+    <br>
+    よって、「攻撃側」や「攻撃方法」を知りたい場合、<br>
+    On_攻撃方法決定時《戦争画面》 メソッドの情報を控えておき、<br>
+    それを使用することとなる。<br>
+
+    <br>
+</ul>
+<li><h3>一般的用途</h3>
+<ul>
+    <li>特定の武将、あるいは、武将同士、もしくは特定の状況下でダメージ値を修正したい場合に利用する。<br>
+</ul>
+<li><h3>例①</h3>
+<div class="code"><pre class="brush:cpp;">
+void カスタム::On_被ダメージ時(int 武将番号, int ダメージ兵数) {
+    // デバッグのみ。
+  int iBushouID = 武将番号-1;
+  if ( 0 &lt;= iBushouID &amp;&amp; iBushouID &lt; 最大数::武将情報::配列数 ) {
+    デバッグ出力 &lt;&lt; Get_名前(iBushouID) &lt;&lt; endl;
+    デバッグ出力 &lt;&lt; ダメージ兵数 &lt;&lt; endl;
+  }
+}
+</pre></div>
+
+<li><h3>例②</h3>
+<div class="code"><pre class="brush:cpp;">
+void カスタム::On_被ダメージ時(int 武将番号, int ダメージ兵数) {
+    // 誰も兵数０にならない。
+    int iDamagedBushouID = 武将番号-1;
+    if ( 0 &lt;= iDamagedBushouID &amp;&amp; iDamagedBushouID &lt; 最大数::武将情報::配列数 ) {
+        if ( p武将情報[iDamagedBushouID].兵数 &lt; 1 ) {
+            p武将情報[iDamagedBushouID].兵数 = 1;
+        }
+    }
+}
+</pre></div>
+
+
+<li><h3>例③</h3>
+<div class="code"><pre class="brush:cpp;">
+static int iAttackBushouID = -1;
+static int iAttackMethodID = -1;
+
+void カスタム::On_攻撃方法決定時《戦争画面》(int 主体武将番号, int 客体武将番号, 攻撃方法決定時型パラメタ パラメタ) {
+    // 鉄砲攻撃を通じなくする。よって、攻撃者や攻撃方法をここで控えておく
+
+    int iBushouID = 主体武将番号-1;
+    int iTargetID = 客体武将番号-1;
+
+    iAttackBushouID = iBushouID; // グローバル用にコピー
+    iAttackMethodID = パラメタ.攻撃方法番号;
+
+    // 武将番号範囲チェック
+    if ( (0 &lt;= iBushouID &amp;&amp; iBushouID &lt; 最大数::武将情報::配列数) &amp;&amp;
+        (0 &lt;= iTargetID &amp;&amp; iTargetID &lt; 最大数::武将情報::配列数) ) {
+
+            if ( iAttackMethodID == 攻撃方法::鉄砲 ) {
+                デバッグ出力(&quot;⇒鉄砲&quot; );
+            }
+    }
+}
+
+void カスタム::On_被ダメージ時(int 武将番号, int ダメージ兵数) {
+
+    // 控えておいた直前の情報が「鉄砲攻撃」ならその攻撃方法によるダメージを修復することでダメージをなかったことにする。
+    int iDamagedBushouID = 武将番号-1;
+    if ( 0 &lt;= iDamagedBushouID &amp;&amp; iDamagedBushouID &lt; 最大数::武将情報::配列数 ) {
+        if ( iAttackMethodID == 攻撃方法::鉄砲 ) {
+            デバッグ出力 &lt;&lt; &quot;鉄砲攻撃は効かない&quot; &lt;&lt; endl;
+            デバッグ出力 &lt;&lt; &quot;攻撃者:&quot; &lt;&lt; Get_名前(iAttackBushouID) &lt;&lt; endl;
+            p武将情報[iDamagedBushouID].兵数 += ダメージ兵数; // 受けたダメージ分だけ元へと戻す。
+        }
+
+    }
+
+    // 攻撃者や攻撃方法は必ずクリアしておく。攻撃者が居ない場合に、前の値のまま処理してしまうのを防止するため。
+    iAttackBushouID = -1;
+    iAttackMethodID = -1;
+}
+
+void カスタム::On_戦争終了() {
+    // 念のためのクリア。
+    iAttackBushouID = -1;
+    iAttackMethodID = -1;
+}
+
+</pre></div>
+
+
+<li><h3>例④</h3>
+<p>例③同じですが、鉄砲の威力を鉄砲伝来からの年月で変化させる例となります。</p>
+<p><img src="./cnt_mod/mod_snmod/cnt_mod_scenario_mod_ref_086.png" attr="noedge"></p>
+<div class="code"><pre class="brush:cpp;">
+static int iAttackBushouID = -1;
+static int iAttackMethodID = -1;
+
+void カスタム::On_攻撃方法決定時《戦争画面》(int 主体武将番号, int 客体武将番号, 攻撃方法決定時型パラメタ パラメタ) {
+    // 例③と同じソースを記述のこと
+}
+
+// 1543～1603年の間で、その時の西暦をもとに、0.4～1.8の値に変換したものを返す。
+double Get鉄砲強さ係数() {
+    const int MinPowerYear = 1543; // 伝来の年
+    const int MaxPowerYear = 1603; // 1603年で鉄砲は成熟を見ると仮定。
+
+    const double minPowerCoef = 0.4; // 最初は0.4倍
+    const double maxPowerCoef = 1.8; // 最後は1.8倍
+
+    const double x2 = MaxPowerYear;
+    const double x1 = MinPowerYear;
+    const double y2 = maxPowerCoef;
+    const double y1 = minPowerCoef;
+
+    // 入門ということで一次方程式  y=ax+b
+    // b = y-ax
+
+    // ゼロ除算防止。maxとminに同じ年(もしくは同じ力)が設定されている!!
+    if (x2 == x1 || y2 == y1 ) { return 1; }
+
+    double a = (y2 - y1) / (x2 - x1); // 傾き
+    double b = (y1 - a*x1);           // 切片
+    デバッグ出力 &lt;&lt; a &lt;&lt; endl;
+    デバッグ出力 &lt;&lt; b &lt;&lt; endl;
+
+    // 今求めたy = ax+bの線上における、x=Get_西暦()の時の Ｙの値が 鉄砲の強さの係数となる。(中学生の数学。一次方程式)
+    double x = Get_西暦();
+    double y = a*x + b; // ax+bという式。xが西暦の時、yの鉄砲の力を求めよ
+
+    // 実際にはyが0.4～1.8の間の線分(CLAMP処理)
+    if (y &lt; minPowerCoef ) { y = minPowerCoef; }
+    else if (y &gt; maxPowerCoef) { y = maxPowerCoef; }
+
+    return y;
+}
+
+
+void カスタム::On_被ダメージ時(int 武将番号, int ダメージ兵数) {
+
+    // 控えておいた直前の情報が「鉄砲攻撃」なら、その瞬間の「西暦」に応じて鉄砲のダメージの強さを変更する
+    int iDamagedBushouID = 武将番号-1;
+    if ( 0 &lt;= iDamagedBushouID &amp;&amp; iDamagedBushouID &lt; 最大数::武将情報::配列数 ) {
+        if ( iAttackMethodID == 攻撃方法::鉄砲 ) {
+
+            double dダメージ = double(ダメージ兵数) * Get鉄砲強さ係数();
+            int 新ダメージ = (int)round(dダメージ);
+
+            // アンダーフロー等を起こさないように一旦int
+            int 兵数 = p武将情報[iDamagedBushouID].兵数;
+            兵数 += ダメージ兵数; // 天翔記のダメージは無しにして…
+            兵数 -= 新ダメージ;   // 新ダメージの方を採用
+            if (兵数 &lt; 0) {
+                兵数 = 0;
+            }
+
+            // 計算し終わったので、武将の兵数として代入
+            p武将情報[iDamagedBushouID].兵数 = 兵数;
+        }
+
+    }
+
+    // 攻撃者や攻撃方法は必ずクリアしておく。攻撃者が居ない場合に、前の値のまま処理してしまうのを防止するため。
+    iAttackBushouID = -1;
+    iAttackMethodID = -1;
+}
+
+
+void カスタム::On_戦争終了() {
+    // 例③と同じソースを記述のこと
+}
+</pre></div>
+
+</ul>

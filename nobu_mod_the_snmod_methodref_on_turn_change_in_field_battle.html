@@ -1,0 +1,127 @@
+%(hilight)s
+<h2><i class="fa fa-book fa-fw"></i>void カスタム::On_残りターン変更《戦争画面》(int 残りターン数)</h2>
+<div class="code"><pre class="brush:cpp;">
+void カスタム::On_残りターン変更《戦争画面》(int 残りターン数) {
+}
+</pre></div>
+<ul class="checklist">
+<li><h3>引数の補足</h3>
+<ul class="pointlist">
+<li><h4>残りターン数:</h4>
+戦争画面において、下図のように「残り」とある数値がそのまま渡ってくる。<br>
+<p><img src="./cnt_mod/mod_snmod/cnt_mod_scenario_mod_ref_024.png"></p>
+</ul>
+<li><h3>タイミング</h3>
+<ul>
+<li>戦争画面の「野戦」において、この「残りターン数」の数値が変更された時呼び出される。<br><br>
+攻城戦フィールドにユニットが居て、野戦フィールドにはユニットが居なかったとしても、<br>
+天翔記の画面が、ターン変更のタイミングで一度野戦フィールドを映し、ターン数が変更されるタイミングで呼び出される。<br>
+<li>最初のターンだけは特別で、「全ての部隊の配置が決定した直後」に呼び出される。
+</ul>
+<li><h3>一般的用途</h3>
+<ul>
+<li>戦争画面において、毎ターン頭で処理を行いたい場合にこのメソッドを利用する。
+<li>戦争画面において、ターンの切り替わり目で、何か武将同士の会話を行いたい場合に、このメソッドを利用する。
+</ul>
+<li><h3>例①</h3>
+<div class="code"><pre class="brush:cpp;">
+void カスタム::On_残りターン変更《戦争画面》(int 残りターン数) {
+  /*
+   毎ターン、出陣している全武将の兵数が１増える。
+   */
+
+  // 現在の戦域全域を対象として出陣している武将番号配列用のリストを得る。
+  番号リスト型 blist = Get_出陣中の武将番号リスト【配列用】();
+
+  // 全ての戦争画面で出陣中の武将に対して
+  for each ( int iBushouID in blist ) {
+    // 兵数がまだあるならば、そして、その武将が持つべき最大兵数より少ないならば、兵数を１増やす
+    if ( 0 &lt; p武将情報[iBushouID].兵数 &amp;&amp; p武将情報[iBushouID].兵数 &lt; Get_武将最大兵数(iBushouID) ) {
+      p武将情報[iBushouID].兵数++;
+    }
+  }
+}
+</pre></div>
+<li><h3>例②</h3>
+<div class="code"><pre class="brush:cpp;">
+int iAttackGundanID = -1;
+int iDefendGundanID = -1;
+void カスタム::On_戦争開始(戦争開始パラメタ型 パラメタ) {
+
+  // 攻撃側の軍団と守備側の軍団を控えておく
+  iAttackGundanID = パラメタ.攻撃側軍団【軍団番号】-1;
+  iDefendGundanID = パラメタ.守備側軍団【軍団番号】-1;
+}
+
+void カスタム::On_残りターン変更《戦争画面》(int 残りターン数) {
+  /*
+   ３ターンに一度敵・味方の武将が話す。
+   */
+  if ( 残りターン数 &lt; 30 ) {
+    if ( 残りターン数 % 3 == 0 ) {
+
+      // 現在表示中のマップに敵味方(援軍除く)が少なくとも1人ずついるかどうかチェック
+      int iAttackBushouID = -1; // 攻撃側話者武将
+      int iDefendBushouID = -1; // 守備側話者武将
+
+      番号リスト型 blist = Get_出陣中の武将番号リスト【配列用】《表示中マップ》();
+      srand(timeGetTime()); // random_shuffleには必要。
+      random_shuffle( blist.begin(), blist.end() );  // ランダムシャッフル
+
+      for each ( int iBushouID in blist ) {
+
+        // 攻撃側話者武将が未設定で、かつ、この武将の大名勢力が、攻撃側軍団の大名勢力と等しい
+        if ( iAttackBushouID == -1 &amp;&amp; (p武将情報[iBushouID].所属大名【大名番号】== p軍団情報[iAttackGundanID].所属大名【大名番号】) ) {
+          iAttackBushouID = iBushouID; // 攻撃側話者に設定
+
+        // 守備側話者武将が未設定で、かつ、この武将の大名勢力が、守備側側軍団の大名勢力と等しい
+        } else if ( iDefendBushouID == -1 &amp;&amp; (p武将情報[iBushouID].所属大名【大名番号】== p軍団情報[iDefendGundanID].所属大名【大名番号】) ) {
+          iDefendBushouID = iBushouID; // 守備側話者に設定
+        }
+      }
+
+      // 話者が2人ともそろった
+      if ( 0 &lt;= iAttackBushouID &amp;&amp; iAttackBushouID &lt; 最大数::武将情報::配列数 &amp;&amp;
+         0 &lt;= iDefendBushouID &amp;&amp; iDefendBushouID &lt; 最大数::武将情報::配列数 ) {
+
+         // どちらが噴出の左上を使うか、武将同士のユニットのポジションを考慮する
+         ヘックス位置型 posA,posD;
+         if ( Is_野戦中() ) {
+           posA = Get_武将の野戦ヘックス位置(iAttackBushouID);
+           posD = Get_武将の野戦ヘックス位置(iDefendBushouID);
+
+         // 実際にはここが真になることはない、残りターン変更はかならず(誰一人居なくとも)野戦フィールドに戻ってから行われるため。
+         } else if ( Is_攻城戦中() ) {
+           posA = Get_武将の攻城戦ヘックス位置(iAttackBushouID);
+           posD = Get_武将の攻城戦ヘックス位置(iDefendBushouID);
+         }
+
+         // ユニットのＹが同じ時は、Ｘの位置関係で
+         if ( posA.Ｙ == posD.Ｙ &amp;&amp; posA.Ｘ &lt; posD.Ｘ ) {
+           噴出ダイアログ《通常・左上》開始( iAttackBushouID, &quot;億したか&quot;+Get_名前(iDefendBushouID)+&quot;！\x0A&quot;+&quot;そんなことでは\x0A城は守れぬぞ&quot; );
+           噴出ダイアログ《通常・右下》開始( iDefendBushouID, &quot;黙れ&quot;+Get_名前(iAttackBushouID)+&quot;！\x0A&quot;+&quot;口ではなく\x0A力で物を言うがよい&quot; );
+           噴出ダイアログ《通常・左上》終了();
+           噴出ダイアログ《通常・右下》終了();
+
+         // ユニットのＹが攻撃側が小さいなら、攻撃側が左上を使う （Ｙが大きいほど、画面の下側）
+         } else if ( posA.Ｙ &lt; posD.Ｙ ) {
+           噴出ダイアログ《通常・左上》開始( iAttackBushouID, &quot;億したか&quot;+Get_名前(iDefendBushouID)+&quot;！\x0A&quot;+&quot;そんなことでは\x0A城は守れぬぞ&quot; );
+           噴出ダイアログ《通常・右下》開始( iDefendBushouID, &quot;黙れ&quot;+Get_名前(iAttackBushouID)+&quot;！\x0A&quot;+&quot;口ではなく\x0A力で物を言うがよい&quot; );
+           噴出ダイアログ《通常・左上》終了();
+           噴出ダイアログ《通常・右下》終了();
+
+        // それ以外は攻撃側が右下を使う
+         } else {
+           噴出ダイアログ《通常・右下》開始( iAttackBushouID, &quot;億したか&quot;+Get_名前(iDefendBushouID)+&quot;！\x0A&quot;+&quot;そんなことでは\x0A城は守れぬぞ&quot; );
+           噴出ダイアログ《通常・左上》開始( iDefendBushouID, &quot;黙れ&quot;+Get_名前(iAttackBushouID)+&quot;！\x0A&quot;+&quot;口ではなく\x0A力で物を言うがよい&quot; );
+           噴出ダイアログ《通常・右下》終了();
+           噴出ダイアログ《通常・左上》終了();
+         }
+
+      }
+    }
+  }
+}
+
+</pre></div>
+</ul>

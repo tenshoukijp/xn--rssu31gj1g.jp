@@ -1,0 +1,129 @@
+%(hilight)s
+<h2><i class="fa fa-book fa-fw"></i>LS11からのデコード、LS11へのエンコード</h2>
+<ul class="checklist">
+    <li>
+    <h3>概要</h3>
+    <p>ここでは、Ls11Mod APIの最も基本的なAPIとなる「デコード」と「エンコード」を解説しています。</p>
+    <li>
+    <h3>デコードとエンコード</h3>
+    <ul>
+        <li>ls11_mod.hには４つ宣言されていますが、以下の２つを、先に先説します。<pre class="brush:cpp;">
+    // 圧縮されたLS11フォーマットをデコードする関数
+    int ls11_DecodePack(char *szInputFileName, char *szOutputPattern, vector&lt;vector&lt;byte&gt;&gt; *pvecDstDataArray=NULL);
+
+    // 展開された1つ以上(複数可)の一連の連番ファイルを、１つのLS11フォーマットにする。
+    int ls11_EncodePack(char *szOutputFileName, char *szInputPattern, vector&lt;vector&lt;byte&gt;&gt; *pvecSrcDataArray=NULL, vector *pDstLS11PackedData=NULL);
+    </pre>
+    </ul>
+    <li>
+    <h3>デコードの具体例１</h3>
+    <ul>
+        <li>実行ファイルと同じディレクトリに存在する、LS11フォーマットファイルである、hexgrp.nb6 を、ファイルに展開する。<br>
+        展開先としては、実行ファイルのサブディレクトリ、subhexに、subhex.000, subhex.001というように展開する。 <br>
+        <pre class="brush:cpp;">
+    #include &quot;ls11_mod.h&quot;
+
+    ls11_DecodePack(&quot;hexgrp.nb6&quot;, &quot;subhex&quot;);
+    </pre> <br>
+        <li>実行ファイルと同じディレクトリに存在する、LS11フォーマットファイルである、hexgrp.nb6 を、展開する。<br>
+        しかし、ファイルに展開するのではなく。byte型の２次元可変長配列へと格納する。<br>
+        <pre class="brush:cpp;">
+    #include &quot;ls11_mod.h&quot;
+
+    vector&lt;vector&lt;byte&gt;&gt; vBufExpandData;
+    ls11_DecodePack(&quot;hexgrp.nb6&quot;, NULL, &amp;vBufExpandData );
+    </pre>
+
+        <li>以下は、上記の続きと仮定したデバッグ用 <pre class="brush:cpp;">
+
+    // hexgrp.000相当のバイナリデータ
+    vBufExpandData[0];
+
+    // hexgrp.002相当のバイナリデータ
+    vBufExpandData[2];
+
+    // hexgrp.001相当のデータをバイナリエディタで開いたと仮定した時の、３番目のバイトデータ
+    vBufExpandData[1][2];
+
+    // hexgrp.001相当のバイナリデータの先頭のバイトのアドレス。
+    // 各々のvectorは、必ず先頭から連続した配置位置であることが保障されているので、先頭のアドレスを取って処理することは有効に機能する。
+    byte *pData1Begin = &amp;vBufExpandData[1][0];
+
+    </pre>
+    </ul>
+    <li>
+    <h3>デコードの具体例２</h3>
+    <ul>
+        <li>シナリオデータ、sndata.n6pから、各々のシナリオデータを取得し、 そのうちの開始年代に相当する部分を表示する。<br>
+        <pre class="brush:cpp;">
+    #include &lt;algorithm&gt;
+    #include &lt;iostream&gt;
+    #include &quot;ls11_mod.h&quot;
+
+    int main(void) {
+
+        // sndata.n6pをvSnDataN6Pに格納
+        vector&lt;vector&lt;byte&gt;&gt; vSnDataN6P;
+        int iError = ls11_DecodePack(&quot;sndata.n6p&quot;, NULL, &amp;vSnDataN6P);
+
+        if (iError) { return -1; }
+
+        // sndata.n6pと、実際の見た目上の並びがことなるため。要するにシナリオのＩＤは見た目どおりの昇順ではないということ。
+        swap(vSnDataN6P[3],vSnDataN6P[4]);
+        swap(vSnDataN6P[2],vSnDataN6P[3]);
+        swap(vSnDataN6P[1],vSnDataN6P[2]);
+
+        //デバッグ用
+        for ( int i=0; i&lt;(int)vSnDataN6P.size(); i++) {
+            cout &lt;&lt; (int)(1454+vSnDataN6P[i][0xb7]) &lt;&lt; endl; // 開始年代は、0xB7の位置に存在する。1454を足すと西暦となる。
+        }
+    }
+    </pre>
+    </ul>
+    <li>
+    <h3>エンコードの具体例</h3>
+    <ul>
+        <li>実行ファイルのサブディレクトリ subhex 以下に、subhex.000 subhex.001 subhex.002 と並んでいるファイルを hexnew.nb6ファイルにパックする。<br>
+        <pre class="brush:cpp;">
+    #include &quot;ls11_mod.h&quot;
+
+    ls11_EncodePack(&quot;hexnew.nb6&quot;, &quot;subhex&quot;);
+    </pre>
+        <li>vector&lt;vector&lt;byte&gt;&gt;変数にあるバイナリデータを、hexgrp2.nb6ファイルにパックする。<br>
+        <pre class="brush:cpp;">
+    #include &quot;ls11_mod.h&quot;
+
+    vector&lt;vector&lt;byte&gt;&gt; vBufExpandData;
+    ls11_DecodePack(&quot;hexgrp.nb6&quot;, NULL, &amp;vBufExpandData );
+
+    ls11_EncodePack(&quot;hexnew2.nb6&quot;, NULL, &amp;vBufExpandData );
+    </pre>
+        <li>vector&lt;vector&lt;byte&gt;&gt;変数にあるバイナリデータを、パックする。<br>
+        しかし、ファイル化するのではなく。vector&lt;byte&gt;型の並列に、パックされたバイナリを格納する。 <pre class="brush:cpp;">
+    #include &quot;ls11_mod.h&quot;
+
+    vector&lt;vector&lt;byte&gt;&gt; vBufExpandData;
+    ls11_DecodePack(&quot;hexgrp.nb6&quot;, NULL, &amp;vBufExpandData );
+
+    vector&lt;byte&gt; vBufPacked;
+    ls11_EncodePack(NULL, NULL, &amp;vBufExpandData, &amp;vBufPacked );
+    </pre>
+    </ul>
+    <li>
+    <h3>LS11のフォーマットデータの詳細</h3>
+    <ul>
+        <li>まず、基本的なLS11フォーマットについては、<a href="http://www14.atwiki.jp/sin-time/pages/267.html">三国志Ⅸ覚書</a>のLS11解説にある通りとなる。<br>
+        だが、問題は、この通りでは、天翔記のパックデータは解凍出来ないということだ。<br>
+        天翔記を含め、この時代のKOEIのLS11フォーマットには、１つのLS11ファイルに１つではなく、複数のファイルがまとめてパックされているためだ。<br>
+        <br>
+
+        <ul>
+            <li>①0位置～最初の10バイト。固定
+            <li>②～0x10Fまで。 辞書
+            <li>③ここから、３つが１セット、｢(展開前の現在の)データ長」「展開後のデータサイズ」「開始アドレス」。 この３つ１セットが複数並ぶ
+            <li>④0が4バイトで１つ来る。これが、③の終わりを意味する。
+            <li>⑤おのおののデータ。③で求めた各々の｢開始アドレス」から、各々の「データ長」分だけ続く
+        </ul>
+        <img src="./cnt_mod/mod_ls11mod/cnt_mod_ls11mod_01.png" attr="noedge"><br>
+    </ul>
+</ul>

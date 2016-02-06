@@ -1,0 +1,121 @@
+%(hilight)s
+<h2><i class="fa fa fa-book fa-fw"></i>Luaに書いてある「グローバル」変数を読み込む</h2>
+<ul class="checklist">
+    <li>
+    <h3>概要</h3>
+    <p>スクリプト言語「Lua」を用いて外部テキストを記述し、ScenarioMod内の変数へと読み込ませる。<br>
+    <p>この章では、それらの機能の入門的利用方を解説します。</p>
+    <li>
+    <h3>一般的用途</h3>
+    <p>外部テキストファイルに、簡易な設定データ等を記述し、その値をScenarioModへと読み込む。<br>
+    </p>
+
+    <li>
+    <h3>備考</h3>
+    <p>Luaは外にテキストで記述する限り、<font color="red"><b>基本的には「正しさが全く期待できない」。</b></font><br>
+    記述してあるかもしれないし、ないかもしれないし、記述が間違ってるかもしれない。<br>
+    事前に何もチェックできないため、実行してみなければわからないのだ。<br>
+    よって、何をやるにしても「例外エラーが」が極めて高い確率で発生しえる。<br>
+    </p>
+    <p>このため、必ず <font color="green"><b>try { } catch(...) { }</b></font><font color="red"><b>のような記述で囲む</b></font>必要がある。<br>
+    </p>
+    <p>try ... catch ... を省略した場合でも、ScenarioModは不正終了しにくいよう、全てのメソッドにcatch防御壁が貼られている。</p>
+    <li>
+    <h3>例①</h3>
+    <ul class="pointlist">
+        <li>
+        <h4>カスタム駆動関数.cpp</h4>
+        <div class="code"><pre class="brush:cpp">
+string 読み込み変数 = &quot;デフォ&quot;; // この変数に、外部データから値を読み込む
+
+// 自分で定義した関数
+void Myパラメータインポート() {
+    // フィアルの読み取り＆実行にかかる。必ず try ... catch
+    try {
+        LUA::Do_ファイル(&quot;ScenarioMod.lua&quot;); // ScenarioMod.lua というファイルを「Lua言語解釈」して実行する。
+
+    // 何か例外エラーが発生した
+    } catch (LUA::例外型 e) {
+        デバッグ出力 &lt;&lt; &quot;ScenarioMod.luaで何かエラー:&quot; &lt;&lt; e &lt;&lt; endl;
+        return;  // このレベルでエラーしてるのはまずい。パラメタ読み取り即終了。
+    }
+
+    // ここまできたら、ファイルが読み込め、Luaとしても最低限実行できたようだ。
+
+    // 変数の読み取りにかかる。必ず try ... catch
+    try {
+        読み込み変数 = LUA::Get_グローバル文字列(&quot;test_var&quot;);
+    } catch(...) { }
+
+    デバッグ出力 &lt;&lt; &quot;変数:&quot; &lt;&lt; 読み込み変数 &lt;&lt; endl;
+}
+
+void カスタム::On_起動時() {
+    Myパラメータインポート();
+}
+</pre></div>
+        <p>そして、以下のように対象となるluaファイルを「天翔記フォルダ」に用意する。 <br>
+        </p>
+        <li>
+        <h4>ScenarioMod.lua</h4>
+        <div class="code"><pre class="brush:lua">
+test_var = &quot;ズキュキュン太&quot;
+</pre></div>
+        <p><font color="green"><b>グローバル変数の読み込みは、「実数」と「文字列」の２つに対応している。</b></font> <br>
+        繰り返しとなるが、必ず「try...catch...」するのが必須である。 <br>
+        </p>
+        <p>それを踏まえて、3種類の変数を読み込んでみよう。 <br>
+        </p>
+    </ul>
+    <li>
+    <h3>例②</h3>
+    <ul class="pointlist">
+        <li>
+        <h4>カスタム駆動関数.cpp</h4>
+        <div class="code"><pre class="brush:cpp">
+int 読み込み変数1 = 0;
+double 読み込み変数2 = 1.5;
+string 読み込み変数3 = &quot;デフォ&quot;;
+
+void インポート関数() {
+    try {
+        LUA::Do_ファイル(&quot;MySetting.txt&quot;);
+    } catch (LUA::例外型 e) {
+
+        デバッグ出力 &lt;&lt; &quot;MySetting.txtで何かエラー:&quot; &lt;&lt; e &lt;&lt; endl;
+        return; // このレベルでエラーしてるのはまずい。パラメタ読み取り即終了。
+    }
+
+    try {
+        読み込み変数1 = (int)LUA::Get_グローバル数値(&quot;test_variable&quot;); // 返り値は小数形式の型なので、intにする
+    } catch(...) { }
+
+    try {
+        読み込み変数2 = LUA::Get_グローバル数値(&quot;test_double&quot;);
+    } catch(...) { }
+
+    try {
+        読み込み変数3 = LUA::Get_グローバル文字列(&quot;test_string&quot;);
+    } catch(...) { }
+
+
+    デバッグ出力 &lt;&lt; &quot;変数1:&quot; &lt;&lt; 読み込み変数1 &lt;&lt; endl;
+    デバッグ出力 &lt;&lt; &quot;変数2:&quot; &lt;&lt; 読み込み変数2 &lt;&lt; endl;
+    デバッグ出力 &lt;&lt; &quot;変数3:&quot; &lt;&lt; 読み込み変数3 &lt;&lt; endl;
+}
+
+void カスタム::On_起動時() {
+    インポート関数();
+}
+</pre></div>
+        <p>そして、以下のように対象となるtxtファイルを「天翔記フォルダ」に用意する。 <br>
+        </p>
+        <li>
+        <h4>MySetting.txt</h4>
+        <div class="code"><pre class="brush:lua">
+test_variable = &quot;5.7&quot;       -- 文字列であったとしても、「数字」であるため、「数値」への変換が可能。上手く読み込まれる。int変換されるので、結果として 5として読み込まれるだろう。
+test_double = &quot;ジバニャン&quot;  -- &quot;ジバニャン&quot;を「実数」として解釈することは不可能である。「例外」が発生し、読み込み代入は行われないであろう。
+test_string = 13.55         -- 数値として定義されているが、問題はない。&quot;13.55&quot;という文字列として、読み込まれる。
+</pre></div>
+    </ul>
+</ul>

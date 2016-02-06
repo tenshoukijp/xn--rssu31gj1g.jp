@@ -1,0 +1,47 @@
+%(hilight)s
+<h2><i class="fa fa-book fa-fw"></i>状態名型＆ カスタム::On_状態名表示直前(int 武将番号, int 状態)</h2>
+<div class="code"><pre class="brush:cpp;">
+状態名型＆ カスタム::On_状態名表示直前(int 武将番号, int 状態) {
+  return NULL;
+}
+</pre></div>
+<ul class="checklist">
+<li><h3>引数の補足</h3>
+<ul class="pointlist">
+    <li><h4>状態:</h4>
+    現在、該当の状態に対応する状態名が表示されようとしている。<br>
+    「状態::大名」～「状態::死亡」 の値が渡ってくる。<br>
+</ul>
+<li><h3>タイミング</h3>
+<ul>
+    <li>このメソッドは「対象武将の状態」に対応する状態名文字列が表示される直前のタイミングで呼び出される。<br>
+    <li>具体的には、あらゆる「浪人登用の時」「城などをクリックした際、大名や軍団長の時」「全国地図画面から大名などをクリックした際」等である。
+</ul>
+<p><img src="./cnt_mod/mod_snmod/cnt_mod_scenario_mod_ref_073.png"></p>
+<li><h3>一般的用途</h3>
+<ul>
+    <li>自作のオリジナルな武将など作った場合、独自の状態名にしたい場合等という目的で利用する。<br>
+    <li>「大大名」や「小大名」など、同じ状態::大名というステータスでも名前を変化させたい場合など<br>
+</ul>
+<li><h3>例①</h3>
+<div class="code"><pre class="brush:cpp;">
+状態名型＆ カスタム::On_状態名表示直前(int 武将番号, int 状態) {
+
+  // どの武将であっても、対象武将の「状態::大名」に対応する文字列が要求された時、「支配城数が7より多い」場合は「大大名」、「支配城数が1」しかない場合は「小大名」と表示する。
+  int iBushouID = 武将番号 - 1;
+  if (状態==状態::大名) {
+    int iDaimyoID = p武将情報[iBushouID].所属大名【大名番号】 - 1;
+    if (Get_大名所持城数(iDaimyoID) &gt; 7) {
+      状態名型 m = &quot;大大名&quot;;
+      return m;
+    }
+    else if (Get_大名所持城数(iDaimyoID) == 1) {
+      状態名型 m = &quot;小大名&quot;;
+      return m;
+    }
+  }
+
+  return NULL;
+}
+
+</pre></div></ul>

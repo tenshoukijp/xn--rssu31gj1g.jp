@@ -1,0 +1,93 @@
+%(hilight)s
+<h2><i class="fa fa-book fa-fw"></i>void カスタム::On_基本コマンド表示直前《戦争画面》(int 武将番号)</h2>
+<div class="code"><pre class="brush:cpp">
+void カスタム::On_基本コマンド表示直前《戦争画面》(int 武将番号) {
+}
+</pre></div>
+<ul class="checklist">
+<li><h3>タイミング</h3>
+<ul>
+    <li>戦争中、プレイヤ操作により、ユニットの「基本コマンド」の一覧が出る際に、このメソッドが実行される。<br>
+    「技能コマンド」もこの「基本コマンド」に含まれている。<br>
+    <p><img src="./cnt_mod/mod_snmod/cnt_mod_scenario_mod_ref_022.png"> <img src="./cnt_mod/mod_snmod/cnt_mod_scenario_mod_ref_023.png"><br>
+    </p>
+</ul>
+<li><h3>一般的用途</h3>
+<ul>
+    <li>自作のオリジナルな武将や思い入れの強い武将などに対して、<br>
+    その時々の状況を判断しつつコマンド名を変更したい目的で利用する。<br>
+</ul>
+<li><h3>例①</h3>
+<div class="code"><pre class="brush:cpp">
+void カスタム::On_基本コマンド表示直前《戦争画面》(int 武将番号) {
+
+  int iBushouID = 武将番号-1; // 武将番号→武将番号【配列用】に
+
+  if ( 0 &lt;= iBushouID &amp;&amp; iBushouID &lt; 最大数::武将情報::配列数 ) {
+    if ( p武将戸籍情報[iBushouID].顔番号 == 顔番号::武田晴信 ) { // 武田信玄の顔＆列伝番号
+        Set_コマンド名(戦争画面::基本コマンド名::鼓舞, &quot;虎の怒号&quot;);
+    }
+    else if ( p武将戸籍情報[iBushouID].顔番号 == 顔番号::長尾景虎 ) { // 上杉謙信の顔＆列伝番号
+        Set_コマンド名(戦争画面::基本コマンド名::鼓舞, &quot;龍の咆哮&quot;);
+    }
+  }
+}
+</pre></div>
+<li><h3>例②</h3>
+<div class="code"><pre class="brush:cpp">
+void カスタム::On_基本コマンド表示直前《戦争画面》(int 武将番号) {
+
+  /*
+  * もしも上杉謙信と武田信玄が、接しているならば、
+  * 互いに一喝の命令が変化する。
+  */
+
+  int iBushouID = 武将番号-1; // 武将番号→武将番号【配列用】に
+
+  if ( 0 &lt;= iBushouID &amp;&amp; iBushouID &lt; 最大数::武将情報::配列数 ) {
+
+    番号リスト型 list = Get_出陣中の武将番号リスト【配列用】《表示中マップ》(); // 出陣中の
+
+    int BothOfExist = 0;
+
+    ヘックス位置型 Kn, Sn; // 謙信、信玄の位置
+    for each ( int iBushouID in list ) {
+      if ( p武将戸籍情報[iBushouID].顔番号 == 顔番号::武田晴信 ) { // 信玄が出陣している。
+        BothOfExist++;
+        // どのヘックスに居るのか覚えておく
+        if ( Is_野戦中() ) {
+          Sn = Get_武将の野戦ヘックス位置(iBushouID);
+        } else if ( Is_攻城戦中() ) {
+          Sn = Get_武将の攻城戦ヘックス位置(iBushouID);
+        }
+
+      }
+
+      else if ( p武将戸籍情報[iBushouID].顔番号 == 顔番号::長尾景虎 ) { // 謙信が出陣している。
+        BothOfExist++;
+        // どのヘックスに居るのか覚えておく
+        if ( Is_野戦中() ) {
+          Kn = Get_武将の野戦ヘックス位置(iBushouID);
+        } else if ( Is_攻城戦中() ) {
+          Kn = Get_武将の攻城戦ヘックス位置(iBushouID);
+        }
+
+      }
+    }
+
+    // 2人とも存在し、その距離はヘックス升で１つ。即ち隣接している。
+    if ( BothOfExist == 2 &amp;&amp; Get_ヘックス間隔(Kn, Sn)==1 ) {
+      // 信玄なら
+      if ( p武将戸籍情報[iBushouID].顔番号 == 顔番号::武田晴信 ) {
+        Set_コマンド名(戦争画面::基本コマンド名::一喝, &quot;龍撃虎&quot;);
+        Set_コマンド名(戦争画面::基本コマンド名::一喝, &quot;龍撃虎&quot;);
+      // 謙信なら
+      } else if ( p武将戸籍情報[iBushouID].顔番号 == 顔番号::長尾景虎 ) {
+        Set_コマンド名(戦争画面::基本コマンド名::一喝, &quot;虎破龍&quot;);
+        Set_コマンド名(戦争画面::基本コマンド名::一喝, &quot;虎破龍&quot;);
+      }
+    }
+  }
+}
+</pre></div>
+</ul>

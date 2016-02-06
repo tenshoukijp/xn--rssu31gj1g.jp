@@ -1,0 +1,154 @@
+%(hilight)s
+
+<h2><i class="fa fa-book fa-fw"></i>ScenarioModからIronPythonModを使う場合</h2>
+<ul class="checklist">
+    <li>
+    <h3>概要</h3>
+    <p>前節では、C++/CLIのミニマムサンプルでIronPythonを呼び出しました。<br>
+    ここまで知っておけばScenarioModでIronPythonを利用する方法を理解するのは簡単です。</p>
+    <li>
+    <h3>ScenaroMod側</h3>
+    <p>ScnearioModのソースには、「On_起動時」あたりで、Python関連のエンジンやスコープを構築します。<br>
+    </p>
+    <p><span class="negative">それらはメソッドを跨いで利用しますので、下のソース例の「GREF」クラスのように、<br>
+    グローバル変数的な形で参照を持っておく必要があることに注意しましょう。</span><br>
+    </p>
+    <p>On_相場変更直前()で前節の例と全く同じことを再現したものとなります。<br>
+    On_起動時にGREFに控えた「PythonEngineへの参照(GREF::pe)」や「スコープへの参照(GREF::scope)」を使う点だけ変更点です。</p>
+
+    <div class="code"><pre class="brush:cpp;">
+#include &quot;カスタム駆動関数.h&quot;
+
+using namespace System;
+
+
+using namespace System::Collections;
+
+using namespace IronPython::Hosting;
+using namespace Microsoft::Scripting::Hosting;
+
+
+ref class GREF {
+public:
+  static ScriptEngine^ pe;
+  static ScriptScope^ scope;
+};
+
+
+
+void カスタム::On_起動時() {
+  // スクリプトエラー等をキャッチできるようにしよう。
+  try {
+    GREF::pe = Python::CreateEngine();
+
+    // ファイルを実行。
+    GREF::scope = GREF::pe-&gt;ExecuteFile(&quot;script.py&quot;);
+  }
+  catch (Exception^ e) {
+    デバッグ出力 &lt;&lt; e-&gt;Message &lt;&lt; endl;
+  }
+}
+
+
+void カスタム::On_相場変更直前() {
+
+  // スクリプトエラー等をキャッチできるようにしよう。
+  try {
+    // 変数 abc を intとして取得
+    int val = GREF::scope-&gt;GetVariable&lt;int&gt;(&quot;abc&quot;);
+
+    // 変数 name を String^ として取得
+    String^ str = GREF::scope-&gt;GetVariable&lt;String^&gt;(&quot;name&quot;);
+    デバッグ出力 &lt;&lt; str &lt;&lt; endl;
+
+    // 変数 ret_valを「ArrayList^」型として取得
+    ArrayList^ arr1 = GREF::scope-&gt;GetVariable&lt;ArrayList^&gt;(&quot;ret_val&quot;);
+    for each (int l in arr1) {
+      デバッグ出力 &lt;&lt; l &lt;&lt; endl;
+    }
+
+    // 関数を呼び出し
+    GREF::pe-&gt;Execute(&quot;hello('world')&quot;, GREF::scope);
+
+    // 関数を呼び出すが、返り値は、String^型とみなす
+    String^ ret1 = GREF::pe-&gt;Execute&lt;String^&gt;(&quot;get_hello('world')&quot;, GREF::scope);
+    デバッグ出力 &lt;&lt; ret1 &lt;&lt; endl;
+
+    // 日本語名の関数を呼び出すが、返り値は、String^型とみなす
+    String^ retstr = GREF::pe-&gt;Execute&lt;String^&gt;(&quot;ハロー('world')&quot;, GREF::scope);
+    string native_str = string←String(retstr);
+    デバッグ出力 &lt;&lt; retstr &lt;&lt; endl;
+
+    // 関数を呼び出す。返り値はArrayList^型
+    ArrayList^ arr2 = GREF::pe-&gt;Execute&lt;ArrayList^&gt;(&quot;get_ret_val()&quot;, GREF::scope);
+    for each (int l in arr2) {
+      デバッグ出力 &lt;&lt; l &lt;&lt; endl;
+    }
+
+    // intを引数に取って、boolを返す関数
+    auto funcIsOdd = GREF::pe-&gt;Operations-&gt;GetMember&lt;Func&lt;int, bool&gt;^&gt;(GREF::scope, &quot;is_odd&quot;);
+    bool b1 = funcIsOdd(3);
+    デバッグ出力 &lt;&lt; b1 &lt;&lt; endl;
+    bool b2 = funcIsOdd(4);
+    デバッグ出力 &lt;&lt; b2 &lt;&lt; endl;
+
+
+  }
+  catch (Exception^ e) {
+    デバッグ出力 &lt;&lt; e-&gt;Message &lt;&lt; endl;
+  }
+
+}
+
+
+</pre></div>
+    <li>
+    <h3>Python側</h3>
+    <p>スクリプト側は前節と全く同じものです。<br>
+    <p><span class="negative">C++/CLIの「マルチバイト」から呼ばれますので、「script.pyのソースコードの文字コードをShitJIS(=cp932)」で保存</span>してください。<br>
+    (テキストエディタなどで実際に確認してください。間違っているとSyntax Errorが出ます)</p>
+    <p>IronPythonのソース:script.py</p>
+    <div class="code"><pre class="brush:python;">
+# coding: cp932
+
+
+from System.Collections import *
+
+abc = 3
+
+name = &quot;武田信玄&quot;
+
+def hello( x ) :
+  print &quot;hello, &quot; + x
+
+def ハロー( x ) :
+  print &quot;ハロー, &quot; + x
+  return &quot;ハロー&quot; + x
+
+
+def get_hello( x ) :
+  return &quot;hello, &quot; + x
+
+
+a = [10,20,30]
+ret_val = ArrayList(a)
+
+def get_ret_val() :
+  return ret_val
+
+
+def is_odd(num):
+  if num % 2 == 1:
+    return True
+  else:
+    return False
+
+</pre></div>
+    <p>以上となります。</p>
+    <p>ScenarioModに組み込まれているLuaは専用にカスタムしたものでしたが、<br>
+    今回のIronPythonModの仕組みは、汎用的なIronPythonのdllの使い方と同一です。<br>
+    </p>
+    <p>ですので、C#から呼び出し、C++/CLIからの呼び出し、いずれでもよいので使い方を知っておけば、<br>
+    自作プロジェクトや他のゲームのMod制作などにおいて、幅広く役立つことでしょう。</p>
+</ul>
+

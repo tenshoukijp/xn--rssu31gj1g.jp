@@ -1,0 +1,54 @@
+%(hilight)s
+<h2><i class="fa fa fa-desktop fa-fw fa-fw"></i>スクリーン切り替え用Mod</h2>
+<ul class="checklist">
+<li><h3>概要</h3>
+<p>メインゲームの開始時に、<b>PCの画面解像度を自動変更</b>したり、<b>デスクトップを特定の色で塗りつぶす</b>ことが出来るModです。<br>
+天翔記以外の情報を遮断することで、ゲームへの没入間を高めることが可能となります。<br>
+ゲームを終了すると、画面解像度や背景色は元へと戻ります。<br>
+</p>
+<li><h3>ダウンロード</h3>
+<dl>
+    <dt>
+    <div class="download_file">DOWNLOAD ⇒ <a href="%(file)s">SemiFullScreenMod</a>ファイル。</div>
+    </dt>
+    <dd>
+    <div class="update_time">└更新日 %(year)04d/%(mon)02d/%(mday)02d</div>
+    </dd>
+</dl>
+<li><h3>動作環境</h3>
+    <ul>
+    <li>このModは「一般Mod」となります。<br>
+    よって、「<a href="?page=nobu_mod_the_pluginmod">PluginMod</a>」もしくは「<a href="?page=nobu_mod_the_tsmod">TSMod</a>」のどちらかの導入が必要です。<br>
+        <li>.NET FrameWork 4.0<br>
+    (ソースから再コンパイルすれば、4.5や4.6など自由に必要バージョンの切り替えが可能です。)<br>
+        <li><a href="https://www.microsoft.com/ja-jp/download/details.aspx?id=40784"><b>Visual Studio 2013 Runtime</b></a> をインストールしたことがない人は、インストールしてください。<br>
+        <b>OSのビット数に関わらずx86版をインストールしてください。</b>
+
+    </ul>
+<li><h3>説明</h3>
+	<ul class="pointlist">
+
+	    <li><h4>使い方</h4>
+	    <p>SemiFullScreenMod.cpl と SemiFullScreenMod.ini の２つのファイルを「天翔記フォルダ」へとコピー。<br></p>
+	    <li><h4>iniの編集</h4>
+	    <p>編集の仕方には２通りの方法があります。<br></p>
+	    <ul class="arrowlist">
+		    <li><h5>GUI画面を使って編集する方法</h5>
+		    <p>
+		    <img src="./cnt_mod/mod_pluginmod/cnt_mod_semifullscreen_ctrl.png"><br>
+		    <br>
+		    <b>SemiFullScreenMod.cpl を実行(ダブルクリック等)することで、設定画面が出てきます。</b><br>
+		    自動切換え解像度と、背景の色を選択し、「設定」を押してください。<br>
+		    設定情報を元に、SemiFullScreenMod.ini が書き換えられます。<br></p>
+		    <li><h5>テキストで直接編集する方法</h5>
+		    <p>SemiFullScreenMod.ini をテキストエディタなどで直接編集することも可能です。<br>
+		    </p>
+		    <div class="code"><pre class="brush:cpp">
+		    -- 天翔記の「メインゲーム」が始まったら、背景を紺色に、PCの画面解像度を「横1280 縦768」に切り替える場合。<br>
+		    cmd["environment_semi_fullscreen_w"] = 1280
+		    cmd["environment_semi_fullscreen_h"] = 768
+		    cmd["environment_semi_fullscreen_back_color"]=0x210D73
+		    </pre></div>
+	    </ul>
+	</ul>
+</ul>

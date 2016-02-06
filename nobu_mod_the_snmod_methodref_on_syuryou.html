@@ -1,0 +1,47 @@
+%(hilight)s
+<h2><i class="fa fa-book fa-fw"></i>On_終了時()</h2>
+<div class="code"><pre class="brush:cpp;">
+void カスタム::On_終了時() {
+}
+</pre></div>
+
+<ul class="checklist">
+    <h3>タイミング</h3>
+    <ul>
+        <li>見た目的には、天翔記が終了して、ウィンドウフレームが消えた後に呼び出される。<br>
+        タイミング的には、TSModがDLLが解放され、全ての役割を終える直前のタイミングである。
+        <p><img src="./cnt_mod/mod_snmod/cnt_mod_scenario_mod_ref_002.png"></p>
+    </ul>
+    <li>
+    <h3>一般的用途</h3>
+    <ul>
+        <li>On_起動時()などにおいて、<br>
+        独自に「動的メモリ確保」や独自に「LoadLibrary」をしている場合は、<br>
+        このメソッドで解放することになるだろう。<br>
+    </ul>
+    <li>
+    <h3>例①</h3>
+    <div class="code"><pre class="brush:cpp;">
+int *p;
+void カスタム::On_起動時() {
+  p = new int;
+}
+
+void カスタム::On_終了時() {
+  delete p;
+}
+</pre></div>
+    <li>
+    <h3>例②</h3>
+    <div class="code"><pre class="brush:cpp;">
+HMODULE pDLL;
+void カスタム::On_起動時() {
+  pDLL = LoadLibrary(&quot;MyCustomMode.dll&quot;);
+}
+
+void カスタム::On_終了時() {
+  FreeLibrary(pDLL);
+}
+
+</pre></div>
+</ul>

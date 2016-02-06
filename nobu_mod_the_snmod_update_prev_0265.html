@@ -1,0 +1,478 @@
+%(hilight)s
+<h2><i class="fa fa-lightbulb-o fa-fw"></i>ScenarioModVer2 更新履歴 v2.6.0.0～v2.6.5.0</h2>
+
+<ul class="checklist">
+    <h3>v2.6.2.8 ⇒ v2.6.2.9</h3>
+    <ul class="pointlist">
+        <li>
+        <h4>城と経路グラフ関連の関数追加</h4>
+        <ul class="arrowlist">
+            <li>
+            <h5>グラフ(経路グラフ)とは</h5>
+            <p>通常「グラフ」という言葉を聞くと、「棒グラフ」や「円グラフ」を思い浮かべると思いますが、<br>
+            ゲーム制作において、「グラフ」とは、一般的に、<br>
+            <a href="http://ja.wikipedia.org/wiki/%E9%81%93_(%E3%82%B0%E3%83%A9%E3%83%95%E7%90%86%E8%AB%96)"><b>経路グラフ</b></a>のことを示します。<br>
+            (道のような経路に限らず、状態遷移が矢印で繋がったような、いわゆる「点項目(ノード)」が「矢印線(エッジ)」で繋がっているものの総称です。)</p>
+            <p>今回ScenarioModに追加された、関数は、この経路グラフ関連となります。<br>
+            </p>
+            <p><img src="./cnt_mod/mod_snmod/cnt_mod_scenario_mod_103.png" width="825" height="256"><br>
+            </p>
+            <li>
+            <h5>とある城を中心に、道(経路)が繋がっている隣接城の一覧を得る</h5>
+            <p><span class="keyword">番号リスト型 clist = Get_経路連結の隣接城番号リスト【配列用】( int iCastleID );</span></p>
+            <div class="code"><pre class="brush:cpp;">
+番号リスト型 clist = Get_経路連結の隣接城番号リスト【配列用】( 城配列番号::躑躅ヶ崎館 ); // 躑躅ヶ崎館の周囲に隣接していて、道で繋がっている城一覧
+for each ( int iCastleID in clist ) {
+    デバッグ出力 &lt;&lt; Get_城名(iCastleID) &lt;&lt; &quot;,&quot;;
+}
+デバッグ出力 &lt;&lt; endl;
+</pre></div>
+            <li>
+            <h5>とある城A→城Bまで、理想的な経路を探索し、その経路上の城一覧を得る。</h5>
+            <p><span class="keyword">Set_城経路グラフ初期化();</span><br>
+            <span class="keyword">番号リスト型 clist = Get_経路連結の隣接城番号リスト【配列用】( int iCastleID );</span></p>
+            <div class="code"><pre class="brush:cpp;">
+Set_城経路グラフ初期化(); // 経路グラフを現在実行中の城位置に合わせて再構築しなおす。MapDataObgkModなど、ゲーム中に城の位置を変えているものへの対処
+
+番号リスト型 clist = Get_経路上の城番号リスト【配列用】( 城配列番号::躑躅ヶ崎館, 城配列番号::月山富田城 );  // 躑躅ヶ崎館 から 月山富田城まで
+
+for each ( int iCastleID in clist ) {
+    デバッグ出力 &lt;&lt; Get_城名(iCastleID) &lt;&lt; &quot;,&quot;;
+}
+デバッグ出力 &lt;&lt; endl;
+</pre></div>
+            <li>
+            <h5>経路探索の対象にしたくない城の設定</h5>
+            <p>先述の経路探索をする前に、「探索対象にしたくない城」を複数削除することができます。</p>
+            <p><span class="keyword">Set_城経路グラフから城削除( int iCastleID );</span></p>
+            <div class="code"><pre class="brush:cpp;">
+Set_城経路グラフ初期化(); // 経路グラフを現在実行中の城位置に合わせて再構築しなおす。MapDataObgkModなど、ゲーム中に城の位置を変えているものへの対処
+
+Set_城経路グラフから城削除( 城配列番号::尾高城 );  // 尾高城は探索対象にしない。
+Set_城経路グラフから城削除( 城配列番号::上原城 ); // 上原城は探索対象にしない。
+
+番号リスト型 clist = Get_経路上の城番号リスト【配列用】( 城配列番号::躑躅ヶ崎館, 城配列番号::月山富田城 );  // 躑躅ヶ崎館 から 月山富田城まで
+for each ( int iCastleID in clist ) {
+    デバッグ出力 &lt;&lt; Get_城名(iCastleID) &lt;&lt; &quot;,&quot;;
+}
+デバッグ出力 &lt;&lt; endl;
+</pre></div>
+            <p>forループなどで、自勢力以外の城を全て 「Set_城経路グラフから城削除」で削除 してしまえば、<br>
+            経路探索は、「自勢力の城を使ったもの」となるわけです。<br>
+            </p>
+            <div class="code"><pre class="brush:cpp;">
+Set_城経路グラフ初期化(); // 経路グラフを現在実行中の城位置に合わせて再構築しなおす。MapDataObgkModなど、ゲーム中に城の位置を変えているものへの対処
+
+Set_城経路グラフから城削除( 城配列番号::門司城 );   // 九州の、門司城を削除
+Set_城経路グラフから城削除( 城配列番号::松葉城 );  // 四国の松葉城を削除
+
+番号リスト型 clist = Get_経路上の城番号リスト【配列用】( 城配列番号::室町御所, 城配列番号::種子島城 );  // 室町から種子島
+if ( clist.size() &lt; 2 ) {
+     // 経路が求まったのであれば、少なくとも「開始城」と「終了城」がリストに入っている。
+     // ２つ未満ということは経路が求まらなかったということ。
+    デバッグ出力 &lt;&lt; &quot;経路が求まらない&quot; &lt;&lt; endl;
+} else {
+    for each ( int iCastleID in clist ) {
+      デバッグ出力 &lt;&lt; Get_城名(iCastleID) &lt;&lt; &quot;,&quot;;
+    }
+    デバッグ出力 &lt;&lt; endl;
+}
+</pre></div>
+        </ul>
+    </ul>
+    <li>
+    <h3>v2.6.2.7 ⇒ v2.6.2.8</h3>
+    <ul>
+        <li><span class="keyword">Get_武将混乱状態(int iBushouID);</span>
+        <li><span class="keyword">Set_武将混乱状態(int iBushouID, int 混乱状態);</span>
+        <p>の関数において、「列挙::戦争::混乱状態::挑発混乱」のenum値が使えるようになった。</p>
+        <div class="code"><pre class="brush:cpp;">
+int iBushouID = Get_武将番号【配列用】(顔番号::武田晴信); // 武田晴信
+if ( 0 &lt;= iBushouID &amp;&amp; iBushouID &lt; 最大数::武将情報::配列数 ) {
+    if ( Get_武将混乱状態(iBushouID) == 混乱状態::挑発混乱 ) {
+        デバッグ出力 &lt;&lt; &quot;晴信は挑発され頭に血がのぼっている&quot; &lt;&lt; endl;
+    }
+}
+</pre></div>
+        <div class="code"><pre class="brush:cpp;">
+int iBushouID = Get_武将番号【配列用】(顔番号::武田晴信); // 武田晴信
+if ( 0 &lt;= iBushouID &amp;&amp; iBushouID &lt; 最大数::武将情報::配列数 ) {
+    Set_武将混乱状態(iBushouID, 混乱状態::挑発混乱); // 挑発状態を設定
+}
+</pre></div>
+    </ul>
+    <h3>v2.6.2.6 ⇒ v2.6.2.7</h3>
+    <p><b><font color="red">以下の４つの関数は削除された。</font></b>
+    <ul>
+        <li><span class="keyword">Is_武将混乱(int iBushouID);</span>
+        <li><span class="keyword">Is_武将大混乱(int iBushouID);</span>
+        <li><span class="keyword">Set_武将混乱(int iBushouID);</span>
+        <li><span class="keyword">Set_武将大混乱(int iBushouID);</span>
+
+        <p>替えて、より用途が広い以下の２つの関数が追加された。</p>
+        <li><span class="keyword">Get_武将混乱状態(int iBushouID);</span>
+        <li><span class="keyword">Set_武将混乱状態(int iBushouID, int 混乱状態);</span>
+        <div class="code"><pre class="brush:cpp;">
+int iBushouID = Get_武将番号【配列用】(顔番号::武田晴信); // 武田晴信
+if ( 0 &lt;= iBushouID &amp;&amp; iBushouID &lt; 最大数::武将情報::配列数 ) {
+    if ( Get_武将混乱状態(iBushouID) == 混乱状態::無し ) {
+         デバッグ出力 &lt;&lt; &quot;混乱していない&quot; &lt;&lt; endl;
+    }
+    else if ( Get_武将混乱状態(iBushouID) == 混乱状態::混乱 ) {
+         デバッグ出力 &lt;&lt; &quot;普通の混乱&quot; &lt;&lt; endl;
+    }
+    else if ( Get_武将混乱状態(iBushouID) == 混乱状態::大混乱 ) {
+         デバッグ出力 &lt;&lt; &quot;大混乱&quot; &lt;&lt; endl;
+    }
+
+
+    if ( Get_武将混乱状態(iBushouID) &gt;= 混乱状態::混乱 ) { // 混乱以上の状態
+         デバッグ出力 &lt;&lt; &quot;混乱もしくは大混乱&quot; &lt;&lt; endl;
+    }
+}
+</pre></div>
+        <div class="code"><pre class="brush:cpp;">
+int iBushouID = Get_武将番号【配列用】(顔番号::武田晴信); // 武田晴信
+if ( 0 &lt;= iBushouID &amp;&amp; iBushouID &lt; 最大数::武将情報::配列数 ) {
+    Set_武将混乱状態(iBushouID, 混乱状態::無し); // 混乱状態を解除
+
+    // もしくは…
+    Set_武将混乱状態(iBushouID, 混乱状態::混乱); // 混乱状態を設定(行動済も立つ)
+
+    // もしくは…
+    Set_武将混乱状態(iBushouID, 混乱状態::大混乱); // 大混乱状態を設定(行動済も立つ)
+}
+</pre></div>
+    </ul>
+
+    <li>
+    <h3>v2.6.2.5 ⇒ v2.6.2.6</h3>
+    <p>戦場において、特定のユニットを混乱・大混乱させる関数が追加された。<br>
+    </p>
+    <ul>
+        <li><span class="keyword">Set_武将混乱(int iBushouID);</span>
+        <li><span class="keyword">Set_武将大混乱(int iBushouID);</span>
+        <p>(※ユニットの描画更新を伴う、効果音の再生は伴わない) 戦争中ならば、概ねあらゆるタイミングで利用可能である。<br>
+        </p>
+        <div class="code"><pre class="brush:cpp;">
+int iBushouID = Get_武将番号【配列用】(顔番号::武田晴信); // 武田晴信
+if ( 0 &lt;= iBushouID &amp;&amp; iBushouID &lt; 最大数::武将情報::配列数 ) {
+    Set_大混乱(iBushouID);
+    効果音再生(効果音音源::挑発・混乱);
+}
+</pre></div>
+    </ul>
+
+    <li>
+    <h3>v2.6.2.4 ⇒ v2.6.2.5</h3>
+    <p>噴出ダイアログの種類が１つ追加となった<br>
+    </p>
+    <ul>
+        <li><span class="keyword">噴出ダイアログ《戦場・中央》表示(int iBushouID, string メッセージ)</span>
+        <p>この噴き出しダイアログは、天翔記の戦場にてよくみかける噴き出しと同一のものであり、<br>
+        画面中央に１つ出るモーダルタイプである。<br>
+        </p>
+
+        <div class="code"><pre class="brush:cpp;">
+int iBushouID = Get_武将番号【配列用】(顔番号::武田晴信); // 武田晴信
+if ( 0 &lt;= iBushouID &amp;&amp; iBushouID &lt; 最大数::武将情報::配列数 ) {
+    噴出ダイアログ《戦場・中央》表示(iBushouID, &quot;晴信。推して参る!!&quot;);
+}
+</pre></div>
+    </ul>
+
+    <li>
+    <h3>v2.6.2.3 ⇒ v2.6.2.4</h3>
+    <p>攻戦戦時、特定の場所が炎上しているかどうか、判定可能な関数が追加された。<br>
+    <br>
+    考え方は、既存の関数 <span class="keyword">Get_攻城戦ヘックス役割</span>や<span class="keyword">Get_野戦ヘックス役割</span>と同じである。<br>
+    </p>
+    <ul>
+        <li><span class="keyword">Get_攻城戦ヘックス炎上(double x, double y)</span>
+        <li><span class="keyword">Get_攻城戦ヘックス炎上(ヘックス位置型 p)</span>
+        <div class="code"><pre class="brush:cpp;">
+if ( Is_攻城戦中() ) {
+    int iBushouID = Get_武将番号【配列用】(顔番号::武田晴信); // 武田信玄の武将番号【配列用】
+    ヘックス位置型 p = Get_武将の攻城戦ヘックス位置(iBushouID); // 武将番号【配列用】→武将のヘックス上の位置を得る
+    int i炎上状態左   = Get_攻城戦ヘックス炎上(p.Ｘ-1  , p.Ｙ  );
+    int i炎上状態右   = Get_攻城戦ヘックス炎上(p.Ｘ+1  , p.Ｙ  );
+    int i炎上状態     = Get_攻城戦ヘックス炎上(p);
+    int i炎上状態右下 = Get_攻城戦ヘックス炎上(p.Ｘ+0.5, p.Ｙ+1);
+    int i炎上状態左下 = Get_攻城戦ヘックス炎上(p.Ｘ-0.5, p.Ｙ+1);
+
+    if (i炎上状態 == 攻城戦ヘックス炎上::炎上) {
+      デバッグ出力 &lt;&lt; &quot;武田信玄ユニットの位置は炎上している&quot; &lt;&lt; endl;
+    }
+
+    デバッグ出力 &lt;&lt; &quot;炎上左:&quot; &lt;&lt; i炎上状態左 &lt;&lt; endl;
+    デバッグ出力 &lt;&lt; &quot;炎上右:&quot; &lt;&lt; i炎上状態右 &lt;&lt; endl;
+    デバッグ出力 &lt;&lt; &quot;炎上右下:&quot; &lt;&lt; i炎上状態右下 &lt;&lt; endl;
+    デバッグ出力 &lt;&lt; &quot;炎上左下:&quot; &lt;&lt; i炎上状態左下 &lt;&lt; endl;
+}
+
+</pre></div>
+    </ul>
+
+    <li>
+    <h3>v2.6.2.3 ⇒ v2.6.2.3</h3>
+    <p>天翔記のゲーム描画域の解像度を取得するための関数が追加された。<br>
+    </p>
+    <p><b><font color="red">ゲーム内に存在する(1024x768)など、表面的な解像度ではない。<br>
+    実際の天翔記はそのような解像度ではないためである。</font></b><br>
+    あくまでも<b>本当のゲーム画面の描画領域の解像度</b>が取得される。<br>
+    </p>
+    <ul>
+        <li><span class="keyword">解像度型 Get_天翔記解像度()</span>
+        <div class="code"><pre class="brush:cpp;">
+void カスタム::On_トップメニュー表示時() {
+  解像度型 解像度 = Get_天翔記解像度();
+  デバッグ出力 &lt;&lt; 解像度.Ｘ &lt;&lt; &quot;,&quot; &lt;&lt; 解像度.Ｙ &lt;&lt; endl;
+}
+</pre></div>
+    </ul>
+
+    <li>
+    <h3>v2.6.2.2 ⇒ v2.6.2.3</h3>
+    <p>噴出ダイアログ系関数のいくつかのバグが修正された。<br>
+    又、噴出ダイアログのダメなパターンを提示する。</p>
+    <ul class="pointlist">
+        <li>
+        <h4>描画の乱れの修正</h4>
+        <p>「噴出ダイアログ《通常・左上》」「噴出ダイアログ《通常・右下》」系関数において、<br>
+        会話終了時に、背景描画が乱れていた問題を解消した。<br>
+        </p>
+        <li>
+        <h4>制限の追加</h4>
+        <p>「噴出ダイアログ《通常・左上》更新() 「噴出ダイアログ《通常・右下》更新() 関数において、<br>
+        <span class="negative">「開始関数」と「更新関数」で「違う武将番号」を指定することは出来なくなった。</span><br>
+        (例えば、会話の開始時に「信長」と指定していたのに、会話の更新時に「秀吉」とすることはできなくなった。<br>
+        それは「更新」ではなく、新規会話チャンネルの開始であり、整合性が取れないため)</p>
+        <p>又、この噴出メッセージによる会話には一種の制限がある。</p>
+        <li>
+        <h4>制限の内容</h4>
+        <font color="red">“話者Ａと話者Ｂが話している”時に、話者Ｃが乱入してこないこと。</font> という制限が付く。<br>
+        <ul class="arrowlist">
+            <li>
+            <h5>ＯＫなパターン。</h5>
+            <p>信長と勝家は話していた。<br>
+            2人の噴出を閉じ、即座に信長の噴出を再登場させたあと、秀吉を登場させている。</p>
+            <p>信長：開始 「勝家よ」<br>
+            勝家：開始 「はい」<br>
+            信長：更新 「腹が減った」<br>
+            勝家：更新 「私も」<br>
+            信長：終了<br>
+            勝家：終了<br>
+            信長：開始 「外へ出かけるか」<br>
+            秀吉：開始 「私もいきまする」<br>
+            信長：終了<br>
+            秀吉：終了<br>
+            </p>
+
+            <li>
+            <h5>ＮＧなパターン。</h5>
+            <p>信長と勝家は話していた。<br>
+            <p>2人の噴出を閉じず、<span class="negative">信長の噴出を開いたまま、秀吉が登場</span>している。<br>
+            これをすると、<span class="negative">噴出の背景描画が乱れる</span>ときがある。</p>
+            <p>信長：開始 「勝家よ」<br>
+            勝家：開始 「はい」<br>
+            信長：更新 「腹が減った」<br>
+            勝家：更新 「私も」<br>
+            信長：更新 「外へ出かけるか」<br>
+            勝家：終了<br>
+            秀吉：開始 「私もいきまする」<br>
+            信長：終了<br>
+            秀吉：終了<br>
+            </p>
+        </ul>
+    </ul>
+    <li>
+    <h3>v2.6.2.1 ⇒ v2.6.2.1</h3>
+    <p>TSMod更新により、以下の２つのカスタム条件が利用可能となった。<br>
+    </p>
+    <ul>
+        <li><span class="keyword"><a href="?page=nobu_mod_the_snmod_methodref_on_custom_ansatsu_main_sibou">AS条件::メイン::暗殺受動者死亡可否</a></span>
+        <li><span class="keyword"><a href="?page=nobu_mod_the_snmod_methodref_on_custom_ansatsu_main_sibou">AS条件::戦争::暗殺受動者死亡可否</a></span>
+    </ul>
+    <p>以下のカスタム条件の名前が変更となった。</p>
+    <ul>
+        <li><b>AS条件::大名後継者武将番号</b> → <span class="keyword"><a href="?page=nobu_mod_the_snmod_methodref_on_custom_koukeisya_bushou">AS条件::メイン::大名後継者武将番号</a></span>
+    </ul>
+
+    <li>
+    <h3>v2.6.2.0 ⇒ v2.6.2.1</h3>
+    <p>戦争時、武将ユニットの兵数の再描画を行う関数が追加された。</p>
+    <ul>
+        <li><span class="keyword">武将ユニット兵数描画更新《戦争画面》(int iBushouID);</span>
+        <div class="code"><pre class="brush:cpp;">
+void カスタム::On_残りターン変更《戦争画面》(int 残りターン数) {
+  if ( 残りターン数 &lt; 29 ) {
+
+    番号リスト型 lstBushouID = Get_出陣中の武将番号リスト【配列用】《表示中マップ》();
+
+    for each ( int iBushouID in lstBushouID ) {
+      int 兵 = p武将情報[iBushouID].兵数;
+      if (兵&gt;5) {
+        p武将情報[iBushouID].兵数 -= 5;
+        武将ユニット兵数描画更新《戦争画面》(iBushouID);
+      }
+    }
+  }
+}
+</pre></div>
+    </ul>
+
+    <li>
+    <h3>v2.6.1.9 ⇒ v2.6.2.0</h3>
+    <p>天翔記起動後、比較的最初の方で実行される２つのイベントハンドラが追加された。</p>
+    <ul class="pointlist">
+        <li>
+        <h4><span class="keyword">On_ウィンドウ解像度切替時</span></h4>
+        詳細は、「<a href="?page=nobu_mod_the_snmod_methodref_on_change_app_resolution">On_ウィンドウ解像度切替時()</a>」
+        <li>
+        <h4><span class="keyword">On_トップメニュー表示時</span></h4>
+        詳細は、「<a href="?page=nobu_mod_the_snmod_methodref_on_viewing_topmenu">On_トップメニュー表示時()</a>」
+    </ul>
+    <p>ダイアログ表示に「<span class="keyword">情報フレームダイアログ表示</span>」という新しいタイプのダイアログが１件追加された。<br>
+    </p>
+    <div class="code"><pre class="brush:cpp;">
+void カスタム::On_残りターン変更《戦争画面》(int 残りターン数) {
+    if ( 残りターン数 &lt; 30 ) {
+        情報フレームダイアログ表示(&quot;あいう&quot;);
+    }
+}
+</pre></div>
+    <p><img src="./cnt_mod/mod_snmod/cnt_mod_scenario_mod_101.png"> <img src="./cnt_mod/mod_snmod/cnt_mod_scenario_mod_102.png"><br>
+    </p>
+
+    <h3>v2.6.1.7 ⇒ v2.6.1.9</h3>
+    <p>武将兵数がダメージを受けた際に呼び出されるイベントハンドラが追加された。</p>
+    <ul>
+        <li><span class="keyword">On_被ダメージ時</span> 詳細は、「<a href="?page=nobu_mod_the_snmod_methodref_on_battle_damaged">On_被ダメージ時(int 武将番号, int ダメージ兵数)</a>」
+    </ul>
+    <p>戦争中の「武将の移動力の残量」の取得・設定をする関数が追加された。</p>
+    <p>天翔記では、「移動残量(機動力)」という概念があり、移動や行動をするとこれが減る。<br>
+    (目一杯移動すると０になるが、少しの移動や移動しない時などは移動残量が蓄積される)<br>
+    又、天翔記の元来の仕様では移動残量15がMAXであるが、それを超えて設定することをも可能とする。<br>
+    <ul class="pointlist">
+        <li><span class="keyword">Set_武将移動力残量(int 武将番号【配列用】, int 移動力残量);</span>
+        <li><span class="keyword">Get_武将移動力残量(int 武将番号【配列用】;</span>
+    </ul>
+    <div class="code"><pre class="brush:cpp;">
+void カスタム::On_残りターン変更《戦争画面》(int 残りターン数) {
+
+  // 現在出陣中の武将
+  番号リスト型 blist = Get_出陣中の武将番号リスト【配列用】《表示中マップ》();
+
+  // 現在の移動力残量に+5する。
+  for each ( int iBushouID in blist ) {
+    int current = Get_武将移動力残量(iBushouID);
+    Set_武将移動力残量(iBushouID, current + 5 );
+  }
+
+}
+</pre></div>
+
+
+    <li>
+    <h3>v2.6.1.6 ⇒ v2.6.1.7</h3>
+    <p>プレイヤが何かのコマンドを実行する際に欠かせない、以下の強力な２つのイベントハンドラが追加された。</p>
+    <ul class="pointlist">
+        <li>
+        <h4><span class="keyword">On_プレイヤコマンド発生直前《メイン画面》</span></h4>
+        詳細は、「<a href="?page=nobu_mod_the_snmod_methodref_on_enter_player_command">On_プレイヤコマンド発生直前《メイン画面》(int メインコマンド番号, int サブコマンド番号)</a>」
+        <li>
+        <h4><span class="keyword">On_プレイヤコマンド完了直前《メイン画面》</span></h4>
+        詳細は、「<a href="?page=nobu_mod_the_snmod_methodref_on_leave_player_command">On_プレイヤコマンド完了直前《メイン画面》()</a>」
+    </ul>
+
+    <li>
+    <h3>v2.6.1.4 ⇒ v2.6.1.6</h3>
+    <p>以下の２つのイベントハンドラが追加された。</p>
+    <ul class="pointlist">
+        <li>
+        <h4><span class="keyword">On_追認系ダイアログ確認時</span></h4>
+        詳細は、「<a href="?page=nobu_mod_the_snmod_methodref_on_confirm_ratification_dialog">On_追認系ダイアログ確認時(string メッセージ, string タイトル)</a>」
+        <li>
+        <h4><span class="keyword">On_数値入力ダイアログ決定時</span></h4>
+        詳細は、「<a href="?page=nobu_mod_the_snmod_methodref_on_input_number_dialog">On_数値入力ダイアログ決定時(string メッセージ, 数値入力ダイアログパラメタ型 パラメタ )</a>」
+    </ul>
+
+
+    <h3>v2.6.1.3 ⇒ v2.6.1.4</h3>
+    <ul class="pointlist">
+        <li>
+        <h4><span class="keyword">On_攻撃方法決定時《戦争画面》</span></h4>
+        の関数の引数パラメータが変更となった。<br>
+        詳細は、「<a href="?page=nobu_mod_the_snmod_methodref_on_deside_battle_attack">On_攻撃方法決定時《戦争画面》</a>」
+    </ul>
+    <li>
+    <h3>v2.6.0.1 ⇒ v2.6.1.3</h3>
+    <ul>
+        <li>
+        <h4><span class="keyword">On_攻撃方法決定時《戦争画面》(int 主体武将番号, int 客体武将番号, int 攻撃方法番号)</span></h4>
+        <p>というイベントハンドラが追加された。<br>
+        詳細は、「<a href="?page=nobu_mod_the_snmod_methodref_on_deside_battle_attack">On_攻撃方法決定時《戦争画面》</a>」</p>
+    </ul>
+
+    <li>
+    <h3>v2.6.0.0 ⇒ v2.6.0.1</h3>
+    <ul class="pointlist">
+        <li>
+        <h4>天翔記のアプリケーションとしてのメニュー項目追加機能</h4>
+        <p>天翔記の<b>「アプリケーション」としてのメニューに独自のメニューアイテムを追加</b>できるようになった。<br>
+        この意義とは、「プログラムで組まれたタイミング」ではなく、「手動」で何かを実行したい場合に便利な機能となる。<br>
+        </p>
+
+        <p>まずは、以下のように、On_起動時() あたりでメニューを追加する。<br>
+        どのイベントハンドラでも、メニューの追加は出来る。<br>
+        </p>
+        <div class="code"><pre class="brush:cpp;">
+static int menu1番号 = -1;
+static int menu2番号 = -1;
+void カスタム::On_起動時() {
+  menu1番号 = アプリケーション::メニューアイテム追加(&quot;熟練度MAX&quot;);
+  menu2番号 = アプリケーション::メニューアイテム追加(&quot;ノートパッド&quot;);
+  アプリケーション::メニューアイテム追加(&quot;---&quot;); // セパレータ
+}
+
+</pre></div>
+        <p>このように、「<span class="keyword">アプリケーション::メニューアイテム追加</span>」関数で、メニューが追加できる。<br>
+        「返り値」は該当メニューに割り当てた「番号」とでもいえるもの。<br>
+        後で、必要となる番号ならば、この値をソースのように保存しておく。<br>
+        ソースにあるように、横線(セパレータ)を入れることも可能である。<br>
+        </p>
+        <p><img src="./cnt_mod/mod_snmod/cnt_mod_scenario_mod_99.png"></p>
+
+        <li><span class="keyword">On_アプリケーションメニュー選択時(int メニュー番号)</span> が追加された。<br>
+        <p>このイベントハンドラは、「アプリケーションとしてのメニューが選択される度」に呼ばれる。<br>
+        「メニュー番号」は該当のメニューに割り当てられている「番号」が渡ってくる。<br>
+        番号が割り当てられていない場合、通常「0」が渡ってくる。</p>
+        <div class="code"><pre class="brush:cpp;">
+void カスタム::On_アプリケーションメニュー選択時(int メニュー番号) {
+    デバッグ出力 &lt;&lt; メニュー番号 &lt;&lt; endl;
+
+    if (メニュー番号 == menu1番号) {
+        // 532の武将の熟練度をMAXに
+        for (int i=0; i&lt;最大数::武将情報::配列数 ;i++) {
+            p武将情報[i].政治熟練値=2000; p武将情報[i].戦闘熟練値=2000; p武将情報[i].智謀熟練値=2000; }
+    }
+    if (メニュー番号==menu2番号){// 外部アプリケーションを実行 (win32apiで、ノートパッドを実行)
+        ShellExecute(NULL, NULL, &quot;notepad.exe&quot;, NULL, NULL, SW_SHOWNORMAL);
+    }
+}
+</pre></div>
+    </ul>
+
+
+    <li>
+    <h3>v2.5.1.0 ⇒ v2.6.0.0</h3>
+    <ul class="pointlist">
+        <li>
+        <h4>C++/CLIとなった</h4>
+        <p>ScenarioModの言語が、C++ではなく、<span class="keyword">C++/CLI</span>となった。<br>
+        </p>
+        <p>.NET FrameWorkのAPIに簡単にアクセス可能となる。<br>
+        又、C#やVisualBasic.NETといったような言語との関数やオブジェクトのやり取りが、非常に簡単となる。<br>
+        </p>
+    </ul>
+</ul>

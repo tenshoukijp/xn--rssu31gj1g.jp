@@ -1,0 +1,113 @@
+%(hilight)s
+<h2><i class="fa fa-book fa-fw"></i>string カスタム::On_噴出メッセージ直前(string 武将名, string 元メッセージ, メッセージ関連情報型 メッセージ関連情報)</h2>
+<br><br>
+<div class="code"><pre class="brush:cpp;">
+string カスタム::On_噴出メッセージ直前(string 武将名, string 元メッセージ, メッセージ関連情報型 メッセージ関連情報) {
+}
+</pre></div>
+<ul class="checklist">
+<li><h3>引数の補足</h3>
+<ul class="pointlist">
+<li><h4>武将名:</h4>
+噴出しを出す武将の姓名(フルネーム)
+<li><h4>元メッセージ:</h4>
+これから噴出に出す予定の文字列。特に何も変更しなければその文字列が出る。
+<li><h4>メッセージ関連情報:</h4>
+メッセージの第１人称や、第２人称、場合によっては、２人の話中に出てくる第３人称まで入っていることがある。<br>
+但し、これらの値は特に第２人称以降は、有効な値が入っていないことが多いので注意すること。
+</ul>
+
+<ul class="pointlist">
+<li><h4>使用禁止関数:</h4>
+このメソッドの中で、別の「噴出系ダイアログ」や「確認ダイアログ」等、別のダイアログ描画を伴うものを呼び出すのは厳禁である。<br>
+</ul>
+
+<li><h3>タイミング</h3>
+<ul>
+<li><b>噴出しが出される直前に呼ばれるが、このメソッドは吹き出し以外のタイミングでも呼ばれている。<br>
+(例えば、ダイアログのメッセージや武将列伝を表示するタイミングなど)<br><br>
+しかし、あくまでも使用対象や書き換え対象は「噴出系メッセージ」のみとすること。<br></b>
+<p><img src="./cnt_mod/mod_snmod/cnt_mod_scenario_mod_ref_030.png"><br></p>
+</ul>
+<li><h3>一般的用途</h3>
+<ul>
+<li>既存に存在する噴出しのメッセージを、特定の状況下で別文字列に置き換えたい場合に使用する。
+<li>特定の噴出メッセージが出るのと同時に、何かパラメータの変更処理を行いたい場合に使用する。
+</ul>
+<li><h3>例①</h3>
+<div class="code"><pre class="brush:cpp;">
+string カスタム::On_噴出メッセージ直前(string 武将名, string 元メッセージ, メッセージ関連情報型 メッセージ関連情報) {
+
+  // http://www19.atwiki.jp/nobu6/pages/267.html セリフ等
+
+  // 会見メッセージの商業系の「商業を盛んに」という文字列が元メッセージに含まれているならば…
+  if ( Is_文字列マッチ(元メッセージ, &quot;商業を盛んに&quot;) ) {
+    return &quot;とにかく商業！\x0A商業！\x0A商業！&quot;;
+  }
+
+  return &quot;&quot;;
+}
+</pre></div>
+<li><h3>例②</h3>
+<div class="code"><pre class="brush:cpp;">
+string カスタム::On_噴出メッセージ直前(string 武将名, string 元メッセージ, メッセージ関連情報型 メッセージ関連情報) {
+
+  /*
+     正規表現もどこでも利用可能である。
+     正規表現が使えることで、可変する部分の文字列はあいまいなまま判定できる。
+     「^」:文章先頭、 「.+?」:不定形な文字列。
+     正規表現では、PerlやRubyに搭載されているほとんど全てのメタ文字機能が利用できる。
+   */
+
+  if ( Is_正規表現マッチ(元メッセージ, &quot;^開墾…\x0A.+?…&quot;) ) {
+    return &quot;開墾…\x0A田畑を耕す…\x0Aのですな…&quot;;
+  }
+
+  return &quot;&quot;;
+}
+</pre></div>
+<p><img src="./cnt_mod/mod_snmod/cnt_mod_scenario_mod_ref_031.png"><br></p>
+<li><h3>例③</h3>
+<div class="code"><pre class="brush:cpp;">
+string カスタム::On_噴出メッセージ直前(string 武将名, string 元メッセージ, メッセージ関連情報型 メッセージ関連情報) {
+
+  // 商業系で、米・馬・鉄砲の売却時のメッセージの時
+  if (Is_正規表現マッチ(元メッセージ, &quot;^他でも.+?[米馬鉄砲]+?を[0-9]+ほど\\s売りたい&quot; )) {
+
+    // メッセージ関連情報を使用する。
+    int iBushouID = メッセージ関連情報.第１人称【武将番号】-1; // １人称の武将ＩＤを得る。
+    int iTargetID = メッセージ関連情報.第２人称【武将番号】-1; // ２人称の武将ＩＤを得る。
+
+    // 範囲をチェックして～
+    if ( 0 &lt;= iBushouID &amp;&amp; iBushouID &lt; 最大数::武将情報::配列数) {
+
+      // メッセージのタイミングでデータパラメタを変更したりする。
+      if ( p武将情報[iBushouID].野望 &lt; 110 ) {
+        p武将情報[iBushouID].野望 += 1; // 野望を1アップ。
+      }
+
+      デバッグ出力 &lt;&lt; 元メッセージ &lt;&lt; endl;
+      デバッグ出力 &lt;&lt; &quot;話者:&quot; &lt;&lt; Get_名字(iBushouID)+Get_名前(iBushouID) &lt;&lt; endl;
+      デバッグ出力 &lt;&lt; &quot;相手:&quot; &lt;&lt; Get_名字(iTargetID)+Get_名前(iTargetID) &lt;&lt; endl;
+    }
+  }
+
+  return &quot;&quot;;
+}
+</pre></div>
+<li><h3>例④</h3>
+<div class="code"><pre class="brush:cpp;">
+string カスタム::On_噴出メッセージ直前(string 武将名, string 元メッセージ, メッセージ関連情報型 メッセージ関連情報) {
+
+  // 以下のように正規表現のマッチ結果を保存しておくことも可能である。
+  // 基本的にPerl、Ruby、Python等で正規表現の記述の基礎中の基礎が身についていることが望ましい。
+  正規表現マッチ結果型 myマッチ結果;
+  if ( Is_正規表現マッチ(元メッセージ, &quot;^他でも.+?([米馬鉄砲]+?)を(\\d+)ほど\\s売りたい&quot;, &amp;myマッチ結果 ) ) {
+    デバッグ出力 &lt;&lt; &quot;マッチ範囲:&quot; &lt;&lt; myマッチ結果[0] &lt;&lt; endl;
+    デバッグ出力 &lt;&lt; &quot;取引対象:&quot; &lt;&lt; myマッチ結果[1] &lt;&lt; endl;
+    デバッグ出力 &lt;&lt; &quot;取引量&quot; &lt;&lt; myマッチ結果[2] &lt;&lt; endl;
+  }
+
+  return &quot;&quot;;
+}
+</pre></div></ul>

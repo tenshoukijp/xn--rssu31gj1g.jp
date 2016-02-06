@@ -1,0 +1,117 @@
+%(hilight)s
+<h2><i class="fa fa-book fa-fw"></i>AND条件::戦争::退却可否</h2>
+<div class="code"><pre class="brush:cpp;">
+int カスタム::On_カスタム条件(string 条件名, カスタム条件パラメタ型 パラメタ) {
+  if ( 条件名 == &quot;AND条件::戦争::退却可否&quot; ) {
+  }
+
+  // 変更しない場合-1
+  return -1;
+}
+</pre></div>
+<ul class="checklist">
+<li><h3>引数の補足</h3>
+<ul class="pointlist">
+<li><h4>パラメタ.整数1:</h4>
+退却を試みた武将番号
+</ul>
+<li><h3>タイミング</h3>
+<ul>
+<li>このカスタム条件は、とある武将が退却を試みた際、その成否の判定時に呼び出される。<br>
+<p><img src="./cnt_mod/mod_snmod/cnt_mod_scenario_mod_ref_045.png"></p>
+</ul>
+<li><h3>一般的用途</h3>
+<ul>
+<li>このメソッドでは、「退却可能」な武将を、「特定条件下では退却不可能」な状態に変えたい場合に利用する。<br>
+一方で、「退却不可能」な状態を「退却可能」には出来ないで注意。<br>
+天翔記のデフォルトの仕様において、退却不可能な状態とは、「退却場所たる自勢力の城が１つも存在しない」状態だからである。<br>
+</ul>
+<li><h3>例①</h3>
+<div class="code"><pre class="brush:cpp;">
+int カスタム::On_カスタム条件(string 条件名, カスタム条件パラメタ型 パラメタ) {
+
+  if ( 条件名==&quot;AND条件::戦争::退却可否&quot; ) {
+
+    // いつも退却できない。
+    return false;
+  }
+
+  // それ以外は条件を変えない。
+  return -1;
+}
+</pre></div>
+しかし、元来退却が出来ない時とは、「退却出来る城がない」時だけですから、<br>
+上記のままでは、退却できない理由が可笑しくなります。<br>
+<br>
+一般的には、次のような「退却出来ない条件」と「退却出来ない理由へのメッセージ置換」のセットを作成することとなるでしょう。
+<li><h3>例②</h3>
+<div class="code"><pre class="brush:cpp;">
+int 退却できない理由=0;
+enum { 城内で退却できない=1, 野戦中央の川で退却できない=2 };
+
+string カスタム::On_噴出メッセージ直前(string 武将名, string 元メッセージ, メッセージ関連情報型 メッセージ関連情報) {
+
+  // 戻れる城が無いのが原因というのを別原因にメッセ―を変える。
+  if ( Is_文字列マッチ(元メッセージ, &quot;もはやどこにも\x0A戻れる城がない&quot;) ) {
+    int iBushouID = メッセージ関連情報.第１人称【武将番号】-1;
+
+    if ( 0 &lt;= iBushouID &amp;&amp; iBushouID &lt; 最大数::武将情報::配列数 ) {
+      if ( 退却できない理由==城内で退却できない ) {
+        int iCastleID = Get_攻城戦中の城番号()-1;
+        if ( 0 &lt;= iCastleID &amp;&amp; iCastleID &lt; 最大数::城情報::配列数 ) {
+          退却できない理由 = 0; // 理由を使ったので理由リセット。
+          return &quot;まずは\x0A&quot;+Get_城名(iCastleID) + Get_城称(iCastleID)+&quot;の外へ\x0A出るのじゃ&quot;;
+        }
+      } else if ( 退却できない理由==野戦中央の川で退却できない ) {
+        退却できない理由 = 0; // 理由を使ったので理由リセット。
+        return &quot;ここは戦場のど真ん中\x0Aしかも川中ぞ\x0Aまずは移動じゃ！&quot;;
+      }
+    }
+  }
+
+  // 変更しない場合&quot;&quot;
+  return &quot;&quot;;
+}
+
+
+int カスタム::On_カスタム条件(string 条件名, カスタム条件パラメタ型 パラメタ) {
+
+    /*
+     * 城内に居たら退却できない。
+     * 野戦で画面中央で「川」の中に居たら退却できない。
+     */
+
+    if ( 条件名==&quot;AND条件::戦争::退却可否&quot; ) {
+
+        // 退却を試みた、武将番号が入る。
+        int iBushouID = パラメタ.整数1 - 1;
+
+        if ( 0 &lt;= iBushouID &amp;&amp; iBushouID &lt; 最大数::武将情報::配列数 ) {
+            // 攻城戦の画面では一切退却できなくする。
+            if ( Is_攻城戦中() ) {
+
+                退却できない理由 = 城内で退却できない;
+                return false;
+
+            // 野戦の時は、画面のある程度中央で、川の中だと無理
+            } else if ( Is_野戦中() ) {
+                ヘックス位置型 pos = Get_武将の野戦ヘックス位置(iBushouID);
+                int iHexRole = Get_野戦ヘックス役割(pos);
+
+                if ( iHexRole == 野戦ヘックス役割::川 ) {
+                    ヘックス位置型 center( 野戦ヘックス::中心Ｘ, 野戦ヘックス::中心Ｙ );
+                    if ( Get_ヘックス間隔( pos, center ) &lt;= 8 ) { // ほぼ画面の中央
+
+                        退却できない理由 = 野戦中央の川で退却できない;
+                        return false;
+                    }
+                }
+            }
+        }
+    }
+
+    // 変更しない場合-1
+    return -1;
+}
+</pre></div>
+</ul>

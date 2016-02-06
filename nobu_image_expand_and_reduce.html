@@ -1,0 +1,85 @@
+<h2><i class="fa fa-object-ungroup fa-fw"></i>画像の縮小・拡大</h2>
+
+<ul class="checklist">
+    <li>
+    <h3>概要</h3>
+    <p>ここでは、画像の縮小と拡大についてのノウハウを記載しています。</p>
+    <li>
+    <h3>画像の縮小</h3>
+    <p>こちらは広く知れ渡っている方法です。</p>
+    <ul>
+        <li>元の画像を「縮小」すると、輪郭が甘くなってしまいます。
+        <li>又、画像が小さくなると、それだけで、目で情報を拾いにくくなります。 <br>
+        <br>
+    </ul>
+    <p>以上を解決するため、</p>
+    <ul>
+        <li>PhotoShopやGimpによる「アンシャープマスク」。<br>
+        <img src="./cnt_img/expand_and_reduce/cnt_image_expand_and_reduce_01.png">
+        <li>もしくは、PhotoShopによる「スマートシャープ」 などの手段が効果的です<br>
+        <img src="./cnt_img/expand_and_reduce/cnt_image_expand_and_reduce_02.png">
+    </ul>
+    <li>
+    <h3>画像の拡大</h3>
+    <ul class="pointlist">
+        <li>
+        <h4>2015年に広まった優れた画像拡大ツール</h4>
+        <p>画像の拡大については、 <br>
+        2015年5月に「 <b>waifu2x</b> 」というアプリケーションがオープンソースで生み出されたことで、 <br>
+        飛躍的に品質の高い画像の拡大が、一般にも利用可能となりました。 <br>
+        <br>
+        その中でも、特に「waifu2x-caffe」という派生版が、非常に優れていて、最も注目されています。 <br>
+        <br>
+        この「waifu2x-caffe」の拡大アルゴリズムは、「アニメ調」と「(ゲームグラフィック寄りの)写真調」と <br>
+        大きく分けて２つの拡大アルゴリズムを持っており、信長の野望のようなゲームの画素材の「拡大」にはピッタリのアプリケーションです。 <br>
+        </p>
+        <li>
+        <h4>ダウンロード</h4>
+        <dl>
+            <dt>
+            <div class="download_file">DOWNLOAD ⇒ <a href="https://github.com/lltcggie/waifu2x-caffe/releases">waifu2x-caffe</a>のダウンロードページ。</div>
+            </dt>
+            <dt>
+            <dd>
+            <div class="update_time">└<b>waifu2x-caffe.zip</b> がダウンロード対象となります。</div>
+            </dd>
+            <dt>
+        </dl>
+        <ul class="arrowlist">
+            <li>インストーラーなどは無いので、適当なところにコピーして使用することになります。<br>
+            <img src="./cnt_img/expand_and_reduce/cnt_image_expand_and_reduce_03.png"><br>
+
+            <li>動作環境は、Windows Vista以降 64bit のみです。<br>
+            <br>
+            <font color="green">(32bitでも使えるものとしては、<a href="https://github.com/nlinxjp/waifu2x_gui">waifu2x_gui</a>があります。<br>
+            但し、拡大画像の品質や処理速度は、waifu2x-cafeeに比べると劣ります。)</font> <br>
+        </ul>
+        <li>
+        <h4>使用方法</h4>
+        <ul class="arrowlist">
+            <li>waifu2x-caffe.exe を起動すると、下記のような画像となります。<br>
+            <img src="./cnt_img/expand_and_reduce/cnt_image_expand_and_reduce_04.png"><br>
+            <br>
+            説明が必要な項目は特にないのですが、 <br>
+            <li>
+            <h5>「モデル」の項目</h5>
+            <ul>
+                <li>「完全に輪郭がくっきりはっきりのアニメ調の画素材」なら「RGB」
+                <li>ゲームCGや顔グラや家宝グラ的な画素材なら「写真」 でＯＫです。
+            </ul>
+            <li>
+            <h5>CUDA</h5>
+            <p>というのはnVidia製のグラフィックカードのGPUで計算をさせるためのライブラリとなりますので、<br>
+            nVidia製のグラボでない場合は、CPUにチェックを入れてください。<br>
+            <br>
+            </p>
+        </ul>
+        <li>
+        <h4>拡大例</h4>
+        <p><img src="./cnt_img/expand_and_reduce/cnt_image_expand_and_reduce_05.png"><br>
+        <br>
+        <img src="./cnt_img/expand_and_reduce/cnt_image_expand_and_reduce_06.png"><br>
+        <br>
+        </p>
+    </ul>
+</ul>

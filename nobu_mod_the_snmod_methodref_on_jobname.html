@@ -1,0 +1,41 @@
+%(hilight)s
+<h2><i class="fa fa-book fa-fw"></i>string カスタム::On_職業名表示直前(int 武将番号)</h2>
+<div class="code"><pre class="brush:cpp;">
+string カスタム::On_職業名表示直前(int 武将番号) {
+  return "";
+}
+</pre></div>
+<ul class="checklist">
+<li><h3>タイミング</h3>
+<ul>
+    <li>このメソッドは武将の職業を表示するタイミングで呼び出される。<br>
+    <li>具体的には、「武将詳細画面」である。<br>
+    <p>
+    <img src="./cnt_mod/mod_snmod/cnt_mod_scenario_mod_ref_013.png"></p>
+</ul>
+<li><h3>一般的用途</h3>
+<ul>
+    <li>自作のオリジナルな武将や、特に思い入れの強い武将の場合、 「新しい職業名を付けたい」という目的で利用する。<br>
+</ul>
+<li><h3>例①</h3>
+<div class="code"><pre class="brush:cpp;">
+string カスタム::On_職業名表示直前(int 武将番号) {
+
+  int iBushouID = 武将番号-1; // 武将番号→武将番号【配列用】に
+
+  if ( 0 &lt;= iBushouID &amp;&amp; iBushouID &lt; 最大数::武将情報::配列数 ) {
+    if ( p武将戸籍情報[iBushouID].顔番号 == 顔番号::長尾景虎 ) { // 上杉謙信の顔＆列伝番号
+      if ( Get_戦闘値(iBushouID) &gt;= 90 ) { // 戦闘値(家宝含)が180以上
+        return &quot;軍神&quot;;
+      } else {
+        return &quot;聖将&quot;;
+      }
+    }
+  }
+
+  // 変更しない場合&quot;&quot;
+  return &quot;&quot;;
+}
+</pre></div>
+<p><img src="./cnt_mod/mod_snmod/cnt_mod_scenario_mod_ref_014.png"></p>
+</ul>

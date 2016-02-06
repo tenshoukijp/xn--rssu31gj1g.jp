@@ -1,0 +1,109 @@
+%(hilight)s
+<h2><i class="fa fa fa-book fa-fw"></i>複雑なデータの取り扱い 改良版</h2>
+<ul class="checklist">
+    <li>
+    <h3>データを取り込み用関数を登録して、複雑なデータに対処する</h3>
+    <p>以前、Lua側で複雑な入り組んだデータを定義し、これをScenarioModで取得しました。<br>
+    データの取り込みには成功しましたが、それでも若干見通しが悪いプログラムとなっていました。<br>
+    </p>
+    <p>しかし、「データ取り込み用」の独自の関数をLuaへと提供できるのであれば、<br>
+    これを大幅に簡略化できます。<br>
+    </p>
+
+    <ul class="pointlist">
+        <li>
+        <h4>BushouData.txt</h4>
+        <p>以下のように対象となるtxtファイルを「天翔記フォルダ」に用意します。</p>
+        <div class="code"><pre class="brush:lua; highlight:[9]">
+
+local data_list = {
+  {['名前']=&quot;武田信玄&quot; , ['政治']=100, ['戦闘']= 90, ['智謀']=80},
+  {['名前']=&quot;上杉謙信&quot; , ['政治']=70,  ['戦闘']=120, ['智謀']=70},
+  {['名前']=&quot;北条氏康&quot; , ['政治']=105, ['戦闘']= 80, ['智謀']=90},
+}
+
+for i, data in ipairs(data_list) do
+  ImportBushouData( i, data['名前'], data['政治'], data['戦闘'], data['智謀'] )
+end
+
+</pre></div>
+        <br>
+        <p>この取り込み用の「ImportBushouData」という関数をScenarioModに用意してやれば良いのです。<br>
+        そうすれば、以前とは比べ物にならないほど、簡潔で見通しの良いプログラムが可能となります。</p>
+        <li>
+        <h4>カスタム駆動関数.cpp</h4>
+        <div class="code"><pre class="brush:cpp;highlight:[12,51]">
+
+struct myパラメタ型 {
+  int 番号;
+  string 名前;
+  int 政治;
+  int 戦闘;
+  int 智謀;
+};
+
+vector&lt;myパラメタ型&gt; vBushouDataList;
+
+// ImportBushouData に相当する関数。1人分のデータを受け取って、そのままC++内の配列へと付け足す。
+int Lua_ImportBushouData(lua_State *L) {
+
+  myパラメタ型 data;
+
+  // 1番目の引数が実数形式であれば…
+  if ( lua_isnumber(L, 1) ) {
+    data.番号 = lua_tointeger(L, 1);
+  }
+  // 2番目の引数が文字列形式であれば…
+  if ( lua_isstring(L, 2) ) {
+    data.名前 = lua_tostring(L, 2);
+  }
+  // 3番目の引数が実数形式であれば…
+  if ( lua_isnumber(L, 3) ) {
+    data.政治 = lua_tointeger(L, 3);
+  }
+  // 4番目の引数が実数形式であれば…
+  if ( lua_isnumber(L, 4) ) {
+    data.戦闘 = lua_tointeger(L, 4);
+  }
+  // 5番目の引数が実数形式であれば…
+  if ( lua_isnumber(L, 5) ) {
+    data.智謀 = lua_tointeger(L, 5);
+  }
+
+  // C++内のリスト変数にdata追加
+  vBushouDataList.push_back(data);
+
+  // Lという画用紙に最後に書いた引数群を削除
+  lua_pop(L, lua_gettop(L));
+
+  // この関数が呼ばれた際に返す返り値の個数を返す
+  return 0;
+}
+
+void カスタム::On_起動時() {
+
+  try {
+    // Lua_ImportBushouData関数 を  ImportBushouData という名前でLの画用紙に登録
+    lua_register(L, &quot;ImportBushouData&quot;, &amp;Lua_ImportBushouData);
+
+    // ファイルを読み込んで実行
+    LUA::Do_ファイル(&quot;BushouData.txt&quot;);
+
+  } catch(...) { }
+
+  for each(myパラメタ型 data in vBushouDataList) {
+    デバッグ出力 &lt;&lt; data.番号 &lt;&lt; endl;
+    デバッグ出力 &lt;&lt; data.名前 &lt;&lt; endl;
+    デバッグ出力 &lt;&lt; data.政治 &lt;&lt; endl;
+    デバッグ出力 &lt;&lt; data.戦闘 &lt;&lt; endl;
+    デバッグ出力 &lt;&lt; data.智謀 &lt;&lt; endl;
+    デバッグ出力 &lt;&lt; string(20, '-') &lt;&lt; endl;
+  }
+}
+</pre></div>
+        <p>というように、非常に見通しが良いプログラムとなりました。</p>
+        <p>ファイルを読み込むよりも先に「ImportBushouData」という関数をＬの画用紙へと登録します。 <br>
+        そして、ファイルを読み込み、実行すれば、forループと、ImportBushouData 関数により、データが終わるまで、取得されることがわかるでしょうか。</p>
+        <p>このように独自の関数を登録を上手く利用すれば、プログラムの見通しをよくすることが可能となります。</p>
+    </ul>
+</ul>

@@ -1,0 +1,48 @@
+<h2><i class="fa fa-windows fa-fw"></i>Windows 10以降で、<br>
+<span style="font-size:0.9em">「管理者権限のある正しいログインでもう一度試して下さい」と出てエラー</span></h2>
+
+<ul class="checklist">
+<li><h3>概要</h3>
+<p>
+    Windows10以降では、2003年～2008年ぐらいの間に発売されたいくつかのソフトやゲームのうち、
+    <br>
+    SafeDisk等が利用されていたタイトルが動作しなくなりました。
+    <br>
+    <br>
+    このため、国内で言えば、KOEIを中心にいくつかのタイトルがプレイ不可能になっています。
+    <br>
+    <br>
+    その際のエラーメッセージとしては、
+    <br>
+    「
+    <b>管理者権限のあるログインでもう一度試して下さい</b>
+    」となります。
+    <br>
+    <br>
+    <img src="./other_soft/digitalsign/cnt_ditigal_sign_index_01.png">
+    <br>
+    <br>
+    ここでは、この問題の回避策の紹介となります。
+</p>
+<li><h3>まずは、Windows8版相当のsecdrv.sys を入手する。</h3>
+    <ul>
+        <li>入手方法ですが、<a href="?page=nobu_mod_the_secdrvmagicalpig">SecDrvMagicalPig</a> を利用して入手してください。
+        <li>secdrv.sysが入手できたら、SecDrvMagicalPigは不要です。削除してください。
+    </ul>
+<li><h3>入手したsecdrv.sysに自己署名をする。</h3>
+    <ul>
+        <li>自己署名の方法ですが、<a href="?page=nobu_mod_the_digital_sign">ドライバをデジタル署名する方法</a> で自己署名してください。
+        <li>自己署名ができた secdrv.sys を <b>「<font face="MS UI Gothic">C:\Windows\System32\Driver</font>」 フォルダーにコピー</b>してください。<br>
+    </ul>
+<li><h3>Windowsを「テストモード」へと移行する。</h3>
+    <ul>
+        <li>テストモードへと移行するのは、コンソールでも可能ですが、おそらく何度も「テストモードへ移行」したり「通常モードへ戻ったり」を繰り返すこととなります。<br>
+        ですので、<a href="?page=nobu_mod_the_testsiningchange">TestSigningBird</a> が便利です。
+        <li>TestSigningBirdを使い、テストモードへと移行した状態で、<b><font color="red">対象のゲームを「管理者権限」で実行</font></b>してください。ゲームがプレイできるはずです。
+        <li>ゲームのプレイをし終えたらTestSigningBirdで、Windowsを通常のモードへと戻しましょう。
+    </ul>
+<li><h3>SecDrvChangeShellでsecdrvをonにする</h3>
+    <ul>
+        <li><a href="?page=nobu_mod_the_secdrvchangeshell">SecDrvChangeShell</a>を実行し、secdrvを有効化して、ゲームをプレイしましょう。</li>
+    </ul>
+</ul>

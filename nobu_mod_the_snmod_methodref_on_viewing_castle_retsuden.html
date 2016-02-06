@@ -1,0 +1,99 @@
+%(hilight)s
+<h2><i class="fa fa-book fa-fw"></i>戦国名城物語型＆ カスタム::On_戦国名城物語要求時(int 城番号)</h2>
+<div class="code"><pre class="brush:cpp;">
+戦国名城物語型＆ カスタム::On_戦国名城物語要求時(int 城番号) {
+  return NULL;
+}
+</pre></div>
+<ul class="checklist">
+<li><h3>タイミング</h3>
+<ul>
+    <li>このメソッドは城の列伝に相当する「戦国名城物語」が表示するタイミングで１回呼び出される。<br>
+    <p><img src="./cnt_mod/mod_snmod/cnt_mod_scenario_mod_ref_083.png"></p>
+</ul>
+<li><h3>一般的用途</h3>
+<ul>
+    <li>様々な状況に応じて、城の名前、あるいは、列伝等を変化させたい場合に使用する。<br>
+</ul>
+<li><h3>例①</h3>
+<div class="code"><pre class="brush:cpp;">
+戦国名城物語型＆ カスタム::On_戦国名城物語要求時(int 城番号) {
+
+  // 二条城の位置にある列伝を見ようとした時、無条件で表示を変更する。
+
+  if (城番号 == 128) { // 128とは京都二条城の位置の城番号のこと。
+    戦国名城物語型 mm(
+      &quot;お城のラベル ｵｼﾛﾉﾗﾍﾞﾙ&quot;,
+
+      &quot;１２３４５６７８９101112131415161718\x0A&quot;
+      &quot;１２３４５６７８９101112131415161718\x0A&quot;
+      &quot;１２３４５６７８９101112131415161718\x0A&quot;
+      &quot;１２３４５６７８９101112131415161718\x0A&quot;
+      );
+
+    return mm;
+  }
+
+  // 変更しない場合NULL
+  return NULL;
+}
+
+</pre></div>
+<li><h3>例②</h3>
+<div class="code"><pre class="brush:cpp;">
+戦国名城物語型＆ カスタム::On_戦国名城物語要求時(int 城番号) {
+
+  // 伊達政宗が大名の時、その居城の列伝だけ変化する。
+  // 政宗がどこの城にいるかは関係ない、彼がいる城の列伝の表示を変化させる。
+
+  // 番号→配列番号
+  int iMonogatariCastleID = 城番号 - 1;
+
+  // 城の範囲チェック
+  if (0 &lt;= iMonogatariCastleID &amp;&amp; iMonogatariCastleID &lt; 最大数::城情報::配列数) {
+
+    // 伊達政宗は今、天翔記に居るか？ 武将番号何番？
+    int iMasamuneBushouID = Get_武将番号【配列用】(顔番号::伊達政宗); // 通常は伊達政宗の顔番号
+
+    デバッグ出力 &lt;&lt; Get_名前(iMasamuneBushouID) &lt;&lt; endl;
+    // 範囲チェック
+    if (0 &lt;= iMasamuneBushouID &amp;&amp; iMasamuneBushouID &lt; 最大数::武将情報::配列数) {
+
+      // 政宗は大名か？
+      if (p武将戸籍情報[iMasamuneBushouID].身分 == 身分::大名) {
+        デバッグ出力 &lt;&lt; Get_名前(iMasamuneBushouID) &lt;&lt; &quot;は大名&quot; &lt;&lt; endl;
+
+        // 政宗が居る城はどこ？
+        int iMasamuneCastleID = p武将情報[iMasamuneBushouID].所属居城【城番号】-1; // 正宗が所属する城
+
+        デバッグ出力 &lt;&lt; Get_城名(iMasamuneCastleID) &lt;&lt; &quot;に居る&quot; &lt;&lt; endl;
+
+
+        // 今表示する「戦国名城物語」の城と、政宗が居る城とが同じものである。
+        if (iMonogatariCastleID == iMasamuneCastleID) {
+
+          戦国名城物語型 mm(
+            &quot;独眼竜の城 ﾄﾞｸｶﾞﾝﾘｭｳﾉｼﾛ&quot;,
+
+            &quot;１２３４５６７８９101112131415161718\x0A&quot;
+            &quot;１２３４５６７８９101112131415161718\x0A&quot;
+            &quot;１２３４５６７８９101112131415161718\x0A&quot;
+            &quot;１２３４５６７８９101112131415161718\x0A&quot;
+            );
+
+          return mm;
+
+        }
+      }
+    }
+  }
+
+  // 変更しない場合NULL
+  return NULL;
+}
+
+</pre></div>
+<p>
+    <img src="./cnt_mod/mod_snmod/cnt_mod_scenario_mod_ref_084.png">
+</p>
+</ul>

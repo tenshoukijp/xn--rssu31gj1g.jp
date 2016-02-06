@@ -1,0 +1,41 @@
+#LayoutMerge Off
+LayoutIgnoreURI *
+AddDefaultCharset UTF-8
+SetEnv LANG ja_JP.utf-8
+AddType application/x-httpd-php56cgi .ver
+
+DirectoryIndex index.php index.py index.cgi index.html index.htm
+
+<Files ~ "\.(zip|xls|gz)$">
+	Header add Pragma "no-cache"
+	Header set Cache-Control no-cache
+</Files>
+
+
+<IfModule mod_mime.c>
+	AddType font/opentype         .otf
+	AddType font/eot              .eot
+	AddType font/truetype         .ttf
+	AddType application/font-woff .woff
+</IfModule>
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE font/opentype font/eot font/truetype application/font-woff
+</IfModule>
+<Files ~  "\.(?i:(otf|ttf|eot|woff)(\.gz)?)$">
+    ExpiresDefault A25920000
+</Files>
+
+<IfModule mod_expires.c>
+ExpiresActive On
+ExpiresByType text/css "access plus 15 days"
+ExpiresByType text/js "access plus 15 days"
+ExpiresByType text/javascript "access plus 15 days"
+ExpiresByType application/javascript "access plus 15 days"
+ExpiresByType application/x-javascript "access plus 15 days"
+ExpiresByType image/png "access plus 30 days"
+ExpiresByType image/jpg "access plus 30 days"
+ExpiresByType image/jpeg "access plus 30 days"
+</IfModule>
+
+
+

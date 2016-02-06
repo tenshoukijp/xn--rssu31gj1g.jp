@@ -1,0 +1,294 @@
+%(hilight)s
+<h2><i class="fa fa fa-book fa-fw"></i>ScenarioMod/TSMod用のLuaインタプリタ</h2>
+<ul class="checklist">
+    <li>
+    <h3>概要</h3>
+    <p>ここでは、ScenarioMod/TSModに搭載されているLuaインタプリタの特殊な機能について解説しています。</p>
+
+    <li>
+    <h3>機能の概要</h3>
+    <ul class="pointlist">
+        <li>
+        <h4>Luaのコアのバージョン</h4>
+        <p>ScenarioMod/TSMod用のLuaインタプリタは、Lua version 5.1.5 をコアとしています。</p>
+        <p>Lua 5.1.5 の標準文法については、原則利用可能です。</p>
+        <li>
+        <h4>5.2への対応</h4>
+        <p>独自拡張を施しており、その中には、Lua 5.2向きに書かれたスクリプトを互換動作させるような修正も含まれます。 <br>
+        Lua5.2の深層機能を利用していない限り、Lua5.2のスクリプトも極めて高い確率で動作します。 <br>
+        </p>
+        <p>但し、独自の機能としてcontinue文を追加した代わりに、Lua5.2には存在するgoto文がありませんので注意して下さい。 <br>
+        </p>
+        <li>
+        <h4>5.3への対応</h4>
+        <p>Lua5.3にて導入されたビット演算等や、追加のLua関数も、そのほとんどが追加されています。 <br>
+        よって、Lua5.3向けに記述されたスクリプトすらも、それなりに高い確率で動作します。 <br>
+        </p>
+    </ul>
+
+    <li>
+    <h3>特別な追加機能</h3>
+    <ul class="pointlist">
+        <li>
+        <h4>ModDebuggerへの出力機能</h4>
+        <ul class="arrowlist">
+            <li><h5>dprint(...) 関数</h5>
+            <p>luaのprint関数と同じですが、出力先が「ModDebugger」となります。<br></p>
+            <li><h5>print(...) 関数</h5>
+            <p>こちらも出力先が「ModDebugger」となります。<br>
+            (jLua.exeに関しては、こちらは、標準出力となります)</p>
+        </ul>
+        <li>
+        <h4>追加ライブラリ</h4>
+        <ul class="arrowlist">
+            <li>
+            <h5>lfs(LuaFileSystem)</h5>
+            <p>準標準ライブラリともいえるlfsライブラリを追加しています。<br>
+            </p>
+            <li>
+            <h5>bit32</h5>
+            <p>Lua5.2の資産でも流用しやすいように、5.2と同一動作のbit32ライブラリを追加しています。 <br>
+            </p>
+            <li>
+            <h5>cp932(sjis)用の関数</h5>
+            <p>stringライブラリやutf8ライブラリのcp932版として、<br>
+            (<b>cp932.len、cp932.upper、cp932.lower、cp932.reverse、cp932.sub、cp932.char、cp932.codepoint、cp932.codes、cp932.encode(文字列, "utf8")</b>)<br>
+            が追加されています。<br>
+            </p>
+            <li>
+            <h5>math系関数</h5>
+            <p>luaの5.3にて新たに加えられたmath関数を持っています。<br>
+            (<b>math.type、 math.ult、math.mininteger、math.maxinteger、math.tointeger、math.round(x [, precision ]))</b>)<br>
+            </p>
+            <li>
+            <h5>string系関数</h5>
+            <p>正規表現系のエンジン(string.match等)に関して、cp932(sjis)に適した対応がなされています。<br></p>
+            <p>luaの5.3にて新たに加えられたstring関数を持っています。<br>
+            (<b>string.pack、string.unpack</b>)<br>
+            </p>
+            <li>
+            <h5>文字列エンコードを推測する関数</h5>
+            <p>string.getencoding(文字列)<br>
+            が追加されています。<br>
+            日本語系で、利用する可能性が高い「メジャーどころ」に絞った高速な判定です。
+            </p>
+            <li>
+            <h5>table系関数</h5>
+            <p>nilもしくは空のテーブルであることを判定するtable.emptyが追加されています。</p>
+            <p>luaの5.2の機能に準ずる ２つの関数を搭載しています。<br>
+            (<b>table.unpack / table.pack</b>)
+            <p>luaの5.3にて新たに加えられたtable関数を持っています。<br>
+            (<b>table.move</b>)</p>
+            <li>
+            <h5>utf8系関数</h5>
+            <p>luaの5.3にて加えられたutf8系ライブラリを全て持っています。<br>
+            (<b>utf8.encode(文字列, "cp932")</b>
+            )が特別に追加されています。
+            <br>
+            </p>
+        </ul>
+        <li>
+        <h4>Lua5.2互換</h4>
+        <ul class="arrowlist">
+            <li>
+            <h5>load関数がlua5.2相当。</h5>
+            <p>luaの5.2に準ずるload関数を搭載しています。<br>
+            これにより、5.2準拠で記述されたload文を処理することができます。<br>
+            </p>
+            <li>
+            <h5>rawlen の追加</h5>
+            <p>luaの5.2の機能に準ずる rawlen関数を搭載しています。<br>
+            __lenの振る舞いも、限りなく5.2へと準拠しています。<br>
+            </p>
+        </ul>
+        <li>
+        <h4>Lua5.3互換</h4>
+        <ul class="arrowlist">
+            <li>
+            <h5>ビット演算子</h5>
+            <p>Lua5.3 で実装された、ビット演算子(&amp;,|,&lt;&lt;,&gt;&gt;,~)が実装されています。<br>
+            また、対応するメタメソッド(__band, __bor, __bxor, __bnot, __shl, __shr)も実装されています。<br>
+            </p>
+            <li>
+            <h5>整数除算</h5>
+            <p>Lua5.3 で実装された、整数とみなしての除算 (例: 10 // 3 ) が実装されています。<br>
+            また、対応するメタメソッド(__idiv)も実装されています。<br>
+            </p>
+        </ul>
+        <li>
+        <h4>独自文法拡張</h4>
+        <ul class="arrowlist">
+            <li>
+            <h5>continue 文</h5>
+            <p>標準のluaには存在しない、continue文を持っています。<br>
+            </p>
+            <li>
+            <h5>C風の「!=」比較演算子</h5>
+            <p>luaでは「~=」と記述しますが、独特ですので、多くの言語で採用されている「!=」も利用可能としています。<br>
+            </p>
+            <li>
+            <h5>C風の「+=」「-=」「*=」「/=」「%=」「^=」の６つの代入演算子</h5>
+            <p>C風の「+=」「-=」「*=」「/=」「%=」「^=」の６つの代入演算子が使えます。<br>
+            これは簡単な演算の際、ソースコードを結構短くできるはずです。<br>
+            </p>
+            <li>
+            <h5>2進数表記</h5>
+            <p>16進数の「0xF0」 などと同様に、「0b10101」の２進数表記を受け付けます。<br>
+            </p>
+            <li>
+            <h5>テーブルの中に、「代入型ではなく定義型でメソッド」を記述できる</h5>
+            <p>この場合、最初のパラメータは、暗黙で「self」となります。</p>
+            <p>通常、luaのメソッド定義スタイルは</p>
+            <pre class="brush:lua;">
+    tbl = {}
+    function tbl:my_method(x, y) end
+    </pre> もしくは <pre class="brush:lua;">
+    tbl = {
+        my_method = function(self, x, y) end
+    }
+    </pre>
+            <p>ですが、通常の関数と同じスタイルで、</p>
+            <pre class="brush:lua;">
+     tbl = {
+        function my_method(x, y) end
+    }
+    </pre>
+            <p>と、記述することが出来ます。<br>
+            この場合、function内には、暗黙の第1引数として「self」が存在します。<br>
+            </p>
+            <li>
+            <h5>__usedindex の追加</h5>
+            <p>__newindexの逆の意味合いとなる__usedindexを持ちます。<br>
+            これは、値を代入しようとする度に実行されますので、読み取り専用テーブルを作成するのに役立ちます。</p>
+            <div class="code"><pre class="brush:lua;">
+function table.const(tbl)
+    -- テーブルの要素を
+    for k, v in pairs(tbl) do
+        -- 要素がテーブルなら再帰
+        if type(v) == &quot;table&quot; then
+            table.const(v)
+        end
+    end
+
+    return setmetatable(tbl, {
+     __usedindex = function(table, key, value)
+                       dprint(&quot;警告!! このテーブルは読み取り専用です。\n&quot;)
+                       dprint( string.format(&quot;\tキー:%s, 代入しようとした値:%s\n&quot;, tostring(key), tostring(value) ) )
+                   end,
+     __newindex  = function(table, key, value)
+                       dprint(&quot;警告!! このテーブルは読み取り専用です。\n&quot;)
+                       dprint( string.format(&quot;\tキー:%s, 代入しようとした値:%s\n&quot;, tostring(key), tostring(value) ) )
+                   end,
+   });
+end
+
+local mytable = table.const{ 1,2, a=3, b={1,2} }
+
+mytable[2] = 10 -- 直接の子要素も読み取り専用
+mytable.b[1] = 30 -- ネストのテーブル要素も読み取り専用となる。
+</pre></div>
+            <li>
+            <h5>__iter の追加</h5>
+            <p>テーブルにおいて、イテレータ関数を指定できます。<br>
+            </p>
+
+            <div class="code"><pre class="brush:lua;">
+local mytbl = {1,2,3}
+setmetatable(mytbl,{__iter=ipair})
+
+-- すでにイテレータが指定されているので、ipair関数を使う必要がない。もちろんipairがpairを使っても良い。
+for k, v in mytbl do
+    dprint(k, v)
+end
+</pre></div>
+            <li><h5>classを完結に記述することが可能</h5>
+
+            <div class="code"><pre class="brush:lua;">
+class 'Person'
+{
+    __init__ = function(self, name)
+        self.name = name
+    end;
+
+    say = function(self)
+        print('Hello, my name is ' .. self.name .. '.')
+        self:saySthElse()
+    end;
+
+    saySthElse = function(self)
+    end
+}
+
+class 'Worker'
+{
+    function __init__(id)
+        self.id = id
+    end;
+
+    function showId()
+        print('My worker id is ' .. self.id .. '.')
+    end
+}
+
+class 'Employee: Person, Worker'
+{
+    function __init__(name, salary, id)
+        Person.__init__(self, name)
+        Worker.__init__(self, id)
+        self.salary = salary
+    end;
+
+    function saySthElse()
+        print('My salary is ' .. self.salary .. '.')
+    end
+}
+
+
+
+p = cls.Person('Bob')
+p:say()
+
+p2 = cls.Person('David')
+p2:say()
+
+print '--------------------------------------------'
+
+e = cls.Employee('Bob', 1000, 1)
+e:say()
+e:showId()
+
+e2 = cls.Employee('Alice', 10000, 2)
+e2:say()
+e2:showId()
+
+print '--------------------------------------------'
+
+if is_instance_of(e, cls.Person) then
+    print 'e is an instance of Person'
+else
+    print 'e is not an instance of Person'
+end
+
+if is_instance_of(e, cls.Worker) then
+    print 'e is an instance of Worker'
+else
+    print 'e is not an instance of Worker'
+end
+
+w = cls.Worker(100)
+
+if is_instance_of(w, cls.Person) then
+    print 'w is an instance of Person'
+else
+    print 'w is not an instance of Person'
+end
+
+if is_instance_of(w, cls.Worker) then
+    print 'w is an instance of Worker'
+else
+    print 'w is not an instance of Worker'
+end
+</pre></div>
+        </ul>
+    </ul>
+</ul>

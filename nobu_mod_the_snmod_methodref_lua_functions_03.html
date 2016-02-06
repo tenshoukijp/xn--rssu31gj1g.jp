@@ -1,0 +1,218 @@
+%(hilight)s
+<h2><i class="fa fa fa-book fa-fw"></i>複雑なデータの取得</h2>
+<ul class="checklist">
+    <li>
+    <h3>複雑なものをC++で直接相手にせず、Luaで平らにして取り扱いやすくする</h3>
+    <p>Lua側で複雑な入り組んだデータを定義し、これをScenarioModで取得する場合、<br>
+    複雑なデータのまま、画用紙に書いてしまうと、SceanrioMod側の負担が高まります。<br>
+    </p>
+    <p>なぜなら、ScenarioModで簡単に画用紙から取得できるのは、「少数」もしくは「文字列」であり、<br>
+    複雑なデータ構造となると、素のLuaの比較的複雑で取り回しにくいAPIを直接扱うことになるからです。</p>
+
+    <p>今回は、以下のようなデータが、個数不明のまま定義されたとしても、問題なくSceanrioModで取得する<br>
+    ということを目指します。<br>
+    </p>
+
+    <li>
+    <h3>ファイルの読み込み部</h3>
+    <p>以下のように対象となるtxtファイルを「天翔記フォルダ」に用意します。</p>
+    <ul class="pointlist">
+        <li>
+        <h4>BushouData.txt</h4>
+        <div class="code"><pre class="brush:cpp;">
+local data_list = {
+  {['名前']=&quot;武田信玄&quot; , ['政治']=100, ['戦闘']= 90, ['智謀']=80},
+  {['名前']=&quot;上杉謙信&quot; , ['政治']=70,  ['戦闘']=120, ['智謀']=70},
+  {['名前']=&quot;北条氏康&quot; , ['政治']=105, ['戦闘']= 80, ['智謀']=90},
+}
+</pre></div>
+        <li>
+        <h4>カスタム駆動関数.cpp</h4>
+        <div class="code"><pre class="brush:cpp;">
+void 複雑なパラメータの取得() {
+  try {
+    // ファイル存在簡易チェック。win32api
+    if ( PathFileExists( &quot;BushouData.txt&quot; ) ) {
+      LUA::Do_ファイル(&quot;BushouData.txt&quot;);
+    }
+  } catch(...) {
+    デバッグ出力 &lt;&lt; &quot;LUAファイル実行エラー&quot; &lt;&lt; endl;
+    return; // このレベルでエラーはヤバイ。パラメタ読み取りはしない。
+  }
+}
+
+void カスタム::On_起動時() {
+   複雑なパラメータの取得()
+}
+</pre></div>
+    </ul>
+    <li>
+    <h3>Luaで値を返す関数を作成</h3>
+    <p>先述のBushouData.txtのデータは、「テーブルのなかに、さらにテーブル」が入っており、入り組んでいますので、 <br>
+    画用紙に書かれているこのままの形だと、C++側で値を取得するのは、とても大変です。</p>
+    <p>そこで、Luaで、以下のような関数を作り、<br>
+    「Get_グローバル数値」や「Get_グローバル文字列」で値を引き出せるような形で取れる準備をします。</p>
+    <p>dprintしてみると、その様子がわかります。</p>
+    <ul class="pointlist">
+        <li>
+        <h4>BushouData.txt</h4>
+        <div class="code"><pre class="brush:cpp;">
+local data_list = {
+  {['名前']=&quot;武田信玄&quot; , ['政治']=100, ['戦闘']= 90, ['智謀']=80},
+  {['名前']=&quot;上杉謙信&quot; , ['政治']=70,  ['戦闘']=120, ['智謀']=70},
+  {['名前']=&quot;北条氏康&quot; , ['政治']=105, ['戦闘']= 80, ['智謀']=90},
+}
+
+-- とある ix 番目のデータを、平べったく値だけ並べて返す。
+-- もし ix 番目がデータの終わりなら、'終了' という文字列を返す。
+function GetNextDataList(ix)
+    -- ix番目のデータに別名「p」を付ける。(コピーではない、別名)
+    local p = data_list[ix]
+    if p then
+        -- luaは複数の値を並べて返すことが出来る。
+        return '続く', p['名前'], p['政治'], p['戦闘'], p['智謀']
+    else
+        return '終了'
+    end
+end
+
+dprint( GetNextDataList(1) )
+dprint( GetNextDataList(2) )
+dprint( GetNextDataList(3) )
+dprint( GetNextDataList(4) )
+dprint( GetNextDataList(5) )
+</pre></div>
+        <p><img src="./cnt_mod/mod_snmod/cnt_mod_scenario_mod_ref_054.png"></p>
+        <p>さて、直接ベタ書きした部分は、 具体的なデータ数を指定せずとも、for ループにできるでしょう。</p>
+        <p>又、次のように <font color="red"><b>一端グローバル変数に受け取って画用紙へと書き</b></font> 画用紙経由で取り扱うことが可能だと気づくでしょうか。</p>
+        <li>
+        <h4>forループにする実験</h4>
+        <div class="code"><pre class="brush:cpp;">
+local data_list = {
+  {['名前']=&quot;武田信玄&quot; , ['政治']=100, ['戦闘']= 90, ['智謀']=80},
+  {['名前']=&quot;上杉謙信&quot; , ['政治']=70,  ['戦闘']=120, ['智謀']=70},
+  {['名前']=&quot;北条氏康&quot; , ['政治']=105, ['戦闘']= 80, ['智謀']=90},
+}
+
+function GetNextDataList(ix)
+    local p = data_list[ix]
+    if p then
+        return '続く', p['名前'], p['政治'], p['戦闘'], p['智謀']
+    else
+        return '終了'
+    end
+end
+
+
+for i=1, 10000 do
+    _is_end, _pname, _pgov, _pbat, _pint = GetNextDataList(i)
+    if _is_end == '終了' then
+        break;
+    else
+        dprint(_pname, _pgov, _pbat, _pint)
+    end
+end
+</pre></div>
+        <p><img src="./cnt_mod/mod_snmod/cnt_mod_scenario_mod_ref_055.png"></p>
+        <p>ということは、C++側から、この for ループのような処理をしてやれば、値を受け取れそうだ、ということがわかります。</p>
+        <li>
+        <h4>最終的なBushouData.txt</h4>
+        <div class="code"><pre class="brush:cpp;">
+local data_list = {
+  {['名前']=&quot;武田信玄&quot; , ['政治']=100, ['戦闘']= 90, ['智謀']=80},
+  {['名前']=&quot;上杉謙信&quot; , ['政治']=70,  ['戦闘']=120, ['智謀']=70},
+  {['名前']=&quot;北条氏康&quot; , ['政治']=105, ['戦闘']= 80, ['智謀']=90},
+}
+
+function GetNextDataList(ix)
+    local p = data_list[ix]
+    if p then
+        return '続く', p['名前'], p['政治'], p['戦闘'], p['智謀']
+    else
+        return '終了'
+    end
+end
+</pre></div>
+
+        <li>
+        <h4>最終的なカスタム駆動関数.cpp</h4>
+        <div class="code"><pre class="brush:cpp;">
+struct myパラメタ型 {
+  int 番号;
+  string 名前;
+  int 政治;
+  int 戦闘;
+  int 智謀;
+};
+
+vector&lt;myパラメタ型&gt; v_data_list;
+
+
+void 複雑なパラメータの取得() {
+  try {
+    // ファイル存在簡易チェック。win32api
+    if ( PathFileExists( &quot;BushouData.txt&quot; ) ) {
+      LUA::Do_ファイル(&quot;BushouData.txt&quot;);
+    }
+  } catch(...) {
+    デバッグ出力 &lt;&lt; &quot;LUAファイル実行エラー&quot; &lt;&lt; endl;
+    return; // このレベルでエラーはヤバイ。パラメタ読み取りはしない。
+  }
+
+  // luaの配列の添え字は「1」からスタートする。「i」を増やしながら無限ループ
+  for (int i=1; true; i++) {
+
+    // 1人分読み取って、画用紙へと受け取る。
+    try {
+      stringstream cmd;
+      cmd &lt;&lt; &quot;_is_end, _pname, _pgov, _pbat, _pint = GetNextDataList(&quot; &lt;&lt; i &lt;&lt; &quot;)&quot;;
+      LUA::Do_コマンド(cmd.str());  // _ret_en, _pname, ... というように、ScenarioMod側で好きな変数を指定して、画用紙へと書く。
+    } catch(...) {
+      break; // 関数実行のエラーがあれば、読み取り終了。forを抜ける
+    }
+
+    // もう「データ読み取りが既に終了」というシグナルが返ってきてるようなら、forループを抜ける
+    try {
+      // リストが終わりというシグナルが返ってきたなら、読み取り終了。forを抜ける
+      if ( LUA::Get_グローバル文字列(&quot;_is_end&quot;) == &quot;終了&quot; ) {
+        break; // 読み取り終了
+      }
+    } catch(...) {
+      // _is_endの処理でエラーが起きるようでは、無限ループに陥る可能性がある。
+      // パラメタ読み取りを即座に終了する。
+      return;
+    }
+
+    // 画用紙から読み取って、C++内の変数へと追加保存する。
+    try {
+      // 画用紙からの現在の値の読み取り。
+      myパラメタ型 data;
+      data.番号 = i;
+      data.名前 = LUA::Get_グローバル文字列(&quot;_pname&quot;);
+      data.政治 = (int)LUA::Get_グローバル数値(&quot;_pgov&quot;);
+      data.戦闘 = (int)LUA::Get_グローバル数値(&quot;_pbat&quot;);
+      data.智謀 = (int)LUA::Get_グローバル数値(&quot;_pint&quot;);
+
+      // ScenarioMod側で用意したパラメタリストへと追加する。
+      v_data_list.push_back(data);
+    } catch(...) {
+      // 例外が起きてもとりあえずスルーして次のデータを読み込む。
+    }
+  }
+}
+
+void カスタム::On_起動時() {
+  複雑なパラメータの取得();
+
+  for each(myパラメタ型 data in v_data_list) {
+    デバッグ出力 &lt;&lt; data.番号 &lt;&lt; endl;
+    デバッグ出力 &lt;&lt; data.名前 &lt;&lt; endl;
+    デバッグ出力 &lt;&lt; data.政治 &lt;&lt; endl;
+    デバッグ出力 &lt;&lt; data.戦闘 &lt;&lt; endl;
+    デバッグ出力 &lt;&lt; data.智謀 &lt;&lt; endl;
+    デバッグ出力 &lt;&lt; string(20, '-') &lt;&lt; endl;
+  }
+}
+</pre></div>
+    </ul>
+</ul>

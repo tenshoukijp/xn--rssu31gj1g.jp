@@ -1,0 +1,180 @@
+%(hilight)s
+<h2><i class="fa fa-film fa-fw"></i>天翔記で利用可能な.AVIフォーマットへの変換方法</h2>
+
+<ul class="checklist">
+    <li>
+    <h3>概要</h3>
+    <p>ここでは、手持ちのムービーや、他のゲームのムービーなどを、<br>
+    天翔記で利用可能なフォーマットへと変換する例を示します。<br>
+    </p>
+    <li>
+    <h3>天翔記のムービーの規格</h3>
+    <p><b>天翔記定番シリーズのムービーのサイズは、横320, 縦240の純粋なAVIコンテナと限定されています。</b><br>
+    <b>但し、TSModを導入している場合は、自由なアスペクト比、自由な縦横のピクセル数が利用可能</b>です。<br>
+    (通常、ゲーム画面に収まる解像度にします)<br>
+    </p>
+    <li>
+    <h3>紹介するcodec</h3>
+    <p>天翔記で利用可能なムービーフォーマットへと変換する方法はたくさんありますが、<br>
+    ここでは最も妥当な方法の１つとして、<br>
+    </p>
+    <ul class="pointlist">
+        <li>
+        <h4>ツール</h4>
+        <p><b>TMPGEnc</b>を利用する。</p>
+        <li>
+        <h4>映像のcodec</h4>
+        <p><b>Xvid</b>を利用する。</p>
+        <li>
+        <h4>音楽のcodec</h4>
+        <p><b>mp3</b>を利用する。</p>
+    </ul>
+    <p>という、「王道」コースを解説します。<br>
+    </p>
+
+
+    <li>
+    <h3>インストール編</h3>
+    <ul class="pointlist">
+        <li>
+        <h4>TMPGEnc (ソフト)</h4>
+        <dl>
+            <dt>
+            <div class="download_file">DOWNLOAD ⇒ <a href="http://www.tmpgenc.net/ja/j_download.html">ダウンロード場所</a></div>
+            </dt>
+        </dl>
+        <p>まずは、TMPGEncの導入です。<br>
+        <b>インストーラーは特に用意されていない</b>ので、ダウンロードしたzipを解凍し、<br>
+        <b>ファイル群をどこか適切なフォルダにコピーして</b>、利用する形となります。 <br>
+        <br>
+        このツールをお勧めするのは、老舗で十分信頼があるツールというに留まらず、<br>
+        <b>コーエーが出すタイトルでは、その多くが「TMPGEnc Video Mastering Works」を利用して、ムービーを圧縮変換している</b>からです。<br>
+        <br>
+        </p>
+        <li>
+        <h4>Xvid (コーデック)</h4>
+        <dl>
+            <dt>
+            <div class="download_file">DOWNLOAD ⇒ <a href="https://www.xvid.com/download/">ダウンロード場所</a></div>
+            </dt>
+        </dl>
+        <p>XVid系のcodecを利用可能にするとともに、<br>
+        AVI形式で、保存する際に、映像codecに「Xvid」形式を利用可能にするためのモノとなります。<br>
+        インストーラーになっていますおで、そのままインストールしてください。 <br>
+        <br>
+        </p>
+        <li>
+        <h4>Lame mp3 ACM (コーデック)</h4>
+        <dl>
+            <dt>
+            <div class="download_file">DOWNLOAD ⇒ <a href="http://www.rarewares.org/mp3-lame-dshow-acm.php">ダウンロード場所</a></div>
+            </dt>
+        </dl>
+        <li><br>
+        <p><b>LAME 3.99.5 ACM codec</b> をダウンロードしてください。<br>
+        <br>
+        AVI形式で、保存する際に、音声codecに高ビットレートの「mp3」形式を利用可能なようにするためのモノとなります。<br>
+        <font color="red"><b>OSが64bit か 32bit かで、インストール方法が異なります</b></font>ので、注意してください。<br>
+        <br>
+        </p>
+        <ul class="arrowlist">
+            <li>
+            <h5>OSが32bitの人は…</h5>
+            <p>「LameACM.inf」を右クリックして、コンテキストメニューの「インストール」を実行してください。<br>
+            </p>
+            <li>
+            <h5>OSが64bitの人は…</h5>
+            <p>64bit版のインストール方法は「HOWTO Install LAME-ACM on x64.txt」に英語で記載されています。</p>
+            <ul>
+                <li>「Cドライブ」直下に「lame」というフォルダを作成します。<br>
+                (このフォルダはインストールするための一時的なフォルダとなります。後で削除します。)<br>
+                <li>「lame_acm.xml」「lameACM.acm」「LameACM.inf」の３つのファイルを、<br>
+                先ほど作成したCドライブの「lame」フォルダーにコピーします。<br>
+                <li>コマンドプロンプトを<b>「<font color="red">管理者権限</font></b>」で実行します。<br>
+                コマンドプロンプトで、 <br>
+                <pre class="brush:lua;">
+    cd %windir%\SysWOW64
+    </pre> として、「C:\Windows\SysWow64」フォルダへと移動します。<br>
+                <li>続いて、 <pre class="brush:lua;">
+    rundll32 setupapi.dll,InstallHinfSection DefaultInstall 0 C:\lame\LameACM.inf
+    </pre> と入力し、実行します。<br>
+                エラーなどが出なければインストールは成功です。<br>
+                <img src="./cnt_movie/cnt_nobu_movie_convert_01.png"><br>
+                <li>C:\lame のフォルダは用が済んだので削除してください。<br>
+            </ul>
+            <br>
+        </ul>
+    </ul>
+
+
+    <li>
+    <h3>コンバート編</h3>
+    <ul>
+        <li>TMPGEnc を利用して、コンバートをする流れとなります。<br>
+
+        <li>まず、最初に出る画面は、キャンセルしてください。<br>
+        <img src="./cnt_movie/cnt_nobu_movie_convert_02.png"><br>
+        <br>
+        <li>さて、変換元のムービーはなんでもよいのですが、<br>
+        今回は信長の野望・創造のオープニングファイルを例にします。<br>
+        (同じようなゲームを所持していない場合は、何か手持ちの「.avi」ファイルや、「.mpeg」ファイルで代用してください。)<br>
+        <img src="./cnt_movie/cnt_nobu_movie_convert_03.png"><br>
+        <br>
+        <li>OP_WIN__jpn_L.N14が、創造のオープニングムービーのファイルです。<br>
+        拡張子がN14などとなっていますが、中身はムービーで2005～2010年ごろによく利用されていた「wmvフォーマット」です。<br>
+        <br>
+        TMPGEnc へとドラッグ＆ドロップします。<br>
+        <img src="./cnt_movie/cnt_nobu_movie_convert_04.png"><br>
+        <br>
+        <li>TMPGEncの下部にある「設定」のボタンを押して、下図のような画面を出します。<br>
+        <br>
+        <img src="./cnt_movie/cnt_nobu_movie_convert_05.png"><br>
+        <br>
+        <li>このままでは、ムービーの解像度が大きいので、それぞれ元の大きさの半分の640x360にしましょう。<br>
+        <br>
+        <img src="./cnt_movie/cnt_nobu_movie_convert_06.png"><br>
+        <br>
+        <br>
+        <li>さて、準備は整いました。<br>
+        今度は、「出力ファイルのcodec」の選択へと移行しましょう。<br>
+        <br>
+        上部メニューより、「ファイル」⇒「ファイルに出力」⇒「AVIファイル」と進めます。<br>
+        <img src="./cnt_movie/cnt_nobu_movie_convert_07.png"><br>
+        <br>
+        <li>まずは、映像のcodecを選びましょう。<br>
+        下部にある「映像を出力」の右法にある「設定」を押します。<br>
+        <br>
+        <img src="./cnt_movie/cnt_nobu_movie_convert_08.png"><br>
+        <br>
+        <li>Xdiv MPEG-4 Codec を選択し、「設定」を押しましょう。<br>
+        <br>
+        <img src="./cnt_movie/cnt_nobu_movie_convert_09.png"><br>
+        <br>
+        <li>下図のような設定にしましょう。<br>
+        ファイルサイズが大きいことが気になる人は、1.00を5.00にぐらいにすると、ファイルサイズがかなり小さくなります。<br>
+        <img src="./cnt_movie/cnt_nobu_movie_convert_10.png"><br>
+        <br>
+        <li>「OK」、「OK」と押して、映像のcodecの設定を終えます。<br>
+        <br>
+        <br>
+        <li>次に、音声のcodecを選びましょう。<br>
+        下部にある「音声を出力」の右法にある「設定」を押します。<br>
+        <br>
+        そして、MPEG Layer-3、48000(元のPCMと同じ周波数)、192kbps CBR, Stereo を選択します。<br>
+        <img src="./cnt_movie/cnt_nobu_movie_convert_11.png"><br>
+        <br>
+        <li>さて、映像codecとしてXVID、音声codecとしてmp3へと設定が完了しました。<br>
+        「保存」ボタンを押しましょう。<br>
+        <br>
+        <img src="./cnt_movie/cnt_nobu_movie_convert_12.png"><br>
+        <br>
+        <br>
+        <li>高品質な変換となりますので、結構時間がかかります。<br>
+        座して待ちましょう。<br>
+        <li>以上で天翔記で使用可能な.aviファイルが出来上がりました。<br>
+        <br>
+    </ul>
+    <li>
+    <h3>関連項目</h3>
+    <p>TSMod設定キットの機能 &gt;&gt; ～環境編～ &gt;&gt; <a href="?page=nobu_mod_the_tsmod_detail_env#movie_from_local">ムービーをCDからではなくローカルから再生する機能</a></p>
+</ul>

@@ -1,0 +1,50 @@
+<h2>Visual Studio 2010 Express(Visual C++ 2010 Express)を使用したいという場合</h2>
+<ul>
+    Visual Studio 2010 Expressを使用してしまうと、Visual Studio 2008 系を使用している人からは、ソリューションファイルやプロジェクトファイル(いわゆる構成用のファイル)が開けなくなってしまいます。
+    <br>
+    当サイトとしては、管理人と同一、又、｢ScenarioMod｣、｢セーブデータエディタ｣と同一バージョン系である｢Visual Studio 2008系｣をお薦めしますが(2012/08/01現在)、
+    <br>
+    それでも Visual Studio 2010を使いたい場合は、 以下にようにするのが、将来も見据える形となるので良いでしょう。
+    <br>
+    なお、すでにVisual Studio 2010 Professional以上のEditionが入っている場合は、このような手順は必要ありません。
+    <br>
+    <br>
+    <ul>
+        <li>まず、Visual Studio 2010系がらみのものをコントロールパネルからアンインストール (これ必須。これしないとインストールは成功しない)
+
+        <li><a href="http://www.microsoft.com/ja-jp/dev/express/default.aspx">Microsoft Visual Studio 2010 Express</a>よりをWebインストール<br>
+        <br>
+
+        <li>この段階では、決してパッチ系のバージョンアップを適応してはならない。<br>
+        <br>
+        <li><pre style="border: solid 1px #000000; font-family: 'ＭＳ ゴシック'">
+        (※この項目は32bit/64bitの両方でコンパイルしたい人向け。
+        <b>天翔記関連で64bitコンパイルが必要となることは、現在のところありません</b>) <br>
+        <a href="http://www.microsoft.com/en-us/download/details.aspx?id=8442">Microsoft Windows SDK for Windows 7 and .NET FrameWork 4 (ISO)</a>より、<br>
+        これの GRMSDKX_EN_DVD.iso をダウンロード(これは64bit版)<br>
+        マウントしてインストールするが、インストールオプション時に
+        上から５番目ぐらいの｢Visual C++ Compilers」の項目のチェックをはずす。 <br>
+
+        次に、HelpUpdateみたいなものが始まるので、Windows 7.1 SDKのみAddを押す。
+        (このヘルプは別にインストールの必要もないが)</pre>
+        <li><a href="http://www.microsoft.com/ja-jp/download/details.aspx?id=23691">Visual Studio 2010 Service Pack 1</a>を当てる。<br>
+        <br>
+        <li><pre style="border: solid 1px #000000; font-family: 'ＭＳ ゴシック'">
+        (※この項目は32bit/64bitの両方でコンパイルしたい人向け。
+        <b>天翔記関連で64bitコンパイルが必要となることは、現在のところありません</b>)<br>
+        <a href="http://www.microsoft.com/ja-jp/download/details.aspx?id=4422">Service Pack 1 コンパイラ更新プログラム</a>を当てる。
+        (これ当てないと、事実上64bitではコンパイル出来ない)<br></pre> <br>
+        <li><a href="http://msdn.microsoft.com/ja-jp/directx/aa937788.aspx">Direct X SDK</a>など必要なものは都度いれる。
+
+        <li>C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\Platforms\x64にあるMicrosoft.Cpp.x64.default.propファイルを<br>
+        <pre style="border: solid 1px #000000; font-family: 'ＭＳ ゴシック'">
+
+        &lt;PlatformToolset Condition="'$(PlatformToolset)' == ''"&gt;v100&lt;/PlatformToolset&gt;
+        　↓
+        &lt;PlatformToolset Condition="'$(PlatformToolset)' == ''"&gt;Windows7.1SDK&lt;/PlatformToolset&gt;
+        </pre>というように、v100⇒Windows7.1SDKと置き換える。
+        <li>なお、64bitをターゲットとする時には、｢プロジェクト｣の｢構成プロパティ｣の｢全般｣の｢プラットフォームツールセット｣を｢Windows7.1SDK｣とする必要があるでしょう。<br>
+        (そうでないと、Win系プログラムではコンパイル自体成功しないでしょう) <img src="./cnt_mod/mod_snmod/cnt_mod_scenario_mod_40.png">
+    </ul>
+</ul>
+</ul>

@@ -1,0 +1,165 @@
+%(hilight)s
+<h2><i class="fa fa-windows fa-fw"></i>ScenarioModで.NET FrameWorkの混在</h2>
+<ul class="checklist">
+    <li>
+    <h3>～入門編～</h3>
+    <p>ScenarioModは、元々は天翔記やTSMod.dllと同じ、C/C++ ネイティブで「インラインアセンブラ＋ Win32 SDK」で書かれていました。<br>
+    <br>
+    これらは、「極めて高速にキビキビ動作する」「CPU１命令を変更するような細かな処理が可能」という便利な一方で、<br>
+    Windows GUI ツール寄りの機能の作成には向かない、という弱点を持ちます。<br>
+    </p>
+    <p>現在も、ScenarioModの中核の99パーセントはネイティブですが、<br>
+    .NET FrameWork隆盛の時代に合わせ、混成のCLR(共通言語ランタイム)(C++/CLI)となりました、<br>
+    </p>
+    <p>このようにして、ScenarioModは現在では.NETを利用できるため、WindowsのGUI関連の記述もある程度書きやすくなっています。<br>
+    </p>
+    <p>では、具体的に見ていきましょう。</p>
+
+    <li>
+    <h3>確認のためのメニューの追加</h3>
+    <p>まず、.NET FrameWork うんぬんの前に、確認作業等をしやすくするため、独自の起動メニューを用意します。<br>
+    <b>ScenarioModに元々存在する、On_起動時()メソッド</b>と、<b>On_アプリケーションメニュー選択時メソッド</b>を利用すれば、実現できます。<br>
+    <br>
+    </p>
+    <p>.NET FrameWork の機能を試す前段階として、天翔記のアプリケーションメニューに独自のメニューを追加しましょう。<br>
+    </p>
+
+    <div class="code"><pre class="brush:cpp">
+#include "カスタム駆動関数.h"
+
+
+int iフォーム起動用メニューID = -1;
+
+void カスタム::On_起動時() {
+    iフォーム起動用メニューID = アプリケーション::メニューアイテム追加(&quot;フォーム起動用&quot;);
+}
+
+// 下の方のメソッド
+void カスタム::On_アプリケーションメニュー選択時(int メニュー番号) {
+    if ( メニュー番号 == iフォーム起動用メニューID ) {
+        デバッグ出力 &lt;&lt; &quot;フォーム起動!!&quot; &lt;&lt; endl;
+    }
+}
+</pre></div>
+
+    <p><img src="./cnt_mod/mod_snmod/cnt_mod_scenario_mod_dnt_01.png"></p>
+
+
+    <li>
+    <h3>Windowsフォームを表示してみよう!</h3>
+    <p>
+    <p>C++/CLI のうち、CLIを使う部分は、C#に近い書き方となります。<br>
+    </p>
+    <p>以下は、ScenarioModでフォームを表示する、最もミニマムなサンプルとなりますので、<br>
+    基本的には、このパターンに立ち返れば良いでしょう。</p>
+    <p>慣れてくれば、<b>.NET FramWorkのサンプルが多いC#で検索し、<br>
+    それをC++/CLIで書いたらこうだな</b>とすぐに変換できるようになります。</p>
+    <p>さて、<b>.NET FrameWork のクラスで作成した変数は、直接グローバル変数には出来ません。</b><br>
+    C#やJavaを知ってる方なら納得できるでしょう。<br>
+    </p>
+    <p>そこで、どこかのクラスのstatic 変数に値(実際には参照)を持っておきます。<br>
+    </p>
+    <p>天翔記が終わるまでにフォームを閉じることを忘れないようにしましょう。<br>
+    <br>
+    例題が冗長になるため、処理をしていませんが、<br>
+    実際には、「MemoryEditorFormが複数起動しない」ように制御する必要があります。<br>
+    </p>
+    <div class="code"><pre class="brush:cpp">
+#include &quot;カスタム駆動関数.h&quot;
+
+using namespace System; // .NET FrameWork
+using namespace System::Windows::Forms;
+
+// メモリエディタフォームクラス。Windowの.NETのFormクラスを継承する。
+ref class MemoryEditorForm : public Form {
+
+public:
+    MemoryEditorForm() {
+        this-&gt;Width = 500;
+        this-&gt;Height = 300;
+        this-&gt;Text = &quot;MemoryEditor&quot;;
+    }
+};
+
+// MemoryEditorForm型のグローバル変数。C++/CLIのクラス型のオブジェクトはグローバル変数に出来ないのだ。このためScenarioModからグローバル変数的に扱えるようにするため。
+ref class GlobalVariable {
+public:
+    static MemoryEditorForm^ form;
+};
+
+
+int iフォーム起動用メニューID = -1;
+
+void カスタム::On_起動時() {
+    iフォーム起動用メニューID = アプリケーション::メニューアイテム追加(&quot;フォーム起動用&quot;);
+}
+
+void カスタム::On_終了時() {
+    // 天翔記終了時には、閉じる必要がある。
+    // 閉じないと、「天翔記終わったのにぼくちゃんどのメモリに存在するの？ ねぇねぇ？」といった困ったことになり不正終了間違いなしとなる。
+    GlobalVariable::form-&gt;Close();
+}
+
+
+
+void カスタム::On_アプリケーションメニュー選択時(int メニュー番号) {
+    if ( メニュー番号 == iフォーム起動用メニューID ) {
+        デバッグ出力 &lt;&lt; &quot;フォーム起動!!&quot; &lt;&lt; endl;
+        // メモリエディタ型のオブジェクトを作成。 .NET型のオグジェクトは原則このように「gcnew」というガベージコレクト付きのnewをする。
+        MemoryEditorForm^ mef = gcnew MemoryEditorForm();
+        // 他のScenarioModのメソッドから見れるように、グローバル変数に入れる。
+        GlobalVariable::form = mef; // GlobalVariableに入れておく。
+        // フォーム起動(モーダレス)
+        mef->Show();
+
+    }
+}
+</pre></div>
+    <p><img src="./cnt_mod/mod_snmod/cnt_mod_scenario_mod_dnt_04.png"> <br>
+    </p>
+    <li>
+    <h3>ボタンを追加して、イベントハンドラを知る</h3>
+    <p><b>ここから先は、「MemoryEditorForm」のクラスの中だけが変更対象</b>となりますので、そこだけのソースを示します。<br>
+    </p>
+    <p>イベントハンドラとは、「マウスを押した時」とか「テキストが編集された時」など、「なになになった時」、<br>
+    に実行する処理のことです。<br>
+    </p>
+    <br>
+
+    <p>以下では、ボタンをクリックした時に、ModDebuggerに文字列を出力しています。<br>
+    </p>
+    <p><b><font color="red"></font>このMemoryEditorFormに、Buttonを１つ乗せ、イベントハンドラを結びつける形が、C++/CLIやC#の骨格です!!</b><br>
+    このパターンさえ覚えておけば、「複雑な画像描画を伴わないもの」であれば、<br>
+    かなり込み入ったツールであっても作成できると考えてよいでしょう。<br>
+    </p>
+    <div class="code"><pre class="brush:cpp">
+ref class MemoryEditorForm : public Form {
+private:
+  Button^ button;
+public:
+  MemoryEditorForm() {
+    this-&gt;Width = 500;
+    this-&gt;Height = 300;
+    this-&gt;Text = &quot;MemoryEditor&quot;;
+
+
+    button = gcnew Button();
+    button-&gt;Text = &quot;ボタン&quot;;
+
+    // ボタンが押された時、というイベントハンドラ。
+    // ボタンがクリックされた時に実行するメソッドを登録する。
+    button-&gt;Click += gcnew EventHandler(this, &amp;MemoryEditorForm::button_OnClick);
+
+    this-&gt;Controls-&gt;Add(button);
+  }
+
+private:
+  void button_OnClick(Object^ sender, EventArgs^ e) {
+    デバッグ出力 &lt;&lt; &quot;クリックした!!&quot; &lt;&lt; endl;
+  }
+};
+
+</pre></div>
+    <p><img src="./cnt_mod/mod_snmod/cnt_mod_scenario_mod_dnt_05.png"><br>
+    </p>
+</ul>

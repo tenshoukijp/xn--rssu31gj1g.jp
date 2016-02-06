@@ -1,0 +1,39 @@
+<h2><i class="fa fa-gears fa-fw"></i>TSMod設定キットの機能 ～tsmod.ini編～</h2>
+<ul class="checklist">
+    <li>
+    <h3>TSMod.ini とは</h3>
+    <p>TSMod.iniとは、TSModの挙動をカスタム出来る設定項目が記述されているファイルです。</p>
+    <li>
+    <h3>TSMod.iniは直接編集しない方がいい!!</h3>
+    <p>TSMod.iniファイルを直接編集することにより動作の変更が可能ではあります。<br>
+    しかし、<b><span class="negative">TSMod.iniは、TSModのバージョンが上がると、ModUpdaterによる最新版取得時に上書きされてしまいます。</span></b></p>
+    <p>ですから、<b><span class="negative">TSMod.ini 自体を編集するのは、あまりお勧めしません。</span></b><br>
+    </p>
+    <p><img src="./cnt_mod/cnt_mod_tsmod_ini_01.png"><br>
+    </p>
+    <li>
+    <h3><b>TSMod<font color="red">Ex</font>.ini</b>を作成し、編集する</h3>
+    <p>そこで、TSModEx.iniというファイルを新たに自分で作り、<br>
+    そこで好みの設定をすることとお勧めします。<br>
+    </p>
+    <p>TSModEx.iniはTSModが更新されても、上書きされたりしませんので、自由にカスタムできます。 <br>
+    </p>
+    <p><img src="./cnt_mod/cnt_mod_tsmod_ini_02.png"><br>
+    </p>
+    <li>
+    <h3>LUA言語を使用可能</h3>
+    <p>この「TSMod.ini」や「TSModEx.ini」ではLua言語を自由に使うことができます。<br>
+    たとえば、起動する度に、フォントを変更したり、<br>
+    日付やPCのマシンによって、特定のパラメータを変更したり、といったことも簡単に出来ます。<br>
+    </p>
+    <p>また、エラー情報は、「<a href="?page=nobu_mod_the_debugger">ModDebugger</a>」上に表示されます。<br>
+    </p>
+    <p><img src="./cnt_mod/cnt_mod_tsmod_ini_03.png"><br>
+    </p>
+
+    <fieldset style="margin-left:20px" class="alert alert-info"><legend>独自に拡張されたLua言語</legend>
+    TSMod/ScenarioMod用のLuaは、<br>
+    独自に拡張がほどこされたLuaであり、多くの機能が追加されています。</p>
+    (※参照:<a href="?page=nobu_mod_the_snmod_methodref_lua_init">ScenarioMod/TSMod用のLuaインタプリタ</a> )
+    </fieldset>
+</ul>

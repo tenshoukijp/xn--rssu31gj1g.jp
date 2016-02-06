@@ -1,0 +1,197 @@
+%(hilight)s
+<h2><i class="fa fa-gear fa-fw"></i>複数の効果音･画像を１つのDLLに</h2>
+<ul class="checklist">
+    <li>
+    <h3>概要</h3>
+    <p>ScenarioModでは、複数の効果音や画像をバラバラのファイルでも扱うことが出来ますが、<br>
+    ｢配布をする｣といった事態になった場合には、バラバラのファイルよりも１つのdllにパック化するのがスマートです。<br>
+    </p>
+    <p>一度やり方をしってしまえば、誰でも出来る程度のことですので、<br>
+    やり方の流れをみていきましょう。<br>
+    </p>
+    <li>
+    <h3>パック化の手順</h3>
+    <ul>
+        <li>
+        <p>さて、では、VC++のメニューより、｢新規作成｣=>｢プロジェクト｣を選択しましょう。<br>
+        </p>
+        <p><img src="./cnt_mod/mod_snmod/cnt_mod_scenario_mod_pac01.png"><br>
+        </p>
+        <li>
+        <p>引き続いて、｢Win32｣=>｢Win32プロジェクト｣となります。<br>
+        プロジェクト名に｢MyResPack｣などと入力し、OKしましょう。<br>
+        名前はなんでも良いのですが、リソースのパックであることを感じとれる名前がよいでしょう。<br>
+        </p>
+        <p><img src="./cnt_mod/mod_snmod/cnt_mod_scenario_mod_pac02.png"><br>
+        </p>
+
+        <li>
+        <p>｢次へ｣と続けて</p>
+        <li>
+        <p>｢DLL｣と「空のプロジェクト」にチェックを入れ、他はチェックをはずします。｢完了｣を押しましょう。<br>
+        </p>
+        <p><img src="./cnt_mod/mod_snmod/cnt_mod_scenario_mod_pac03.png"><br>
+        </p>
+        <li>
+        <p>そうすると、ソリューションエキスプローラーは下図のようなツリーとなります。<br>
+        </p>
+        <p><img src="./cnt_mod/mod_snmod/cnt_mod_scenario_mod_pac04.png"><br>
+        </p>
+        <li>
+        <p>「ソースファイル」のところを右クリックで「追加」->「新しい項目」と進み、<br>
+        以下のように「dllmain.cpp」というソースをくっつけましょう。</p>
+        <p><img src="./cnt_mod/mod_snmod/cnt_mod_scenario_mod_pac05.png"><br>
+        </p>
+        <li>
+        <p>以上で下図のように、｢dllmain.cpp｣だけくっついた状態となります。<br>
+        </p>
+        <p><img src="./cnt_mod/mod_snmod/cnt_mod_scenario_mod_pac06.png"><br>
+        </p>
+        <li>
+        <p>この段階では、「dllmain.cpp」のソースの中身は空っぽです。<br>
+        １行も何も書かれていない状態。<br>
+        </p>
+        <li>
+        <p>さて、少し話を変えて、<br>
+        メニューのちょっと下あたりに｢Release｣もしくは｢Debug｣と見えている下図のようなところがあるはずです。 <br>
+        ｢Release｣を一度選択しましょう。 <br>
+        </p>
+        <p><img src="./cnt_mod/mod_snmod/cnt_mod_scenario_mod_pac09.png"><br>
+        </p>
+        <li>
+        <p>シンプルなDLLにふさわしい設定にするために、プロジェクトの設定を変更する必要があります。<br>
+        下図のようにソリューションエキスプローラの｢MyResPack｣を右クリックして、｢プロパティー」に入ります。<br>
+        </p>
+        <p><img src="./cnt_mod/mod_snmod/cnt_mod_scenario_mod_pac07.png"><br>
+        </p>
+        <li>
+        <p>構成プロパティの｢全般｣の項目に｢文字セット｣という項目がありますので、｢Unicode文字セットを使用する｣というのを変えて、｢マルチバイト文字セットを使用する｣にしましょう。<br>
+        天翔記では、元々がShiftJIS(正確にはCP932)ですので、DLLをUnicode文字で管理するより、通常のマルチバイト文字セットの方が、はるかに扱いやすいためです。<br>
+        </p>
+        <p><img src="./cnt_mod/mod_snmod/cnt_mod_scenario_mod_pac08.png"><br>
+        </p>
+
+        <li>
+        <p>同様に、構成プロパティの｢C/C++｣の項目に｢ランタイムライブラリ｣という項目がありますので、｢マルチスレッド DLL(/MD)｣ではなく、｢マルチスレッド (/MT)｣へと変更します。<br>
+        </p>
+        <p>これは、このDLL内に必要なものを内包するか、それとも、できるだけ外部のDLLに頼りサイズを減らすかの選択です。<br>
+        両者はファイルサイズがかなり異なりまずが、どのみちファイルサイズは小さいため、<br>
+        特に問題がなければ、 トラブル防止のため、｢マルチスレッド (/MT)｣を選択しておきましょう。<br>
+        </p>
+        <p><img src="./cnt_mod/mod_snmod/cnt_mod_scenario_mod_pac10.png"><br>
+        </p>
+        <li>
+        <p>｢適用｣=>｢OK｣を押して、全てを反映させましょう。 <br>
+        </p>
+        <li>
+        <p>さて、それでは、dllmain.cpp を選択して、話を戻しましょう。<br>
+        </p>
+        <p><img src="./cnt_mod/mod_snmod/cnt_mod_scenario_mod_pac06.png"><br>
+        </p>
+        <li>
+        <p>「呼び出されるだけで機能的には何もしないdll」というものを作成します。<br>
+        </p>
+        <p><img src="./cnt_mod/mod_snmod/cnt_mod_scenario_mod_pac23.png"><br>
+        </p>
+        <p>あってるかどうか、コピペが可能なソース</p>
+        <div class="code"><pre class="brush:cpp;">
+#include &lt;windows.h&gt;
+
+BOOL APIENTRY DllMain( HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserved ) {
+    return TRUE;
+}
+    </pre></div>
+        <li>
+        <p>さて、ソースは以上です。<br>
+        </p>
+        <li>
+        <p>それでは、いよいよ<b>リソースを埋め込み</b>ます。<br>
+        </p>
+        <p>「リソースファイル」のところで右クリックを選びます。<br>
+        </p>
+
+        <p><img src="./cnt_mod/mod_snmod/cnt_mod_scenario_mod_pac22.png"><br>
+        </p>
+        <p>「resource.rc」というファイルをくっつけましょう。<br>
+        拡張子が「.rc」であれば、名前は自由です。<br>
+        </p>
+        <p><img src="./cnt_mod/mod_snmod/cnt_mod_scenario_mod_pac11.png"><br>
+        </p>
+        <p><img src="./cnt_mod/mod_snmod/cnt_mod_scenario_mod_pac12.png"><br>
+        </p>
+        <li>
+        <p>それでは、リソースをテキストで編集します。<br>
+        </p>
+        <p>「resource.rc」のところで、右クリックして、コード表示。<br>
+        </p>
+        <p><img src="./cnt_mod/mod_snmod/cnt_mod_scenario_mod_pac14.png"><br>
+        </p>
+        <p>以下のようにテキスト入力してみましょう。<br>
+        </p>
+        <p><img src="./cnt_mod/mod_snmod/cnt_mod_scenario_mod_pac16.png"><br>
+        </p>
+        <li>
+        <p>青線が「シンボル名」、IMAGEやWAVEが「グループ名」、"abc.png"や"mylove.wav"がファイル名という理解をしておきましょう。<br>
+        </p>
+        <li>
+        <p>Windowsのエキスプローラー上で、「resource.rc」と同じフォルダに、"mylove.wav"と"abc.png"というファイルを適当に用意してコピーなどして入れましょう。<br>
+        </p>
+        <p><img src="./cnt_mod/mod_snmod/cnt_mod_scenario_mod_pac17.png"><br>
+        </p>
+        <li>
+        <p>準備は全て終わりました。プロジェクトをビルドしましょう。<br>
+        </p>
+        <p><img src="./cnt_mod/mod_snmod/cnt_mod_scenario_mod_pac18.png"><br>
+        </p>
+        <li>
+        <p>ちゃんとエラーも出ずにdllファイルは出来ましたか？<br>
+        </p>
+        <li>
+        <p>これで<b>dllファイルそれ自体に、wav相当のバイナリデータや、png相当のバイナリデータが「<font color="red">埋め込まれた</font>」形となります。</b><br>
+        </p>
+        <p><img src="./cnt_mod/mod_snmod/cnt_mod_scenario_mod_pac19.png"><br>
+        </p>
+        <li>
+        <p>では、「このMyResPack.dll」を天翔記フォルダにコピーしましょう。<br>
+        </p>
+    </ul>
+    <li>
+    <h3>ScenarioModからの利用</h3>
+    <p>先ほどパック化したdllを利用して、ScenarioModで利用してみましょう。<br>
+    </p>
+    <ul>
+        <li>
+        <p>ScenarioModでこのMyResPack.dllの画像リソースや効果音リソースを利用してみましょう。<br>
+        </p>
+        <p>先ほどの話を思い出してください、MyResPack.dllに埋め込んだ「シンボル名」やリソースデータは下記のように定義しました。<br>
+        この「シンボル名」を指定することとなります。<br>
+        (「IMAGE」や「WAVE」といったグループ名はTSMod側が処理しています。)<br>
+        </p>
+        <p><img src="./cnt_mod/mod_snmod/cnt_mod_scenario_mod_pac16.png"><br>
+        </p>
+        <li>
+        <p>ScenarioMod上で、「On_起動時」あたりに、以下のようにすることで「dllを読み込む」ことができます。<br>
+        </p>
+        <div class="code"><pre class="brush:cpp;">
+void カスタム::On_起動時() {
+  Set_効果音ＤＬＬ追加(&quot;MyResPack.dll&quot;);
+  Set_画像ＤＬＬ追加(&quot;MyResPack.dll&quot;);
+}
+
+    </pre></div>
+        <li>
+        <p>そして効果音用関数や、画像用関数で以下のように利用します。<br>
+        </p>
+        <div class="code"><pre class="brush:cpp;">
+void カスタム::On_プレイヤ担当ターン《メイン画面》() {
+
+  // &quot;Image01&quot;という文字は大文字小文字は問わない
+  画像ダイアログ表示(&quot;Image01&quot;, &quot;MyResPack.dll&quot;);
+
+  // 上と合わせるなら、本来は &quot;101&quot; と数字文字列にて指定するべきところ。
+  // しかし、ScenarioModでは特別に天翔記の「効果音は全部番号」という仕様を踏まえ、「数字文字列」ではなく「数値」で指定する。
+  効果音再生(101, &quot;MyResPack.dll&quot;);
+}
+    </pre></div>
+    </ul>
+</ul>

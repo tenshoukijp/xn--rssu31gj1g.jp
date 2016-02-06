@@ -1,0 +1,117 @@
+%(hilight)s
+<h2><i class="fa fa-film fa-fw"></i>「天翔記HD・創造・天道・革新・天下創世」で再生可能な ムービー形式への変換方法</h2>
+<ul class="checklist">
+    <li>
+    <h3>概要</h3>
+    <p>ここでは、手持ちのムービーや、他のゲームのムービーなどを、<br>
+    「天翔記HD・創造・天道・革新・天下創世」で利用可能なフォーマットへと変換する例を示します。<br>
+    </p>
+    <li>
+    <h3>「天翔記HD・創造・天道・革新・天下創生」のムービー形式</h3>
+    <p><b>「天翔記HD・創造・天道・革新・天下創生」のムービー形式は、基本的には同じであり、</b> <br>
+    <b>Windows Media Video(.wmv)によるcodec、および、コンテナとなっています。</b> <br>
+    <br>
+    ですので、基本的には、「.wmv」へと変換できるアプリケーションであれば、好みのツールで変換しても大丈夫です。 <br>
+    </p>
+    <li>
+    <h3>紹介するcodec</h3>
+    <p>変換する方法はたくさんありますが、 ここでは、<br>
+    変換元のムービーの対応形式として、<b>「圧倒的な種類のフォーマットに対応している」という点</b>、<br>
+    そして、広い認知度という点も考慮し、「FFmpeg」を利用した方法を解説します。<br>
+    </p>
+    <ul class="pointlist">
+        <li>
+        <h4>ツール</h4>
+        <p><b>FFmpeg</b>を利用する。<br>
+        FFmpegはコマンドラインツールであり、そのままだと面倒くさいので、<br>
+        バッチファイルを利用する。</p>
+    </ul>
+    <p>という、わりとよくある、「あるあるコース」を解説します。<br>
+    </p>
+    <li>
+    <h3>インストール編</h3>
+    <ul class="pointlist">
+        <li>
+        <h4>FFmpeg (ソフト)</h4>
+        <dl>
+            <dt>
+            <div class="download_file">DOWNLOAD ⇒ <a href="http://ffmpeg.zeranoe.com/builds/">ダウンロード場所</a></div>
+            </dt>
+        </dl>
+        <p>まずは、該当ページからffmpegをダウンロードします。<br>
+        複数存在しますが、</p>
+        <ul class="arrowlist">
+            <li>
+            <h5>OSが32bitの人は…</h5>
+            <p>「Download FFmpeg ******* 32-bit Static」からダウンロードして下さい。<br>
+            </p>
+            <li>
+            <h5>OSが64bitの人は…</h5>
+            <p>「Download FFmpeg ******* 64-bit Static」からダウンロードして下さい。<br>
+            <li>
+            <h5>.7z</h5>
+            <p><font color="green">(※ダウンロードされるファイル形式は、.7zという形式となります。<br>
+            &nbsp;&nbsp;<a href="https://sevenzip.osdn.jp/">7zip</a> という非常に有名な圧縮・解凍ツールによるファイル形式となりますので、<br>
+            &nbsp;&nbsp;インストールしたことが無いという方はインストールして、先述の.7zを解凍してください。) </font><br>
+            </p>
+            <li>
+            <h5>必要なファイル</h5>
+            <p>「Download FFmpeg ******* **-bit Static」 <br>
+            を解凍すると、実はファイルやディレクトリが沢山あります。<br>
+            しかし、必要なのファイルは「bin」フォルダの中にある「ffmpeg.exe」だけです。<br>
+            <br>
+            このffmpeg.exeを適当なツールっぽいフォルダに移動し、以後これを利用するようにします。 <br>
+            <img src="./cnt_movie/cnt_movie_convert_wmv_01.png"><br>
+            </p>
+        </ul>
+        <li>
+        <h4>ToConvertWMV.bat (バッチ)</h4>
+        <ul>
+            <li>当サイトから提供するバッチファイルとなります。<br>
+            <dl>
+                <dt>
+                <div class="download_file">DOWNLOAD ⇒ <a href="%(file)s">ToConvertWMV.zip</a>ファイル。</div>
+                </dt>
+                <dd>
+                <div class="update_time">└更新日 %(year)04d/%(mon)02d/%(mday)02d</div>
+                </dd>
+            </dl>
+            <li>次に、上記 ToConvertWMV.zip をダウンロード、解凍し、ToConvertWMV.bat<br>
+            を先ほどの ffmpeg と同じフォルダに 配置します。 <br>
+            <img src="./cnt_movie/cnt_movie_convert_wmv_02.png"><br>
+            <br>
+
+            <li>以上でセッティングは終了となります。
+        </ul>
+        <li>
+        <h3>コンバート編</h3>
+        <ul>
+            <li><b>変換したいムービーを、ToConvertWMV.bat へとドラッグアンドドロップする</b>ことで、<br>
+            変換が可能です。<br>
+
+            <br>
+            <li>操作を単純化するため、まずは、以下のように「変換元のムービー」を「ffmpegのフォルダ」に「コピー」してしまいましょう。<br>
+            <img src="./cnt_movie/cnt_movie_convert_wmv_03.png"><br>
+            <li>そのうちの１つを、ToConvertWMV.bat へとドラッグ＆ドロップします。<br>
+            <br>
+            <li>初めての実行の際は、以下のような画面が出ることと思います。<br>
+            詳細情報をクリックして、「実行」<br>
+            <img src="./cnt_movie/cnt_movie_convert_wmv_07.png"><br>
+            <br>
+            <br>
+            <li>すると、出力ファイルの「解像度」を変更するか、質問が出ますので、<br>
+            変更するなら解像度を指定し、変更しないならリターンキーを押しましょう。<br>
+            <img src="./cnt_movie/cnt_movie_convert_wmv_04.png"><br>
+            <br>
+            <img src="./cnt_movie/cnt_movie_convert_wmv_05.png"><br>
+            <br>
+            <li>あとは、座して待っていれば、変換に成功するでしょう。<br>
+            (※ffmpegはあくまでも一般的な映像変換ツールですので、<br>
+            &nbsp;&nbsp;特殊なフォーマットや、特定のゲーム専用のフォーマットは、変換できません。)<br>
+            <img src="./cnt_movie/cnt_movie_convert_wmv_06.png"><br>
+            <br>
+            <br>
+            <li>変換によって得たムービーを、すり替えたいムービーファイル名にして、差し替えましょう。
+        </ul>
+    </ul>
+</ul>

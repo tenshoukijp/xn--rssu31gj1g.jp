@@ -1,0 +1,17 @@
+@font-face {
+  font-family: 'FontAwesomePlugin';
+  src: url('../fonts/fontawesome-plugin-webfont.eot?v=4.4.0');
+  src: url('../fonts/fontawesome-plugin-webfont.eot?#iefix&v=4.4.0') format('embedded-opentype'), url('../fonts/fontawesome-plugin-webfont.woff?v=4.4.0') format('woff'), url('../fonts/fontawesome-plugin-webfont.ttf?v=4.4.0') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+.fa-ts95:before {
+  content: "\f000";
+  font-family:FontAwesomePlugin;
+}
+
+.fa-tshd:before {
+  content: "\f001";
+  font-family:FontAwesomePlugin;
+}

@@ -1,0 +1,111 @@
+%(hilight)s
+<h2><i class="fa fa-bug fa-fw"></i>｢ModDebugger｣の使い方<br>
+</h2>
+<ul class="checklist">
+    <li>
+    <h3>概要</h3>
+    <p><b>ModDebuggerは、いわば、デバッグ情報の受信機です。</b> <br>
+    よって、この使い方を理解するためには、<br>
+    実際にModDebuggerへとデバッグ情報を発信してみるのが一番理解が早いでしょう。</p>
+    <li>
+    <h3>デバッグ情報を送信する側の簡単なサンプル</h3>
+    <ol>
+        <li>まず、VC++にて、適当に新規プロジェクトを作ります。<br>
+        ｢Win32のコンソールアプリケーション｣で、｢空のプロジェクト｣あたりが良いでしょう。<br>
+        (これでなくとも、通常のWindowsプログラムでも、x64でもなんでも問題ないです)<br>
+        <br>
+        <img src="./cnt_mod/mod_debugger/cnt_mod_debugger_006.png"><br>
+        <br>
+        <br>
+
+        <li>ここでは日本語マルチバイト(＝cp932≒Shift-JIS)しか取り扱わないので、<br>
+        プロジェクトのプロパティを開いて、文字セットを変更します。<br>
+        <br>
+        プロジェクトの構成プロパティの｢全般｣の項目に｢文字セット｣という項目がありますので、｢Unicode文字セットを使用する｣というのを変えて、｢マルチバイト文字セットを使用する｣にしましょう。<br>
+        <img src="./cnt_mod/mod_debugger/cnt_mod_debugger_001.png"><br>
+        <br>
+        <br>
+        <li>さて、本題に入ります。<br>
+        <br>
+        ソースは、以下のようにする。<br>
+        まるで、printf("～")と書くのと同じ要領で、OutputDebugString("～") を利用します。<br>
+        <br>
+        (あってるかどうか、コピペが可能なソース。)<pre class="brush:cpp;">
+#include &lt;windows.h&gt;
+
+void main(void) {
+    OutputDebugString(&quot;テスト出力&quot;);
+}
+
+</pre> <br>
+        <li>ここでは、話をわかりやすくするために、上のソースにて｢MyMain.exe｣というプログラムを作ったとします。<br>
+        <br>
+        Releaseコンパイルし、出来上がった .exe を直接実行してみましょう。<br>
+        <br>
+        (Visual C++から実行するのではなく、<b>直接ちゃんとExplorerによる実行や、コンソール画面から実行する必要があります。</b>)<br>
+        <br>
+        <img src="./cnt_mod/mod_debugger/cnt_mod_debugger_002.png"><br>
+        <br>
+        <b>…何も表示されないでと思います。</b><br>
+        そう、何も表示されなくて正解です。<br>
+        <br>
+        しかし、<b>Windowsのデバッグ情報共有領域のようなところに、ちゃんと出力されている</b>のです!!<br>
+    </ol>
+    <li>
+    <h3>デバッグ情報をリアルタイムに読み取るのがModDebugger</h3>
+    <ol>
+        <li>では、ModDebugger.exe を実行してください。<br>
+        (※天翔記が立ち上がっていれば、終了させること。)<br>
+        <br>
+        <img src="./cnt_mod/mod_debugger/cnt_mod_debugger_003.png"><br>
+        <br>
+        <br>
+        最初は、上図のような真っ黒な画面ですが、<br>
+        人によっては、何か｢怪しげな文字｣が順次、画面に流れていくかもしれません。<br>
+        <br>
+        これは何らかのアプリケーションが、Windowsのデバッグ情報領域に書き込んでいるためです。<br>
+        <br>
+        <li>さて、では、<b>この黒いウィンドウを開いた状態にしたままで、先ほど作った、｢MyMain.exe｣を実行してみましょう。</b><br>
+        <br>
+        <img src="./cnt_mod/mod_debugger/cnt_mod_debugger_004.png"><br>
+        <br>
+        <li>以上で、OutputDebugString("～"); を、とあるプログラムで記述することにより、<br>
+        そこが実行されると、ModDebugger.exe が受信する、ということが理解できたでしょう。<br>
+        <br>
+        これがあれば、PluginMod用の｢一般MOD｣や｢ScenarioMod｣の制作時のデバッグで役立つはずです。<br>
+        </li>
+    </ol>
+    <li>
+    <h3>OutputDebugStringをprintf風に</h3>
+    <p>OutputDebugString 関数を少し便利にしましょう。<br>
+    OutputDebugString関数は、そのままだと、｢char *型｣しか受け入れることができません。<br>
+    これでは、不便ですので、<a href="http://ja.wikipedia.org/wiki/Printf">printf</a>と同じように｢フォーマット書式化文字列｣を使えるような関数として、<br>
+    ｢デバッグ出力(const char *format, ...)」を考えてみましょう。</p>
+
+    <div class="code"><pre class="brush:cpp;">
+#include &lt;windows.h&gt;
+#include &lt;stdio.h&gt;
+
+void デバッグ出力( const char *format, ... ) {
+    char szBufDebug[4096] = &quot;&quot;;
+
+    va_list arg;
+
+    va_start(arg, format);
+    vsprintf_s(szBufDebug, format, arg);
+    va_end(arg);
+
+    OutputDebugString( szBufDebug );
+}
+
+
+void main(void) {
+    デバッグ出力(&quot;%d:%s&quot;, 33, &quot;テスト出力&quot;);
+}
+</pre></div>
+    <p><img src="./cnt_mod/mod_debugger/cnt_mod_debugger_005.png"></p>
+    <p>このように、printf と同様に利用できるようになりました。<br>
+    これなら便利に役立つことでしょう。<br>
+    <br>
+    なお、ScenarioMod SDKには、この関数｢デバッグ出力｣をさらに発展させたものが搭載されています。</p>
+</ul>

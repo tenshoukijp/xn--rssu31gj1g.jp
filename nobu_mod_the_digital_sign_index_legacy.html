@@ -1,0 +1,47 @@
+%(hilight)s
+<h2><i class="fa fa-windows fa-fw"></i><span style="font-size:0.9em">「Windows Vista/Windows 7/Windows 8/Windows 8.1」のOSで、<br>
+「管理者権限のある正しいログインでもう一度試して下さい」と出てエラー</span></h2>
+
+<ul class="checklist">
+<li><h3>概要</h3>
+<p>Windows Vista～Windows 8.1では、2003年～2008年ぐらいの間に発売されたいくつかのソフトやゲームのうち、 <br>
+    SafeDisk等が利用されていたタイトルが、 <b>デフォルトの設定では動作しなく</b> なりました。 <br>
+    (※ 2015/9/9の「KB3086255」のWindows Updateに拠る) <br>
+    <br>
+    このため、国内で言えば、KOEIを中心にいくつかのタイトルがプレイ不可能になっています。 <br>
+    <br>
+    その際のエラーメッセージとしては、 <br>
+    「 <b>管理者権限のあるログインでもう一度試して下さい</b> 」といったものが中心となります。 <br>
+    <br>
+    <img src="./other_soft/digitalsign/cnt_ditigal_sign_index_01.png"> <br>
+    (このようなダイアログが出ず、一瞬マウスアイコンがクルっとするだけで、すぐに終了してしまうものもあります) <br>
+    <br>
+    この問題は、コンソールコマンドにて対処が可能です。<br>
+    (後述しているツールでも解決が可能です。) <br>
+</p>
+<li><h3>SafeDiskを利用可能にする</h3>
+<p>
+    <b><font color="red">コンソールプロンプトを管理者権限で起動して…</font></b></p>
+ <pre class="brush:lua;">
+sc config secdrv start=demand
+sc start secdrv
+    </pre>
+<p>    <b>これでSafeDiskを利用したゲームが、プレイ「可能」な状態となります。</b></p>
+    <li>
+    <h3>SafeDiskを利用不可にする</h3>
+<p>    <b><font color="red">コンソールプロンプトを管理者権限で起動して…</font></b></p> <pre class="brush:lua;">
+sc stop secdrv
+sc config secdrv start=disabled
+    </pre>
+<p>    <b>これでSafeDiskを利用したゲームが、プレイ「不可能」な状態となります。</b></p>
+
+<li><h3>コンソールコマンドとかメンドクサイ人は…</h3>
+    <ul class="pointlist">
+    <li><h4>切り替え専用のツール SecDrvChangeShell</h4>
+   <p>コンソールでの実行や、複数のバッチファイルの作成などは、以外と面倒くさいですので、
+        <br>
+        <a href="?page=nobu_mod_the_secdrvchangeshell">SecDrvChangeShell</a>
+        の利用をお勧めします。
+        <br></p>
+    </ul>
+</ul>

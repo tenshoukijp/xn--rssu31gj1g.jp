@@ -1,0 +1,31 @@
+<h2>mrubyを使えるようにするための、ScenarioModの設定</h2>
+<br>
+<br>
+
+<h4>〜必要環境〜</h4>
+<ul>
+    <li>ScenarioModでmrubyを利用するためには、VisualStudio 2012以上の環境が必要です。
+</ul>
+
+<h4>ScenarioModの設定</h4>
+<ul>
+    <li>mrubyは、サイズが大きいため、自動ではScenarioModで使えるようになっていません。<br>
+    以下のように設定を行ってください。<br>
+
+   <li>
+    ScenarioModのプロジェクトを右クリックして「プロパティ」より「C++のプリプロセッサ」として、<br>「USE_MRUBY_INTERPRETER」を付け加える<br><br>
+    <img src="./cnt_mod/mod_snmod/cnt_mod_scenario_mod_ruby02.png">
+    <br><br>
+
+   <li>
+    同様に、「全般」のプラットフォームセットで、自分自身が使っているVisual Studio のバージョンのものを選ぶ。<br>
+   自分自身がVisual Studio 2013 を今起動している、そのまま「Visual Studio 2013」を選ぶ。<br>
+   自分自身がVisual Studio 2015 を今起動している、そのまま「Visual Studio 2015」を選ぶ。<br>
+   このように、自分自身が利用しているバージョンと合わせます。<br><br>
+    <img src="./cnt_mod/mod_snmod/cnt_mod_scenario_mod_ruby03.png"><br><br>
+
+   <li>printやエラーの類は、全て「ModDebugger」上に出ます。<br>
+    <img src="./cnt_mod/mod_snmod/cnt_mod_scenario_mod_ruby04.png"><br><br>
+
+</ul>
+

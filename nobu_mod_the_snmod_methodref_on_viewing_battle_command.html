@@ -1,0 +1,48 @@
+%(hilight)s
+<h2><i class="fa fa-book fa-fw"></i>void カスタム::On_戦闘コマンド表示直前《戦争画面》(int 武将番号)</h2>
+<div class="code"><pre class="brush:cpp">
+void カスタム::On_戦闘コマンド表示直前《戦争画面》(int 武将番号) {
+}
+</pre></div>
+<ul class="checklist">
+<li><h3>タイミング</h3>
+<ul>
+<li>戦争中、プレイヤ操作により、ユニットの「攻撃系コマンド」の一覧が出る際に、このメソッドが実行される。<br>
+<p><img src="./cnt_mod/mod_snmod/cnt_mod_scenario_mod_ref_021.png"></p>
+</ul>
+<li><h3>一般的用途</h3>
+<ul>
+<li>自作のオリジナルな武将や思い入れの強い武将などに対して、<br>
+その時々の状況を判断しつつコマンド名を変更したい目的で利用する。<br>
+</ul>
+<li><h3>例①</h3>
+<div class="code"><pre class="brush:cpp">
+void カスタム::On_戦闘コマンド表示直前《戦争画面》(int 武将番号) {
+  int iBushouID = 武将番号-1; // 武将番号→武将番号【配列用】に
+
+  if ( 0 &lt;= iBushouID &amp;&amp; iBushouID &lt; 最大数::武将情報::配列数 ) {
+    if ( p武将戸籍情報[iBushouID].顔番号 == 顔番号::武田晴信 ) { // 武田信玄の顔＆列伝番号
+      if ( Get_天気() == 天気::雨 ) {
+        Set_コマンド名(戦争画面::戦闘コマンド名::通常攻撃, &quot;雨攻撃&quot;);
+        Set_コマンド名(戦争画面::戦闘コマンド名::一斉攻撃, &quot;雨一斉&quot;);
+      }
+      else if ( Get_天気() == 天気::雪 ) {
+        Set_コマンド名(戦争画面::戦闘コマンド名::通常攻撃, &quot;雪攻撃&quot;);
+        Set_コマンド名(戦争画面::戦闘コマンド名::一斉攻撃, &quot;雪一斉&quot;);
+      }
+
+    } else if ( Get_名字(iBushouID)+Get_名前(iBushouID) == &quot;自作太郎&quot; ) { // 自作太郎という名前だったら…
+
+      // 年齢に応じて、コマンド名をダイナミックに変更する。
+      string header[11] = { &quot;&quot;, &quot;&quot;, &quot;二十&quot;, &quot;三十&quot;, &quot;四十&quot;, &quot;五十&quot;, &quot;六十&quot;, &quot;七十&quot;, &quot;八十&quot;, &quot;九十&quot;, &quot;百&quot; };
+      int header_num = sizeof(header)/sizeof(header[0]); // 上の定義は何個あるか出しておく。
+
+      int iGenerations =  Get_武将年齢(iBushouID) / 10; // 年齢を十で割る。何十代かを出す。
+      if ( iGenerations &gt;= header_num ) { iGenerations = header_num-1; } // 110才以上の対処
+
+      Set_コマンド名(戦争画面::戦闘コマンド名::突撃, header[iGenerations]+&quot;突撃&quot;);
+    }
+  }
+}
+</pre></div>
+</ul>

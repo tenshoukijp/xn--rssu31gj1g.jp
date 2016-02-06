@@ -1,0 +1,193 @@
+%(hilight)s
+<h2><i class="fa fa fa-book fa-fw"></i>「L」という画用紙の理解</h2>
+<ul class="checklist">
+    <li>
+    <h3>全ては「Ｌ」という画用紙に書きつけられる</h3>
+    <p>ScenarioModは、C/C++ 言語としてのメインの文法とは別に、「L」というLuaの「画用紙」のような空間を持っています。<br>
+    「ScnearioMod」側からこの画用紙に書き込むこともできますし、外部のファイル(lua形式)からこの画用紙に書き込むこともできます。<br>
+    </p>
+    <p>このことを理解しておけば、ScenarioMod側と、Lua側で連携したコードでも、その挙動をよく理解できるようになります。<br>
+    </p>
+    <p>それでは、以下のようなことを行います。</p>
+    <p><img src="./cnt_mod/mod_snmod/cnt_mod_scenario_mod_ref_051.png"><br>
+    </p>
+
+    <p>一気に全部やると、理解が難しいので、最初の２つだけみてみましょう。</p>
+    <li>
+    <h3>その①～その②</h3>
+    <ul class="pointlist">
+        <li>
+        <h4>カスタム駆動関数.cpp</h4>
+        <div class="code"><pre class="brush:cpp">
+void Ｌという画用紙の理解() {
+  // ①番目。
+  try {
+    LUA::Do_コマンド(&quot;my_var = 3&quot;); // 画用紙に書き込み実行
+  } catch (...) { }
+
+  // ②番目。
+  try {
+    LUA::Do_ファイル(&quot;Test1.lua&quot;); // Test1.luaの内容を画用紙に書き込み実行。
+  } catch(...) { }
+}
+
+void カスタム::On_起動時() {
+    Ｌという画用紙の理解();
+}
+</pre></div>
+        <ul>
+            <li><b><font color="green">LUA::Do_コマンド("文字列")</font><br>
+            </b> とは、画用紙にそのまま文字列を書き込み、実行します。<br>
+            <br>
+            <li><b><font color="green">LUA::Do_ファイル("ファイル名")</font><br>
+            </b> とは、ファイルに書いてある文字列を画用紙へと書き込み、実行します。<br>
+            <br>
+        </ul>
+        <p>そして、以下のように対象となるluaファイルを「天翔記フォルダ」に用意します。</p>
+        <li>
+        <h4>Test1.lua</h4>
+        <div class="code"><pre class="brush:lua">
+-- L画用紙からの読み書き
+my_var = my_var + 10
+
+-- dprintという関数は、普通のluaにはない。
+-- printと同じ挙動だが、表示先が「ModDebugger」である。
+dprint(&quot;luaからModdebuggerに表示:&quot;)
+dprint(my_var)
+</pre></div>
+
+        <p><img src="./cnt_mod/mod_snmod/cnt_mod_scenario_mod_ref_052.png"><br>
+        </p>
+        <p>理解できますか？ <br>
+        </p>
+        <p>ScenarioModとLuaで、「同じ画用紙」を相手に読み書きしているからこそ、 <br>
+        「13」という値となるのです。 <br>
+        </p>
+    </ul>
+    <li>
+    <h3>その③</h3>
+    <p>それでは続きです。 <br>
+    </p>
+    <ul class="pointlist">
+        <li>
+        <h4>カスタム駆動関数.cpp</h4>
+        <div class="code"><pre class="brush:cpp;highlight:[12,13,14,15,16,17,18,19,20,21]">
+void Ｌという画用紙の理解() {
+    // ①番目。
+    try {
+        LUA::Do_コマンド(&quot;my_var = 3&quot;); // 画用紙に書き込み実行
+    } catch (...) { }
+
+    // ②番目。
+    try {
+        LUA::Do_ファイル(&quot;Test1.lua&quot;); // Test1.luaの内容を画用紙に書き込み実行。
+    } catch(...) { }
+
+    // ③番目。
+    int import_var = 0;
+    try {
+        // 画用紙からの読み込み。
+        // Ｌの画用紙の数値は全て「実数」として取り扱われるため、整数が欲しいなら、整数へと落とす。
+        import_var = (int)LUA::Get_グローバル数値(&quot;my_var&quot;);
+
+        デバッグ出力 &lt;&lt; &quot;ScenarioModからModDebuggerに表示&quot; &lt;&lt; endl;
+        デバッグ出力 &lt;&lt; import_var &lt;&lt; endl;
+    } catch (...) { }
+
+}
+
+void カスタム::On_起動時() {
+    Ｌという画用紙の理解();
+}
+</pre></div>
+
+        <ul>
+            <li><b><font color="green">LUA::Get_グローバル数値("変数名")</font><br>
+            </b> とは、画用紙から対象の変数名のものを「少数」として取得します。<br>
+        </ul>
+    </ul>
+    <li>
+    <h3>その④</h3>
+    <p>さて、4番目を実装してみましょう。 <br>
+    </p>
+    <p>新たに、以下のような、luaファイルを「天翔記フォルダ」に用意します。</p>
+    <ul class="pointlist">
+        <li>
+        <h4>Test2.lua</h4>
+
+        <div class="code"><pre class="brush:lua">
+-- 関数を定義する。
+-- このファイルを実行した際は、「関数の定義が画用紙に書かれる」だけ。
+-- 関数の中身は、my_plusを呼ばない限り実行されない。
+function my_plus( x )
+    ret_var = my_var + x   -- my_var と x が足される
+    dprint(ret_var)        -- ModDebuggerに表示
+end
+</pre></div>
+    </ul>
+    <li>
+    <h3>その⑤</h3>
+    <p>最後の５番目の実装です。 <br>
+    </p>
+    <ul class="pointlist">
+        <li>
+        <h4>カスタム駆動関数.cpp</h4>
+        <div class="code"><pre class="brush:cpp;highlight:[24,25,26,27]">
+void Ｌという画用紙の理解() {
+    // ①番目。
+    try {
+        LUA::Do_コマンド(&quot;my_var = 3&quot;); // 画用紙に書き込み実行
+    } catch (...) { }
+
+    // ②番目。
+    try {
+        LUA::Do_ファイル(&quot;Test1.lua&quot;); // Test1.luaの内容を画用紙に書き込み実行。
+    } catch(...) { }
+
+    // ③番目。
+    int import_var = 0;
+    try {
+        // 画用紙からの読み込み。
+        // Ｌの画用紙の数値は全て「実数」として取り扱われるため、整数が欲しいなら、整数へと落とす。
+        import_var = (int)LUA::Get_グローバル数値(&quot;my_var&quot;);
+
+        デバッグ出力 &lt;&lt; &quot;ScenarioModからModDebuggerに表示&quot; &lt;&lt; endl;
+        デバッグ出力 &lt;&lt; import_var &lt;&lt; endl;
+    } catch (...) { }
+
+    // ⑤番目。
+    try {
+        LUA::Do_ファイル(&quot;Test2.lua&quot;); // Test2.luaの内容を画用紙に書き込み実行。
+        LUA::Do_コマンド(&quot;my_plus(100)&quot;); // 文字列を画用紙に書き込み実行
+    } catch(...) { }
+
+}
+
+void カスタム::On_起動時() {
+    Ｌという画用紙の理解();
+}
+</pre></div>
+        <p><img src="./cnt_mod/mod_snmod/cnt_mod_scenario_mod_ref_053.png"></p>
+        <p>さて、画用紙に書かれた内容は、最終的にどうなものだったのでしょうか？ <br>
+        </p>
+        <p>以下のようになったのです。 <br>
+        </p>
+        <li>
+        <h4>「Ｌ」という画用紙の内容</h4>
+
+        <div class="code"><pre class="brush:lua">
+my_var = 3
+my_var = my_var + 10
+
+dprint(&quot;luaからModdebuggerに表示:&quot;)
+dprint(my_var)
+
+function my_plus( x )
+    ret_var = my_var + x
+    dprint(ret_var)
+end
+
+my_plus(100)
+</pre></div>
+    </ul>
+</ul>

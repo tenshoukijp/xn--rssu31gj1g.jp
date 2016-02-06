@@ -1,0 +1,63 @@
+%(hilight)s
+<h2><i class="fa fa-file-image-o fa-fw"></i>多くのフルカラー顔グラフィックを一括で減色する</h2>
+<ul class="checklist">
+<li><h3>概要</h3>
+<p>ddraw.dll用のフルカラー顔(0001.bmp～1300.bmp)を、一括で減色して、<br>
+8色(3bit)版を一気に作成する方法の解説、及び、ツールの提供。
+<li><h3>ダウンロード</h3>
+    <dl>
+        <dt>
+        <div class="download_file">DOWNLOAD ⇒ <a href="%(file)s">ConvertAllTo3Bit</a>ファイル。</div>
+        </dt>
+        <dd>
+        <div class="update_time">└更新日 %(year)04d/%(mon)02d/%(mday)02d</div>
+        </dd>
+    </dl>
+<li><h3>使い方</h3>
+    <ul class="pointlist">
+        <li><h4>必要な設定</h4>
+        <p>｢Yukariソフト｣のフォルダに<b>パスを通す</b>。<br>
+        ｢Yukari｣ソフトのフォルダにパスを通します。flexc のコマンドをどこからでも実行できるようにするためです。<br>
+        ｢<a href="?page=nobu_face_subcolor">減色時に使うパレット(palette.bmp)</a>｣をkao_24bit(など、元となるフルカラー顔グラと同じフォルダ)に入れておく。</p>
+        <li><h4>ConvertAllTo3Bit.batの実行</h4>
+        <p>ConvertAllTo3Bit.batをkao_24bit内に置いて、実行する。 <br>
+        ⇒ <b>C:\kao_3bit</b> フォルダに減色された顔が順次出力される。 <br>
+        └(※｢C:\kao_3bit｣という<b><font color="red">名前通りのフォルダ</font></b>のこと。<br>天翔記のフィルダ以下にある減色顔用のフォルダ⇒例:｢C:\usr\tenshou95\kao_3bit｣とか)を<b><font color="red">指したものではない</font></b>ので注意!!) <br>
+    </ul>
+<li><h3>仕組みの補足</h3>
+    <p>以下、簡易なスクリプト程度は理解できるものとします。<br>
+    解説では、kao_24bit の*.bmpを全て減色したいものと仮定します。<br></p>
+    <ul class="pointlist">
+        <li><h4>理解すべきこと</h4>
+        <p>必要なコマンドは </p>
+	<pre class="brush:lua">flaxc 元ファイル名 出力ファイル名 -Fpalette.bmp -D4 -L5 -B0</pre>
+        <p>を kao_24bit内の全ての*.bmpに対して行えば良い。<br>
+        これをどのようにスクリプトやバッチを組んで行うか？ だけを解決すれば良い。<br></p>
+        <p>flaxc の仕様に関しては、Yukariソフトの｢YukariNote.chm｣に記載されている。<br></p>
+    <li><h4>FLAXC.exe</h4>
+    <ul>
+        <li>第二引数:出力ファイル名の絶対パス<br>
+        <br>
+        <li>第三引数以降<br>
+        <ul>
+            <li>-F"パレットファイル名"<br>
+            ⇒ 絶対パスもしくは相対パス、kao_24bit内でコマンドを実行するならパレットファイル名だけ(相対パス)でOK<br>
+            <li>-D4 ⇒ アニメーションパターン減色<br>
+            <li>-L5 ⇒ 強弱は真ん中<br>
+            <li>-B0 ⇒ ビットマップフォーマット<br>
+        </ul>
+	<li><b><font color="red">出力先にファイルがすでに存在した場合には、このままでは上書しないので、<br>
+    再出力する前には、出力先のファイル全てを削除してから実行する。<br></font></b>
+    強制で出力先のファイルを上書きにしたい場合には、バッチファイル内のflaxcに渡しているオプションに｢-R1｣のオプションを加える。<br>
+    </ul>
+</ul>
+    <li><h3>.batファイルの例</h3>
+<p>(天翔記フォルダとは異なる場所に予め作った)｢C:\kao_3bit｣フォルダへと一括減色コンバート。<br><p>
+<pre class="brush:lua">
+mkdir C:\kao_3bit
+for %%A in (*.bmp) do (
+    flaxc %%A C:\kao_3bit\%%A -Fpalette.bmp -D4 -L5 -B0
+)
+</pre>
+<p> ｢ConvertAllTo3Bit.bat｣は上記スクリプトまんまである。</p>
+</ul>

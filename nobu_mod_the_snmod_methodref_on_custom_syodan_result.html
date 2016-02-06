@@ -1,0 +1,100 @@
+%(hilight)s
+<h2><i class="fa fa-book fa-fw"></i>AS条件::戦争::捕虜処遇登用可否</h2>
+<div class="code"><pre class="brush:cpp;">
+int カスタム::On_カスタム条件(string 条件名, カスタム条件パラメタ型 パラメタ) {
+  if ( 条件名 == &quot;AS条件::戦争::捕虜処遇登用可否&quot; ) {
+  }
+
+  // 変更しない場合-1
+  return -1;
+}
+</pre></div>
+<ul class="checklist">
+    <li>
+    <h3>引数の補足</h3>
+    <ul class="pointlist">
+        <li>
+        <h4>パラメタ.整数1:</h4>
+        整数1は処断される側の武将番号
+        <li>
+        <h4>パラメタ.整数2:</h4>
+        整数2は処断する側の武将番号(通常ならば大名の武将番号となる)
+        <li>
+        <h4>パラメタ.整数3:</h4>
+        現在予定されている登用成否の結果
+    </ul>
+    <li>
+    <h3>タイミング</h3>
+    <ul>
+        <li>このカスタム条件は、戦後において、各武将ごとに、捕虜処遇が実行される「<b>直前</b>」の登用成否結果判定を出す際呼び出される。<br>
+        <li>プレイヤ操作の場合「捕虜処遇」の各人において、その吹き出しダイアログが出る「直前」に結果が決まるので注意すること。<font color="red">勘違いしやすいので注意。 天翔記の仕様では、「登用する」といったボタンを押したタイミングではなく、「ダイアログ」が出る段階ですでに登用の成否の結果は決まっている。</font><br>
+        <li><b>プレイヤ勢力、NPC勢力にかかわらず、GUIが見えている見えていないに関わらず、全ての「捕虜処遇」にて、このカスタム条件は実行</b>される。
+        <p><img src="./cnt_mod/mod_snmod/cnt_mod_scenario_mod_ref_067.png"><br>
+        </p>
+    </ul>
+    <li>
+    <h3>一般的用途</h3>
+    <ul>
+        <li>特定の武将や特定条件を満たす武将について、捕虜処遇で登用の成否を制御する目的として使用する。<br>
+        <li>捕虜処遇時の登用成否アルゴリズム全体の変更を目的として使用する。<br>
+    </ul>
+    (例① 登用が必ず失敗するの例)
+    <div class="code"><pre class="brush:cpp;">
+int カスタム::On_カスタム条件(string 条件名, カスタム条件パラメタ型 パラメタ) {
+
+  if ( 条件名 == &quot;AS条件::戦争::捕虜処遇登用可否&quot; ) {
+
+    int i処断される側BushouID = パラメタ.整数1 -1;
+    int i処断する側BushouID   = パラメタ.整数2 -1;
+    int i予定成否結果   = パラメタ.整数3;
+
+    if ( 0 &lt;= i処断される側BushouID &amp;&amp; i処断される側BushouID &lt; 最大数::武将情報::配列数 &amp;&amp;
+         0 &lt;= i処断する側BushouID &amp;&amp; i処断する側BushouID &lt; 最大数::武将情報::配列数 ) {
+
+        デバッグ出力 &lt;&lt; &quot;処断される側:&quot; &lt;&lt; Get_名字(i処断される側BushouID) &lt;&lt; Get_名前(i処断される側BushouID) &lt;&lt; endl;
+        デバッグ出力 &lt;&lt; &quot;処断する側:&quot;   &lt;&lt; Get_名字(i処断する側BushouID)   &lt;&lt; Get_名前(i処断する側BushouID)   &lt;&lt; endl;
+        デバッグ出力 &lt;&lt; &quot;予定されてる結果:&quot; &lt;&lt;  i予定成否結果  &lt;&lt; endl;
+
+        // (何も条件で絞っていないため)登用は必ず失敗する。
+        return false;
+    }
+  }
+
+  // 変更しない場合-1
+  return -1;
+}
+</pre></div>
+    <li>
+    <h3>例② 特定の条件を満たす時、登用結果をコントロールする例</h3>
+    <div class="code"><pre class="brush:cpp;">
+int カスタム::On_カスタム条件(string 条件名, カスタム条件パラメタ型 パラメタ) {
+
+  if ( 条件名 == &quot;AS条件::戦争::捕虜処遇登用可否&quot; ) {
+    int i処断される側BushouID = パラメタ.整数1 -1;
+    int i処断する側BushouID   = パラメタ.整数2 -1;
+    int i予定成否結果   = パラメタ.整数3;
+
+    if ( 0 &lt;= i処断される側BushouID &amp;&amp; i処断される側BushouID &lt; 最大数::武将情報::配列数 &amp;&amp;
+         0 &lt;= i処断する側BushouID &amp;&amp; i処断する側BushouID &lt; 最大数::武将情報::配列数 ) {
+
+      // 相性がかなり悪ければ、必ず失敗する。
+      if ( Get_武将相性差( i処断される側BushouID, i処断する側BushouID ) &gt;= 7 ) {
+        return false;
+      }
+
+      // 処断される側が僧侶だと必ず失敗する。
+      if ( p武将情報[i処断される側BushouID].職業 == 職業::僧侶 ) {
+        return false;
+      }
+      // 処断される側が茶人だと必ず成功する。
+      else if  ( p武将情報[i処断される側BushouID].職業 == 職業::茶人 ) {
+        return true;
+      }
+    }
+  }
+
+  // 変更しない場合-1
+  return -1;
+}
+</pre></div>
+</ul>

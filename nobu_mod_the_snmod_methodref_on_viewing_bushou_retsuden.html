@@ -1,0 +1,108 @@
+%(hilight)s
+<h2><i class="fa fa-book fa-fw"></i>戦国武将列伝型＆ カスタム::On_戦国武将列伝要求時(int 武将番号, int 顔番号)</h2>
+<div class="code"><pre class="brush:cpp;">
+戦国武将列伝型＆ カスタム::On_戦国武将列伝要求時(int 武将番号, int 顔番号) {
+  return NULL;
+}
+</pre></div>
+<ul class="checklist">
+<li><h3>タイミング</h3>
+<ul>
+    <li>このメソッドは武将の「戦国武将列伝」が表示するタイミングで呼び出される。<br>
+    <p><img src="./cnt_mod/mod_snmod/cnt_mod_scenario_mod_ref_080.png"></p>
+</ul>
+<li><h3>一般的用途</h3>
+<ul>
+    <li>様々な状況に応じて、武将の名前、あるいは、列伝等を変化させたい場合に使用する。<br>
+</ul>
+<li><h3>例①</h3>
+<div class="code"><pre class="brush:cpp;">
+戦国武将列伝型＆ カスタム::On_戦国武将列伝要求時(int 武将番号, int 顔番号) {
+
+  デバッグ出力 &lt;&lt; &quot;武将番号配列用&quot; &lt;&lt; 武将番号 - 1 &lt;&lt; endl;
+  デバッグ出力 &lt;&lt; &quot;武将の顔番号&quot; &lt;&lt; 顔番号 &lt;&lt; endl;
+
+  // 顔番号が1、即ち(通常なら)柴田勝家のこと。
+  if (顔番号 == 顔番号::柴田勝家) {
+    戦国武将列伝型 rt
+    (
+      &quot;名字名前 ﾐｮｳｼﾞﾅﾏｴ ????～????&quot;,
+
+      &quot;１２３４５６７８９101112131415161718\x0A&quot;
+      &quot;１２３４５６７８９101112131415161718\x0A&quot;
+      &quot;１２３４５６７８９101112131415161718\x0A&quot;
+      &quot;１２３４５６７８９101112131415161718\x0A&quot;
+    );
+    return rt;
+  }
+
+  // 変更しない場合NULL
+  return NULL;
+}
+
+</pre></div>
+<li><h3>例②</h3>
+<div class="code"><pre class="brush:cpp;">
+戦国武将列伝型＆ カスタム::On_戦国武将列伝要求時(int 武将番号, int 顔番号) {
+
+  デバッグ出力 &lt;&lt; &quot;武将番号配列用&quot; &lt;&lt; 武将番号 - 1 &lt;&lt; endl;
+  デバッグ出力 &lt;&lt; &quot;武将の顔番号&quot; &lt;&lt; 顔番号 &lt;&lt; endl;
+
+  // 顔番号が1、即ち(通常なら)柴田勝家のこと。
+  if (顔番号 == 顔番号::柴田勝家) {
+        戦国武将列伝型 rt
+            (
+            &quot;&quot;, // ラベルが空文字なので、ラベルだけは元のままという意味
+
+            &quot;戦闘中の列伝７８９101112131415161718\x0A&quot;
+            &quot;１２３４５６７８９101112131415161718\x0A&quot;
+            &quot;１２３４５６７８９101112131415161718\x0A&quot;
+            &quot;１２３４５６７８９101112131415161718\x0A&quot;
+            );
+        return rt;
+    }
+
+  // 変更しない場合NULL
+  return NULL;
+}
+
+</pre></div>
+<li><h3>例③</h3>
+<div class="code"><pre class="brush:cpp;">
+戦国武将列伝型＆ カスタム::On_戦国武将列伝要求時(int 武将番号, int 顔番号) {
+
+  // ScenarioModにあたえられたあらゆる複雑な条件を利用することが出来る。
+  // 戦略画面(メイン画面)と、戦争画面とで、列伝を変更する例
+  if (顔番号 == 顔番号::柴田勝家) {
+    if ( Is_野戦中() || Is_攻城戦中()) {
+      戦国武将列伝型 rt
+        (
+        &quot;名字名前 ﾐｮｳｼﾞﾅﾏｴ ????～????&quot;,
+
+        &quot;戦闘中の列伝７８９101112131415161718\x0A&quot;
+        &quot;１２３４５６７８９101112131415161718\x0A&quot;
+        &quot;１２３４５６７８９101112131415161718\x0A&quot;
+        &quot;１２３４５６７８９101112131415161718\x0A&quot;
+        );
+      return rt;
+
+    }
+    else {
+      戦国武将列伝型 rt
+        (
+        &quot;名字名前 ﾐｮｳｼﾞﾅﾏｴ ????～????&quot;,
+
+        &quot;通常の列伝６７８９101112131415161718\x0A&quot;
+        &quot;１２３４５６７８９101112131415161718\x0A&quot;
+        &quot;１２３４５６７８９101112131415161718\x0A&quot;
+        &quot;１２３４５６７８９101112131415161718\x0A&quot;
+        );
+      return rt;
+    }
+  }
+
+  // 変更しない場合NULL
+  return NULL;
+}
+</pre></div>
+</ul>

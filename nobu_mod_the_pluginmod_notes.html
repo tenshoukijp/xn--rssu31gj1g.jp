@@ -1,0 +1,83 @@
+%(hilight)s
+<h2><i class="fa fa-book fa-fw"></i>｢一般MOD｣の補足</h2>
+<ul class="checklist">
+    <li>
+    <h3>概要</h3>
+    <p>前の解説では、実際に｢一般MOD｣としてMyMiniMod.dllを作成してみました。<br>
+    <br>
+    枠組みの基本的な感覚は掴めたと思います。</p>
+    <p>ここでは、｢一般MOD｣の補足的な機能の説明を行います。 <br>
+    <li>
+    <h3>呼び出しプログラムの判定方法</h3>
+    <p>さて、｢一般MOD｣は、ファイル単体では動作しません。<br>
+    「基盤Mod」が呼び出すことで機能しています。<br>
+    </p>
+    <p>呼び出しているのは、</p>
+    <ul>
+        <li>TSModが導入されている場合は、TSModが、<br>
+        <li>PluginModが導入されている場合は、PluginModが<br>
+        <li>TSModもPluginModも両方とも入っている場合(両方いれる意味はないのですが…)、 TSModが<br>
+    </ul>
+    <p>呼び出しています。</p>
+    <p>そして、どちらが呼び出したのかを確認することが出来るようになっています。<br>
+    以下のようにプログラムを書いてみましょう。<br>
+    </p>
+    <pre class="brush:cpp">
+//--------------------------------------------------------
+void WINAPI On_初期化(HANDLE 呼び出し元ハンドル) {
+    // パスを受け取るためのバッファ
+    char szFullDLLName[1024] = &quot;&quot;;
+
+    // DLLハンドル(実際にはメモリ上のアドレス)⇒そやつのフルネームを得る。
+    GetModuleFileNameA((HMODULE)呼び出し元ハンドル, szFullDLLName, sizeof(szFullDLLName)-1);
+
+    // メッセージボックスに出す。
+    MessageBox(NULL, szFullDLLName, szFullDLLName, NULL);
+
+    MessageBox(NULL, &quot;初期化&quot;, &quot;初期化&quot;, NULL);
+}
+
+</pre>
+    <p>これを実行すれば、以下のようなダイアログが出ます。</p>
+    <p><img src="./cnt_mod/mod_pluginmod/cnt_mod_plugin_mod_0051.png"><br>
+    </p>
+    <p>よって、<br>
+    呼び出し元が、TSMod.dllなのか、PluginMod.dllなのか、<br>
+    フルパスまで含めて調べることが出来る、ということとなります。<br>
+    </p>
+    <p>ということは、TSModから起動された時と、PluginModから起動された時で、<br>
+    挙動を振り分けることが可能であるとわかるでしょう。<br>
+    </p>
+    <p>これは一定以上複雑なプログラムを作る際には、必要なシーンが出てくる機能です。 <br>
+    (特にTSModの機能との衝突を避けるという意味で)</p>
+    <li>
+    <h3>PluginMod.iniとマニュアルでのMod読み込み</h3>
+    <p>もうひとつ大切な機能があり、｢<b>読み込む対象の『一般MOD』を手動に切り替える</b>｣という機能があります。<br>
+    </p>
+    <p><span class="positive">天翔記フォルダに、｢<b>PluginMod.ini</b>｣というファイルを作成し、中身を空っぽにしてみましょう。</span></p>
+    <p>そうすると、｢一般MOD｣は何一つ実行されません。<br>
+    これは、手動読み込みに切り替えたのに、読み込む対象となるDLLが記載されていないためです。 <br>
+    </p>
+    <p>では、PluginMod.iniを開き、｢MyMiniMod.dll｣と記述してみましょう。<br>
+    </p>
+    <p><img src="./cnt_mod/mod_pluginmod/cnt_mod_plugin_mod_0052.png"><br>
+    </p>
+    <p>天翔記を実行すると、 ｢MyMiniMod.dll｣が実行されることがわかるはずです。<br>
+    </p>
+    <p>では次の行に｢MyMaxMod.dll｣と書いてみましょう。<br>
+    </p>
+    <p>天翔記フォルダの中に、｢MyMaxMod.dll｣があれば、<b>｢MyMiniMod.dll｣と｢MyMaxMod.dll｣が、｢その順番｣で</b>、実行されます。<br>
+    MyMaxMod.dllが無いのであれば、その部分は無視されます。<br>
+    </p>
+    <p>このように、｢PluginMod.ini｣によって、複数のDLLを記述し、順番通りに実行させることが可能となっています。<br>
+    </p>
+    <p>ただし、これはあくまでも開発者用のデバッグ機能です。<br>
+    </p>
+    <p>この機能を使えば、<br>
+    読み込む｢一般MOD｣をいとも簡単に絞ったり変えたりできるため、何かトラブルが起きた際、問題を絞り込みやすいはずです。<br>
+    </p>
+    <p>この機能の順番実行機能などを利用したいがために、各ユーザーにPluginMod.iniを配ったり作らせたりすることは、 <br>
+    その後、自動読み込み機能が、完全に失われてしまため、 大いにトラブルの元となります。<br>
+    よってこの機能に依存した｢一般MOD｣を配布することは、<br>
+    よほどの事情がない限り、極めて非推奨なものとします。</p>
+</ul>

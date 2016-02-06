@@ -1,0 +1,104 @@
+%(hilight)s
+<h2><i class="fa fa-book fa-fw"></i>void カスタム::On_ターン変更《攻城中画面》(int ターン数)</h2>
+<div class="code"><pre class="brush:cpp;">
+void カスタム::On_ターン変更《攻城中画面》(int ターン数) {
+}
+</pre></div>
+<ul class="checklist">
+<li><h3>引数の補足</h3>
+<ul class="pointlist">
+<li><h4>ターン数:</h4>
+攻城戦画面において、下図のような「●」の数が渡ってくる。<br>
+ただし、３ターン目の終わりには、４という数が渡って呼び出される。<br>
+<p><img src="./cnt_mod/mod_snmod/cnt_mod_scenario_mod_ref_026.png"></p>
+</ul>
+
+<li><h3>タイミング</h3>
+<ul>
+<li>戦争画面の「攻城戦」において、この「ターン数(●の数)」の数値が変更された時呼び出される。<br>
+厳密には下記の通りである。<br>
+<p><img src="./cnt_mod/mod_snmod/cnt_mod_scenario_mod_ref_027.png"><br></p>
+</ul>
+<li><h3>一般的用途</h3>
+<ul>
+<li>攻城戦画面において、毎ターン頭で処理を行いたい場合にこのメソッドを利用する。
+<li>攻城戦画面において、ターンの切り替わり目で、何か武将同士の会話を行いたい場合に、このメソッドを利用する。
+<li>但し、確認ダイアログ他、いくつかのダイアログ系関数が使えないので注意すること。
+</ul>
+<li><h3>例①</h3>
+<div class="code"><pre class="brush:cpp;">
+void カスタム::On_ターン変更《攻城中画面》(int ターン数) {
+
+  /*
+   攻城戦でターン１開始の時、今この攻城に出陣している部隊の兵士数が+1
+   */
+  if ( ターン数 == 1 ) {
+    // 現在表示中の攻城戦に出陣している武将番号配列用のリストを得る。
+    番号リスト型 blist = Get_出陣中の武将番号リスト【配列用】《表示中マップ》();
+
+    // それら出陣中の武将に対して
+    for each ( int iBushouID in blist ) {
+      // 兵数がまだあるならば、そして、その武将が持つべき最大兵数より少ないならば、兵数を１増やす
+      if ( 0 &lt; p武将情報[iBushouID].兵数 &amp;&amp; p武将情報[iBushouID].兵数 &lt; Get_武将最大兵数(iBushouID) ) {
+        p武将情報[iBushouID].兵数++;
+      }
+    }
+  }
+}
+</pre></div>
+<li><h3>例②</h3>
+<div class="code"><pre class="brush:cpp;">
+int iAttackGundanID = -1;
+void カスタム::On_戦争開始(戦争開始パラメタ型 パラメタ) {
+
+  // 攻撃側の軍団を控えておく
+  iAttackGundanID = パラメタ.攻撃側軍団【軍団番号】-1;
+}
+
+
+void カスタム::On_ターン変更《攻城中画面》(int ターン数) {
+
+  /*
+  ３ターン終了時に攻める側の武将が話す。
+  */
+
+  if ( ターン数 == 4 ) {
+    int iAttackBushouID = -1; // 攻撃側話者武将
+
+    番号リスト型 blist = Get_出陣中の武将番号リスト【配列用】《表示中マップ》();
+    srand(timeGetTime()); // random_shuffleには必要。
+    random_shuffle( blist.begin(), blist.end() );  // ランダムシャッフル
+
+    for each ( int iBushouID in blist ) {
+      // この武将の大名勢力が、攻撃側軍団の大名勢力と等しい
+      if ( p武将情報[iBushouID].所属大名【大名番号】== p軍団情報[iAttackGundanID].所属大名【大名番号】) {
+        iAttackBushouID = iBushouID; // 攻撃側話者に設定
+        break;
+      }
+    }
+
+    // 噴出の左上か右下か、武将のユニットのポジションを考慮する
+    ヘックス位置型 posA;
+    posA = Get_武将の攻城戦ヘックス位置(iAttackBushouID);
+
+    int iCastleID = Get_攻城戦中の城番号();
+
+    if ( 0 &lt;= iCastleID &amp;&amp; iCastleID &lt; 最大数::城情報::配列数 ) {
+
+      string message = &quot;むむ…\x0A未だ&quot;+Get_城名(iCastleID)+Get_城称(iCastleID)+&quot;は\x0A陥落せぬか…&quot;;
+
+      if ( posA.Ｙ &lt;= 攻城戦ヘックス::中心Ｙ ) {
+
+        噴出ダイアログ《通常・左上》開始( iAttackBushouID, message );
+        噴出ダイアログ《通常・左上》終了();
+
+        // それ以外は攻撃側が右下を使う
+      } else {
+        噴出ダイアログ《通常・右下》開始( iAttackBushouID, message );
+        噴出ダイアログ《通常・右下》終了();
+      }
+    }
+  }
+}
+</pre></div>
+</ul>

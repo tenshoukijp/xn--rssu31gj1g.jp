@@ -1,0 +1,45 @@
+<h2><i class="fa fa-book fa-fw"></i>ScenarioModの仕組みと３本柱</h2>
+<ul class="checklist">
+    <li>
+    <h3>概要</h3>
+    <p>前の章では、イベントハンドラという概念を学習しました。<br>
+    そろそろ、「なんとなく見よう見まね」という段階から、１歩踏み込んだ学習をしていくのですが、<br>
+    その前に、「ScenarioModの全容の概念」を学習します。<br>
+    </p>
+    <p>ScenarioModを使いこなしていくためには、仕組みや概念の大枠を理解していることがとても役立つからです。<br>
+    </p>
+    <li>
+    <h3>呼出し関係構図</h3>
+    <p>まず、天翔記(tenshou.exe)はTSModを実行し、<br>
+    TSModは、ScenarioModを実行します。<br>
+    </p>
+    <p>(下の層が上の層を呼び出す) <br>
+    </p>
+    <p><img src="./cnt_mod/cnt_mod_mod_01.png"><br>
+    </p>
+    <p><b>TSModは、必要なタイミングで、ScenarioModの「イベントハンドラ」を、呼び出します。</b><br>
+    <b>又、ScenarioModに搭載されている関数の一部もTSModが機能を提供しています。</b><br>
+    </p>
+
+    <li>
+    <h3>ScenarioModは次の３本柱</h3>
+    <p><img src="./cnt_mod/mod_snmod/cnt_mod_scenario_mod_60.png"><br>
+    </p>
+    <p>
+    <ul class="pointlist">
+        <li>
+        <h4>イベントハンドラ</h4>
+        <p>「<b>イベントハンドラ</b>」という概念については、すでに学習しました。<br>
+        </p>
+        <li>
+        <h4>データ構造</h4>
+        <p>「<b>データ構造</b>」というのは、天翔記の様々なパラメータにアクセスするための構造体のようなものです。<br>
+        ScenarioModでは少し特殊な作りになっていますが、直観的に扱えるようになっています。<br>
+        </p>
+        <li>
+        <h4>関数</h4>
+        <p>「<b>関数</b>」というのは、通常のプログラミングの「関数」と同じ意味です。<br>
+        </p>
+    </ul>
+    <p>以上がScenarioModの３本柱であり、この３つを理解していることが、 ScenarioModを使いこなす上で重要です。<br>
+</ul>

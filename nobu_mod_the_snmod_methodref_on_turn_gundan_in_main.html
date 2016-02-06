@@ -1,0 +1,133 @@
+%(hilight)s
+<h2><i class="fa fa-book fa-fw"></i>void カスタム::On_軍団ターン変更《メイン画面》(int 軍団番号)</h2>
+<div class="code"><pre class="brush:cpp;">
+void カスタム::On_軍団ターン変更《メイン画面》(int 軍団番号) {
+}
+</pre></div>
+<ul class="checklist">
+    <li>
+    <h3>引数の補足</h3>
+    <ul class="pointlist">
+        <li><h4>軍団番号:</h4>
+        <p>現在ターンが回ってきた軍団の軍団番号。<br>
+        「pターン情報.現在の軍団【軍団番号】」と同じ番号<br></p>
+    </ul>
+    <li>
+    <h3>タイミング</h3>
+    <ul>
+        <li>メイン画面において、天翔記では、「各大名」にターンが回ってくるのであるが、<br>
+        <p><img src="./cnt_mod/mod_snmod/cnt_mod_scenario_mod_ref_034.png"><br>
+        </p>
+        さらにその内訳をみると、大名麾下の軍団が順次処理をしていく。(大名自身も軍団長である)<br>
+        このメソッドは、その各軍団にターンが回ってきた先頭で、呼び出される。<br>
+        厳密には下記の通りである。<br>
+        <p><img src="./cnt_mod/mod_snmod/cnt_mod_scenario_mod_ref_033.png" attr="noedge"><br>
+        </p>
+        これら矢印のタイミングでメソッドが呼ばれることとなる。。<br>
+    </ul>
+    <li>
+    <h3>一般的用途</h3>
+    <ul>
+        <li>各軍団が処理を行う直前に、何か処理を加えたい場合、このメソッドを利用する。<br>
+        <li>このメソッドはセーブやロードによって何度も実行される、といったことがなく、<br>
+        ゲームを通して必ず「１季節ごとに各軍団１回だけ」実行される。<br>
+        よって、「季節ごとに各軍団必ず１回やっておきたい処理」を記述するのに非常に向いている。 <br>
+        <li>よって、歴史イベントの記述を加えるのにも向いている。
+    </ul>
+    <li>
+    <h3>例①</h3>
+    <div class="code"><pre class="brush:cpp;">
+void カスタム::On_軍団ターン変更《メイン画面》(int 軍団番号) {
+  /*
+   * 「プレイヤ勢力麾下の軍団」でないならば
+   *  ＣＰＵが処理をする前に、金欠、米欠なら、恵む。
+   */
+  int iGundanID = 軍団番号-1;
+
+  if ( ! Is_プレイヤ担当軍団( iGundanID ) ) {
+    if ( p軍団情報[iGundanID].米 &lt; 500 ) {
+      p軍団情報[iGundanID].米 = 500;
+    }
+    if ( p軍団情報[iGundanID].金 &lt; 500 ) {
+      p軍団情報[iGundanID].金 = 500;
+    }
+  }
+}
+
+</pre></div>
+    <li>
+    <h3>例②</h3>
+    <div class="code"><pre class="brush:cpp;">
+/*
+ * 織田信長のイベントを段階的に進捗させていく、というサンプル
+ */
+#define 織田信長イベント名          &quot;SPL_EV01&quot;
+#define 織田信長イベント進捗・Ａ    フラグ枠::Ａ
+#define 織田信長イベント進捗・Ｂ    フラグ枠::Ｂ
+
+bool Check_イベント００１(int 軍団番号【配列用】) {
+
+  // 「SPL_EV01というフラグのＡ枠」がFALSEなら
+  if ( Get_フラグ(織田信長イベント名, 織田信長イベント進捗・Ａ) == FALSE ) {
+
+    // １５５０年～６０年の間なら発生
+    if ( 1550 &lt;= Get_西暦() &amp;&amp; Get_西暦() &lt;= 1560 ) {
+
+      // 軍団長の武将番号【配】を求める
+      int iGundanLeaderBushouID = p軍団情報[軍団番号【配列用】].軍団長【武将番号】-1;
+
+      // 居れば
+      if ( 0 &lt;= iGundanLeaderBushouID &amp;&amp; iGundanLeaderBushouID &lt; 最大数::武将情報::配列数 ) {
+
+        if ( p武将戸籍情報[iGundanLeaderBushouID].顔番号 == 顔番号::織田信長 ) { // 織田信長の顔番号
+
+          // この軍団長は、大名でもある
+          if ( p武将戸籍情報[iGundanLeaderBushouID].状態 == 状態::大名 ) {
+            実行／取消ダイアログ表示(&quot;織田信長にターンが回る直前、何かイベント発動\x0A★★★★★★★★★★★&quot;);
+
+            // このイベントが発生したというのをフラグ名SP_EV01に残す。
+            Set_フラグ(織田信長イベント名, TRUE, 織田信長イベント進捗・Ａ);
+
+            return true; // イベントは起きた
+          }
+        }
+      }
+    }
+  }
+
+  return false; // イベントは起きてない。
+}
+
+bool Check_イベント００２(int 軍団番号【配列用】) {
+
+  // 「SPL_EV01というフラグのＡ枠」がFALSEならまだこのイベントは早い。まずは、Ａが進んでから。
+  if ( Get_フラグ(織田信長イベント名, 織田信長イベント進捗・Ａ) == FALSE ) {
+    return false;
+  }
+
+  // 進捗Ｂがまだ発生していない。
+  if ( Get_フラグ(織田信長イベント名, 織田信長イベント進捗・Ｂ) == FALSE ) {
+    if ( 1563 &lt;= Get_西暦() &amp;&amp; Get_西暦() &lt;= 1565 ) {
+
+      //  イベント進捗Ｂのための処理
+
+      // このイベントが発生したというのをフラグ名SP_EV01に残す。
+
+      実行／取消ダイアログ表示(&quot;織田信長にターンが回る直前、何かイベント発動、その②\x0A★★★★★★★★★★★&quot;);
+      Set_フラグ(織田信長イベント名, TRUE, 織田信長イベント進捗・Ｂ);
+
+      return true;
+    }
+  }
+
+  return false; // イベントは起きてない。
+}
+
+void カスタム::On_軍団ターン変更《メイン画面》(int 軍団番号) {
+  Check_イベント００１(軍団番号-1);
+  Check_イベント００２(軍団番号-1);
+}
+</pre></div>
+    <p><img src="./cnt_mod/mod_snmod/cnt_mod_scenario_mod_ref_035.png"> <br>
+    </p>
+</ul>

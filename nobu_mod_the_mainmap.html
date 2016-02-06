@@ -1,0 +1,179 @@
+<h2><i class="fa fa-image fa-fw"></i>背景のメインマップ画像を変更する</h2>
+<ul class="checklist">
+    <li>
+    <h3>概要</h3>
+    <p>日本全国地図を、別の(自作等の)画像へと入れ替えるツールの提供、<br>
+    および、その方法の説明となります。</p>
+    <p>このツールは、春・夏・秋・冬の４種類のメインマップの画像を別の画像へと入れ替えます。<br>
+    </p>
+    <p><img src="./cnt_mod/cnt_mod_mapdata_importer4.png"><br>
+    </p>
+
+    <li>
+    <h3>ダウンロード</h3>
+    <dl>
+        <dt>
+        <div class="download_file">DOWNLOAD ⇒ <a href="%(file)s">MapDataExpAndImp.zip</a>ファイル。</div>
+        </dt>
+        <dd>
+        <div class="update_time">└更新日 %(year)04d/%(mon)02d/%(mday)02d</div>
+        </dd>
+    </dl>
+    <li>
+    <h3>準備</h3>
+    <p>MapDataExpAndImp.zip を解凍し、天翔記フォルダのサブフォルダにmapdataといったサブディレクトリを作成し、 その以下のように展開する。<br>
+    (※ディレクトリ名等は、何でもかまいません。以下はただの例です。)<br>
+    <img src="./cnt_mod/cnt_mod_mapdata_importer1.png"><br>
+    </p>
+    <li>
+    <h3>使い方</h3>
+    <ul>
+        <li>後で元へと戻せるように、天翔記ディレクトリ内にある｢mapdata.n6p｣を一度適当にバックアップぐらいはとっておきましょう。 <br>
+        <li>天翔記ディレクトリ内にある｢mapdata.n6p｣を、mapdata(上の例の場合)ディレクトリ内にコピーします。 <br>
+        mapdataディレクトリがいわば、作業場となります。<br>
+        <li><b>指定のパレットで減色した、mainmap1.bmp, mainmap2.bmp, mainmap3.bmp, mainmap4.bmp</b>を用意し、同じくmapdataディレクトリ内に入れます。<br>
+        (デフォルトでサンプルが４つ入っています)
+        <li><b>MapDataImporter.exe を実行</b>します。(一瞬黒い画面が出てすぐ終わります)。mapdata.n6pが更新されます。
+        <li>(更新された)mapdata.n6p を天翔記ディレクトリ内にあるmapdata.n6pへと上書きする。<br>
+        <br>
+    </ul>
+    <li>
+    <h3>指定のパレットで減色した、４つの.bmpの用意の仕方</h3>
+    <ul>
+        <li>横縦2720x672の画像を４種類用意します。春・夏・秋・冬の分。<br>
+        メインマップの地図のサイズが2720x672となります。<br>
+        <li>指定のパレットで指定の色数(しかも207色という半端な数)で、ある程度綺麗に減色可能なアプリケーションを用意します。<br>
+        一般的には、Optpix / yukari となります。<br>
+        <li>ここでは、無料で手に入るという点で、yukariで解説します。<br>
+        <br>
+        <li>天翔記アップローダーからyukariをダウンロードします。 <br>
+        (※Windows XP で かつ、 ウィルスソフトが Macafeeの場合、ユーカリソフトがウィルス誤反応するかもしれない。 Windows7以降であれば、Macafeeでも問題ない。) <br>
+        ・ユーカリソフト（減色ソフト） <br>
+        <dl>
+            <dt>
+            <div class="download_file">DOWNLOAD ⇒ <a href="http://u7.getuploader.com/nobu6/download/110/yukari.zip">http://u7.getuploader.com/nobu6/download/110/yukari.zip</a></div>
+            </dt>
+        </dl>
+        <br>
+        <li>Flex.exeを実行してユーカリを立ち上げる <br>
+        <img src="./cnt_mod/mod_graphic/cnt_img_yukari01.png"> <br>
+        <br>
+        <br>
+        <li>メニューの <br>
+        「ファイル->開く」 でメインマップの背景にしたい大きな画像を開く。<b>横2720×縦672</b>で固定。異なる場合は拡大･縮小するなり上下左右をうまくカットしてこのサイズにする。 <br>
+        <br>
+        <br>
+        <li>メニューの <br>
+        編集->減色 <br>
+        <br>
+        ・パレットカラーbmpファイルを指定する -> mapdataディレクトリ内にある <b>palette207_mainmap.bmp</b>を選択する。 <br>
+        <img src="./cnt_mod/cnt_mod_mapdata_importer5.png"><br>
+        ・other->207 を設定 <br>
+        ・ディザは｢アニメーション｣か｢gPeanos｣など。元の画像のテイストによって適切な設定は変化します。<br>
+        ・強←→弱は、通常は真ん中あたりか。お好みで。元の画像のテイストで変化させればＯＫ。 <br>
+        <br>
+        <br>
+        <li>OKを押すと、減色される。 <br>
+        <br>
+        <br>
+        <li>メニューから名前をつけて「mainmap1.bmp」～「mainmap4.bmp」のいずれかの名前で保存。 <br>
+        (これがそれぞれ春～冬に対応する)<br>
+        <br>
+        <li>保存したものが、(上の方の例では)mapdataディレクトリ以外に保存したなら、mapdataディレクトリに入れる。<br>
+        とにかく、<b>MapDataImporter.exe</b>と同じフォルダに入れる。</li>
+        <br>
+        <br>
+        <li>以後のメインマップの減色は、 <br>
+        <br>
+        新規ファイル読み込み <br>
+        <br>
+        編集→減色→OKボタンだけで減色できるようになります。<br>
+        (※ユーカリを再起動した場合には、再度｢パレットカラーbmpファイルを指定する｣を行ってください。) <br>
+        <br>
+    </ul>
+    <li>
+    <h3>主なエラー</h3>
+    <p>主に起きるのは２つのエラーです。エラーが起きるとエラーを表示した状態で止まります。</p>
+    <ul>
+        <li><b>画像のサイズが違う</b><br>
+        └2720 x 672 である必要がある。
+        <li><b>画像の色数が違う</b><br>
+        └指定のパレット｢palette207_mainmap.***｣を使って、減色して下さい。
+    </ul>
+    <li>
+    <h3>カラーパレットのお話</h3>
+    <p>メインマップで必要となるパレット<br>
+    palette207_mainmap.bmp(or .act)<br>
+    カラーパレットを見ればわかりますが、緑系と青系しかほとんどありません。要するに本当に陸･山･海というマップを想定したカラーパレットになっています。<br>
+    <img src="./cnt_mod/cnt_mod_mapdata_importer2.png"><br>
+    <br>
+
+    天翔記全体のパレット<br>
+    palette256_all.bmp(or .act)<br>
+    赤枠が、天翔記全体のパレットのうち、メインマップで使用されるパレット。 <br>
+    <img src="./cnt_mod/cnt_mod_mapdata_importer3.png"><br>
+    </p>
+    <li>
+    <h3>背景のメインマップ画像を出力する</h3>
+    <ul>
+        <li>MapDataExporter.exe となります。
+        <li>こちらは、mapdata.n6pにある｢春・夏・秋・冬・家紋アイコンや軍団番号アイコン、城アイコン等」の画像をファイルへと出力するためのツールです。<br>
+        <li>デフォルトのmapdata.n6pについては、すでに出力したものが.bmp形式で、output1.bmp～output5.bmpまで揃っています。<br>
+        ですが、誰かがmapdata.n6pを変更し、それを.bmpへと落としたい場合には、これを利用すると便利でしょう。<br>
+        <br>
+        <table style="border: solid 1px #000000; border-collapse: collapse;" cellpadding="1" cellspacing="1" width="800">
+            <tr>
+                <td width="100">画像概要</td>
+                <td width="100">コマンド名</td>
+                <td width="100">出力ファイル名</td>
+                <td width="240">mapdata.n6p内でのスタート位置<br>
+                これは｢前に存在する画像の画素数を全て足しこんだもの｣だ。</td>
+                <td width="130">画像の横サイズ</td>
+                <td width="130">画像の縦サイズ</td>
+            </tr>
+            <tr>
+                <td>春</td>
+                <td>MapDataExporter</td>
+                <td>output1.bmp</td>
+                <td>0</td>
+                <td>2720</td>
+                <td>672</td>
+            </tr>
+            <tr>
+                <td>夏</td>
+                <td>MapDataExporter</td>
+                <td>output2.bmp</td>
+                <td>1827840</td>
+                <td>2720</td>
+                <td>672</td>
+            </tr>
+            <tr>
+                <td>秋</td>
+                <td>MapDataExporter</td>
+                <td>output3.bmp</td>
+                <td>3655680</td>
+                <td>2720</td>
+                <td>672</td>
+            </tr>
+            <tr>
+                <td>冬</td>
+                <td>MapDataExporter</td>
+                <td>output4.bmp</td>
+                <td>5483520</td>
+                <td>2720</td>
+                <td>672</td>
+            </tr>
+            <tr>
+                <td>家紋等</td>
+                <td>MapDataExporter</td>
+                <td>output5.bmp</td>
+                <td>7311360</td>
+                <td>128</td>
+                <td>416</td>
+            </tr>
+        </table>
+        <br>
+        <br>
+        コマンド例：<b>MapDataExporter output2.bmp 1827840 2720 672</b>
+    </ul>
+</ul>

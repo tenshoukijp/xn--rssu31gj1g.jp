@@ -1,0 +1,62 @@
+%(hilight)s
+<h2><i class="fa fa-book fa-fw"></i>AS条件::戦争::内応結果可否</h2>
+<div class="code"><pre class="brush:cpp;">
+int カスタム::On_カスタム条件(string 条件名, カスタム条件パラメタ型 パラメタ) {
+  if ( 条件名 == &quot;AS条件::戦争::内応結果可否&quot; ) {
+  }
+
+  // 変更しない場合-1
+  return -1;
+}
+</pre></div>
+<ul class="checklist">
+<li><h3>引数の補足</h3>
+<ul class="pointlist">
+<li><h4>パラメタ.整数1:</h4>
+整数1は戦場にて内応を実行した武将番号
+<li><h4>パラメタ.整数2:</h4>
+整数2は戦場にて内応を実行された武将番号
+<li><h4>パラメタ.整数3:</h4>
+現在この予定されている内容成否の結果
+</ul>
+<li><h3>タイミング</h3>
+<ul>
+<li>このカスタム条件は、戦場において、内応が実行された際に、結果判定を出す際呼び出される。<br>
+<p><img src="./cnt_mod/mod_snmod/cnt_mod_scenario_mod_ref_050.png"></p>
+</ul>
+<li><h3>一般的用途</h3>
+<ul>
+<li>特定の武将や特定条件を満たす武将について、内応成否の結果の変更を目的として使用する。<br>
+<li>内応成否のアルゴリズムそのものの全体の変更を目的として使用する。<br>
+</ul>
+<li><h3>例①</h3>
+<div class="code"><pre class="brush:cpp;">
+int カスタム::On_カスタム条件(string 条件名, カスタム条件パラメタ型 パラメタ) {
+
+  if ( 条件名 == &quot;AS条件::戦争::内応結果可否&quot; ) {
+    int iBushouID = パラメタ.整数1 -1; // 戦場にて内応を実行した、武将番号【配列用】
+    int iTargetID = パラメタ.整数2 -1; // 戦場にて内応を実行された、武将番号【配列用】
+    int iCurResult = パラメタ.整数3; // 現在この予定されている内容成否の結果。
+
+    デバッグ出力 &lt;&lt; &quot;主体:&quot; &lt;&lt; Get_名前(iBushouID) &lt;&lt; endl;
+    デバッグ出力 &lt;&lt; &quot;客体:&quot; &lt;&lt; Get_名前(iTargetID) &lt;&lt; endl;
+    デバッグ出力 &lt;&lt; &quot;現在の結果:(0=失敗,1=成功)&quot; &lt;&lt; iCurResult &lt;&lt; endl;
+
+    // 範囲チェック
+    if ((0 &lt;= iBushouID &amp;&amp; iBushouID &lt; 最大数::武将情報::配列数) &amp;&amp;
+      (0 &lt;= iTargetID &amp;&amp; iTargetID &lt; 最大数::武将情報::配列数)) {
+
+      // 戦争において、内応を仕掛けられた側が、忠誠が100で、義理が15ならば、内応は失敗する。
+      if ( p武将情報[iTargetID].忠誠 == 100 &amp;&amp; p武将情報[iTargetID].義理 == 15 ) {
+         return false;
+      }
+    }
+  }
+
+  // 変更しない場合-1
+  return -1;
+}
+</pre></div>
+</ul>
+
+

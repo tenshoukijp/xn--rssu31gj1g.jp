@@ -1,0 +1,163 @@
+%(hilight)s
+<h2><i class="fa fa-plug fa-fw"></i>動画キャプチャー LoiloGameRecorderMod API</h2>
+<ul class="checklist">
+    <li>
+    <h3>概要</h3>
+    <p>これは、実はModではなく、Mod製作を支えるAPIです。<br>
+    </p>
+    <p>全てを自作するのではなく、外部アプリケーションの「機能だけをScenarioModで利用する」というサンプルとなります。<br>
+    <br>
+    このサンプルは天翔記のみならず、一般用途としても利用可能なものです。<br>
+    </p>
+    <p>仕組みとしては、<a href="http://loilo.tv/jp/product/game_recorder">ロイロゲームレコーダー</a>のUIは使わず<br>
+    録画コアに近いライブラリのDLLだけ利用する、というものとなります。<br>
+    </p>
+    <p>ロイロアプリケーションがこのようなAPIを明示的に提供しているわけではありません。<br>
+    しかし基本的なプログラム知識があれば、 このように、自分の必要な形へとソフトウェアを再構築することが可能です。</p>
+    <li>
+    <h3>ダウンロード</h3>
+    <dl>
+        <dt>
+        <div class="download_file">DOWNLOAD ⇒ <a href="%(file)s">LoiloGameRecorerMod API</a>ファイル。</div>
+        </dt>
+        <dd>
+        <div class="update_time">└更新日 %(year)04d/%(mon)02d/%(mday)02d</div>
+        </dd>
+    </dl>
+    <li>
+    <h3>ロイロの機能を汎用言語C++/CLI(C#でも同様)から利用する</h3>
+    <ul class="pointlist">
+        <li>
+        <h4>一般アプリケーションサンプルとして確認してみる。</h4>
+        <ul class="arrowlist">
+            <li>
+            <h5>下準備やファイルのコピー</h5>
+            <ul>
+                <li>まず、上記「<a href="http://loilo.tv/jp/product/game_recorder">ロイロゲームレコーダー</a>」本体アプリケーションをPCへとインストールします。<br>
+                <li>次に「C:\abc」というフォルダをCドライブに作成します。<br>
+                <li>ロイロゲームレコーダー本体である「C:\Program Files\LoiLo\LoiLoGameRecorder」のフォルダの中身を<br>
+                (サブフォルダも含め)全て「C:\abc」フォルダにコピーします。<br>
+                (C:\abc\LoiloGameRecorder.exe といったファイル位置)<br>
+                <br>
+                <li>LoiloGameRecorderMod.zipを解凍し、LoiloGameRecorderMod.dllとTestProg.exeをC:\abcフォルダにコピーします。<br>
+            </ul>
+            <li>
+            <h5>録画の実験</h5>
+            <ul>
+                <li>天翔記を起動します。<br>
+                <li>TestProg.exe を実行します。<br>
+                <li>Hello Worldと黒い画面が出ます。<br>
+                <li>10秒経過すると、黒い画面が閉じられ、C:\abc\test.avi が作られます。<br>
+                <li>サンプルとしての動作確認は以上となります。<br>
+            </ul>
+            <li>
+            <h5>ソースコード</h5>
+            <ul>
+                <li>最低限必要となるプログラム記述は<br>
+                LoiloGameRecorder.slnを VisualStudioで起動し、TestProgを確認してください。<br>
+                録画開始関数は１行、録画終了関数は１行の簡単構成です。<br>
+            </ul>
+            <div class="code"><pre class="brush:cpp">
+#include &lt;windows.h&gt;
+
+using namespace System;
+
+#pragma comment(lib, &quot;user32.lib&quot;)
+
+int main(array&lt;System::String ^&gt; ^args)
+{
+    Console::WriteLine(L&quot;Hello World&quot;);
+
+    // ウィンドウハンドルを得る
+    HWND hWnd = FindWindow(L&quot;Tenshouki95&quot;, NULL);
+
+    // 第1引数は本来は、自分自身のウィンドウハンドル(要するに録画プログラム側のウィンドウ)なのであるが、
+    // 無い場合は、録画相手のものでも指定しておけば良い
+
+    // 第2引数は、録画相手のウィンドウハンドル
+
+    // 第3引数は、ムービーファイルのフルパス。
+    LoiloGameRecorderMod::StartRecording((IntPtr)hWnd, (IntPtr)hWnd, gcnew String(L&quot;C:\\abc\\test.avi&quot;));
+
+
+    Sleep(10000);
+
+    // ムービーストップ。
+    LoiloGameRecorderMod::StopRecording();
+
+    return 0;
+}
+</pre></div>
+        </ul>
+    </ul>
+    <li>
+    <h3>天翔記のScenarioModに組み込んでみる。</h3>
+    <ul class="pointlist">
+        <li>
+        <h4>下準備</h4>
+        <ul>
+            <li>上記サンプル時と同様に、<br>
+            <p>ロイロゲームレコーダー本体である「C:\Program Files\LoiLo\LoiLoGameRecorder」のフォルダの中身を天翔記フォルダにコピーしても出来ますが、<br>
+            「削除が面倒」という問題もありますので、必要な分だけ「複製」する「LoiloGameRecorderModCpy.bat」というプログラムを用意しました。<br>
+            </p>
+
+            <p>この「LoiloGameRecorderModCpy.bat」は<br>
+            １．ロイロから必要な分だけファイルをコピーする。<br>
+            ２．逆に複製したファイルを削除する。<br>
+            <b>１と２を実行する度に交互に繰り返します。</b></p>
+
+            <ul>
+                <li>LoiloGameRecorderModCpy.batを天翔記フォルダに配置し、実行します。
+                <li>LoiloGameRecorderMod.dllも天翔記フォルダへと配置します。<br>
+            </ul>
+        </ul>
+        <li>
+        <h4>SceanrioModで使ってみる</h4>
+        <ul>
+            <li>ScenarioMod内で、LoiloGameRecorderMod.dll への参照を増やしましょう。<br>
+            <p><img src="./cnt_mod/mod_loilo/mod_loillo_img_02.png"><br>
+            </p>
+            <p><img src="./cnt_mod/mod_loilo/mod_loillo_img_03.png"><br>
+            </p>
+            <p><img src="./cnt_mod/mod_loilo/mod_loillo_img_01.png"><br>
+            </p>
+        </ul>
+
+
+        <div class="code"><pre class="brush:cpp">
+#include &quot;カスタム駆動関数.h&quot;
+
+
+using namespace System;
+// CLIを使うので、このくらいはネームスペースを省略しよう
+
+
+void カスタム::On_終了時() {
+
+  // 録画終了
+  LoiloGameRecorderMod::StopRecording();
+
+}
+
+void カスタム::On_メインゲーム開始() {
+
+  // パラメータを渡す相手がC#クラスなので、C++/CLIのマネージドな記述を中心とする。
+
+  // 天翔記のウィンドウハンドル
+  System::IntPtr hWndTenshouki = (System::IntPtr)FindWindow(&quot;Tenshouki95&quot;, NULL);
+
+  // 現在実行中のexeが起動したフォルダ。要するに天翔記フォルダ
+  String^ cur_dir = System::Windows::Forms::Application::StartupPath;
+
+  // 天翔記フォルダに&quot;movie&quot;をくっつけて、適当な名前でムービーファイル名を作成する。
+  // ムービーのフルパス。ムービーフォルダの中に入れる。
+  String^ file_name = String::Format(&quot;Capture_{0:yyyyMMdd_HHmmss}.avi&quot;, DateTime::Now);
+  String^ movie_name = cur_dir + &quot;\\movie\\&quot; + file_name;
+
+  // 録画開始
+  LoiloGameRecorderMod::StartRecording( hWndTenshouki, hWndTenshouki, movie_name);
+
+}
+</pre></div>
+    </ul>
+</ul>

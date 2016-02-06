@@ -1,0 +1,44 @@
+%(hilight)s
+<h2><i class="fa fa-windows fa-fw"></i>LS11 for .NET ライブラリ</h2>
+<ul class="checklist">
+    <li>
+    <h3>概要</h3>
+    <p>これまで提供されてきたLs11系のAPIは全てC++のネイティブ用でしたが、<br>
+    こちらは、LS11Modを.NET用にラッピングしたものとなります。</p>
+    <p>「ANY CPU」ではなく「x86」用ですので、C#やVB.netから利用する場合、<br>
+    ターゲットをx86に設定するのを忘れないようにしてください。</p>
+    <p>型は、全てString もしくは ArrayList 型のみとなります。 <br>
+    ファイルベースのものは除去し、メモリベースのもののみ残してあります。 <br>
+    </p>
+    <li>
+    <h3>ダウンロード</h3>
+    <dl>
+        <dt>
+        <div class="download_file">DOWNLOAD ⇒ <a href="%(file)s">Ls11Mod API For .NET</a>ファイル。</div>
+        </dt>
+        <dd>
+        <div class="update_time">└更新日 %(year)04d/%(mon)02d/%(mday)02d</div>
+        </dd>
+    </dl>
+    <p>「LS11DotNet.dll」と、「LS11DotNet.dll」のソースファイル全てが同封されています。</p>
+    <li>
+    <h3>動作環境</h3>
+    <ul>
+        <li>.NET FrameWork 4.0<br>
+        <li><a href="https://www.microsoft.com/ja-jp/download/details.aspx?id=40784"><b>Visual Studio 2013 Runtime</b></a> をインストールしたことがない人は、インストールしてください。<br>
+        <b>OSのビット数に関わらずx86版をインストールしてください。</b> <br>
+    </ul>
+    <li>
+    <h3>使い方</h3>
+    <div class="code"><pre class="brush:cpp">
+
+            ArrayList al = new ArrayList();
+            LS11DotNet.Ls11.DecodePack(&quot;bfile.n6p&quot;, al);
+
+            // alに対してここで操作
+
+            LS11DotNet.Ls11.EncodePack(&quot;bfile2.n6p&quot;, al);
+</pre></div>
+    <p>SplitData, JoinDataに対する考え方もC++版と同じです。</p>
+    <p><a href="?page=nobu_mod_the_hexmap_editor">ヘックスマップエディタ</a>の添付ソースのLS11系処理をしている処を参考にしてみてください。</p>
+</ul>

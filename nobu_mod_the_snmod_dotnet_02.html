@@ -1,0 +1,195 @@
+%(hilight)s
+<h2><i class="fa fa-table fa-fw"></i>メモリエディタを作る</h2>
+<ul class="checklist">
+    <li>
+    <h3>～中級編～</h3>
+    <p>ここは、前節「ScenarioModを.NETとの混在アセンブリ(C++/CLI)とする」の続きとなります。<br>
+    </p>
+    <p>さて、前節では、.NET FrameWorkをSceanrioModの中で使用し、フォームを表示、フォームの中にボタンを１つ配置しました。<br>
+    </p>
+    <ul>
+        <li>フォームクラスを用意
+        <li>GUIコンポーネント(ボタンといったもの)用意
+        <li>GUIコンポーネントを何かした時用のイベントハンドラを用意(クリックした時これを実行～など)
+        <li>フォーム上にGUIコンポーネントを配置(Controls-&gt;Addの部分)
+        <li>フォーム表示( -&gt;Showの部分)<br>
+    </ul>
+    <p>といった一連の流れを作りました。<br>
+    </p>
+    <p>これは.NET FrameWorkで最も多い「フォームタイプ」の基礎です。<br>
+    </p>
+    <p>今節では、これを踏まえて、メモリビューワ→メモリエディタを作ります。<br>
+    </p>
+    <p>信じられないほどあっという間に出来上がるので驚くことでしょう。<br>
+    </p>
+
+
+    <li>
+    <h3>MemoryEditorFromの変更</h3>
+    <p>前節のMemoryEditorFormの中身の変更となります。</p>
+    <p>まずはメモリビューワーを実現してみましょう。</p>
+    <p>気を付けるべきはやはり<b>String^</b>型です。<br>
+    .NET FrameWorkの String^型と、C/C++のchar*やstd::string 型との相互変換のやり方は知っておく必要があります。<br>
+    <p>C++/CLIがC#に比べて若干取り回しがしにくいのは、この文字列周りだと言えるでしょう。<br>
+    </p>
+
+    <div class="code"><pre class="brush:cpp">
+
+ref class MemoryEditorForm : public Form {
+
+private:
+  DataGridView^ dgv;  // データグリッドビュー型。 エクセルのように格子状のデータを表示できるため、非常によく利用される。
+
+public:
+  MemoryEditorForm() {
+
+    this-&gt;Text = &quot;MemoryEditor&quot;;
+
+    // データグリッド全体のインスタンス
+    dgv = gcnew DataGridView();
+    dgv-&gt;Width = 1000;
+    dgv-&gt;Height = 800;
+
+    // .NETのString^型を要素とする、.NETの配列array^型。
+    array&lt;String^&gt;^ colTitle = {&quot;indexID&quot;, &quot;姓&quot;, &quot;名&quot;, &quot;政治&quot;, &quot;戦闘&quot;, &quot;智謀&quot;};
+
+    // -------------- ここからデータグリッドの「縦列に相当するカラムブジェクト」と、「各カラムのタイトル」の文字列をセッティングする。
+    // 「index:0 姓:1 名:2 政治:3 戦闘:4 智謀:5」 という順番となる。
+
+    for (int i=0; i &lt; colTitle-&gt;Length; i++) {
+      // 縦列のオブジェクトを作り
+      DataGridViewTextBoxColumn^ dgvtbc = gcnew DataGridViewTextBoxColumn();
+      // タイトル文字列を設定
+      dgvtbc-&gt;HeaderText = colTitle[i];
+      // グリッドビューに縦列として追加。
+      dgv-&gt;Columns-&gt;Add(dgvtbc);
+    }
+
+    // 各カラムに天翔記のデータ(532人の武将の、名字、名前、政才、戦才、智才)を足してゆく
+    DgvDataImport();
+
+    // データグリッドビューをフォームに乗っける
+    this-&gt;Controls-&gt;Add(dgv);
+  }
+
+private:
+  void DgvDataImport() {
+
+    // 横列単位で足してゆく、index:0, 姓:1, 名:2, 政治:3 戦闘:4 智謀:5 の順番通り
+    for ( int i=0; i&lt;最大数::武将情報::配列数; i++) {
+      dgv-&gt;Rows-&gt;Add(
+        i,
+        String←string( Get_名字(i) ),
+        String←string( Get_名前(i) ),
+        p武将情報[i].最大政才,
+        p武将情報[i].最大戦才,
+        p武将情報[i].最大智才
+        );
+    }
+  }
+};
+</pre></div>
+
+    <p><img src="./cnt_mod/mod_snmod/cnt_mod_scenario_mod_dnt_06.png"> <br>
+    </p>
+
+
+    <li><h3>メモリエディタへ</h3>
+    <p>最後にメモリエディタとしましょう<br>
+    </p>
+    <p>グリッドの値が変化した時に、ScenarioModでやってきた通り、<br>
+    p武将情報[i].*** などに値を代入すれば良いだけです。<br>
+    </p>
+
+    <div class="code"><pre class="brush:cpp; highlight:[35,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84]">
+ref class MemoryEditorForm : public Form {
+
+private:
+  DataGridView^ dgv;  // データグリッドビュー型。 エクセルのように格子状のデータを表示できるため、非常によく利用される。
+
+public:
+  MemoryEditorForm() {
+
+    this-&gt;Text = &quot;MemoryEditor&quot;;
+
+    // データグリッド全体のインスタンス
+    dgv = gcnew DataGridView();
+    dgv-&gt;Width = 1000;
+    dgv-&gt;Height = 800;
+
+    // .NETのString^型を要素とする、.NETの配列array^型。
+    array&lt;String^&gt;^ colTitle = {&quot;indexID&quot;, &quot;姓&quot;, &quot;名&quot;, &quot;政治&quot;, &quot;戦闘&quot;, &quot;智謀&quot;};
+
+    // -------------- ここからデータグリッドの「縦列に相当するカラムブジェクト」と、「各カラムのタイトル」の文字列をセッティングする。
+    // 「index:0 姓:1 名:2 政治:3 戦闘:4 智謀:5」 という順番となる。
+
+    for (int i=0; i &lt; colTitle-&gt;Length; i++) {
+      // 縦列のオブジェクトを作り
+      DataGridViewTextBoxColumn^ dgvtbc = gcnew DataGridViewTextBoxColumn();
+      // タイトル文字列を設定
+      dgvtbc-&gt;HeaderText = colTitle[i];
+      // グリッドビューに縦列として追加。
+      dgv-&gt;Columns-&gt;Add(dgvtbc);
+    }
+
+    // 各カラムに天翔記のデータ(532人の武将の、名字、名前、政才、戦才、智才)を足してゆく
+    DgvDataImport();
+
+    // データグリッドのセルを編集した時のイベントハンドラを登録する。
+    dgv-&gt;CellValueChanged += gcnew DataGridViewCellEventHandler(this, &amp;MemoryEditorForm::dgv_CellValueChanged);
+
+    // データグリッドビューをフォームに乗っける
+    this-&gt;Controls-&gt;Add(dgv);
+  }
+
+private:
+  void DgvDataImport() {
+
+    // 横列単位で足してゆく、index:0, 姓:1, 名:2, 政治:3 戦闘:4 智謀:5 の順番通り
+    for ( int i=0; i&lt;最大数::武将情報::配列数; i++) {
+      dgv-&gt;Rows-&gt;Add(
+        i,
+        String←string( Get_名字(i) ),
+        String←string( Get_名前(i) ),
+        p武将情報[i].最大政才,
+        p武将情報[i].最大戦才,
+        p武将情報[i].最大智才
+        );
+    }
+  }
+
+  void dgv_CellValueChanged(Object^ sender, DataGridViewCellEventArgs^ e)	{
+    // イベントが発生したオブジェクト(=sender) はデータグリッドビュー型なので、データグリッドビュー型として受け取って…
+    DataGridView^ grid = (DataGridView^)sender;
+
+    // 編集したセルの「行」の一番左のカラムである「indexID(=0列目)」に入っている値が、武将番号【配列用】である。
+    // ユーザが手で入力したものは全て文字列になってしまう。
+    // 一方プログラムからDgvDataImportでは最初は数値で入れていた。
+    // よって、どのようなデータ型でも良いように、ToStringによってすべて文字列に直した後、Convert::***によって、整数型にする。
+    int iBushouID = Convert::ToInt32(grid[0, e-&gt;RowIndex]-&gt;Value-&gt;ToString()); // indexIDが一番左だからcolumnは0
+
+    // 発生したイベントの列が3番目なら
+    if (e-&gt;ColumnIndex == 3) {
+      // 該当のグリッドの値をbyte型(256までの型)にして、p武将情報に代入する。
+      p武将情報[iBushouID].最大政才 = Convert::ToByte(grid[e-&gt;ColumnIndex, e-&gt;RowIndex]-&gt;Value-&gt;ToString());
+    }
+    // 発生したイベントの列が4番目なら
+    if (e-&gt;ColumnIndex == 4) {
+      // 該当のグリッドの値をbyte型(256までの型)にして、p武将情報に代入する。
+      p武将情報[iBushouID].最大戦才 = Convert::ToByte(grid[e-&gt;ColumnIndex, e-&gt;RowIndex]-&gt;Value-&gt;ToString());
+    }
+    // 発生したイベントの列が5番目なら
+    if (e-&gt;ColumnIndex == 5) {
+      // 該当のグリッドの値をbyte型(256までの型)にして、p武将情報に代入する。
+      p武将情報[iBushouID].最大智才 = Convert::ToByte(grid[e-&gt;ColumnIndex, e-&gt;RowIndex]-&gt;Value-&gt;ToString());
+    }
+    デバッグ出力 &lt;&lt; &quot;budhou:&quot; &lt;&lt; iBushouID &lt;&lt; &quot;row:&quot; &lt;&lt; e-&gt;RowIndex &lt;&lt; &quot;column:&quot; &lt;&lt; e-&gt;ColumnIndex &lt;&lt; endl;
+
+  }
+};
+
+</pre></div>
+<p>
+    <img src="./cnt_mod/mod_snmod/cnt_mod_scenario_mod_dnt_06.png"> <br>
+</p>
+</ul>

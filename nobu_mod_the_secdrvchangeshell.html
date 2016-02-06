@@ -1,0 +1,78 @@
+<h2><i class="fa fa-paw fa-fw"></i>SecDrvChangeShell<br>（secdrv.sys ON/OFF 切り替えツール）</h2>
+<ul class="checklist">
+<li><h3>概要</h3>
+<p>
+このツールは、secdrv.sysの有効・無効を切り替えるツールです。<br>
+<br>
+<b>基本的には、Windows Vista～Windows 8.1の人を対象としたツールであり、Windows 10以降のOSは対象ではありません。</b><br>
+(※Windows 10 以降では、secdrv.sysはテストモードの時だけ有効とすることが可能なため、ON/OFFする必要性があまりない。)<br>
+<br>
+Windows Vista～Windows 8.1で SafeDisk関係で ゲームやソフトが動作しなくなった場合に、利用してください。
+</p>
+<li><h3>ダウンロード</h3>
+<dl>
+    <dt>
+    <div class="download_file">DOWNLOAD ⇒ <a href="%(file)s">SecDrvChangeShell.zip</a>ファイル。</div>
+    </dt>
+    <dd>
+    <div class="update_time">└更新日 %(year)04d/%(mon)02d/%(mday)02d</div>
+    </dd>
+</dl>
+<li><h3>動作環境:</h3>
+<ul>
+    <li>Windows Vista～Windows 8.1<br>
+    (Windows10以降でも「Windowsがテストモード」なら動作はします。)<br>
+    <li>.NET FrameWork 4.0 以降。
+</ul>
+<li><h3>実行方法</h3>
+<ol>
+    <li>上記ファイルをダウンロードして、SecDrvChangeShell.zipを解凍する。<br>
+    <li><b>SecDrvChangeShell.exe</b>を<b>実行する度に、ON・OFFが切り替わります。</b><br>
+    基本、「初めて実行」の際は、以下のような青い(もしくは赤い)画面が出ると思います。 <br>
+    「詳細情報」をクリックして、実行。<br><br>
+    <img src="./other_soft/secdrvchangeshell/cnt_secdrvchangeshell_01.png"><br>
+    <br>
+    <li>「有効化に成功」や「無効化に成功」といったメッセージが出ます。<br>
+    また、場合によっては、「失敗」といったメッセージが出ます。<br>
+    <br>
+    <li>Windows 10以降で有効化に失敗した場合、「secdrvを自己署名をしていない OR テストモードに移行していない」との旨のメッセージとともに、
+    解決策を記載した関連情報の当サイト上のページへと誘導されます。
+</ol>
+<br>
+<br>
+　<b>以上が使い方の基本</b>となります。<br>
+　secdrv.sys がONの間は、ゲームが稼働し、OFFだと稼働しない、ということになります。<br>
+<br>
+<li><h3>応用編</h3>
+<p>
+　以下は応用編となります。<br>
+</p>
+<ul class="pointlist">
+<li><h4>secdrv.sysのONとゲーム起動を一緒に行う</h4>
+<ol>
+<li>対象のゲームのEXE(例えば、NOBU11PK.EXEなど)と<b>同じフォルダにSecDrvChangeShell.exe をコピー</b>しておきます。<br><br>
+    <img src="./other_soft/secdrvchangeshell/cnt_secdrvchangeshell_02.png"><br><br>
+<li>SecDrvChangeShell.exe のショートカットをデスクトップに作ります。<br><br>
+    <img src="./other_soft/secdrvchangeshell/cnt_secdrvchangeshell_03.png"><br><br>
+<li>作ったデスクトップのショートカットを右クリック。プロパティのショートカットのタブを開き、<br>
+「リンク先」の部分に、「SecDrvChangeShell.exe」の<b>「引数」として、起動したいゲームのEXEのファイル名をつけ加えます。</b><br><br>
+    <img src="./other_soft/secdrvchangeshell/cnt_secdrvchangeshell_04.png"><br><br>
+
+<li>以上で、このショートカットを実行することで、<b>「secdrv.sys を ONにするとともに、ゲームが起動」</b>します。<br><br>
+
+<li>通常は、ショートカットの名前やアイコンを変更するのが良いでしょう。<br><br>
+    <img src="./other_soft/secdrvchangeshell/cnt_secdrvchangeshell_05.png"><br><br>
+
+</ol>
+<li><h4>ゲーム終了時にsecdrv.sysのOFFも行う</h4>
+<ol>
+<li>先ほど作ったデスクトップのショートカットの「リンク先」の項目で、<br>
+「リンク先」の部分に、「SecDrvChangeShell.exe」の<b>「引数」として、さらに「auto」を加えることで、終了時にsecdrv.sysをOFFにします。</b><br>
+(secdrv.sysが必要な「別のゲーム」が起動中だとしても、OFFにしてしまうので、注意)<br><br>
+    <img src="./other_soft/secdrvchangeshell/cnt_secdrvchangeshell_06.png"><br>
+
+<br>
+</ol>
+</ul>
+</ul>
+

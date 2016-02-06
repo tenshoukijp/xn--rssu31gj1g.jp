@@ -1,0 +1,105 @@
+%(hilight)s
+<h2><i class="fa fa-book fa-fw"></i>戦国名物事典型＆ カスタム::On_戦国名物事典要求時(int 家宝番号)</h2>
+<div class="code"><pre class="brush:cpp;">
+戦国名物事典型＆ カスタム::On_戦国名物事典要求時(int 家宝番号) {
+  return NULL;
+}
+</pre></div>
+<ul class="checklist">
+<li><h3>タイミング</h3>
+<ul>
+    <li>このメソッドは家宝の列伝に相当する「戦国名物事典」が表示するタイミングで複数回呼び出される。<br>
+    <p><img src="./cnt_mod/mod_snmod/cnt_mod_scenario_mod_ref_081.png"></p>
+</ul>
+<li><h3>一般的用途</h3>
+<ul>
+    <li>様々な状況に応じて、家宝の名前、あるいは、列伝等を変化させたい場合に使用する。<br>
+</ul>
+<li><h3>例①</h3>
+<div class="code"><pre class="brush:cpp;">
+戦国名物事典型＆ カスタム::On_戦国名物事典要求時(int 家宝番号) {
+
+  // 家宝名は家宝番号が全てのシナリオを通じて固定である。
+  // よって何番が何の家宝か？ は決まっており、家宝列伝(戦国名物事典)とも一致する。
+  int iKahouID = 家宝番号 - 1;
+
+  if (0 &lt;= iKahouID &amp;&amp; iKahouID &lt; 最大数::家宝情報::配列数) {
+    // 孫子という文字列を含んだ家宝
+    if ( Is_文字列マッチ( Get_家宝名(iKahouID), &quot;孫子&quot;) ) {
+      戦国名物事典型 rt
+        (
+        &quot;ｿﾝｼｶｲ\x0A孫子改&quot;,
+
+        &quot;１２３４５６７８９101112131415161718\x0A&quot;
+        &quot;１２３４５６７８９101112131415161718\x0A&quot;
+        &quot;１２３４５６７８９101112131415161718\x0A&quot;
+        &quot;１２３４５６７８９101112131415161718\x0A&quot;
+        );
+      return rt;
+    }
+  }
+
+  // 変更しない場合NULL
+  return NULL;
+}
+
+</pre></div>
+<li><h3>例②</h3>
+<div class="code"><pre class="brush:cpp;">
+戦国名物事典型＆ カスタム::On_戦国名物事典要求時(int 家宝番号) {
+
+  int iKahouID = 家宝番号 - 1;
+
+  if (0 &lt;= iKahouID &amp;&amp; iKahouID &lt; 最大数::家宝情報::配列数) {
+    if ( Is_文字列マッチ( Get_家宝名(iKahouID), &quot;孫子&quot;) ) {
+      戦国名物事典型 rt
+        (
+        &quot;ｿﾝｼｶｲ\x0A孫子改&quot;,
+
+        &quot&quot; // 「&quot&quot」にすると、該当部分は元の文字列のままとなる。
+        );
+      return rt;
+    }
+  }
+
+  // 変更しない場合NULL
+  return NULL;
+}
+
+</pre></div>
+<li><h3>例③</h3>
+<div class="code"><pre class="brush:cpp;">
+戦国名物事典型＆ カスタム::On_戦国名物事典要求時(int 家宝番号) {
+
+  int iKahouID = 家宝番号 - 1;
+
+    // 蜻蛉切を本多忠勝が所持している時だけ、戦国名物事典の内容を変更する。
+
+  if (0 &lt;= iKahouID &amp;&amp; iKahouID &lt; 最大数::家宝情報::配列数) {
+    デバッグ出力 &lt;&lt; &quot;家宝番号&quot; &lt;&lt; iKahouID &lt;&lt; endl;
+    // 60というのは蜻蛉切のこと、順番などを変えていなければ、この60固定で蜻蛉切である。
+    if ( iKahouID == 60 ) {
+      int iBushouID = p家宝情報[iKahouID].所有武将【武将番号】 - 1;
+      if (0 &lt;= iBushouID &amp;&amp; iBushouID &lt; 最大数::武将情報::配列数) {
+        デバッグ出力 &lt;&lt; &quot;武将番号&quot; &lt;&lt; iBushouID &lt;&lt; endl;
+        if (Get_名字(iBushouID) == &quot;本多&quot; &amp;&amp; Get_名前(iBushouID) == &quot;忠勝&quot;) { // 本多忠勝だ
+          戦国名物事典型 rt
+            (
+            &quot;ﾀﾀﾞｶﾂﾉﾎﾝﾎﾞｷﾘ\x0A忠勝の蜻蛉切&quot;,
+
+            &quot;１２３４５６７８９101112131415161718\x0A&quot;
+            &quot;１２３４５６７８９101112131415161718\x0A&quot;
+            &quot;１２３４５６７８９101112131415161718\x0A&quot;
+            &quot;１２３４５６７８９101112131415161718\x0A&quot;
+            );
+          return rt;
+        }
+      }
+    }
+  }
+
+  // 変更しない場合NULL
+  return NULL;
+}
+</pre></div>
+</ul>

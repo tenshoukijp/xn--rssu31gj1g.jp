@@ -1,0 +1,40 @@
+%(hilight)s
+<h2><i class="fa fa-book fa-fw"></i>string カスタム::On_特殊兵態名表示直前(int 武将番号)</h2>
+<div class="code"><pre class="brush:cpp;">
+string カスタム::On_特殊兵態名表示直前(int 武将番号) {
+  return "";
+}
+</pre></div>
+<ul class="checklist">
+<li><h3>タイミング</h3>
+<ul>
+    <li>このメソッドは武将の特殊兵隊を表示するタイミングで呼び出される。<br>
+    <li>具体的には、様々な「武将リスト詳細画面」等と「武将詳細画面」である。 <br>
+    <p>
+    <img src="./cnt_mod/mod_snmod/cnt_mod_scenario_mod_ref_010.png"></p>
+</ul>
+<li><h3>一般的用途</h3>
+<ul>
+    <li>自作のオリジナルな武将や、特に思い入れの強い武将の場合、 「新しい特殊兵隊名を付けたい」という目的で利用する。<br>
+</ul>
+<li><h3>例①</h3>
+<div class="code"><pre class="brush:cpp;">
+string カスタム::On_特殊兵態名表示直前(int 武将番号) {
+
+  int iBushouID = 武将番号-1; // 武将番号→武将番号【配列用】に
+
+  if ( 0 &lt;= iBushouID &amp;&amp; iBushouID &lt; 最大数::武将情報::配列数 ) {
+    if ( p武将戸籍情報[iBushouID].顔番号 == 顔番号::武田晴信 ) { // 武田信玄の顔＆列伝番号
+      return &quot;風林火山&quot;;
+    }
+  }
+
+  // 変更しない場合&quot;&quot;
+  return &quot;&quot;;
+}
+</pre></div>
+<p><img src="./cnt_mod/mod_snmod/cnt_mod_scenario_mod_ref_011.png">
+</p>
+<p><img src="./cnt_mod/mod_snmod/cnt_mod_scenario_mod_ref_012.png">
+</p>
+</ul>

@@ -1,0 +1,101 @@
+%(hilight)s
+
+<h2><i class="fa fa-book fa-fw"></i>C#からIronPythonを利用してみる</h2>
+<ul class="checklist">
+    <li>
+    <h3>概要</h3>
+    <p>ここでは、C#からIronPythonModを利用する例を記載しています。</p>
+    <p>最終的な目的は、IronPythonをScenarioModから利用することにありますが、<br>
+    IronPythonそのものはC#から利用されることを強く意識した調整がされていると言えます。<br>
+    </p>
+    <p>まずは、雰囲気を理解するため、IronPythonとC#の連携がいかに自然で強力であるか見てみましょう。</p>
+    <li>
+
+    <h3>プロジェクトの作成</h3>
+    <p>適当にC#のコンソールアプリケーションを作成してみましょう。<br>
+    .NET FrameWorkのバージョンは、ScenarioModと合わせて4.0としておきましょう。<br>
+    </p>
+    <p><img src="./cnt_mod/mod_ironpython/cnt_mod_ironpython_03.png"></p>
+    <p>IronPythonMod.dllを参照に加えてください。<br>
+    <span class="posotive">合体DLLですので、他のネット上のIronPythonに関する記事とは異なり、「これ１つの参照を追加するだけでOK」</span>です。</p>
+    <p><img src="./cnt_mod/mod_ironpython/cnt_mod_ironpython_02.png"></p>
+    <p><img src="./cnt_mod/mod_ironpython/cnt_mod_ironpython_01.png"></p>
+
+    <li>
+    <h3>C#側</h3>
+    <p>C#のソース</p>
+    <div class="code"><pre class="brush:csharp;">
+using System;
+using IronPython.Hosting;
+
+namespace ConsoleApplication16
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            var pe = Python.CreateEngine();
+            dynamic scope = pe.ExecuteFile(&quot;script.py&quot;);
+
+            // その場で式を実行。
+            int result32 = pe.Execute&lt;int&gt;(&quot;2 ** 5&quot;);
+            Console.WriteLine(result32);
+
+            // グローバルの関数を引数付で実行、返り値ももらう
+            dynamic s = scope.hello(&quot;world&quot;);
+            Console.WriteLine(s);
+
+            // Python側のクラスのインスタンスを作成。
+            dynamic foo = scope.Foo();
+            foo();     // __call__
+            foo.政治 = 97;
+            foo.戦闘 = 92;
+            foo.智謀 = 95;
+            foo.名前 = &quot;武田信玄&quot;;
+            int result_sum = foo.method();
+            Console.WriteLine(result_sum);
+            Console.WriteLine();
+
+            // Python側のメタクラスをこっちで使ってみる
+            dynamic MyClass = scope.getMetaClass();
+            dynamic myinstance = MyClass(); // MyClassクラスのインスタンスを作成
+            Console.WriteLine(myinstance.my_func(5));
+        }
+    }
+}
+</pre></div>
+
+    <li>
+    <h3>Python側</h3>
+    <p>スクリプト側となるPython側のソースも用意します。<br>
+    Pythonは「空白やインデント」も文法に含まれますので、注意してください。</p>
+    <p><span class="negative">C#から呼ばれますので、「script.pyのソースコードの文字コードをutf8」で保存</span>してください。<br>
+    (テキストエディタなどで実際に確認してください。間違っているとSyntax Errorが出ます)</p>
+    <p>IronPythonのソース:script.py</p>
+    <div class="code"><pre class="brush:python;">
+# coding: utf8
+
+
+def hello( x ) :
+  print &quot;hello, &quot; + x
+  return &quot;hello&quot; + x
+
+class Foo() :
+  def __init__( self ) :
+    print &quot;初期化&quot;
+
+  def __call__( self ) :
+    print &quot;()付でインスタンス呼び出し&quot;
+
+  def method( self ) :
+    print self.名前
+    return self.政治 + self.戦闘 + self.智謀
+
+def getMetaClass() :
+  return type( 'MyClass', (), {'my_func' : lambda self, x : 2 ** x} )
+</pre></div>
+    <p>以上となります。</p>
+    <p>C#にあるdynamicのおかげで、C#とIronPythonは、「ほぼシームレス」といって良いレベルで<br>
+    「値」「関数」や「クラスそのもの」「クラスのインスタンス」の送受信が出来ています。</p>
+</ul>
+

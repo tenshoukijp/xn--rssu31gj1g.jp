@@ -1,0 +1,34 @@
+%(hilight)s
+<h2><i class="fa fa-book fa-fw"></i>string カスタム::On_家宝種類名表示直前(int 家宝番号, string 家宝名)</h2>
+<div class="code"><pre class="brush:cpp;">
+string カスタム::On_家宝種類名表示直前(int 家宝番号, string 家宝名) {
+  return "";
+}
+</pre></div>
+<ul class="checklist">
+<li><h3>タイミング</h3>
+<ul>
+    <li>このメソッドは対象の家宝の種類名(刀剣や馬といったもの)を表示するタイミングで呼び出される。<br>
+    <li>具体的には、あらゆる「家宝リスト画面」と「家宝詳細画面」である。
+</ul>
+<p><img src="./cnt_mod/mod_snmod/cnt_mod_scenario_mod_ref_009.png"></p>
+<li><h3>一般的用途</h3>
+<ul>
+    <li>自作のオリジナルな家宝など作った場合、既存の家宝種類で当てはまるものが無い場合など、 「新しい家宝種類の名前を付けたい」という目的で利用する。<br>
+</ul>
+<li><h3>例①</h3>
+<div class="code"><pre class="brush:cpp;">
+string カスタム::On_家宝種類名表示直前(int 家宝番号, string 家宝名) {
+
+  if ( 家宝名 == &quot;孫子&quot; ) {
+    return &quot;軍学書&quot;;
+  }
+
+  else if ( Is_正規表現マッチ(家宝名, &quot;.+弓$&quot;) ) { // 自作家宝名で、最後の文字が「弓」のものは全て
+    return &quot;弓&quot;;
+  }
+
+  // 変更しない場合&quot;&quot;
+  return &quot;&quot;;
+}
+</pre></div></ul>

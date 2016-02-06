@@ -1,0 +1,233 @@
+%(hilight)s
+<h2><i class="fa fa fa-book fa-fw"></i>mrubyエンジンのcp932化の手順</h2>
+<ul class="checklist">
+    <h3>概要</h3>
+    <p>ここではmrubyをScenarioModに組み込む上では避けて通れない、<br>
+    mrubyのcp932対応や、必要な措置について記載しています。</p>
+    <li>
+    <h3>mrubyとは</h3>
+    <p><a href="https://github.com/mruby/mruby">mruby</a> は、まつもとゆきひろ氏が中心となって開発しているRubyを、組み込み向けに軽量・小型化した言語です。</p>
+    <p>RubyとLuaは誕生時期がほぼ同時期でですが、<br>
+    LuaがC言語アプリケーションの組み込み用途として設計され、数多く採用されているに対し、<br>
+    Rubyは、Perlの代用やRuby on Rails を切っ掛けとしてWeb方面へと花開きました。<br>
+    mrubyとは、そのようなrubyの応用範囲を広げるべく、組み込み用途向けに仕立て直したものです。<br>
+    </p>
+    <p>しかし、この分野のでLuaの優位性はかなり高く、2015年現在、mrubyを採用するプロダクトは未だ数は少ないです。<br>
+    ですが、元々Rubyの使い手であれば、導入は一考に値するでしょう。<br>
+    </p>
+    <li>
+    <h3>ダウンロード</h3>
+    <dl>
+        <dt>
+        <div class="download_file">DOWNLOAD ⇒ <a href="%(file)s">mruby-master-cp932-1.1.0.01.zip</a></div>
+        </dt>
+        <dd>
+        <div class="update_time">└更新日 %(year)04d/%(mon)02d/%(mday)02d</div>
+        </dd>
+    </dl>
+    <p>これらダウンロード対象となるソースは、mrubyをcp932(≒sjis)に対応したバージョン一式である。<br>
+    この章の内容を理解する上で参考にしてください。</p>
+
+    <li>
+    <h3>cp932に対応させる必要性</h3>
+    <p>天翔記本体は、cp932で構成されており、各種データも全てcp932である。<br>
+    そして、ScenarioModもcp932であり、ModDebuggerもcp932である。<br>
+    以上から、mrubyをScenarioModで使う上においては、mruby本体のレベルからcp932にある程度は対応する必要がある。</p>
+
+    <li>
+    <h3>mrubyコンパイルのための前準備</h3>
+    <p>ここに記載されている情報は、mruby v1.1.0 2014/11/19版でのものとなる<br>
+    mrubyのバージョンアップに伴い、コンパイルの仕方やファイル構成等が変更になっている可能性が高いことを踏まえた上で記事を読んで欲しい。</p>
+    <ul class="pointlist">
+        <li>
+        <h4>最新版のmrubyダウンロード</h4>
+        <p><a href="https://github.com/mruby/mruby">Github の mruby</a> から「Download Zip」等でダウンロード。 <br>
+        </p>
+        <li>
+        <h4>rubyのインストール</h4>
+        <p>ruby for windows 系が入ってない人は、rubyを入れる。<br>
+        コンパイルに必要です。<br>
+        <a href="http://rubyinstaller.org/">rubyinstaller.org</a><br>
+        (パスを通す必要あり)</p>
+        <li>
+        <h4>bison for windowsのインストール</h4>
+        <p>bison for windows 系が入ってない人は、bisonを入れる。<br>
+        コンパイルに必要です。<br>
+        <a href="http://gnuwin32.sourceforge.net/packages/bison.htm">bison for windows</a><br>
+        (パスを通す必要あり)</p>
+    </ul>
+    <li>
+    <h3>mrubyのcp932対応</h3>
+    <ul class="pointlist">
+        <li>
+        <h4>完全対応する必要はない</h4>
+        <p>luaもそうですが、cp932に対応といっても、フルに対応する必要はありません。<br>
+        いわば、「バイト列」としての扱いのまま、cp932文字コードで「エラー」が出ない状態であれば十分と言えます。<br>
+        </p>
+        <p>いわゆるLuaのcp932化と同じレベルものものを目指します。</p>
+        <li>
+        <h4>mbenc.hの作成</h4>
+        <p>まず、mbenc.hというファイルを作ります。</p>
+        <pre class="brush:cpp;">
+/*
+** mbenc.h : MS-Windows用マクロ
+**
+** mruby の cp932 encoding用
+** by 翔.jp
+*/
+
+#ifndef mbenc_h
+#define mbenc_h
+
+
+#define MRUBY_USE_ENC_CP932   1
+
+
+/* -- japanese cp932 -- */
+#if MRUBY_USE_ENC_CP932
+#define is_lead_byte(c) ((0x81 &lt;= ((unsigned char) (c)) &amp;&amp; ((unsigned char) (c)) &lt;= 0x9f) || (0xe0 &lt;= ((unsigned char) (c)) &amp;&amp; ((unsigned char) (c)) &lt;=0xfc))
+#else
+#define is_lead_byte(c) (0)
+#endif
+
+
+#endif
+
+   </pre>
+        <p>このファイルをmrubyの「\mruby-master\include」ディレクトリの中に入れましょう。<br>
+        </p>
+        <li>
+        <h3>parse.yの編集</h3>
+        <p>次に、parse.yというファイルが、mruby-master\src\parse.y という場所にあります。<br>
+        </p>
+        <pre class="brush:cpp;">
+    static int
+    parse_string(parser_state *p)
+    </pre> の関数の<b>while文内の一番下</b>あたりが、 <pre class="brush:cpp;highlight:[11]">
+        pushback(p, c);
+        return tLITERAL_DELIM;
+      }
+      else {
+        pushback(p, c);
+        tokfix(p);
+        yylval.nd = new_str(p, tok(p), toklen(p));
+        return tSTRING_MID;
+      }
+    }
+    tokadd(p, c);
+  }
+
+  tokfix(p);
+  p-&gt;lstate = EXPR_END;
+  end_strterm(p);
+
+  if (type &amp; STR_FUNC_XQUOTE) {
+</pre>
+        <p>のようになっていますので、<br>
+        (※バージョンが違うと少々違うかもしれませんが、とりあえず似た場所があるはずです)</p>
+        <pre class="brush:cpp;highlight:[11,12,13,14,15,16,17,18,19,20,21,22,23,24]">
+        pushback(p, c);
+        return tLITERAL_DELIM;
+      }
+      else {
+        pushback(p, c);
+        tokfix(p);
+        yylval.nd = new_str(p, tok(p), toklen(p));
+        return tSTRING_MID;
+      }
+    }
+    {
+      int is_cp932 = 0;  /* cp932用 */
+      if ( is_lead_byte( c ) ) { /* cp932の範囲だったらフラグ立て */
+        is_cp932 = 1;
+      }
+
+      tokadd(p, c); // 文字コードに関わりない処理。
+
+      if ( is_cp932 &amp;&amp; c != EOF ) { /* cp932の範囲だったらもうひとつ無条件で処理してしまう */
+        c = nextc(p);
+        tokadd(p, c);
+        is_cp932 = 0;
+      }
+    }
+  }
+
+  tokfix(p);
+  p-&gt;lstate = EXPR_END;
+  end_strterm(p);
+
+  if (type &amp; STR_FUNC_XQUOTE) {
+</pre>
+        <p>と書き換えます。<br>
+        </p>
+
+        <p>同じファイルの先頭のヘッダー部分に</p>
+        <pre class="brush:cpp;highlight:[7]">
+#include "mruby.h"
+#include "mruby/compile.h"
+#include "mruby/proc.h"
+#include "mruby/error.h"
+#include "node.h"
+#include "mrb_throw.h"
+#include "mbenc.h" // for cp932
+</pre>
+        <p>を足しておきましょう。</p>
+        <li>
+        <h4>VC++ 2013のコンパイルオプション</h4>
+        <p>さて、Windowsでは通常、VisualStudioでプログラミングするでしょう。<br>
+        その場合、mrubyはVC++ Desktop 2013以上でコンパイルすることとなります。<br>
+        </p>
+        <p>さて、それを踏まえて<br>
+        mruby-master\tasks\toolchains\visualcpp.rake<br>
+        を開けて、以下の強調してる行のオプションを変更します。</p>
+
+        <pre class="brush:cpp;highlight:[5,14]">
+
+MRuby::Toolchain.new(:visualcpp) do |conf|
+  [conf.cc].each do |cc|
+    cc.command = ENV['CC'] || 'cl.exe'
+    # C4013: implicit function declaration
+    cc.flags = [ENV['CFLAGS'] || %w(/c /nologo /W3 /we4013 /Zi /MT /Ox /Oi /Ot /D_CRT_SECURE_NO_WARNINGS)]
+    cc.defines = %w(DISABLE_GEMS MRB_STACK_EXTEND_DOUBLING)
+    cc.option_include_path = '/I%s'
+    cc.option_define = '/D%s'
+    cc.compile_options = &quot;%{flags} /Fo%{outfile} %{infile}&quot;
+  end
+
+  [conf.cxx].each do |cxx|
+    cxx.command = ENV['CXX'] || 'cl.exe'
+    cxx.flags = [ENV['CXXFLAGS'] || ENV['CFLAGS'] || %w(/c /nologo /W3 /Zi /MT /Ox /Oi /Ot /EHsc /D_CRT_SECURE_NO_WARNINGS)]
+</pre>
+        <p>VC++ Desktop2013の「<b>VS2013 x86 Native Tools コマンド プロンプトを開く</b>」を使います。<br>
+        VC++ Desktop2013 ではショートカットが存在しない場合がありますので、無い場合は自分で制作しましょう。<br>
+        デスクトップにショートカットを作成して、</p>
+        <pre class="brush:cpp">
+%comspec% /k ""C:\Program Files (x86)\Microsoft Visual Studio 13.0\VC\vcvarsall.bat"" x86
+</pre>
+        <p>みたいなのを作成します。<br>
+        実際には、VC++2013をインストールしたディレクトリにあわせて書き換えてください。<br>
+        </p>
+        <li>
+        <p>先述のVC専用コンソールに話を戻して、コンソールを立ち上げて、<br>
+        そこまで、ディレクトリを移動してから、<br>
+        </p>
+        <p><img src="./cnt_mod/mod_snmod/cnt_mod_scenario_mod_ruby01.png"><br>
+        </p>
+        <pre class="brush:cpp">
+ruby ./minirake
+</pre>
+    </ul>
+    <li>
+    <h3>コンパイル出来ない場合</h3>
+    <p>コンパイルできない場合、大抵「Cの関数」が、「VC++に無い」というだけです。<br>
+    </p>
+    <p>ほとんどの場合は、エラーが出る該当の関数をWEBで検索すれば対処方法がわかります。<br>
+    大抵は、「関数名の先頭にアンダーバー」を付けて、「何らかのヘッダーを追加すれば」<br>
+    同様の関数が存在するのでコンパイルが通ります。<br>
+    </p>
+    <li>
+    <h3>その他</h3>
+    <p>cp932化した状態でコンパイルさえできてしまえば、後は通常のmrubyと変わるものではありません。<br>
+    普通にScenarioModやShiftJis系アプリに組み込めますので、<br>
+    mrubyの使い方などをWebで調べていけば、問題なく使えるはずです。</p>
+</ul>

@@ -1,0 +1,35 @@
+%(hilight)s
+<h2><i class="fa fa-book fa-fw"></i>On_セーブデータ保存時(int スロット番号, string セーブファイル名)</h2>
+<div class="code"><pre class="brush:cpp;">
+void カスタム::On_セーブデータ保存時(int スロット番号, string セーブファイル名) {
+}
+</pre></div>
+<ul class="checklist">
+<li><h3>タイミング</h3>
+<ul>
+<li>セーブファイルをセーブする直前に呼び出される。<br>
+<p>
+  <img src="./cnt_mod/mod_snmod/cnt_mod_scenario_mod_ref_066.png"></p>
+</ul>
+<li><h3>一般的用途</h3>
+<ul>
+<li>セーブのタイミングで何か特定の処理を行う場合に使用する。<br>
+</ul>
+<li><h3>例①</h3>
+<div class="code"><pre class="brush:cpp;">
+void カスタム::On_セーブデータ保存時(int スロット番号, string セーブファイル名) {
+    デバッグ出力 &lt;&lt; &quot;スロット番号:&quot; &lt;&lt; スロット番号 &lt;&lt; endl;
+    デバッグ出力 &lt;&lt; &quot;セーブファイル名:&quot; &lt;&lt; セーブファイル名 &lt;&lt; endl;
+}
+</pre></div>
+<li><h3>例②</h3>
+<div class="code"><pre class="brush:cpp;">
+void カスタム::On_セーブデータ保存時(int スロット番号, string セーブファイル名) {
+    // 何らかの内部データを外部テキスト等へと保存する処理
+    // その際には、「本来のセーブデータ(savedat.n6p等)」と外部セーブデータ「個々人が管理するもの」
+    // を紐づけるための番号を「Set_フラグ」関数等を用いて、セーブデータに保存しておく必要がある。
+
+    // 例としての具体的コードは長大となるため、割愛する。
+}
+</pre></div>
+</ul>

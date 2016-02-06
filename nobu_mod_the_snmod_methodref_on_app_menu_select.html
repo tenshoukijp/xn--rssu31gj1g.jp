@@ -1,0 +1,52 @@
+%(hilight)s
+<h2><i class="fa fa-book fa-fw"></i>void カスタム::On_アプリケーションメニュー選択時(int メニュー番号)</h2>
+<div class="code"><pre class="brush:cpp;">
+void カスタム::On_アプリケーションメニュー選択時(int メニュー番号) {
+}
+</pre></div>
+<ul class="checklist">
+<li><h3>タイミング</h3>
+<ul>
+<li>このメソッドは、「アプリケーションとしてのメニューが選択される度」に呼ばれる。<br>
+</ul>
+<li><h3>一般的用途</h3>
+<ul>
+<li>通常、自作機能用途メニューを追加した後、そのメニューの選択時に、何かを実行させるため利用する。<br>
+</ul>
+<li><h3>例①</h3>
+<div class="code"><pre class="brush:cpp;">
+
+// 通常、On_起動時等に、メニューを１度追加する。
+static int menu1番号 = -1;
+static int menu2番号 = -1;
+
+void カスタム::On_起動時() {
+  menu1番号 = アプリケーション::メニューアイテム追加(&quot;熟練度MAX&quot;);
+  menu2番号 = アプリケーション::メニューアイテム追加(&quot;ノートパッド&quot;);
+  アプリケーション::メニューアイテム追加(&quot;---&quot;); // "---"とすることで、セパレータ（横線）を追加することも出来る。
+}
+
+
+void カスタム::On_アプリケーションメニュー選択時(int メニュー番号) {
+    デバッグ出力 &lt;&lt; メニュー番号 &lt;&lt; endl;
+
+  // 追加したメニューＩＤと比較することで、お目当てのメニューであることを判定する。
+    if (メニュー番号 == menu1番号) {
+        // 532の武将の熟練度をMAXに
+        for (int i=0; i&lt;最大数::武将情報::配列数;i++) {
+            p武将情報[i].政治熟練値 = 2000;
+            p武将情報[i].戦闘熟練値 = 2000;
+            p武将情報[i].智謀熟練値 = 2000;
+        }
+    }
+    if (メニュー番号 == menu2番号) {
+        // 外部アプリケーションを実行 (win32api で、ノートパッドを実行)
+        ShellExecute(NULL, NULL, &quot;notepad.exe&quot;, NULL, NULL, SW_SHOWNORMAL);
+    }
+}
+
+</pre></div>
+<p>
+<img src="./cnt_mod/mod_snmod/cnt_mod_scenario_mod_99.png"><br>
+</p>
+</ul>

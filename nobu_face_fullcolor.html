@@ -1,0 +1,53 @@
+<h2><i class="fa fa fa-desktop fa-fw fa-fw"></i>フルカラーキット</h2>
+<ul class="checklist">
+<li><h3>概要</h3>
+<p>天翔記を256モードではなく、フルカラーで起動するためのキットとなります。</p>
+<li><h3>ダウンロード</h3>
+<dl>
+    <dt>
+    <div class="download_file">DOWNLOAD ⇒ <a href="http://u7.getuploader.com/nobu6/search?q=%E3%83%95%E3%83%AB%E3%82%AB%E3%83%A9%E3%83%BC%E5%8C%96">ddraw_v3.zip</a>ファイル。</div>
+    </dt>
+</dl>
+<li><h3>使用方法</h3>
+<ol>
+    <li>ddraw.dllを天翔記をインストールしたフォルダへ
+    <li>ddraw.dllのヘルプを読む。<b>但し｢Tenshou.exe｣の名前を変更するという旨の記述は無視する!!</b>
+    <li>天翔記をインストールしたフォルダにある<b>｢unKOEI.exe｣を｢unKOEIts.exe｣</b>など、別名に変更する。 <br>
+    └ <font color="red">このことは極めて重要なので決してスルーしないこと</font>
+    <li>顔フルカラーキット.zip の中身読む。
+    <li>評定や披露など、顔が８つ出てくる箇所はフルカラーキットでは対応されていない。(８色の顔が突然出現する)
+</ol>
+<li><h3>Windows (Vista / 7 / 8 / 8.1 / 10)にて、ddraw.dllでフルカラーにならない場合</h3>
+<ul>以下のことを再度確認してみてください。<br>
+特にWindows (Vista / 7 / 8 / 8.1 / 10)特有の問題として最後の｢<b>管理者実行権限</b>｣の問題は落とし穴です。<br><br>
+<li>｢天翔記をインストールしたフォルダ｣に｢ddraw.dll｣をコピーしたか。
+<li>｢unKoei.exe｣を別名にしたか。
+<li>｢Tenshou.exe｣に対して、｢256色で実行する｣を一度チェックした後、「TENSHOU.exe」を起動。その後、今度は「256色で実行する」のチェックをはずした後、再度「TENSHOU.EXE」を実行。<br>(※<a href="http://kb2.adobe.com/jp/cps/230/230789.html">参考URL</a>)
+<li>Tenshou.exeに対して、｢<b>管理者実行権限</b>｣で実行しているか。<br>この問題は、天翔記のインストール先が、デフォルト設定時(=Program Files～Koei～以下)に起こる現象。<br>
+(※<a href="http://kb2.adobe.com/jp/cps/230/230789.html">参考URL</a>)
+</ul>
+<li><h3>追加補足 256モードへの自動切り替わりを正しく解除する方法</h3>
+<p>先述では、unKOEI.exeのファイル名を変更することで256モードを避ける方法を記載しましたが、<br>
+    ｢ddraw.dllのフルカラーキットが天翔記フォルダにある｣という条件の下であれば、<br>
+256色への自動切り替わりを正しく解除してしまうのが理想的ですので、ここではそれを紹介します。</p>
+<p>それはtenshou.exeを256色モードのデータベースリストから除去するというものです。</p>
+<ul class="pointlist">
+    <li><h4>方法</h4><br>
+    <ol type="a">
+        <li>まず、Microsoft Application Compatibitily Toolkitをダウンロード<br><br>
+        Windows XP:<br>
+        　<a href="http://www.microsoft.com/downloads/ja-jp/details.aspx?FamilyID=3d45f344-4ff2-4c9f-beb7-445d20242d19&displaylang=ja">Microsoft Application Compatibility Toolkit 5.0</a><br><br>
+        Windows (Vista / 7 / 8 / 8.1 / 10)(Microsoftのサイトに記載は無いがWindows 8以降もこちら):<br>
+        　<a href="http://www.microsoft.com/download/en/details.aspx?displaylang=en&id=7352">Microsoft Application Compatibility Toolkit 5.6</a><br>(※ダウンロードがたくさん見えますが、下から3つ目のDOWNLOAD)<br><br>
+        <li>インストールする。
+        <li>スタートメニューより、｢Microsoft Application Compatibility Toolkit｣⇒「Compatibirity Administrator」を起動。以下のような画面
+        <li>｢Application｣の中に下の方に｢信長の野望 天翔記｣が見つかる。<br>(Applicationを開こうとすると、PCの性能によってはしばらく時間がかかります)
+        <li>その中で一番下の方、｢tenshou.exe｣で右クリックをして、 ｢Disable Entry｣とする。<br>
+        <li>「Compatibirity Administrator」を終了。<br>
+        <li>(※条件を見ればわかりますように、tenshou.exe, n6paudio.dll, unKOEI.exeというファイル名やプロダクトの内容が一致することが256色へと自動的に切り替わる条件となっているのです。
+        このため、先述では、unKOEI.exeのファイル名を変更すると、256色への切り替わりを回避することが出来たというわけです。)
+        <li>※<a href="http://itpro.nikkeibp.co.jp/article/OPINION/20060427/236520/">参考記事</a>
+    </ol>
+    <p><img src="./cnt_img/face_kaoswap_td/compatibility_toos.png"></p>
+</ul>
+</ul>

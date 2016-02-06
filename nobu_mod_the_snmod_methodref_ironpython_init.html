@@ -1,0 +1,62 @@
+%(hilight)s
+
+<h2><i class="fa fa-book fa-fw"></i>IronPythonを使う場合</h2>
+<ul class="checklist">
+    <li>
+    <h3>概要</h3>
+    <p>ScenarioModにて、テキストスクリプトを利用するには、Lua以外ではどのような候補があるでしょうか。<br>
+    実はC++/CLIでは、ほぼ全ての組み込み型のスクリプト言語を利用できますが、<br>
+    その中で、今回は、IronPythonという言語に注目しましょう。</p>
+    <p>(ここに記載されている情報は、2016/01/10 IronPython 2.7.6.0でのものとなります)<br>
+    </p>
+    <li>
+    <h3>IronPythonとは</h3>
+    <p><a href="https://ja.wikipedia.org/wiki/IronPython">IronPython</a>は、.NET FrameWorkの持つ豊富なクラスライブラリを<br>
+    Pythonの文法でシームレスに利用できるようにしたPython系言語の１つです。</p>
+    <p>
+    <p>Pythonは「汎用目的スクリプト言語」としては世界で一番人気のある言語であり、<br>
+    その中でもIronPythonは、MicrosoftのVisual Studioで「正式にサポートされている」数少ない言語の１つです。<br>
+    </p>
+    <p>また、IronPythonのソースコードは、各種の文字コード(UTF-8やShiftJIS)に対応しているため、<br>
+    <span class="positive">天翔記本体やScenarioModの文字コードがSfhitJISであることと相性が良いのです。<br>
+    ソースコードが文字列の変換の嵐になることを回避できるためです。</span><br>
+    </p>
+    <p>このような点から、IronPythonは、有力な候補と言えます。</p>
+
+    <h3>下準備</h3>
+    <p>この項目は必須ではありませんが、IronPythonはVisual Studioで正式にサポートされていますので、<br>
+    IronPythonをインストールし、Visual StudioでPython系のプロジェクトを有効化しておくと、<br>
+    高度なインテリセンスが利用可能となります。<br>
+    </p>
+    <ul class="pointlist">
+        <li>
+        <h4>IronPythonのインストール</h4>
+        <dl>
+            <dt>
+            <div class="download_file">DOWNLOAD ⇒ <a href="https://ironpython.codeplex.com/">IronPython本体</a>インストーラー</div>
+            </dt>
+        </dl>
+        <p>Downloadの「IronPython *.*.*(バージョン) Installer」をインストールしてください。
+        <li>
+        <h4>Visual StudioのPythonの有効化</h4>
+        <p>Visual Studioで「ファイル」→「新規作成」→「プロジェクト」でpythonを選択し、<br>
+        python系のプロジェクトを有効化してください。</p>
+        </li>
+    </ul>
+    <h3>ダウンロード</h3>
+    <p>こちらは当サイトが提供するIronPythonModとなります。<br>
+    <p>このファイルは、IronPythonを他言語から利用するにあたって必要なDLL群を「1つのDLLにまとめた」ものとなります。</p>
+    <dl>
+        <dt>
+        <div class="download_file">DOWNLOAD ⇒ <a href="%(file)s">IronPythonMod for .NET 4.0 ANYCPU</a>ファイル。</div>
+        </dt>
+        <dd>
+        <div class="update_time">└更新日 %(year)04d/%(mon)02d/%(mday)02d</div>
+        </dd>
+    </dl>
+    <fieldset class="alert alert-info"><legend>IronPythonModは合体DLL</legend>このファイル１つがあれば、C#やC++/CLIやVB.net等からIronPythonが利用可能です。<br>
+    例えば、IronPython本体がインストールされていない環境でも、このIronPythonMod.dllだけあれば問題ありません。</fieldset>
+    <li>
+    <h3>動作環境</h3>
+    <p>NET FrameWork 4.0以上</p>
+</ul>

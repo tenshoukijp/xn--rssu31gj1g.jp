@@ -1,0 +1,41 @@
+%(hilight)s
+<h2><i class="fa fa-book fa-fw"></i>On_セーブデータ読込時(int スロット番号, string セーブファイル名)</h2>
+<div class="code"><pre class="brush:cpp;">
+void カスタム::On_セーブデータ読込時(int スロット番号, string セーブファイル名) {
+}
+</pre></div>
+<ul class="checklist">
+    <li>
+    <h3>タイミング</h3>
+    <ul>
+        <li>セーブファイルをロードした直後に呼び出される。<br>
+
+        <p><img src="./cnt_mod/mod_snmod/cnt_mod_scenario_mod_ref_065.png"><br>
+        </p>
+    </ul>
+    <li>
+    <h3>一般的用途</h3>
+    <ul>
+        <li>ロードのタイミングで何か特定の処理を行う場合に使用する。<br>
+        但し、ロードした後、メインゲームが開始される間に、TSMod側からも多くの変数の上書きが行われるので、<br>
+        注意すること。<br>
+        このような場合は、この「On_セーブデータ読込時」ではなく「On_メインゲーム開始時」のメソッドで処理を行うのが良い。
+    </ul>
+    <li>
+    <h3>例①</h3>
+    <div class="code"><pre class="brush:cpp;">
+void カスタム::On_セーブデータ読込時(int スロット番号, string セーブファイル名) {
+    デバッグ出力 &lt;&lt; &quot;スロット番号:&quot; &lt;&lt; スロット番号 &lt;&lt; endl;
+    デバッグ出力 &lt;&lt; &quot;セーブファイル名:&quot; &lt;&lt; セーブファイル名 &lt;&lt; endl;
+}
+</pre></div>
+    <li>
+    <h3>例②</h3>
+    <div class="code"><pre class="brush:cpp;">
+void カスタム::On_セーブデータ読込時(int スロット番号, string セーブファイル名) {
+    // 何らかの外部テキストを内部変数へと格納する処理
+    // http://天翔記.jp/?page=nobu_mod_the_snmod_methodref_lua_functions_06
+    //　に類似する処理内容を行うことが多いだろう。
+}
+</pre></div>
+</ul>

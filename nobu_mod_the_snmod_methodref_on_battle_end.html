@@ -1,0 +1,40 @@
+%(hilight)s
+<h2><i class="fa fa-book fa-fw"></i>void カスタム::On_戦争終了()</h2>
+<div class="code"><pre class="brush:cpp;">
+void カスタム::On_戦争終了() {
+}
+</pre></div>
+<ul class="checklist">
+<li><h3>タイミング</h3>
+<ul>
+<li>戦争が終了した時に、このメソッドが実行される。<br>
+PC/NPC、戦場見る/見ないなどは無関係に実行される。<br>
+PC戦闘の時は、戦後の登用・斬首・解放等の処理も含め全て終わった時点をもって、戦争終了とみなす。<br>
+</ul>
+<li><h3>一般的用途</h3>
+<ul>
+<li>基本的には、「On_戦争開始()」メソッドで行ったセッティングの後始末、あるいは復元をすることになる。<br>
+</ul>
+<li><h3>例①</h3>
+<div class="code"><pre class="brush:cpp;">
+int 武将戦闘熟練値リスト[最大数::武将情報::配列数];
+void カスタム::On_戦争開始(戦争開始パラメタ型 パラメタ) {
+
+  // 戦争が始まる前に、武将全員分の戦闘熟練値をコピー
+  for ( int iBushouID=0; iBushouID &lt; 最大数::武将情報::配列数; iBushouID++ ) {
+    武将戦闘熟練値リスト[iBushouID] = p武将情報[iBushouID].戦闘熟練値;
+  }
+}
+
+void カスタム::On_戦争終了() {
+
+  // 戦争終了時に戦闘熟練値を全部復元。
+  // 戦争によってアップした戦闘値はなかったことに。
+  for ( int iBushouID=0; iBushouID &lt; 最大数::武将情報::配列数; iBushouID++ ) {
+    if ( p武将戸籍情報[iBushouID].状態 != 状態::死亡 ) {
+      p武将情報[iBushouID].戦闘熟練値 = 武将戦闘熟練値リスト[iBushouID];
+    }
+  }
+}
+</pre></div>
+</ul>

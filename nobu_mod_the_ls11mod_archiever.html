@@ -1,0 +1,51 @@
+<h2><i class="fa fa-dropbox fa-fw"></i>Ls11 Archiever</h2>
+<ul class="checklist">
+    <li>
+    <p>LS11のファイルを「展開」や「圧縮」することが可能なアプリケーションです。 <br>
+    <br>
+    </p>
+    <p><a href="http://1st.geocities.jp/emn_projects/">EMN Project</a> さんのところにある、 <br>
+    信長の野望 天翔記 with パワーアップキット LS11 Archiver <br>
+    とほぼ同じアプリケーションとなります。<br>
+    </p>
+    <p>改善点としては、数点。</p>
+    <ul>
+        <li>「アプリケーション起動後」のファイルのドラッグ＆ドロップ等に対応しています。<br>
+        <li>「アプリケーション起動前」のファイルのドラッグ＆ドロップ等に対応しています。<br>
+        <li>Win10などでまともにサポートされなくなった旧VisualBasicではなく、<br>
+        新しめの.NET FrameWorkでプログラムされています。<br>
+        <li>ソースが付いていることで、コーエー系の「解凍」「圧縮」のツールを作成する敷居がかなり下がったはずです。<br>
+        (LS11Mod APIやLS11Mod DotNetを参照)<br>
+    </ul>
+    </p>
+    <li>
+    <h3>ダウンロード</h3>
+    <dl>
+        <dt>
+        <div class="download_file">DOWNLOAD ⇒ <a href="%(file)s">Ls11 Archiever</a>ファイル。</div>
+        </dt>
+        <dd>
+        <div class="update_time">└更新日 %(year)04d/%(mon)02d/%(mday)02d</div>
+        </dd>
+    </dl>
+    <li>
+    <h3>使い方</h3>
+    <ul check="pointlist">
+        <li>
+        <h4>解凍 ～「LS11」タイプのファイルを解凍し、複数のファイルに分割する～
+        <h4>
+        <p><br>
+        </p>
+        <p>例えば、「message.n6p」を、LS11 Archiever 上で選択(もしくはドラッグ＆ドロップなど)し、「解凍」を実行すると、<br>
+
+        ├ message.n6p ├ message ← ディレクトリ ├ message.000 ~ message.023 といった形に分解されます。</p>
+
+        <li>
+        <h4>圧縮 ～「解凍」によって、分割されたものと元へと戻し１つのファイルとする～</h4>
+        <p>以下のような「解凍」したものだと想定される構成である場合に限り、<br>
+        「message.n6p」を、LS11 Archiever 上で選択し、「圧縮」を実行すると、<br>
+        message.000～message.023 のファイルが圧縮され、message.n6pへと格納されます。<br>
+
+        ├ message.n6p ├ message ← ディレクトリ ├ message.000 ~ message.023 この圧縮のファイルの指定の仕方が、EMN Project さんが提供しているツールとは全く異なりますので注意してください。 <b>LS11Archieverでは、「解凍と圧縮は、基本的には同一のファイルを指定する</b>ことになります。</p>
+    </ul>
+</ul>

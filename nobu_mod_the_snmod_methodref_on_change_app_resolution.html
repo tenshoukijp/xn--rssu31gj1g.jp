@@ -1,0 +1,68 @@
+%(hilight)s
+<h2><i class="fa fa-book fa-fw"></i>void カスタム::On_ウィンドウ解像度切替時()</h2>
+<div class="code"><pre class="brush:cpp">
+void カスタム::On_ウィンドウ解像度切替時() {
+}
+</pre></div>
+<ul class="checklist">
+    <li>
+    <h3>タイミング</h3>
+    <ul>
+        <li>天翔記の内部機能としての「アプリケーションウィンドウの解像度変更」が実際に施行された際に呼び出される。<br>
+        天翔記は、アプリケーションのウィンドウ内の描画サイズとして、<br>
+        640*480, 800*600, 1024*768 のどれかを選択するわけであるが、(自動選択含)<br>
+        その「サイズ変更が実行された直後のタイミング」で呼び出されるという意味である。<br>
+    </ul>
+    <li>
+    <h3>一般的用途</h3>
+    <ul>
+        <li>ウィンドウサイズの変更のタイミングを見計らって、何か処理をおこなう際は、このメソッドが最適である。<br>
+        このメソッドに対して何か行いたい、という場合は、<br>
+        天翔記やScenarioMod APIというよりも、OSやWindowシステムに対して働きかけるプログラムを記述することとなるだろう。<br>
+    </ul>
+    <li>
+    <h3>例①</h3>
+    <div class="code"><pre class="brush:cpp">
+void カスタム::On_ウィンドウ解像度切替時() {
+
+  // アプリとしての解像度変更の直後に「デスクトップの画面解像度」自体を変更してしまう。
+  int iScreenWidth = 1024;
+  int iScreenHeight = 768;
+
+  // 天翔記のウィンドウハンドル
+  HWND hwnd = FindWindow(&quot;Tenshouki95&quot;, NULL);
+
+  // アプリケーション内部の描画範囲を取得しておく。
+  RECT clientRect;
+  GetClientRect(hwnd, &amp;clientRect);
+
+  // フルスクリーン用
+  static DEVMODE devmode;
+
+  // メモリクリア
+  ZeroMemory( &amp;devmode, sizeof(devmode) );
+
+  // デスクトップの画面自体の解像度を変更してしまう
+  devmode.dmSize = sizeof(devmode);
+  devmode.dmPelsWidth  = iScreenWidth;
+  devmode.dmPelsHeight = iScreenHeight;
+  devmode.dmFields = DM_PELSWIDTH | DM_PELSHEIGHT;
+
+  // このアプリ実行中解像度切替。
+  ChangeDisplaySettings( &amp;devmode, CDS_FULLSCREEN );
+
+  // アプリにはタイトルバーの幅や境界線幅（いわゆるボーダー）があるのでそのピクセル数を求める
+  int iBorderX = GetSystemMetrics(SM_CXSIZEFRAME); // 境界線幅X方向
+  int iBorderY = GetSystemMetrics(SM_CYSIZEFRAME); // 境界線幅Y方向
+  int iHeightCaption = GetSystemMetrics(SM_CYCAPTION);   // タイトルバーの高さ
+
+  // 左座標は、指定の幅から真ん中に配置
+  int iLeft = (iScreenWidth-clientRect.right)/2;
+  // 上座標の真ん中は求めておくけとまぁ使わないかな。
+  int iTop  = (iScreenHeight-clientRect.bottom)/2;
+
+  // 携帯用解像度などもあるのでTOPは常に一番上で、左右は真ん中。
+  MoveWindow(hwnd, iLeft-iBorderX, -iBorderY-iHeightCaption, 0, 0, TRUE);
+}
+</pre></div>
+</ul>

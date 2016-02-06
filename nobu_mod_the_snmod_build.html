@@ -1,0 +1,84 @@
+<h2><i class="fa fa-book fa-fw"></i>VisualStudio の立ち上げから～ScenarioModのビルドまで</h2>
+
+<ul class="checklist">
+    <li>
+    <h3>概要</h3>
+    <p>ここでは、ScenarioModを初めてさわる人向けに、「ビルド」「dllのコピー」「天翔記起動」までの流れを説明します。</p>
+    <li>
+    <h3>前準備</h3>
+    <p>Visual C++ をインストールしていない人は、この段階で、Visual C++ をインストールすること。<br>
+    </p>
+    <li>
+    <h3>ScenarioModを自分に都合の良いディレクトリへ</h3>
+    <p>ScenarioModVer2.zipファイルを解凍し、ディレクトリまるごとC++開発に向いた場所へとまるまる移動してください。<br>
+    </p>
+    <p><img src="./cnt_mod/mod_snmod/cnt_mod_scenario_mod_01.png"><br>
+    </p>
+    <li>
+    <h3>ScnearioMod.sln</h3>
+    <p>｢ScenarioMod.sln｣というファイルがある。これが全体のソリューション(sln)ファイルとなるのでを起動してくださ。</p>
+    <fieldset class="alert alert-info"><legend>ソリューションファイル</legend>ソリューションファイルとは、｢プロジェクト｣という概念に近いですが、<br>
+    実際にはさらにもう１つ上のまとまりの概念を指します。
+    </fieldset>
+    <li>
+    <h3>Visual Studioの画面</h3>
+    <p>起動すると、Visual Studio (もしくは Visual C++)が立ち上がります。以下のような画面となります。<br>
+    <p><img src="./cnt_mod/mod_snmod/cnt_mod_scenario_mod_02.png"><br>
+    </p>
+    <li>
+    <h3>バージョンや環境によって画面構成が多少ことなる。</h3>
+    <p>バージョンや環境によって画面構成が異なります。</p>
+    <p>ある程度は合わせましょう。</p>
+    <ul>
+        <li>ソリューションエキスプローラが見えていないという人は、一番上部メニューの｢表示｣>｢ソリューションエキスプローラ｣で表示させましょう。
+        <li>「出力」がみえていないという人も同様に｢表示｣＞｢出力｣で表示させて下さい。
+        <li>逆にリソースビューは、邪魔です。消してみましょう。<br>
+        ｢リソースビュー｣とかいてある色が付いた部分の右の方に小さな｢×｣ボタンがありますので、 これをクリックすると消えます。<br>
+    </ul>
+    <li>
+    <h3>x86 Release がターゲット</h3>
+    <p>ビルドする前に上部にある｢Debug｣もしくは｢Release｣などと出ているところを｢Release｣として下さい。<br>
+    (普通は最初からReleaseしか表示されていないハズです)</p>
+    <li>
+    <h3>初めてのビルド</h3>
+    <p>さて、まずは、ビルド作業に入ります。</p>
+    <p><img src="./cnt_mod/mod_snmod/cnt_mod_scenario_mod_03.png"><br>
+    </p>
+    <p>↓ <br>
+    </p>
+    <p><img src="./cnt_mod/mod_snmod/cnt_mod_scenario_mod_04.png"><br>
+    </p>
+    <p>｢F7｣キーを押してみましょう。F7キーとは｢ソリューションのビルド｣という作業であり、<br>
+    メニューの｢ビルド｣からも選択できますし、ソリューションエキスプローラの｢ソリューション 'ScenarioMod'｣のところを右クリックしても｢ビルド｣が可能です。<br>
+    </p>
+    <p><img src="./cnt_mod/mod_snmod/cnt_mod_scenario_mod_07.png"><br>
+    </p>
+    <p>この段階でエラーが出たという人は、ソリューションの｢リビルド｣をしてみましょう。<br>
+    </p>
+    <fieldset class="alert alert-info"><legend>ソリューションのリビルド</legend>ソリューションのリビルドは、メニューの｢ビルド｣->｢ソリューションのリビルド｣などから実行が可能です。<br>
+    たまに、プログラムや構成自体はただしくとも、書き込めなくなったりしてビルド時にエラーが出ますので、<br>
+    そういう場合は、このソリューションの｢リビルド｣を実行して下さい。<br>
+    ソリューションの｢リビルド｣でもエラーが出た場合は、それはほぼ間違い無く、プログラムや設定ファイルにエラーが存在します。<br>
+    </fieldset>
+    <li>
+    <h3>ScenarioMod.dllを天翔記フォルダにコピー</h3>
+    <p>さて、ScenarioModのサブディレクトリの｢Release｣というフォルダ内に、待望の｢ScenarioMod.dll｣が出来たハズです。<br>
+    これを｢天翔記フォルダ(tenshou.exeやtsmod.dllと同じフォルダ)｣にコピペ(か移動)してみましょう。<br>
+    </p>
+    <p><img src="./cnt_mod/mod_snmod/cnt_mod_scenario_mod_05.png"><br>
+    </p>
+    <p>逆にScenarioMod.dllが邪魔な場合は、ScenarioMod.dllを消せばScenarioModに書いた分は機能しません。<br>
+    そこにファイルが「有る」か「無い」か、それだけで切り替えることが出来る簡単設計です。</p>
+    <li>
+    <h3>動作してるか確認</h3>
+    <p><span class="negative"><b>天翔記を起動して、「真田幸隆」と会話してみましょう。</b></span><br>
+    普段と明らかに異なった動作が確認できれば、成功です!! <br>
+    (何が起こるかはScenarioModのバージョンによって多少変化するでしょう）<br>
+    </p>
+    <img src="./cnt_mod/mod_snmod/cnt_mod_scenario_mod_06.png"><br>
+    <br>
+    <li>
+    <h3>まとめ</h3>
+    <p>以上、ソリューションの起動＞ビルド＞ScenarioMod.dllを天翔記フォルダーにコピー<br>
+    が一連の基本の流れとなります。</p>
+</ul>

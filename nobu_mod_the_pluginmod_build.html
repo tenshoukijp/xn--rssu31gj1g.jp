@@ -1,0 +1,316 @@
+%(hilight)s
+<h2><i class="fa fa-book fa-fw"></i>いちから作る｢一般MOD｣</h2>
+<ul class="checklist">
+    <li>
+    <h3>概要</h3>
+    <p>ここでは、一から｢<b>一般MOD</b>｣を作成します。<br>
+    それは一から｢.dll｣を作成する、ということでもあります。<br>
+    もしも、あなたが、多少なりともVisual Studioを利用したことがあるならば、話がスムーズに進むでしょう。<br>
+    </p>
+    <p>ここで作成するサンプルは、機能的には実践力があるものではありませんが、<br>
+    一般MODの作り方の理解を得るという意味では、余計なことが全く書かれておらず、最小構成のサンプルとなっています。<br>
+    </p>
+    <li>
+    <h3>PluginMod用の「一般Mod」の作り方</h3>
+    <ul>
+        <li>
+        <p>さて、では、VC++のメニューより、｢新規作成｣=>｢プロジェクト｣を選択しましょう。<br>
+        </p>
+        <p><img src="./cnt_mod/mod_pluginmod/cnt_mod_plugin_mod_0001.png"><br>
+        </p>
+        <li>
+        <p>引き続いて、｢Win32｣=>｢Win32プロジェクト｣となります。<br>
+        プロジェクト名に｢MyMiniMod｣と入力し、OKしましょう。<br>
+        名前は多少なんでも良いのですが、一般Modとして認識させるためには、｢<b>***Mod.dll</b>｣という命名規則に従う必要があります。</p>
+        <p><img src="./cnt_mod/mod_pluginmod/cnt_mod_plugin_mod_0002.png"><br>
+        </p>
+        <li>
+        <p>｢次へ｣と続けて</p>
+        <li>
+        <p>｢DLL｣にのみチェックを入れ、他はチェックをはずします。｢完了｣を押しましょう。<br>
+        </p>
+        <p><img src="./cnt_mod/mod_pluginmod/cnt_mod_plugin_mod_0005.png"><br>
+        </p>
+        <li>
+        <p>そうすると、ソリューションエキスプローラーは下図のようなツリーとなります。<br>
+        </p>
+        <p><img src="./cnt_mod/mod_pluginmod/cnt_mod_plugin_mod_0006.png"><br>
+        </p>
+        <li>
+        <p>上図から不要なものをどんどんを削除します。<br>
+        </p>
+        <p>一番下から…<br>
+        ・ReadMe.txtで右クリックして削除(DELキーを押したあと、｢削除｣を選んでもよい)<br>
+        ・targetvar.hで右クリ削除<br>
+        ・stdafx.hで右クリ削除<br>
+        ・stdafx.cppで右クリ削除。<br>
+        ・MyMiniMod.cppで右クリ削除。<br>
+        ・以上で下図のように、｢dllmain.cpp｣だけくっついた状態となります。<br>
+        </p>
+        <p><img src="./cnt_mod/mod_pluginmod/cnt_mod_plugin_mod_0009.png"><br>
+        </p>
+        <li>
+        <p>さて、｢dllmain.cpp｣を選択し、ソースの下図の青色部分のように｢#include &lt;windows.h&gt;｣と書き換えましょう。</p>
+        <p><img src="./cnt_mod/mod_pluginmod/cnt_mod_plugin_mod_0012.png"></p>
+        <li>
+        <p>メニューのちょっと下あたりに｢Release｣もしくは｢Debug｣と見えている下図のようなところがあるはずです。 <br>
+        ｢Release｣を一度選択しましょう。</p>
+        <p><img src="./cnt_mod/mod_pluginmod/cnt_mod_plugin_mod_0017.png"><br>
+        </p>
+        <li>
+        <p>シンプルなDLLにふさわしい設定にするために、プロジェクトの設定を変更する必要があります。<br>
+        下図のようにソリューションエキスプローラの｢MyMiniMod｣を右クリックして、｢プロパティー」に入ります。 <br>
+        </p>
+        <p><img src="./cnt_mod/mod_pluginmod/cnt_mod_plugin_mod_0013.png"><br>
+        </p>
+        <li>
+        <p>構成プロパティの｢全般｣の項目に｢文字セット｣という項目がありますので、｢Unicode文字セットを使用する｣というのを変えて、｢マルチバイト文字セットを使用する｣にしましょう。<br>
+        天翔記では、元々がShiftJISですので、DLLをUnicode文字で管理するより、通常のマルチバイト文字セットの方が、はるかに扱いやすいためです。<br>
+        </p>
+        <p><img src="./cnt_mod/mod_pluginmod/cnt_mod_plugin_mod_0014.png"></p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;↓
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;↓ <br>
+        </p>
+        <p><img src="./cnt_mod/mod_pluginmod/cnt_mod_plugin_mod_0015.png"><br>
+        </p>
+
+        <li>
+        <p>同様に、構成プロパティの｢C/C++｣の項目に｢ランタイムライブラリ｣という項目がありますので、｢マルチスレッド DLL(/MD)｣ではなく、｢マルチスレッド (/MT)｣へと変更します。。<br>
+        </p>
+        <p>これは、このDLL内に必要なものを内包するか、それとも、できるだけ外部のDLLに頼りサイズを減らすかの選択です。<br>
+        両者はファイルサイズがかなり異なりまずが、どのみちファイルサイズは小さいため、<br>
+        特に問題がなければ、 トラブル防止のため、｢マルチスレッド (/MT)｣を選択しておきましょう。<br>
+        </p>
+        <p><img src="./cnt_mod/mod_pluginmod/cnt_mod_plugin_mod_0019.png"><br>
+        </p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;↓
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;↓<br>
+        </p>
+        <p><img src="./cnt_mod/mod_pluginmod/cnt_mod_plugin_mod_0021.png"><br>
+        </p>
+        <li>
+        <p>次に、｢プリコンパイル済みヘッダー」という項目がありますので、｢プリコンパイル済みヘッダーを使用しない」を選んでください。<br>
+        さきほど、<br>
+        </p>
+        <p>・stdafx.h や stdafx.cpp を削除してしまいました。<br>
+        </p>
+        <p>あれらがプリコンパイル済みヘッダーです。<br>
+        理解の妨げになりますので、ここでは削除しました。よって使いません。<br>
+        </p>
+        <p><img src="./cnt_mod/mod_pluginmod/cnt_mod_plugin_mod_0022.png"></p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;↓
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;↓
+        </p>
+        <p><img src="./cnt_mod/mod_pluginmod/cnt_mod_plugin_mod_0023.png"><br>
+        </p>
+        <li>
+        <p>｢適用｣=>｢OK｣を押して、全てを反映させましょう。 <br>
+        </p>
+        <li>
+        <p>さて、それでは、dllmain.cpp を選択して、話を戻しましょう。<br>
+        </p>
+        <p><img src="./cnt_mod/mod_pluginmod/cnt_mod_plugin_mod_0042.png"><br>
+        </p>
+        <li>
+        <p>下図のように、５つの関数を追加しましょう。<br>
+        </p>
+        <p>下の５つの関数がPluginModからの自動呼出がサポートされる関数です。<br>
+        ｢自動呼出｣って何のこと？<br>
+        と思うかもしれませんが、後で実行してみればわかりますので、<br>
+        今は下図の通り入力してみましょう。<br>
+        </p>
+        <p>必ず｢WINAPI｣と付けておいて下さい。<br>
+        </p>
+        <pre class="brush:cpp">
+
+// dllmain.cpp : DLL アプリケーションのエントリ ポイントを定義します。
+#include &lt;windows.h&gt;
+
+BOOL APIENTRY DllMain( HMODULE hModule,
+                       DWORD  ul_reason_for_call,
+                       LPVOID lpReserved
+                     )
+{
+    switch (ul_reason_for_call)
+    {
+    case DLL_PROCESS_ATTACH:
+    case DLL_THREAD_ATTACH:
+    case DLL_THREAD_DETACH:
+    case DLL_PROCESS_DETACH:
+        break;
+    }
+    return TRUE;
+}
+
+
+//--------------------------------------------------------
+void WINAPI On_初期化(HANDLE 呼び出し元ハンドル) {
+    MessageBox(NULL, &quot;初期化&quot;, &quot;初期化&quot;, NULL);
+}
+
+void WINAPI On_シナリオ大名選択直前() {
+    MessageBox(NULL, &quot;シナリオ大名選択&quot;, &quot;シナリオ大名選択&quot;, NULL);
+}
+
+void WINAPI On_メインゲーム開始() {
+    MessageBox(NULL, &quot;メイン開始&quot;, &quot;メイン開始&quot;, NULL);
+}
+
+void WINAPI On_相場変更直前() {
+    MessageBox(NULL, &quot;相場時&quot;, &quot;相場時&quot;, NULL);
+}
+
+void WINAPI On_末期化() {
+    MessageBox(NULL, &quot;末期化&quot;, &quot;末期化&quot;, NULL);
+}
+    </pre>
+        <li>
+        <p>さて、以上でもソースはコンパイルできるのですが、<br>
+        実は、このままでは、これら追加した５つの関数は、DLLの外のプログラムからはまったく見えないのです。<br>
+        よって外から呼べません。<b>･･･?</b></p>
+        <p>しかも、実は、PluginModが呼び出す関数は、上のような日本語名ではなく、英語名です、その関数形式は上も含め、全部で以下の７つとなります。</p>
+        <table style="margin-left: 20px; border: solid 1px #000000; border-collapse: collapse;" cellpadding="1" cellspacing="1" width="800">
+            <tr>
+                <td width="50%" style="font-size: 15px; font-family: ＭＳ ゴシック">void WINAPI <b>OnInitialize</b>(HANDLE hCallDLLHandle)</td>
+                <td width="50%" style="font-size: 15px">天翔記の初期化時に実行される。まだ天翔記ウィンドウも表示されてないような段階で実行される。<br>
+                <br>
+                </td>
+            </tr>
+            <tr>
+                <td width="50%" style="font-size: 15px; font-family: ＭＳ ゴシック">void WINAPI <b>OnAfterChangeWindowSize</b>()</td>
+                <td width="50%" style="font-size: 15px">天翔記で、どのウィンドウ解像度にするかを決めて、実際にそのウインドウ解像度になった直後に呼ばれる。<br>
+                <br>
+                </td>
+            </tr>
+            <tr>
+                <td width="50%" style="font-size: 15px; font-family: ＭＳ ゴシック">void WINAPI <b>OnViewingTopMenu</b>()</td>
+                <td width="50%" style="font-size: 15px">天翔記で、最初に表示される「新しくゲームを始める」「データをロードする」「ゲームを終了する」のメニューが表示された時呼ばれる。<br>
+                <br>
+                </td>
+            </tr>
+            <tr>
+                <td width="50%" style="font-size: 15px; font-family: ＭＳ ゴシック">void WINAPI <b>OnSelectingScenarioDaimyoStart</b>()</td>
+                <td width="50%" style="font-size: 15px">天翔記で、シナリオを決定した後に、大名の選択画面になったタイミングで呼ばれる。<br>
+                <br>
+                </td>
+            </tr>
+            <tr>
+                <td width="50%" style="font-size: 15px; font-family: ＭＳ ゴシック">void WINAPI <b>OnMainGameStart</b>()</td>
+                <td width="50%" style="font-size: 15px">メイン画面でゲームがはじまった段階で呼ばれる。ロードした後もメイン画面が再描画された段階で呼ばれる。<br>
+                <br>
+                </td>
+            </tr>
+            <tr>
+                <td width="50%" style="font-size: 15px; font-family: ＭＳ ゴシック">void WINAPI <b>OnSobaChange</b>()</td>
+                <td width="50%" style="font-size: 15px">相場が切り替わるタイミング、切り替わる直前に呼ばれる。<br>
+                <br>
+                </td>
+            </tr>
+            <tr>
+                <td width="50%" style="font-size: 15px; font-family: ＭＳ ゴシック">void WINAPI <b>OnFinalize</b>()</td>
+                <td width="50%" style="font-size: 15px">天翔記が終了する直前に呼ばれる。<br>
+                <br>
+                </td>
+            </tr>
+        </table>
+
+        <p>え？？<br>
+        PluginModは英語名でdllの関数を呼び出すのに、dllmain.cppでは日本語で定義しちゃってるよ？ <br>
+        どうするの？<b>･･･?</b></p>
+        <p>とお思いでしょう。<br>
+        </p>
+        <li>
+        <p>両方の問題を一気に解決するのが、モジュール定義ファイル(.def)です。</p>
+        <p>それでは、さっそく作ってみましょう。<br>
+        下図のように、ソースファイルといったあたりを｢右クリック」して、｢追加｣=>｢新しい項目｣と進みます。</p>
+        <p>img src="./cnt_mod/mod_pluginmod/cnt_mod_plugin_mod_0027.png"><br>
+        </p>
+        <li>モジュール定義ファイル(.def)<br>
+        <p>コードの｢モジュール定義ファイル(.def)を選びましょう。<br>
+        ファイル名は、｢dllmain.def｣とします。<br>
+        下図の｢場所｣は無視してください。(変更しない。下図の通りに入力したりしないこと!!)<br>
+        場所は自動で妥当なところが割り当てられますので、何も勝手に編集しないのが良いです。<br>
+        </p>
+        <p><img src="./cnt_mod/mod_pluginmod/cnt_mod_plugin_mod_0028.png"><br>
+        </p>
+        <li>
+        <p>以上で追加を押すと、追加されますが、下図のような、寂しい状態です。<br>
+        </p>
+        <li>
+        <p>さて、上の?、?の問題を解決すべく、下図のように書いてやりましょう。<br>
+        </p>
+        <p><img src="./cnt_mod/mod_pluginmod/cnt_mod_plugin_mod_0035.png"><br>
+        </p>
+        <p>あってるかどうか、コピペが可能なソース。<br>
+        他の呼び出される関数を利用する際も同様となります。<br>
+        </p>
+        <pre class="brush:cpp">
+LIBRARY "MyMiniMod"
+EXPORTS
+    OnInitialize = On_初期化 @ 1
+    OnSelectingScenarioDaimyoStart = On_シナリオ大名選択直前 @ 2
+    OnMainGameStart = On_メインゲーム開始 @ 3
+    OnSobaChange = On_相場変更直前 @ 4
+    OnFinalize = On_末期化 @ 5
+</pre> <br>
+        <li>
+        <p>ここで、プロジェクトのプロパティにて、先ほど作った｢dllmain.def｣を定義ファイルとして指定しましょう。<br>
+        </p>
+        <p><img src="./cnt_mod/mod_pluginmod/cnt_mod_plugin_mod_0013.png"><br>
+        <img src="./cnt_mod/mod_pluginmod/cnt_mod_plugin_mod_0053.png"><br>
+        </p>
+        <li>
+        <p>さて、リビルドしてみましょう。<br>
+        ソリューションを右クリックすれば、ソリューションのリビルドができます。<br>
+        </p>
+        <p><img src="./cnt_mod/mod_pluginmod/cnt_mod_plugin_mod_0036.png"><br>
+        </p>
+        <li>
+        <p>エラーが出ずに、無事にリビルドできたでしょうか？<br>
+        エラーが出た場合は、ここまでのステップで何か間違っていますので見返しましょう。<br>
+        </p>
+        <li>
+        <p>それでは、出来上がったMyMiniMod.dllを｢天翔記フォルダ｣にコピーして下さい。<br>
+        で、問題は、その肝心のMyMiniMod.dllはどこに出来上がったんだ？ <br>
+        ということなのですが、以下のようにソリューションから右クリックすれば、 <br>
+        ｢エキスプローラでフォルダを開く<br>
+        というのがあります。ここで開いて、｢Release｣の中をみてみましょう。<br>
+        </p>
+        <p><img src="./cnt_mod/mod_pluginmod/cnt_mod_plugin_mod_0038.png"><br>
+        </p>
+        <p>それを｢天翔記｣フォルダにコピーすれば、準備はととのいました。<br>
+        </p>
+        <li>
+        <p>天翔記を起動してみましょう!!。<br>
+        何が起きたかわかりましたか？<br>
+        天翔記のセーブやロードもしてみて、いつ、関数が呼び出されるのかを肌で確認してみましょう。<br>
+        </p>
+        <p><img src="./cnt_mod/mod_pluginmod/cnt_mod_plugin_mod_0040.png"><br>
+        </p>
+        <li>
+        <p>もしあなたが、｢初めてDLLを自分で一から作りました!!｣ということであれば、<br>
+        あなたは今まさに、DLLの作り方を一通り習ったといえます。<br>
+        </p>
+        <p>おめでとう!!<br>
+        </p>
+        <p>ここで解説した内容こそ、DLLの作成方法の｢基本中の基本｣であり、｢王道中の王道｣なのです。<br>
+        決してトリッキー方法ではなく、一般的な方法ですので、自信をもってOKです。<br>
+        天翔記に限らず、あなたは一般的にいう、｢DLLの作成方法｣を習った、と言えるでしょう。<br>
+        </p>
+        <li>
+        <p>さて、最後にひとつ。 もし、２つの｢一般Mod｣があるとどうなるのでしょう。<br>
+        </p>
+        <p>先ほど天翔記フォルダにコピーした、｢MyMiniMod.dll｣をコピーして｢MyMaxMod.dll｣を作ってみましょう。 <br>
+        </p>
+        <p><img src="./cnt_mod/mod_pluginmod/cnt_mod_plugin_mod_0043.png"><br>
+        </p>
+        <p>そして天翔記を実行します。<br>
+        </p>
+        <p>そうです、内容が同じModが２つとも実行されるため、ダイアログが２回ずつ出てくるが確認出来るはずです。<br>
+        </p>
+        <li>
+        <p>以上で、いちから作る｢一般MOD」を終了します。<br>
+        </p>
+        <p>お疲れ様でした。</p>
+    </ul>
+</ul>

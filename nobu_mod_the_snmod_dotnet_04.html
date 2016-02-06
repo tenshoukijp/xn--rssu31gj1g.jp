@@ -1,0 +1,299 @@
+%(hilight)s
+<h2><i class="fa fa-image fa-fw"></i>天翔記の画面の上にレイヤー層を設け、画像を描く</h2>
+<ul class="checklist">
+    <li>
+    <h3>～応用編～</h3>
+    <p>ここは、天翔記の画面に上に何かを描画する例を示します。<br>
+    様々なコンポーネントが描画可能ですが、ここでは画像を描画するものとします。</p>
+    <p>一種の本体ゲームに寄生するウィンドウとなります。</p>
+    <p>ここでは、例として、「戦争中の誰かのユニットの動きを追従する画像」<br>
+    というものを実装します。
+    </p>
+    <p><img src="./cnt_mod/mod_snmod/cnt_mod_scenario_mod_dnt_08.png"><br>
+    </p>
+    <li>
+    <h3>前準備</h3>
+    <p>天翔記ディレクトリに16x16ピクセルの画像を「icon16.png」というファイル名で用意してください。<br>
+    </p>
+    <li>
+    <h3>ソース内容</h3>
+    <p>応用編なため、内容の詳細について触れることはしません。<br>
+    コメント等を参考に、ご自身で中身をチェックしてください。</p>
+    <ul class="pointlist">
+        <li>
+        <h4>カスタム駆動関数.cpp(変更部のみ)</h4>
+        <div class="code"><pre class="brush:cpp;">
+#include &quot;カスタム駆動関数.h&quot;
+
+#include &quot;TS95OverLayerEffects.h&quot;
+using namespace System;
+
+
+カスタム::カスタム() {
+  // 各メソッドの具体的な解説は「http://天翔記.jp/?page=nobu_mod_the_snmod_methodref_index」にて記述されています。
+}
+
+void カスタム::On_起動時() {
+
+  TS95OverLayerForm::IsOverLayerFormValid = false;
+
+  // 本体に寄生するウィンドウを
+  if (TS95OverLayerForm::meForm == nullptr || TS95OverLayerForm::meForm-&gt;IsDisposed) {
+    TS95OverLayerForm::meForm = gcnew TS95OverLayerForm();
+    TS95OverLayerForm::meForm-&gt;Show();
+  }
+}
+
+void カスタム::On_終了時() {
+
+  TS95OverLayerForm::IsOverLayerFormValid = false;
+
+  if (TS95OverLayerForm::meForm) {
+    TS95OverLayerForm::meForm-&gt;Close();
+  }
+}
+
+void カスタム::On_ウィンドウ解像度切替時() {
+    TS95OverLayerForm::IsOverLayerFormValid = true;
+}
+
+</pre></div>
+        <li>
+        <h4>TS95OverLayerEffects.h(追加となるファイル)</h4>
+        <div class="code"><pre class="brush:cpp;">
+#pragma once
+
+#include &lt;Windows.h&gt;
+
+using namespace System;
+using namespace System::Drawing;
+using namespace System::Windows::Forms;
+using namespace System::IO;
+
+ref class TS95OverLayerForm : Form
+{
+public:
+  TS95OverLayerForm();
+
+private:
+  HWND hWnd;                         // 天翔記のメインのウィンドウハンドルを取っておくためのもの。
+  HWND GetGameWindowHandle();        // ウィンドウハンドル取得
+
+public:
+
+  static TS95OverLayerForm^ meForm; // 自分自身をグローバルに確保しておく。
+  static bool IsOverLayerFormValid; // 寄生を有効にする無効にするを外からスイッチングする。
+
+private:
+  Timer ^form_tick_timer;             // タイマーによる実行。厳密な処理ではこのようなことは許されない(天翔記とのズレやメモリブロックが生じる)
+                                    // ここではオーバーレイヤーによる描画を緩い目的で使用するものとしてこの方法を紹介する。
+
+  void TimerTick(Object ^o, EventArgs ^e);
+
+private:
+  void TS95OverLayerForm_Shown(Object ^o, EventArgs ^e);
+
+  void ResizeAndRepositionSelf(HWND hWnd);
+
+private:
+
+  Point onDrawingSize;              // 何度も描画しないで済むようにするためのブロック
+  void DrawScopeSquare();               // 赤い線の描画。これはあくまでウィンドウがどのタイミングで寄生しているのかわかりやすくするためのテスト描画
+
+private:
+  Image^ img;                           // イメージ。実際にはこのように１つだけポツンと表示する例はないだろうが…
+  PictureBox^ pb;                     // イメージはコンポーネントではないので、何らかのコンポーネント型に入れる必要がある。
+  void DrawMyImage();
+
+protected:
+
+  // このフォームがクリックなどされた時にアクティブにならないようにする。あくまでもメインのゲームウィンドウに寄生する特殊なウィンドウのため。
+  virtual void WndProc(Message %m) override;
+
+  // このフォームが表示される時にアクティブにならないようにする。あくまでもメインのゲームウィンドウに寄生する特殊なウィンドウのため。
+  property bool ShowWithoutActivation
+  {
+    virtual bool get() override { return true; }
+  }
+};
+
+</pre></div>
+
+
+        <li>
+        <h4>TS95OverLayerEffects.cpp(追加となるファイル)</h4>
+        <div class="code"><pre class="brush:cpp;">
+#include &quot;ゲームデータ構造.h&quot;
+#include &quot;TS95OverLayerEffects.h&quot;
+
+TS95OverLayerForm::TS95OverLayerForm()
+{
+  this-&gt;AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
+  this-&gt;Text = &quot;TS95OverrideLayerTransparentForm&quot;; // 名前は自由に付けてよい。
+
+
+  this-&gt;BackColor = Color::Pink; // 一番使わないピンクで塗っておいて
+  this-&gt;TransparencyKey = Color::Pink; // ピンクは透明ということにする。
+  this-&gt;FormBorderStyle = ::FormBorderStyle::None;
+  this-&gt;TopMost = true;
+  this-&gt;ShowInTaskbar = false;
+
+  // 表示された時のイベントハンドラ
+  this-&gt;Shown += gcnew EventHandler(this, &amp;TS95OverLayerForm::TS95OverLayerForm_Shown);
+
+
+  this-&gt;form_tick_timer = gcnew Timer();
+  form_tick_timer-&gt;Interval = 33;
+  form_tick_timer-&gt;Enabled = true;
+  form_tick_timer-&gt;Tick += gcnew System::EventHandler(this, &amp;TS95OverLayerForm::TimerTick);
+
+  form_tick_timer-&gt;Start();
+
+}
+
+HWND TS95OverLayerForm::GetGameWindowHandle() {
+  return FindWindow(&quot;Tenshouki95&quot;, NULL);
+}
+
+void TS95OverLayerForm::TimerTick(Object ^o, EventArgs ^e)
+{
+
+  if (!IsOverLayerFormValid) {
+    return;
+  }
+
+  if (!hWnd) {
+    hWnd = GetGameWindowHandle();
+  }
+
+  if (!hWnd) {
+    this-&gt;Close();
+  }
+
+  if (GetActiveWindow() == hWnd) {
+    if (!this-&gt;Visible) {
+      this-&gt;Show();
+      SetActiveWindow(hWnd);
+    }
+    ResizeAndRepositionSelf(hWnd);
+    DrawScopeSquare();
+    DrawMyImage();
+  }
+  else {
+    this-&gt;Hide();
+  }
+}
+
+void TS95OverLayerForm::ResizeAndRepositionSelf(HWND hWnd)
+{
+  try {
+
+    RECT rectClient;
+    ::GetClientRect(hWnd, &amp;rectClient);
+
+    POINT pt;
+    pt.x = 0;
+    pt.y = 0;
+    ClientToScreen(hWnd, &amp;pt);
+
+    this-&gt;Left = pt.x;
+    this-&gt;Top = pt.y;
+
+    this-&gt;Width = rectClient.right;
+    this-&gt;Height = rectClient.bottom;
+  } catch (...) {}
+
+}
+
+void TS95OverLayerForm::TS95OverLayerForm_Shown(Object ^o, EventArgs ^e)
+{
+}
+
+void TS95OverLayerForm::DrawScopeSquare()
+{
+  try {
+    if (onDrawingSize.X == this-&gt;Width &amp;&amp; onDrawingSize.Y == this-&gt;Height) {
+      return;
+    }
+    onDrawingSize.X = this-&gt;Width;
+    onDrawingSize.Y = this-&gt;Height;
+
+    デバッグ出力 &lt;&lt; &quot;描画&quot; &lt;&lt; endl;
+
+    //描画先とするImageオブジェクトを作成する
+    Bitmap ^canvas = gcnew Bitmap(this-&gt;Width, this-&gt;Height);
+    //ImageオブジェクトのGraphicsオブジェクトを作成する
+    Graphics ^g = Graphics::FromImage(canvas);
+
+    //Penオブジェクトの作成(幅1の黒色)
+    Pen ^p = gcnew Pen(Color::Red, 5);
+    g-&gt;DrawRectangle(p, 0, 0, this-&gt;Width, this-&gt;Height);
+
+    //リソースを解放する
+    delete p;
+    delete g;
+
+    // 背景に表示する。背景が透明だと、マウスでクリックした際は下にあるウィンドウが反応するというのはウィンドウズの仕様。
+    // よって、この仕様を逆用するのが楽だと思われる。
+    this-&gt;BackgroundImage = canvas;
+
+  }
+  catch (...) {}
+}
+
+void TS95OverLayerForm::WndProc(Message %m)
+{
+  switch (m.Msg)
+  {
+  case WM_MOUSEACTIVATE:
+    m.Result = safe_cast&lt;IntPtr&gt;(WM_NCACTIVATE);
+    return;
+  }
+  System::Windows::Forms::Form::WndProc(m);
+}
+
+// 実質的には、ここが天翔記のゲーム内との接点
+void TS95OverLayerForm::DrawMyImage() {
+  try {
+    if (img == nullptr) {
+      img = Image::FromFile(&quot;icon16.png&quot;);
+      pb = gcnew PictureBox();
+      pb-&gt;Image = img;
+      pb-&gt;Width = img-&gt;Width;
+      pb-&gt;Height = img-&gt;Height;
+      this-&gt;Controls-&gt;Add(pb);
+    }
+
+    デバッグ出力 &lt;&lt; &quot;描画&quot; &lt;&lt; endl;
+
+    // 今出陣中の武将のリストを出す。
+    番号リスト型 list = Get_出陣中の武将番号リスト【配列用】《表示中マップ》();
+    // １人以上出陣していれば、
+    if (list.size() &gt; 0) {
+        // その人の武将番号を取得
+      int iBushouID = list[0]; // 最初の人だけ例とする。
+
+    // その人のマップでの位置を取得
+      ヘックス位置型 pos;
+      if (Is_野戦中()) {
+        pos = Get_武将の野戦ヘックス位置(iBushouID);
+      }
+      else if (Is_攻城戦中() ) {
+        pos = Get_武将の攻城戦ヘックス位置(iBushouID);
+      }
+      else {
+        pos = ヘックス位置型(0, 0);
+      }
+
+      // その位置に16かけたものをそのまま画像の位置にする。
+      // その位置に16かけたものをそのまま画像の位置にする。
+      double x = pos.Ｘ * 16.0;
+      double y = pos.Ｙ * 16.0;
+      pb-&gt;Left = round《整数化》(x);
+      pb-&gt;Top = round《整数化》(y);
+    }
+  } catch (...) {}
+}
+</pre></div>
+    </ul>
+</ul>

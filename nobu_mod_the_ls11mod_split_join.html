@@ -1,0 +1,68 @@
+%(hilight)s
+<h2><i class="fa fa-book fa-fw"></i>デコード済のバイナリデータのsplitや、splitされた状態からのjoin(復元)</h2>
+<ul class="checklist">
+    <li>
+    <h3>概要</h3>
+    <p>ここでは、Ls11Mod APIのAPIとなる「split」と「join」を解説しています。</p>
+    <p>LS11のファイルをデコードしたとしても、そのままでは、まだ使いにくいデータ形式です。<br>
+    例えば、message.n6pをデコードしたとしても、それぞれのファイルはなおも、プログラムでは扱いにくいとわかるでしょう。<br>
+    また、迂闊にデータの長さが変わるような変更をすると、データ表示の際にずれ込むことも分かります。<br>
+    </p>
+    <p>これらの問題を解決するため、splitとjoinの２つの関数が存在します。</p>
+    <li>
+    <h3>分解と結合</h3>
+    <pre style="border: solid 1px #000000; font-family: 'ＭＳ ゴシック'" class="brush:cpp">
+    // １つの扱い難いバイナリデータを、意味単位で分解する
+    void ls11_SplitData(vector&lt;byte&gt; &amp;vSrcJoinedData, vector&lt;vector&lt;byte&gt;&gt; *vDstSplittedData);
+
+    // 分解したものを１つに結合し、元へと戻す。
+    void ls11_JoinData(vector&lt;vector&lt;byte&gt;&gt; &amp;vSrcSplittedData, vector&lt;byte&gt; *vDstJoinedData);
+    </pre>
+    <li>
+    <h3>分解～結合の具体例</h3>
+    <p>message.n6pをデコードしたが、そのままでは扱いにくいので、message.005をさらに分解して、vSplittedDataへと格納する。<br>
+    そして、4番目(index的には3)のデータの塊の要素を見る。<br>
+    又、vSplittedDataしたものを、元の状態(message.003として扱える状態)へと戻す。<br>
+    </p>
+    <pre style="border: solid 1px #000000; font-family: 'ＭＳ ゴシック'" class="brush:cpp">
+
+    vector&lt;vector&lt;byte&gt;&gt; vBufDecodedData;
+    ls11_DecodePack(&quot;message.nb6&quot;, NULL, &amp;vBufDecodedData );
+
+    vector&lt;vector&lt;byte&gt;&gt; vSplittedData;
+    ls11_SplitData( vBufDecodedData[5], &amp;vSplittedData );
+
+    char *test = (char *)&amp;vSplittedData[3][0];
+    // └ ここをデバッガで張ればよい。何が得られるかわかるだろう。
+
+    // 特定部分を変更をする際には、一度該当要素をコピーした後、該当要素の部分のvector要素をクリアした方が良い。
+    // vectorは一度要素を確保してしまうと、小さな方向にsize()が変化しにくいので、必ず適切なsize()となるように、意識すること。
+
+    vector&lt;byte&gt; vBufJointedData;
+    ls11_JoinData( vSplittedData, &amp;vBufJointedData );
+
+    </pre>
+    <li>
+    <h3>LS11の分解と結合のフォーマットデータの詳細</h3>
+    <p>LS11 Archieveで分解して、たとえば、bfile.001となったデータを見てみると、 <br>
+    </p>
+    <ul>
+        <li>ファイルの先頭から、2バイトずつ、 <br>
+        各メッセージの格納開始アドレス(位置)が、指定されていて、並んでいる。 <br>
+        <li>それが終わるとデータ本体が配列のように並ぶ。 <br>
+    </ul>
+    <p>よって、</p>
+    <ul>
+        <li>先頭から最初の２バイトのアドレスが、一番最初のデータ本体のアドレス、 <br>
+        <li>先頭から次の２バイトのアドレスが、２番目のデータ本体の開始アドレス <br>
+    </ul>
+    <p>という感じ。<br>
+    </p>
+    <p>これは、途中のデータの長さを伸ばすと、先頭のこれらアドレス群を修正する必要があることを意味する。</p>
+    <p>今回紹介した、splitやjoinの関数は、</p>
+    <ul>
+        <li>ls11_SplitDataは、この各々のアドレス情報に基づいて、データを分割する。
+        <li>ls11_JoinData は、vectorのsize()から計算して、各々のアドレス位置を割り出し、全てを連結して１つにしてくれる。
+    </ul>
+    <p>というわけである。</p>
+</ul>

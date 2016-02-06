@@ -1,0 +1,63 @@
+<h2><i class="fa fa-dropbox fa-fw"></i>Ls11 Archiever</h2>
+<ul class="checklist">
+    <li>
+    <h3>概要</h3>
+    <p>LS11のファイルを「展開」や「圧縮」することが可能なアプリケーションです。</p>
+    <p><a href="http://1st.geocities.jp/emn_projects/">EMN Project</a>さんのところにある、信長の野望 天翔記 with パワーアップキット LS11 Archiver<br>
+    とほぼ同じアプリケーションとなります。<br>
+    </p>
+    <p><img src="./cnt_mod/mod_ls11mod/cnt_mod_ls11mod_02.png"><br>
+    </p>
+    <p>改善点としては、数点。</p>
+    <ul>
+        <li>LS11archiever.exeへのファイルのドラッグ＆ドロップ等に対応しています。<br>
+        <li>LS11 Archiever が起動した後、テキストボックスへのファイルのドラッグ＆ドロップ等に対応しています。<br>
+        <li>Win10などでまともにサポートされなくなった旧VisualBasicではなく、<br>
+        新しめの.NET FrameWorkでプログラムされています。<br>
+        <li>ソースが付いていることで、コーエー系の「解凍」「圧縮」のツールを作成する敷居がかなり下がったはずです。<br>
+        (LS11Mod APIやLS11Mod DotNetを参照)<br>
+    </ul>
+    <li>
+    <h3>ダウンロード</h3>
+    <dt>
+    <div class="download_file">DOWNLOAD ⇒ <a href="%(file)s">Ls11 Archiever</a>ファイル。</div>
+    </dt>
+    <dd>
+    <div class="update_time">└更新日 %(year)04d/%(mon)02d/%(mday)02d</div>
+    </dd>
+    <li>
+    <h3>動作環境</h3>
+    <ul>
+        <li>.NET FrameWork 4.0<br>
+        <li><a href="https://www.microsoft.com/ja-jp/download/details.aspx?id=40784"><b>Visual Studio 2013 Runtime</b></a> をインストールしたことがない人は、インストールしてください。<br>
+        <b>OSのビット数に関わらずx86版をインストールしてください。</b> <br>
+    </ul>
+    <li>
+    <h3>使い方</h3>
+    <ul check="pointlist">
+        <li>
+        <h4>解凍 ～「LS11」タイプのファイルを解凍し、複数のファイルに分割する～</h4>
+        <p>例えば、「message.n6p」を、LS11 Archiever から選択(もしくはドラッグ＆ドロップなど)し、「解凍」を実行すると、<br>
+        <br>
+        &nbsp;&nbsp;├ message.n6p<br>
+        &nbsp;&nbsp;├ message ← ディレクトリ<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;├ message.000 ~ message.023<br>
+        <br>
+        といった形に分解されます。<br>
+        </p>
+        <li>
+        <h4>圧縮 ～「解凍」によって、分割されたものと元へと戻し１つのファイルとする～</h4>
+        <p>以下のような<b>「解凍」したものだと想定される構成</b>である場合に限り、<br>
+        「message.n6p」を、LS11 Archiever 上で選択し、「圧縮」を実行すると、<br>
+        message.000～message.023 のファイルが圧縮され、message.n6pへと格納されます。<br>
+        <br>
+        &nbsp;&nbsp;├ message.n6p<br>
+        &nbsp;&nbsp;├ message ← ディレクトリ<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;├ message.000 ~ message.023<br>
+        </p>
+        <p>この<b>圧縮のファイルの指定の仕方が、EMN Project さんが提供しているツールとは<br>
+        全く異なりますので注意</b>してください。<br>
+        </p>
+        <p><b>LS11Archieverでは、「解凍と圧縮は、基本的には同一のファイルを指定する」</b>ことになります。</p>
+    </ul>
+</ul>

@@ -1,0 +1,568 @@
+%(hilight)s
+<h2><i class="fa fa-book fa-fw"></i>JavaScript v8 エンジンを使う場合</h2>
+<ul class="checklist">
+    <li>
+    <h3>JavaScript v8 エンジンとは</h3>
+    <p>(ここに記載されている情報は、v8エンジン3.28.57 2014/08/05版でのものとなる)<br>
+    </p>
+    <p><a href="http://ja.wikipedia.org/wiki/Google_V8_JavaScript_Engine">JavaScript v8 エンジン</a> は、Googleが開発したオープンソースのJavaScriptエンジンであり、 <br>
+    2014年現在も非常に注目されている汎用的で高速なJavaScriptエンジンである。</p>
+    <p>以下の記述には、C++の入門～基本程度のプログラミング知識が必要である。 <br>
+    そうでない場合、ほとんど意味不明であろう。</p>
+    <p>当サイト管理人としては、ScenarioModに元々搭載されているLuaを使うことを強くお勧めする。
+    <p>「本体プログラム文字コード、データ文字コード、拡張プログラム文字コード、周辺ツール文字コード」の全てがcp932(≒shift-jis)」の天翔記においては、 <br>
+    ScenarioModに組み込まれているLua (cp932対応)の方が、はるかに取り扱いが簡潔・簡単・便利である。</p>
+    <p>ここでは、何らかの理由により、 <br>
+    「少々苦難な道をたどったとしてもJavaScript v8を使いたい」 <br>
+    といった場合にその参考となることだろう。</p>
+    <li>
+    <h3>JavaScript v8 エンジン全体をコンパイル</h3>
+    <ul class="pointlist">
+        <li>
+        <h4>VisualStudioでのコンパイル</h4>
+        <p>JavaScript v8 エンジンの「VisualStudio2013」以降でのコンパイル方法自体は、各種サイトに掲載されている。<br>
+        </p>
+        <li>
+        <h4>コンパイル時の注意点</h4>
+        <p>v8エンジンそのもののコンパイルに必須な注意点としては、<br>
+        <ul>
+            <li>
+            <p>python 2.7系」にパスが通っており、<font color="red">「python」というコマンドでpython2.7系が実行可能となっている</font>こと。<br>
+            よって、python3系と2.7系両方いれており、python3系をパスにおいて優先させている場合は問題が発生する。<br>
+            </p>
+        </ul>
+        <li>
+        <h4>all.slnは、そのままコンパイルは出来ず</h4>
+        <p>all.slnは、そのままコンパイルは出来ず、<b>少しだけオプションの変更が必要</b>である。</p>
+        <ul>
+            <li>
+            <p>まず、根本的にSceanrioModへと取り込むならば、<font color="red"><b>全てのプロジェクトファイルには、/Zp1</b>オプションを付ける</font>必要性がある。<br>
+            このオプションは『構造体は元々の型サイズに従って完全正確にパッキングを行う』ために必須である。<br>
+            このオプションが存在しない[=ソースファイルが存在しない]プロジェクトは、/Zp1を付けるような項目自体存在しないのでパスして良い<br>
+            </p>
+            <p><img src="./cnt_mod/mod_snmod/cnt_mod_scenario_mod_ref_059.png"><br>
+            </p>
+            <br>
+            <li>
+            <p>次に「ワーニングをエラーにする」というオプションが付いているのに、Googleが提供しているソースでは、<br>
+            いくつかの軽度のワーニングが出るので、コンパイルが出来ない。<br>
+            そこで、「<b>ワーニングはエラーにしない</b>」に変更する必要がある。<br>
+            </p>
+            <p><img src="./cnt_mod/mod_snmod/cnt_mod_scenario_mod_ref_058.png"><br>
+            <br>
+            </p>
+        </ul>
+    </ul>
+    <li>
+    <h3>ソースの手直し</h3>
+    <p>「JavaScript v8 の」ソースコード全体がコンパイルできるようであれば、 <br>
+    以下の変更を行うことで、 windowsのコンソールや、天翔記のModDebuggerと相性を良くすることが可能である。 <br>
+    </p>
+    <ul class="pointlist">
+        <li>
+        <h4>v8\src\base\platform\platform-win32.cc のVPrintHelperを下記のように手直し</h4>
+        <div class="code"><pre class="brush:cpp;">
+//-----------------------------------------------------------------------------
+#include &quot;include/cp932_outputdebug_printf.h&quot;
+
+static void VPrintHelper(FILE* stream, const char* format, va_list args) {
+    if ( TRUE /*(stream == stdout || stream == stderr) &amp;&amp; !HasConsole()*/ ) {
+    // It is important to use safe print here in order to avoid
+    // overflowing the buffer. We might truncate the output, but this
+    // does not crash.
+    char buffer[4096];
+    OS::VSNPrintF(buffer, sizeof(buffer), format, args);
+    cp932::OutputDebugPrintf(buffer);
+  } else {
+    vfprintf(stream, format, args);
+  }
+}
+//-----------------------------------------------------------------------------
+</pre></div>
+        <li>
+        <h4>v8\include\cp932_outputdebug_printf.h を作成</h4>
+        <div class="code"><pre class="brush:cpp;">
+//-----------------------------------------------------------------------------
+
+#pragma once
+
+
+#include &lt;stdarg.h&gt;
+#include &lt;tchar.h&gt;
+#include &lt;vector&gt;
+#include &lt;windows.h&gt;
+
+
+
+inline std::wstring to_WideChar(UINT uCodePage, const std::string &amp;text)
+{
+    int size = MultiByteToWideChar(uCodePage, 0, text.c_str(), -1, NULL, 0);
+    std::vector&lt;wchar_t&gt; buf(size);
+    size = MultiByteToWideChar(uCodePage, 0, text.c_str(), -1, &amp;buf[0], buf.size());
+    return std::wstring(buf.begin(), buf.begin() + size);
+}
+
+inline std::string to_MultiByte(UINT uCodePage, const std::wstring &amp;text)
+{
+    int size = WideCharToMultiByte(uCodePage, 0, text.c_str(), -1, NULL, 0, 0, NULL);
+    std::vector&lt;char&gt; buf(size);
+    size = WideCharToMultiByte(uCodePage, 0, text.c_str(), -1, &amp;buf[0], buf.size(), 0, NULL);
+    return std::string(buf.begin(), buf.begin() + size);
+}
+
+// cp932→utf8へ
+inline std::string cp932_to_utf8(const std::string &amp;text)
+{
+    return to_MultiByte(CP_UTF8, to_WideChar(CP_OEMCP, text));
+}
+
+
+// utf8→cp932へ
+inline std::string utf8_to_cp932(const std::string &amp;text)
+{
+    return to_MultiByte(CP_OEMCP, to_WideChar(CP_UTF8, text));
+}
+
+namespace cp932 {
+
+    // OutputDebugStringとprintf両方出力。cp932への変換を伴う。
+    inline void OutputDebugPrintf(const char *format, ...) {
+        char szBufDebug[4096] = &quot;&quot;;
+        int length = sizeof(szBufDebug);
+        va_list arg;
+
+        va_start(arg, format);
+        _vsnprintf_s(szBufDebug, length, _TRUNCATE, format, arg);
+        va_end(arg);
+
+        szBufDebug[length - 1] = '\0'; // 番兵
+
+        std::string sjis = utf8_to_cp932(szBufDebug); // cp932へ
+        ::OutputDebugStringA(sjis.c_str());
+        printf(sjis.c_str());
+    }
+}
+
+//-----------------------------------------------------------------------------
+</pre></div>
+    </ul>
+
+    <li>
+    <h3>普通のコンソールプログラムに組み込んでみる</h3>
+    <ul class="pointlist">
+        <li>
+        <h4>前準備</h4>
+        <p>普通の「文字コードcp932ベース(≒sjis)の」コンソールコマンドに、このv8エンジンを組み込めれば、 <br>
+        ScenarioModに組み込むのは容易である。 <br>
+        </p>
+        <p><img src="./cnt_mod/mod_snmod/cnt_mod_scenario_mod_ref_063.png"><br>
+        </p>
+        <p>以下のようなコンソールコマンドを作ってみよう。 この「プロジェクト」も「Zp1」オプションを忘れてはならない。 <br>
+        </p>
+        <p><img src="./cnt_mod/mod_snmod/cnt_mod_scenario_mod_ref_061.png"> <br>
+        </p>
+        <p>ライブラリのリンクはv8コンパイル時に生成されたライブラリ(.lib)を一通りくっつけることとなるであろう。 <br>
+        </p>
+        <p><img src="./cnt_mod/mod_snmod/cnt_mod_scenario_mod_ref_060.png"><br>
+        </p>
+        <p><img src="./cnt_mod/mod_snmod/cnt_mod_scenario_mod_ref_062.png"><br>
+        </p>
+        <h4>Source.cpp:</h4>
+        <div class="code"><pre class="brush:cpp;">
+//-----------------------------------------------------------------------------
+
+/*
+* v8 組み込み サンプルプログラム.
+*/
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;string.h&gt;
+#include &lt;windows.h&gt;
+
+
+#include &quot;include/v8.h&quot;
+#include &quot;include/cp932_outputdebug_printf.h&quot;
+
+#pragma comment(lib, &quot;winmm.lib&quot;)
+
+using namespace v8;
+
+namespace v8 {
+    // Throwメソッド
+    static Handle&lt;Value&gt; Throw(Isolate* isolate, const char* message) {
+        return isolate-&gt;ThrowException(String::NewFromUtf8(isolate, message));
+    }
+
+    // String型が評価できればそのまま返して、評価できない時はフリーズ防止のため、変換できない旨の文字列返す。
+    const char* ToCString(const v8::String::Utf8Value&amp; value) {
+        return *value ? *value : &quot;&lt;string conversion failed&gt;&quot;;
+    }
+
+    // エラー表示処理。エラーが起きた行と桁の位置に「^」を打つ
+    void JS_ReportException(v8::Isolate* isolate, v8::TryCatch* try_catch) {
+        v8::HandleScope handle_scope(isolate);
+        v8::String::Utf8Value exception(try_catch-&gt;Exception());
+        const char* exception_string = ToCString(exception);
+        v8::Handle&lt;v8::Message&gt; message = try_catch-&gt;Message();
+        if (message.IsEmpty()) {
+            // V8 didn't provide any extra information about this error; just
+            // print the exception.
+            cp932::OutputDebugPrintf(&quot;%s\n&quot;, exception_string);
+        }
+        else {
+            // Print (filename):(line number): (message).
+            v8::String::Utf8Value filename(message-&gt;GetScriptOrigin().ResourceName());
+            const char* filename_string = ToCString(filename);
+            int linenum = message-&gt;GetLineNumber();
+            cp932::OutputDebugPrintf(&quot;%s:%i: %s\n&quot;, filename_string, linenum, exception_string);
+            // Print line of source code.
+            v8::String::Utf8Value sourceline(message-&gt;GetSourceLine());
+            const char* sourceline_string = ToCString(sourceline);
+            cp932::OutputDebugPrintf(&quot;%s\n&quot;, sourceline_string);
+            // Print wavy underline (GetUnderline is deprecated).
+            int start = message-&gt;GetStartColumn();
+            for (int i = 0; i &lt; start; i++) {
+                cp932::OutputDebugPrintf(&quot; &quot;);
+            }
+            int end = message-&gt;GetEndColumn();
+            for (int i = start; i &lt; end; i++) {
+                cp932::OutputDebugPrintf(&quot;^&quot;);
+            }
+            cp932::OutputDebugPrintf(&quot;\n&quot;);
+            v8::String::Utf8Value stack_trace(try_catch-&gt;StackTrace());
+            if (stack_trace.length() &gt; 0) {
+                const char* stack_trace_string = ToCString(stack_trace);
+                cp932::OutputDebugPrintf(&quot;%s\n&quot;, stack_trace_string);
+            }
+        }
+    }
+
+
+    // 必要みたい。メモリ確保用のラッパー。
+    class ShellArrayBufferAllocator : public ArrayBuffer::Allocator
+    {
+    public:
+        virtual void* Allocate(size_t length)
+        {
+            void *data = AllocateUninitialized(length);
+            return data == NULL ? data : memset(data, 0, length);
+        }
+
+        virtual void* AllocateUninitialized(size_t length)
+        {
+            return malloc(length);
+        }
+
+        virtual void Free(void* data, size_t)
+        {
+            free(data);
+        }
+    };
+
+    // version関数の内容。バージョン番号を返す
+    void JS_Version(const v8::FunctionCallbackInfo&lt;v8::Value&gt;&amp; args) {
+        args.GetReturnValue().Set(
+            String::NewFromUtf8(args.GetIsolate(), V8::GetVersion()));
+    }
+
+    // print関数の内容。
+    void JS_Print(const FunctionCallbackInfo&lt;Value&gt; &amp;args)
+    {
+        HandleScope handle_scope(args.GetIsolate());
+        for (int i = 0; i &lt; args.Length(); i++)
+        {
+            String::Utf8Value str(args[i]);
+            cp932::OutputDebugPrintf(*str);
+        }
+        cp932::OutputDebugPrintf(&quot;\n&quot;);
+
+        args.GetReturnValue().Set(0);
+    }
+
+
+    // FOpenのラッパー
+    static FILE* FOpen(const char* path, const char* mode) {
+        FILE* result;
+        if (fopen_s(&amp;result, path, mode) == 0) {
+            return result;
+        }
+        else {
+            return NULL;
+        }
+    }
+
+    // 文字列読み取り
+    static char* ReadChars(Isolate* isolate, const char* name, int* size_out) {
+        FILE* file = FOpen(name, &quot;rb&quot;);
+        if (file == NULL) return NULL;
+
+        fseek(file, 0, SEEK_END);
+        int size = ftell(file);
+        rewind(file);
+
+        char* chars = new char[size + 1];
+        chars[size] = '\0';
+        for (int i = 0; i &lt; size;) {
+            int read = static_cast&lt;int&gt;(fread(&amp;chars[i], 1, size - i, file));
+            i += read;
+        }
+        fclose(file);
+
+        *size_out = size;
+        return chars;
+    }
+
+    // １つのファイルをv8用の文字列として得る
+    Handle&lt;String&gt; JS_ReadFile(Isolate* isolate, const char* name) {
+        int size = 0;
+        char* chars = ReadChars(isolate, name, &amp;size);
+        if (chars == NULL) return Handle&lt;String&gt;();
+        Handle&lt;String&gt; result =
+            String::NewFromUtf8(isolate, chars, String::kNormalString, size);
+        delete[] chars;
+        return result;
+    }
+
+    // read関数の定義
+    void JS_Read(const v8::FunctionCallbackInfo&lt;v8::Value&gt;&amp; args) {
+        String::Utf8Value file(args[0]);
+        if (*file == NULL) {
+            Throw(args.GetIsolate(), &quot;Error loading file&quot;);
+            return;
+        }
+        Handle&lt;String&gt; source = JS_ReadFile(args.GetIsolate(), *file);
+        if (source.IsEmpty()) {
+            Throw(args.GetIsolate(), &quot;Error loading file&quot;);
+            return;
+        }
+        args.GetReturnValue().Set(source);
+    }
+
+    // load関数の定義 load = read + 実行
+    void JS_Load(const v8::FunctionCallbackInfo&lt;v8::Value&gt;&amp; args) {
+        String::Utf8Value file(args[0]);
+        if (*file == NULL) {
+            Throw(args.GetIsolate(), &quot;Error loading file&quot;);
+            return;
+        }
+        Handle&lt;String&gt; source = JS_ReadFile(args.GetIsolate(), *file);
+        if (source.IsEmpty()) {
+            Throw(args.GetIsolate(), &quot;Error loading file&quot;);
+            return;
+        }
+
+        // 元のファイル名をスクリプトのオリジナル情報として取っておいて(エラーの際にファイル名とか出すため)
+        Handle&lt;String&gt; filename = String::NewFromUtf8(args.GetIsolate(), *file);
+        ScriptOrigin origin(filename);
+
+
+        TryCatch try_catch;
+        Handle&lt;Script&gt; script = Script::Compile(source, &amp;origin); // ファイル情報渡しつつコンパイル
+        if (script.IsEmpty()) {
+            JS_ReportException(args.GetIsolate(), &amp;try_catch);
+            return;
+        }
+        Handle&lt;Value&gt; result = script-&gt;Run();
+        if (result.IsEmpty()) {
+            JS_ReportException(args.GetIsolate(), &amp;try_catch);
+            return;
+        }
+        args.GetReturnValue().Set(result);
+    }
+
+    // 各C++関数をjavascript関数として登録
+    Handle&lt;Context&gt; InitBuildinFunction(Isolate *isolate)
+    {
+        Handle&lt;ObjectTemplate&gt; global_template = ObjectTemplate::New(isolate);
+
+        global_template-&gt;Set(String::NewFromUtf8(isolate, &quot;print&quot;), FunctionTemplate::New(isolate, JS_Print));
+
+        global_template-&gt;Set(String::NewFromUtf8(isolate, &quot;version&quot;), FunctionTemplate::New(isolate, JS_Version));
+
+        global_template-&gt;Set(String::NewFromUtf8(isolate, &quot;read&quot;), FunctionTemplate::New(isolate, JS_Read));
+
+        global_template-&gt;Set(String::NewFromUtf8(isolate, &quot;load&quot;), FunctionTemplate::New(isolate, JS_Load));
+
+
+        return Context::New(isolate, NULL, global_template);
+    }
+}
+
+
+namespace utf8 {
+
+    // 文字列の実行。utf8文字列に変換済みのものを渡すこと
+    void Do_Command(Isolate *isolate, char *szCommand, int *exception = NULL) {
+        Handle&lt;String&gt; source = String::NewFromUtf8(isolate, szCommand);
+
+        TryCatch try_catch;
+        Handle&lt;Script&gt; script = Script::Compile(source);
+        if (script.IsEmpty()) {
+            JS_ReportException(isolate, &amp;try_catch);
+            if ( exception ) { *exception = true; };
+            return;
+        }
+
+        Handle&lt;Value&gt; result = script-&gt;Run();
+        if (result.IsEmpty()) {
+            JS_ReportException(isolate, &amp;try_catch);
+            if ( exception ) { *exception = true; };
+            return;
+        }
+    }
+
+
+    // ファイルの実行。utf8文字列に変換済みのものを渡すこと
+    void Do_File(Isolate *isolate, char *szFileName, int *exception = NULL) {
+
+        std::string command = std::string(&quot;load('&quot;) + szFileName + &quot;')&quot;;
+
+        Handle&lt;String&gt; source = String::NewFromUtf8(isolate, command.c_str());
+
+        TryCatch try_catch;
+        Handle&lt;Script&gt; script = Script::Compile(source);
+        if (script.IsEmpty()) {
+            JS_ReportException(isolate, &amp;try_catch);
+            if ( exception ) { *exception = true; };
+            return;
+        }
+
+        Handle&lt;Value&gt; result = script-&gt;Run();
+        if (result.IsEmpty()) {
+            JS_ReportException(isolate, &amp;try_catch);
+            if ( exception ) { *exception = true; };
+            return;
+        }
+    }
+
+    // グローバル変数のdoubleでの取得。変数名には、utf8文字列に変換済みのものを渡すこと。
+    double GetGlobalNumber(Isolate *isolate, char *szVarName, int *exception = NULL) {
+        Handle&lt;Object&gt; global = isolate-&gt;GetCurrentContext()-&gt;Global();
+        Handle&lt;Value&gt; var = global-&gt;Get(String::NewFromUtf8(isolate, szVarName));
+
+        if (*var) {
+            return  var-&gt;NumberValue();
+        }
+        else {
+            if ( exception ) { *exception = true; };
+            return -1;
+        }
+    }
+
+    // グローバル変数のstringでの取得。変数名には、utf8文字列に変換済みのものを渡すこと。
+    std::string GetGlobalString(Isolate *isolate, char *szVarName, int *exception = NULL) {
+        Handle&lt;Object&gt; global = isolate-&gt;GetCurrentContext()-&gt;Global();
+        Handle&lt;Value&gt; var = global-&gt;Get(String::NewFromUtf8(isolate, szVarName));
+
+        String::Utf8Value utf8(var);
+        if (*utf8) {
+            return *utf8;
+        }
+        else {
+            if ( exception ) { *exception = true; };
+            return &quot;&quot;;
+        }
+    }
+}
+
+namespace cp932 {
+
+    // 文字列の実行。cp932で渡すこと。
+    void Do_Command(Isolate *isolate, char *szCommand, int *exception = NULL) {
+        std::string utf8_szCommand = cp932_to_utf8(szCommand);
+        utf8::Do_Command(isolate, (char *)utf8_szCommand.c_str(), exception);
+    }
+
+    // ファイルの実行。cp932で渡すこと。
+    void Do_File(Isolate *isolate, char *szFileName, int *exception = NULL) {
+        std::string utf8_szFileName = cp932_to_utf8(szFileName);
+        utf8::Do_File(isolate, (char *)utf8_szFileName.c_str(), exception);
+    }
+
+    // グローバル変数のdoubleでの取得。変数名には、cp932で渡すこと。
+    double GetGlobalNumber(Isolate *isolate, char *szVarName, int *exception = NULL) {
+        std::string utf8_szVarName = cp932_to_utf8(szVarName);
+        return utf8::GetGlobalNumber(isolate, (char *)utf8_szVarName.c_str(), exception);
+    }
+
+    // グローバル変数のstringでの取得。変数名には、cp932で渡すこと。
+    std::string GetGlobalString(Isolate *isolate, char *szVarName, int *exception = NULL) {
+        std::string utf8_szVarName = cp932_to_utf8(szVarName);
+        std::string utf8_result = utf8::GetGlobalString(isolate, (char *)utf8_szVarName.c_str(), exception);
+        std::string cp932_result = utf8_to_cp932(utf8_result);
+        return cp932_result;
+    }
+}
+
+// このtestに相当する部分が、ScenarioModで記述するであろう部分。
+void test(Isolate *isolate ) {
+
+    char *command = &quot;var いい = 'ああ'; print(p);&quot;;
+    cp932::Do_Command(isolate, command);
+
+    cp932::Do_File(isolate, &quot;ccc.js&quot;);
+
+    std::string s = cp932::GetGlobalString(isolate, &quot;いい&quot;);
+    printf(&quot;%s&quot;, s.c_str());
+}
+
+int main(int argc, char **argv)
+{
+    V8::InitializeICU();
+    V8::SetFlagsFromCommandLine(&amp;argc, argv, true);
+
+    ShellArrayBufferAllocator array_buffer_allocator;
+    V8::SetArrayBufferAllocator(&amp;array_buffer_allocator);
+
+    Isolate *isolate = Isolate::New();
+    Isolate::Scope isolate_scope(isolate);
+
+    HandleScope handle_scope(isolate);
+    Handle&lt;Context&gt; context = v8::InitBuildinFunction(isolate);
+
+    Context::Scope context_scope(context);
+
+    // テスト
+    test(isolate);
+
+
+    V8::Dispose();
+
+    return 0;
+}
+//-----------------------------------------------------------------------------
+</pre></div>
+        <li>
+        <h4>ccc.js:</h4>
+        <div class="code"><pre class="brush:js;">
+//-----------------------------------------------------------------------------
+
+print(&quot;ああ&quot;);
+
+var うう = 3;
+
+var いい = &quot;おお&quot;;
+</pre></div>
+        <p><img src="./cnt_mod/mod_snmod/cnt_mod_scenario_mod_ref_064.png"><br>
+        </p>
+    </ul>
+    <li>
+    <h3>その他の補足</h3>
+    <p>JavaScript V8 におけるECMAScript6の機能はほとんど未完成であるが、 <br>
+    allow functionについては概ね動作するようである。 <br>
+    </p>
+    <p>v8\src\flag-definitions.h:<br>
+    </p>
+    <div class="code"><pre class="brush:cpp">
+DEFINE_BOOL(harmony_arrow_functions, true, "enable harmony arrow functions")
+</pre></div>
+    <p>他のECMAScript6(harmony)機能はほぼ動作しない。 <br>
+    </p>
+    <p>この状態で、v8エンジンを再コンパイルし、「v8 組み込み サンプルプログラム」も再コンパイルした場合、以下のようなfunction記述が可能となる。 <br>
+    </p>
+    <div class="code"><pre class="brush:js;highlight:[2]">
+//-----------------------------------------------------------------------------
+var hmfunc = x =&gt; x * x * 3
+print(hmfunc(3)) // 27という結果
+</pre></div>
+</ul>

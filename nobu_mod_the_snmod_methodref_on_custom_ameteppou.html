@@ -1,0 +1,95 @@
+%(hilight)s
+<h2><i class="fa fa-book fa-fw"></i>OR条件::戦争::雨鉄砲可否</h2>
+<div class="code"><pre class="brush:cpp;">
+int カスタム::On_カスタム条件(string 条件名, カスタム条件パラメタ型 パラメタ) {
+  if ( 条件名 == &quot;OR条件::戦争::雨鉄砲可否&quot; ) {
+  }
+
+  // 変更しない場合-1
+  return -1;
+}
+</pre></div>
+<ul class="checklist">
+<li><h3>引数の補足</h3>
+<ul class="pointlist">
+<li><h4>パラメタ.整数1:</h4>
+これから鉄砲を撃とうとしている武将の武将番号
+</ul>
+<li><h3>タイミング</h3>
+<ul>
+<li>このカスタム条件は、「雨鉄砲」を撃てるかどうかの判定時に呼び出される。<br>
+<p><img src="./cnt_mod/mod_snmod/cnt_mod_scenario_mod_ref_041.png"></p>
+</ul>
+
+<li><h3>一般的用途</h3>
+<ul>
+<li>TSModの雨鉄砲の条件とは別に、雨鉄砲を撃つことが出来るオリジナルな条件を追加する。<br>
+この条件は「OR条件」であるため、TSModの条件でも雨鉄砲は撃てるし、ここに記載するプログラム条件でも雨鉄砲は撃てる。<br>
+</ul>
+<li><h3>例①</h3>
+<div class="code"><pre class="brush:cpp;">
+int カスタム::On_カスタム条件(string 条件名, カスタム条件パラメタ型 パラメタ) {
+
+  if ( 条件名==&quot;OR条件::戦争::雨鉄砲可否&quot; ) {
+
+    // &quot;OR条件::戦争::雨鉄砲可否&quot; の際は、「パラメタ.整数1」に、
+    // 今鉄砲を撃とうとする、武将番号が入る。
+    int iBushouID = パラメタ.整数1 - 1;
+
+    // 通常の武将以外鉄砲撃てないはずであるが、一応配列にアクセスするので、安全を保っておく
+    if ( 0 &lt;= iBushouID &amp;&amp; iBushouID &lt; 最大数::武将情報::配列数 ) {
+      if ( Get_鉄砲適性(iBushouID) == 鉄砲適性::Ｓ ) {
+        // この条件を満たす者もまた、雨鉄砲を打てるとみなす。
+        return true;
+      }
+    }
+  }
+
+
+  // それ以外は条件を変えない。
+  return -1;
+}
+</pre></div>
+<li><h3>例②</h3>
+<div class="code"><pre class="brush:cpp;">
+int カスタム::On_カスタム条件(string 条件名, カスタム条件パラメタ型 パラメタ) {
+
+  /*
+  * 鉄砲を打とうとしている武将ユニットが、
+  * 野戦に限定で、戦闘マップのヘックスチップ「道」の上にいて、
+  * しかも、その武将が、鉄砲適性Ａ以上ならば、その瞬間は、雨鉄砲が撃てる。
+  */
+
+  if ( 条件名==&quot;OR条件::戦争::雨鉄砲可否&quot; ) {
+    int iBushouID = パラメタ.整数1 - 1; // 鉄砲を打とうとする武将ＩＤ
+
+    // 通常の武将以外鉄砲撃てないはずであるが、一応配列にアクセスするので、安全を保っておく
+    if ( 0 &lt;= iBushouID &amp;&amp; iBushouID &lt; 最大数::武将情報::配列数 ) {
+
+      // 野戦の時、
+      if ( Is_野戦中() ) {
+
+        // 今鉄砲を撃とうとしている武将はＨＥＸマップのどこにいるの？
+        ヘックス位置型 pos = Get_武将の野戦ヘックス位置(iBushouID);
+
+        // その位置の地形の役割は何？
+        int chikei = Get_野戦ヘックス役割(pos);
+
+        // その地形は「道」だ!!
+        if ( chikei == 野戦ヘックス役割::道 ) {
+
+          // 武将の適性がＡ以上
+          if ( Get_鉄砲適性(iBushouID) &gt;= 鉄砲適性::Ａ ) {
+            return true;
+          }
+        }
+      }
+    }
+  }
+
+  // それ以外は条件を変えない。
+  return -1;
+}
+</pre></div>
+</ul>
+

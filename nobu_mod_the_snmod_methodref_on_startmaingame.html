@@ -1,0 +1,61 @@
+%(hilight)s
+<h2><i class="fa fa-book fa-fw"></i>void カスタム::On_メインゲーム開始()</h2>
+<div class="code"><pre class="brush:cpp;">
+void カスタム::On_メインゲーム開始() {
+}
+</pre></div>
+<ul class="checklist">
+    <li>
+    <h3>タイミング</h3>
+    <ul>
+        <li>実際のプレイアブルなゲームがはじまるタイミングで1回実行される。<br>
+        具体的には、シナリオ選択の経路からゲームが始まる際、フェイドイン開始時に１回呼び出される。<br>
+        又、セーブデータをロードした直後のフェイドインの際にも１回呼び出される。<br>
+        <p><img src="./cnt_mod/mod_snmod/cnt_mod_scenario_mod_ref_006.png"><br>
+        </p>
+    </ul>
+
+    <li>
+    <h3>一般的用途</h3>
+    <ul>
+        <li>ゲーム開始時やセーブデータからの復帰後に、必ず何かやっておきたい場合に利用する。<br>
+        <li>新規シナリオ開始でも、ロードからでも実行されるため、<br>
+        何かの値や、メイン画面上用途の関数の使い方を確認するような、調査や学習の意味合いのデバッグ用途にも向いている。<br>
+    </ul>
+    <li>
+    <h3>例①</h3>
+    <div class="code"><pre class="brush:cpp;">
+void カスタム::On_メインゲーム開始() {
+
+  /*
+    弓適性や槍適性は、歴史上存在した武将に対してしか設定されていないため、
+    自作武将に対して、弓適性や槍適性を設定する。
+  */
+
+  int iBushouID = Get_武将番号【配列用】(&quot;自作太郎&quot;); // 自作太郎というのが自作武将だ。
+
+  // 居れば…
+  if ( 0 &lt;= iBushouID &amp;&amp; iBushouID &lt; 最大数::武将情報::配列数 ) {
+    Set_弓適性( iBushouID, 弓適性::Ｓ );
+    Set_槍適性( iBushouID, 槍適性::Ｃ );
+  }
+}
+</pre></div>
+    <li>
+    <h3>例②</h3>
+    <div class="code"><pre class="brush:cpp;">
+void カスタム::On_メインゲーム開始() {
+
+  /*
+    Set_武将状態《現役→浪人》の関数挙動を様々な武将で確認するため実験記述。
+  */
+
+  int iBushouID = Get_武将番号【配列用】(&quot;真田幸隆&quot;); // 真田幸隆の武将番号【配列用】を得る。
+
+  // 居れば…
+  if ( 0 &lt;= iBushouID &amp;&amp; iBushouID &lt; 最大数::武将情報::配列数 ) {
+    Set_武将状態《現役→浪人》(iBushouID);
+  }
+}
+</pre></div>
+</ul>

@@ -1,0 +1,73 @@
+%(hilight)s
+<h2><i class="fa fa-book fa-fw"></i>カスタム::On_追認系ダイアログ確認時(string メッセージ, string タイトル)</h2>
+<div class="code"><pre class="brush:cpp;">
+void カスタム::On_追認系ダイアログ確認時(string メッセージ, string タイトル) {
+}
+</pre></div>
+<ul class="checklist">
+<li><h3>引数の補足</h3>
+<ul class="pointlist">
+    <li><h4>メッセージ:</h4>
+    ダイアログのメッセージ
+    <li><h4>タイトル:</h4>
+    ダイアログのタイトル
+</ul>
+
+<li><h3>タイミング</h3>
+<ul>
+    <li>確認ダイアログ、情報ダイアログ、警告ダイアログといった、「追認するのみ」のダイアログにおいて、<br>
+    「確認」ボタンを押した際、(もしくは時間経過により自動的に確認したこととなった際)、このメソッドが実行される。<br>
+    <p><img src="./cnt_mod/mod_snmod/cnt_mod_scenario_mod_ref_069.png"><br>
+    </p>
+</ul>
+<li><h3>一般的用途</h3>
+<ul>
+    <li>各種ダイアログメッセージを判断することで、各種コマンドの結果を判断し、<br>
+    それに基づいて特定の処理を付与したい場合に利用する。
+</ul>
+<li><h3>例①</h3>
+<div class="code"><pre class="brush:cpp;">
+void カスタム::On_追認系ダイアログ確認時(string メッセージ, string タイトル) {
+  デバッグ出力 &lt;&lt; &quot;メッセージ内容:\n\t&quot; &lt;&lt; メッセージ &lt;&lt; endl;
+  デバッグ出力 &lt;&lt; &quot;キャプションタイトル:\n\t&quot; &lt;&lt; タイトル &lt;&lt; endl;
+}
+</pre></div>
+<li><h3>例②</h3>
+<div class="code"><pre class="brush:cpp;">
+int i最後の有効な数値入力値 = -1;
+void カスタム::On_数値入力ダイアログ決定時(string メッセージ, 数値入力ダイアログパラメタ型 パラメタ ) {
+
+  // 数値入力を途中でキャンセルした。何もしない
+  if ( パラメタ.入力値 == 0xFFFF ) {
+    return;
+  }
+
+  // 以降数値有効な数値入力があり、決定されえた場合
+  if ( Is_文字列マッチ(メッセージ, &quot;いかほど徴発しますか&quot; ) ) {
+    デバッグ出力 &lt;&lt; &quot;徴発ですな\n&quot;;
+  }
+
+  // 有効な数値入力が必要あものは、コマンドを実行するためには、
+  i最後の有効な数値入力値 = パラメタ.入力値;
+
+}
+
+void カスタム::On_追認系ダイアログ確認時(string メッセージ, string タイトル) {
+
+  正規表現マッチ結果型 matches;
+
+  if ( Is_正規表現マッチ(メッセージ, &quot;(.+)を(.+)ほど徴発しました&quot;, &amp;matches ) ) {
+
+    string 対象 = matches[1];
+
+    int 徴発数 = 0;
+    if ( matches[2]!=&quot;&quot; ) {	徴発数 = atoi( matches[2].c_str() ); }
+
+    int 入力値 = i最後の有効な数値入力値;
+
+    デバッグ出力 &lt;&lt; &quot;対象:&quot; &lt;&lt; 対象 &lt;&lt; &quot;,徴発数:&quot; &lt;&lt; 徴発数 &lt;&lt; &quot;,入力値:&quot; &lt;&lt; 入力値 &lt;&lt; endl;
+  }
+}
+
+</pre></div>
+</ul>

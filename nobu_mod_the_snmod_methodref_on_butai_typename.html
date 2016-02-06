@@ -1,0 +1,104 @@
+%(hilight)s
+<h2><i class="fa fa-book fa-fw"></i>部隊名リスト型＆ カスタム::On_部隊名表示直前(int 武将番号)</h2>
+<div class="code"><pre class="brush:cpp;">
+部隊名リスト型＆ カスタム::On_部隊名表示直前(int 武将番号) {
+  return NULL;
+}
+</pre></div>
+<ul class="checklist">
+    <li>
+    <h3>タイミング</h3>
+    <ul>
+        <li>このメソッドは武将の「兵科部隊名」を表示するタイミングで呼び出される。<br>
+        <li>様々な画面にて、このメソッドは呼び出される。 <br>
+        <p><img src="./cnt_mod/mod_snmod/cnt_mod_scenario_mod_ref_017.png"> <img src="./cnt_mod/mod_snmod/cnt_mod_scenario_mod_ref_015.png"> <img
+            src="./cnt_mod/mod_snmod/cnt_mod_scenario_mod_ref_016.png"></p>
+    </ul>
+    <li>
+    <h3>一般的用途</h3>
+    <ul>
+        <li>思い入れの強い武将や、大名勢力など、 「新しい兵科部隊名を付けたい」という目的で利用する。<br>
+    </ul>
+    <li>
+    <h3>例①</h3>
+    <div class="code"><pre class="brush:cpp;">
+部隊名リスト型＆ カスタム::On_部隊名表示直前(int 武将番号) {
+
+  int iBushouID = 武将番号-1; // 武将番号→武将番号【配列用】に
+
+  if ( 0 &lt;= iBushouID &amp;&amp; iBushouID &lt; 最大数::武将情報::配列数 ) {
+
+    if ( p武将戸籍情報[iBushouID].顔番号 == 顔番号::長尾景虎 ) { // 上杉謙信の顔＆列伝番号
+
+      if ( Get_戦闘値(iBushouID) &gt;= 90 ) { // 戦闘値(家宝含)が180以上
+          部隊名リスト型 nb = {
+            &quot;軍神足軽&quot;,
+            &quot;軍神騎馬&quot;,
+            &quot;軍神鉄砲&quot;,
+            &quot;軍神騎鉄&quot;
+          };
+          return nb;
+      } else {
+          部隊名リスト型 nb = {
+            &quot;聖将足軽&quot;,
+            &quot;聖将騎馬&quot;,
+            &quot;聖将鉄砲&quot;,
+            &quot;聖将騎鉄&quot;
+          };
+          return nb;
+      }
+    }
+  }
+
+  // 変更しない場合NULL
+  return NULL;
+}
+</pre></div>
+    <p><img src="./cnt_mod/mod_snmod/cnt_mod_scenario_mod_ref_018.png"></p>
+    <li>
+    <h3>例②</h3>
+    <div class="code"><pre class="brush:cpp;">
+部隊名リスト型＆ カスタム::On_部隊名表示直前(int 武将番号) {
+
+  /*
+  * 北条家血筋の大名に帰属するすべての者の兵科部隊名を変更する。
+  */
+
+  int iBushouID = 武将番号-1; // 武将番号→武将番号【配列用】に
+
+  if ( 0 &lt;= iBushouID &amp;&amp; iBushouID &lt; 最大数::武将情報::配列数 ) {
+
+    // 対象の武将が帰属している大名勢力の番号を求める。
+    int iDaimyoID = p武将情報[iBushouID].所属大名【大名番号】-1;
+
+    // 存在すれば
+    if ( 0 &lt;= iDaimyoID &amp;&amp; iDaimyoID &lt; 最大数::大名情報::配列数 ) {
+
+      // その大名勢力の大名の武将ＩＤを求める。
+      int iDaimyoBushouID = p大名情報[iDaimyoID].大名【武将番号】-1;
+
+      // 大名いるはずだが…
+      if ( 0 &lt;= iDaimyoBushouID &amp;&amp; iDaimyoBushouID &lt; 最大数::武将情報::配列数 ) {
+
+        // その大名の血筋は８（北条家の血筋）
+        if ( p武将情報[iDaimyoBushouID].所属血筋 == 8 ) {
+
+          部隊名リスト型 nb = {
+            &quot;北条足軽&quot;,
+            &quot;北条騎馬&quot;,
+            &quot;北条鉄砲&quot;,
+            &quot;北条騎鉄&quot;
+          };
+          return nb;
+        }
+      }
+    }
+  }
+
+  // 変更しない場合NULL
+  return NULL;
+}
+
+
+</pre></div>
+</ul>

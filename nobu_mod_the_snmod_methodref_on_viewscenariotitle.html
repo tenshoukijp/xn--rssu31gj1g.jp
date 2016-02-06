@@ -1,0 +1,43 @@
+%(hilight)s
+<h2><i class="fa fa-book fa-fw"></i>シナリオメニュー型＆ カスタム::On_シナリオメニュー表示直前()</h2>
+<div class="code"><pre class="brush:cpp">
+シナリオメニュー型＆ カスタム::On_シナリオメニュー表示直前() {
+  return NULL;
+}
+</pre></div>
+<ul class="checklist">
+    <li>
+    <h3>タイミング</h3>
+    <ul>
+        <li>見た目的にもタイミング的にも、６つのシナリオメニューが出る直前で呼び出される。<br>
+        又、「セーブデータ」の「ロード画面表示・セーブ画面表示」も、シナリオメニュー表示の一種とみなされるため、呼び出される。<br>
+        <p><img src="./cnt_mod/mod_snmod/cnt_mod_scenario_mod_ref_003.png"><br>
+        </p>
+    </ul>
+
+    <li>
+    <h3>一般的用途</h3>
+    <ul>
+        <li>６つのメニューの文字列を書き換えるために利用される。<br>
+    </ul>
+    <li>
+    <h3>例①</h3>
+    <div class="code"><pre class="brush:cpp">
+シナリオメニュー型＆ カスタム::On_シナリオメニュー表示直前() {
+
+  シナリオメニュー型 menu = {
+    &quot;  三人の養子 （１５０７年）&quot;,
+    &quot;&quot;,                             // 元のまま
+    &quot;  相剋の果て （１５６５年）&quot;,
+    &quot;信長包囲網･改（１５７１年）&quot;,
+    &quot;本能寺の変･改（１５８２年）&quot;,
+    &quot;関ヶ原前夜･改（１５９９年）&quot;
+  };
+
+  return menu;
+
+  // 変更しない場合NULL
+  return NULL;
+}
+</pre></div>
+</ul>

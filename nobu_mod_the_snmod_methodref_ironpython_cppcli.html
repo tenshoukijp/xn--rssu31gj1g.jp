@@ -1,0 +1,139 @@
+%(hilight)s
+
+<h2><i class="fa fa-book fa-fw"></i>C++/CLIからIronPythonModを使う場合</h2>
+<ul class="checklist">
+    <li>
+    <h3>概要</h3>
+    <p>ここでは、C++/CLIからIronPythonModを利用する例を記載しています。</p>
+    <p>一足飛びにScenarioModで利用すると、本質が見えにくくなるかもしれません。<br>
+    ここでは一旦汎用的なC++/CLIでの最小サンプルで雰囲気をつかんでみましょう。</p>
+
+    <h3>プロジェクトの作成</h3>
+    <p>適当にC++/CLI(CLR)のコンソールアプリケーションを作成してみましょう。<br>
+    .NET FrameWorkのバージョンは、ScenarioModと合わせて4.0としておきましょう。<br>
+    </p>
+    <p><img src="./cnt_mod/mod_ironpython/cnt_mod_ironpython_05.png"></p>
+    <p>C#の時と同様に、IronPythonMod.dllを参照に加えてください。<br>
+    <p><img src="./cnt_mod/mod_ironpython/cnt_mod_ironpython_01.png"></p>
+    <p>ScenarioModと類似の環境を想定するため、文字コードを「マルチバイト」の設定としましょう。</p>
+    <p><img src="./cnt_mod/mod_ironpython/cnt_mod_ironpython_04.png"></p>
+    <li>
+    <h3>C++/CLI側</h3>
+    <p>C++/CLIのソース</p>
+    <div class="code"><pre class="brush:cpp;">
+#include &quot;stdafx.h&quot;
+
+using namespace System;
+
+using namespace IronPython::Hosting;
+using namespace System::Collections;
+
+
+int main(array&lt;System::String ^&gt; ^args)
+{
+  auto pe = Python::CreateEngine();
+
+  // その場で式を実行。
+  int result32 = pe-&gt;Execute&lt;int&gt;(&quot;2 ** 5&quot;);
+  Console::WriteLine(result32);
+  Console::WriteLine();
+
+
+  // ファイルを実行。
+  auto scope = pe-&gt;ExecuteFile(&quot;script.py&quot;);
+
+  // 変数 abc を intとして取得
+  int val = scope-&gt;GetVariable&lt;int&gt;(&quot;abc&quot;);
+
+  // 変数 name を String^として取得
+  String^ str = scope-&gt;GetVariable&lt;String^&gt;(&quot;name&quot;);
+
+  // 変数 ret_valを「ArrayList^」型として取得
+  ArrayList^ arr1 = scope-&gt;GetVariable&lt;ArrayList^&gt;(&quot;ret_val&quot;);
+  for each (int l in arr1) {
+    Console::WriteLine(l);
+  }
+
+  // 関数を呼び出し
+  pe-&gt;Execute(&quot;hello('world')&quot;, scope);
+
+  // 関数を呼び出すが、返り値は、String^型とみなす
+  String^ ret1 = pe-&gt;Execute&lt;String^&gt;(&quot;get_hello('world')&quot;, scope);
+  Console::WriteLine(ret1);
+
+  // 日本語名の関数を呼び出すが、返り値は、String^型とみなす
+  String^ retstr = pe-&gt;Execute&lt;String^&gt;(&quot;ハロー('world')&quot;, scope);
+  Console::WriteLine(retstr);
+
+  // 関数を呼び出す。返り値はArrayList^型
+  ArrayList^ arr2 = pe-&gt;Execute&lt;ArrayList^&gt;(&quot;get_ret_val()&quot;, scope);
+  for each (int l in arr2) {
+    Console::WriteLine(l);
+  }
+
+  // intを引数に取って、boolを返す関数
+  auto funcIsOdd = pe-&gt;Operations-&gt;GetMember&lt;Func&lt;int, bool&gt;^&gt;(scope, &quot;is_odd&quot;);
+  bool b1 = funcIsOdd(3);
+  Console::WriteLine(b1);
+  bool b2 = funcIsOdd(4);
+  Console::WriteLine(b2);
+
+  return 0;
+}
+</pre></div>
+
+    <li>
+    <h3>Python側</h3>
+    <p>スクリプト側となるPython側のソースも用意します。<br>
+    Pythonは「空白やインデント」も文法に含まれますので、注意してください。</p>
+    <p><span class="negative">C++/CLIの「マルチバイト」から呼ばれますので、「script.pyのソースコードの文字コードをShitJIS(=cp932)」で保存</span>してください。<br>
+    (テキストエディタなどで実際に確認してください。間違っているとSyntax Errorが出ます)</p>
+    <p>IronPythonのソース:script.py</p>
+    <div class="code"><pre class="brush:python;">
+# coding: cp932
+
+
+from System.Collections import *
+
+abc = 3
+
+name = &quot;武田信玄&quot;
+
+def hello( x ) :
+  print &quot;hello, &quot; + x
+
+def ハロー( x ) :
+  print &quot;ハロー, &quot; + x
+  return &quot;ハロー&quot; + x
+
+
+def get_hello( x ) :
+  return &quot;hello, &quot; + x
+
+
+a = [10,20,30]
+ret_val = ArrayList(a)
+
+def get_ret_val() :
+  return ret_val
+
+
+def is_odd(num):
+  if num % 2 == 1:
+    return True
+  else:
+    return False
+
+</pre></div>
+    <p>以上となります。</p>
+    <p>IronPythonがそのままcp932を取り扱えることは、ScnearioModで利用する上では<br>
+    非常に大きなポイントとなります。</p>
+    <p><span class="negative">C++/CLIには残念ながら、C#のdynamicに相当するものがありません。</span><br>
+    よって、C#ほどには、自然な記述でIronPythonを取り扱うことは出来ません。<br>
+    </p>
+    <p>しかし、pe-&gt;Execute&lt;返り値の型&gt;(&quot;IronPythonのコード&quot;, scope);<br>
+    を取り扱うことで、文字列ベースで引数や関数などを操作し、<br>
+    返り値は、.NET FrameWorkの型を介することで、比較的便利に情報をやり取りすることができます。<br>
+    </p>
+</ul>
+

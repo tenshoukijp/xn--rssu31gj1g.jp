@@ -1,0 +1,77 @@
+%(hilight)s
+<h2><i class="fa fa fa-book fa-fw"></i>Luaから実行できる関数を、ScenarioMod側に用意する</h2>
+<ul class="checklist">
+    <li>
+    <h3>Luaからも実行可能な関数の作成方法</h3>
+    <p>Luaからも実行可能な関数の作成方法には、作法が存在する。<br>
+    それらは、WebやLuaの書籍に多くの例題が掲載されている。<br>
+    ScenarioModにおいても、「全くその作法通りの記述」で実装が可能である。<br>
+    </p>
+    <ul class="pointlist">
+        <li>
+        <h4>カスタム駆動関数.cpp</h4>
+        <div class="code"><pre class="brush:cpp;">
+// 引数 ： lua_State *L という形。
+// 返値 : int型。その関数が返す「値の個数」。 (Luaは複数の返り値を並べて返すことができる、その個数)
+
+// 指定の武将番号の武将の名前を得る
+int Lua_GetBushouName(lua_State *L) {
+
+  // Lという画用紙に最後に書いたうち、１番目の引数を、整数として取得
+  int iBushouID = (int)lua_tointeger(L, 1);
+
+   // Lという画用紙に最後に書いた引数群を削除
+  lua_pop(L, lua_gettop(L));
+
+  string s = Get_名前(iBushouID);
+
+   // Lという画用紙に逆に、この返り値を書く
+  lua_pushstring(L, s.c_str());
+
+   // 画用紙に書いた数(この関数が呼ばれた際に返す返り値の数)を返す
+  return 1;
+}
+
+void カスタム::On_起動時() {
+  // 上記関数を「GetBushuName」という関数名でＬの画用紙に登録
+  lua_register(L, &quot;GetBushouName&quot;, &amp;Lua_GetBushouName);
+}
+</pre></div>
+        <p>これだけで、準備は整った。</p>
+        <p>これにより、Lの画用紙に「GetBushouName」という関数が定義された。<br>
+        そして、その挙動は、ScenarioModの「Get_名前」関数と同じ、ということになるだろう。</p>
+        <p>この関数を実際にLuaから使うには、ゲーム中に使わなければ意味がないので以下のようなテスト記述を書き足そう。</p>
+        <li>
+        <h4>カスタム駆動関数.cpp</h4>
+        <div class="code"><pre class="brush:cpp">
+void カスタム::On_起動時() {
+
+  // 上記関数を「GetBushuName」という関数名でＬの画用紙に登録
+  lua_register(L, &quot;GetBushouName&quot;, &amp;Lua_GetBushouName);
+
+  // test.lua というファイルの内容をＬの画用紙に書いて、実行
+  try {
+      LUA::Do_ファイル(&quot;test.lua&quot;);
+  } catch (...) { }
+}
+
+void カスタム::On_相場変更直前() {
+  // Lの画用紙にある、「soba_change」の関数を呼び出す。
+  try {
+      LUA::Do_コマンド(&quot;soba_change()&quot;);
+  } catch(...) { }
+}
+</pre></div>
+        <p>起動時に「test.lua」を呼出して、実行する記述を付けたし、<br>
+        又、相場変更時に、「soba_change」という関数を実行する。</p>
+        <li>
+        <h4>test.lua</h4>
+        <div class="code"><pre class="brush:lua">
+function soba_change()
+    local bushou_name = GetBushouName( 10 )  -- 武将番号【配列用】が10番目の武将の名前を得る
+    dprint(bushou_name)
+end
+</pre></div>
+        <p>相場が変わる時、武将番号【配列用】が「10」の武将の名前がModDebuggerに表示されるであろう。</p>
+    </ul>
+</ul>

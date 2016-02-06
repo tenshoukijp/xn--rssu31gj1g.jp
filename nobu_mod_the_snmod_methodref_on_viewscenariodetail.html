@@ -1,0 +1,80 @@
+%(hilight)s
+<h2><i class="fa fa-book fa-fw"></i>シナリオ説明文型＆ カスタム::On_シナリオ説明表示直前(int シナリオ番号)</h2>
+<div class="code"><pre class="brush:cpp">
+シナリオ説明文型＆ カスタム::On_シナリオ説明表示直前(int シナリオ番号) {
+  return NULL;
+}
+</pre></div>
+<ul class="checklist">
+    <li>
+    <h3>タイミング</h3>
+    <ul>
+        <li>見た目的にも、タイミング的にも、シナリオ説明文が表示される直前に呼び出される。<br>
+        <p><img src="./cnt_mod/mod_snmod/cnt_mod_scenario_mod_ref_004.png"><br>
+        </p>
+    </ul>
+    <li>
+    <h3>一般的用途</h3>
+    <ul>
+        <li>特定のシナリオの説明文を書き換えるために利用される。<br>
+    </ul>
+    <li>
+    <h3>例①</h3>
+    <div class="code"><pre class="brush:cpp">
+シナリオ説明文型＆ カスタム::On_シナリオ説明表示直前(int シナリオ番号) {
+
+  switch (シナリオ番号) {
+    case 1 :
+      {
+        break;
+      }
+    case 2 :
+      {
+        break;
+      }
+    case 3 :
+      {
+        シナリオ説明文型 sn = {
+          &quot;  １５６５（永禄八）年、将軍足利義輝は、三好義継\x0A&quot;
+          &quot;と松永久秀の謀反により横死した。既に三好氏に長慶\x0A&quot;
+          &quot;は亡く、天下は乱れる糸の如き有様で、治まる気配が\x0A&quot;
+          &quot;無かった。\x0A&quot;
+          &quot;  東にて北条氏康、武田信玄、上杉謙信が勢威を誇れ\x0A&quot;
+          ,
+
+          &quot;ば、織田信長、松平家康らが期を窺い、西にて毛利元\x0A&quot;
+          &quot;就、大友宗麟が覇を競えば、宇喜多直家、長宗我部元\x0A&quot;
+          &quot;親らがその隙を狙う。\x0A&quot;
+          &quot;　戦乱は日本全土を覆い、まさに千載一遇。掌中に天\x0A&quot;
+          &quot;下を掴むことも夢ではなかった。\x0A&quot;
+          ,
+
+          &quot;\x0A&quot;
+          &quot;　“上洛を果たし、天下に号令するは誰か…？”\x0A&quot;
+          &quot;\x0A&quot;
+          &quot;　己の家運と知勇の全てを賭して戦う群雄達。その野\x0A&quot;
+          &quot;望の敵は、人か、それとも天なのか…\x0A&quot;
+        };
+        return sn;
+
+        break;
+      }
+    case 4 :
+      {
+        break;
+      }
+    case 5 :
+      {
+        break;
+      }
+    case 6 :
+      {
+        break;
+      }
+  }
+
+  // 変更しない場合NULL
+  return NULL;
+}
+</pre></div>
+</ul>

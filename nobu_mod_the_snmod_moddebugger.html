@@ -1,0 +1,115 @@
+%(hilight)s
+<h2><i class="fa fa-bug fa-fw"></i>ModDebuggerとデバッグ出力</h2>
+<ul class="checklist">
+    <li>
+    <h3>概要</h3>
+    <p>この節では、具体的にScenarioModで、文字列をデバッグコンソールに表示します。<br>
+    自分自身が組んだプログラムが「正しいのか」「正しくないのか」、<br>
+    それを検証できるようになるには、 「デバッグ方法」を必ず習得する必要があります。<br>
+    </p>
+    <li>
+    <h3>ModDebuggerを使ってデバッグする</h3>
+    <p>C言語やC++言語の基礎を学校等や独学で学習した方であれば、<br>
+    初期の段階でコンソール画面に文字を出力するために、<br>
+    </p>
+    <ul class="pointlist">
+        <li>
+        <h4>printf</h4>
+        <p><img src="./cnt_mod/mod_snmod/cnt_mod_scenario_mod_49.png"><br>
+        </p>
+        <li>
+        <h4>cout</h4>
+        <p><img src="./cnt_mod/mod_snmod/cnt_mod_scenario_mod_50.png"><br>
+        </p>
+    </ul>
+    <p>といった記述を一番初めの段階で学習したと思います。<br>
+    </p>
+    <p>一番初めの段階で習う理由は、<span class="positive">自分が書いたプログラムの挙動を確認する上で、<br>
+    最も手軽な手段がこれら標準出力へのprint文</span>だからです。</p>
+    <p><img src="./cnt_mod/mod_snmod/cnt_mod_scenario_mod_51.png"><br>
+    </p>
+    <p>そこで、そういったことを天翔記のデバッグでも可能とするために、<br>
+    開発ツールとして、「ModDebugger」というものを当サイトでは提供しています。<br>
+    </p>
+    <p><a href="?page=nobu_mod_the_debugger">ModDebugger</a>の「ModDebugger.exe」を天翔記フォルダに入れておいてください。 <br>
+    </p>
+    <p>さっそく起動してみましょう。<br>
+    </p>
+    <p><img src="./cnt_mod/mod_snmod/cnt_mod_scenario_mod_52.png"><br>
+    </p>
+    <fieldset class="alert alert-info"><legend>ScenarioModでの開発中は、ModDebuggerの常時起動がお勧め</legend> 基本的にScenarioModで開発する際には、常にデバッグすることになりますので、<br>
+    この「ModDebugger」を起動しておきましょう!<br>
+    </fieldset>
+
+    <li>
+    <h3>実際にデバッグ出力してみる</h3>
+    <p>では、さっそくデバッグ出力を使ってみます。</p>
+    <ul class="pointlist">
+        <li>
+        <h4>デバッグ出力の使用「cout風」</h4>
+        <p>試しに、シナリオ説明文のところを以下の１行を付記してみましょう。<br>
+        C++の「cout」と同じ書き方です。<br>
+        </p>
+        <div class="code"><pre class="brush:cpp;highlight:[3]">
+シナリオ説明文型＆ カスタム::On_シナリオ説明表示直前(int シナリオ番号) {
+
+    デバッグ出力 &lt;&lt; &quot;On_シナリオ説明表示直前のところ&quot; &lt;&lt; シナリオ番号 &lt;&lt; endl;
+
+    switch (シナリオ番号) {
+    case 1:
+    {
+        /*
+        シナリオ説明文型 sn = {
+        &quot;シナリオ１説明文・上部\x0A&quot;
+    </pre></div>
+
+        <p><img src="./cnt_mod/mod_snmod/cnt_mod_scenario_mod_53.png"></p>
+        <li>
+        <h4>動作確認</h4>
+        <p>ビルドして、ScenarioMod.dllを天翔記フォルダーにコピーして、天翔記を実行してみます。<br>
+        </p>
+        <p><span class="positive">ModDebuggerが起動していることを確認し、<br>
+        </span> <span class="positive">天翔記で特定のシナリオを選択してみましょう。</span></p>
+        <p><b>シナリオ説明文が出るたびに</b> ModDebuggerの方に、以下のような文字列が表示されるはずです。</p>
+        <p><img src="./cnt_mod/mod_snmod/cnt_mod_scenario_mod_54.png"><br>
+        </p>
+        <p>このような機能を提供するのがModDebuggerです。<br>
+        </p>
+        <p><span class="negative">これによってプログラムが上手くいかない時や、関数や値のチェックをしたい時に、<br>
+        直接コンソールに出力することで、確認が取れるようになっています。<br>
+        </span>
+        <li>
+        <h4>デバッグ出力の使用「printf風」</h4>
+        <p>さて、もういちど、先ほどの所を以下のように書き換えてみましょう。<br>
+        </p>
+        <p>こちらは、C言語の「printf」と同じ書き方です。<br>
+        </p>
+        <div class="code"><pre class="brush:cpp;highlight:[3]">
+シナリオ説明文型＆ カスタム::On_シナリオ説明表示直前(int シナリオ番号) {
+
+   デバッグ出力(&quot;On_シナリオ説明表示直前のところ%d&quot;, シナリオ番号);
+
+    switch (シナリオ番号) {
+    case 1:
+    {
+        /*
+        シナリオ説明文型 sn = {
+        &quot;シナリオ１説明文・上部\x0A&quot;
+    </pre></div>
+        <p><img src="./cnt_mod/mod_snmod/cnt_mod_scenario_mod_55.png"><br>
+        <p>ビルドして、ScenarioMod.dllを天翔記フォルダーにコピーして、天翔記を実行してみます。<br>
+        </p>
+        <p>ModDebuggerが起動していることを確認し、<br>
+        天翔記で特定のシナリオを選択してみましょう。</p>
+        <p>先ほどと全く同じ文字列が表示されたはずです。<br>
+        </p>
+    </ul>
+    <li>
+    <h3>まとめ</h3>
+    <p>このように、「デバッグ出力」という機能を使えば、<br>
+    <b>cout</b> と同じ書き方でもよいし、<br>
+    <b>printf</b> と同じ書き方でもよく、 <br>
+    好きな方で、ModDebuggerのコンソールに出力してデバッグできるということが理解できたことでしょう。</p>
+    <p>以上で、ModDebuggerとデバッグ出力の説明を終了します。 お疲れ様でした。</p>
+</ul>
+

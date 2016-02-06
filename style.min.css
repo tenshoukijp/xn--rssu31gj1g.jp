@@ -1,0 +1,46 @@
+body{background-color:#fff;font-family:Meiryo, "MS PGothic", sans-serif;margin:0;padding:0;}
+ol,ul{margin-bottom:20px;}
+table{background-color:#fff;border-collapse:collapse;margin:0;padding:0;}
+tr,th,td{vertical-align:top;font-size:14px;margin:0;padding:0;}
+table.face_name_table,table.face_name_table tr,table.face_name_table th,table.face_name_table td{border-width:0;margin:0;padding:0;}
+div.imglvl{border-color:#333;border-style:solid;border-width:0;}
+.paragraph{width:1150px;font-size:18px;padding:10px;}
+.paragraph a[href ^=http]{background:url(./web_img/external_link.png) no-repeat right top;padding-right:12px;margin-right:5px;}
+.paragraph a[href ^=http ://天翔記.jp]{background:none;padding-right:0;margin-right:0;}
+.update_time{text-align:right;}
+a.face_anim{font-size:12px;}
+span.level{padding-left:20px;color:#090;}
+div.code{font-family:"MS Gothic";background-color:#dfe;}
+pre{font-family:"MS Gothic";}
+.download_file{text-align:left;margin-right:60px;-webkit-border-radius:7px;-moz-border-radius:7px;border-radius:7px;border-color:red;border-style:solid;border-width:3px;padding:2px;}
+img{border:1px solid #666;box-shadow:0 2px 3px 1px rgba(0,0,0,.5);-webkit-box-shadow:0 2px 3px 1px rgba(0,0,0,.5);-moz-box-shadow:0 2px 3px 1px rgba(0,0,0,.5);}
+img[attr=noedge]{border:0 solid #fff;box-shadow:0 0 0 0 rgba(0,0,0,0);-webkit-box-shadow:0 0 0 0 rgba(0,0,0,0);-moz-box-shadow:0 0 0 0 rgba(0,0,0,0);border-width:0;}
+span.underline{text-decoration:underline;}
+span.keyword{border:2px solid #99f;-webkit-border-radius:3px;-moz-border-radius:3px;border-radius:3px;}
+.paragraph h2{font-size:1.9em;line-height:1.5em;position:relative;font-weight:700;padding-left:10px;border-bottom:7px solid #2C2AB9;margin:0;}
+.paragraph h2:not(:first-child){margin-top:100px;font-size:1.7em;}
+.paragraph > h2 > i{margin-left:0;margin-right:7px;}
+.paragraph ul.checklist{list-style:none;margin-top:10px;margin-bottom:50px;}
+.paragraph ul.checklist>li{margin-bottom:50px;}
+.paragraph ul.checklist li h3:before{color:#1f4164;font-size:1em;position:relative;left:-.2em;font-family:FontAwesome;content:'\f14a';}
+.paragraph ul.pointlist{list-style:none;margin-bottom:30px;}
+.paragraph ul.pointlist li h4:before{color:#1f4164;font-size:1em;position:relative;left:-.1em;font-family:FontAwesome;content:'\f0a9';}
+.paragraph ul.arrowlist{list-style:none;margin-bottom:25px;}
+.paragraph ul.arrowlist li h5:before{color:#1f4164;font-size:.9em;position:relative;left:-.1em;font-family:FontAwesome;content:'\f101';}
+.paragraph p{padding-left:20px;}
+.paragraph h3{font-size:1.5em;line-height:1.2em;border-bottom:2px solid #2C2AB9;}
+.paragraph h4{font-size:1.3em;line-height:1.1em;border-bottom:1px dotted #2C2AB9;margin:5px;}
+.paragraph h5{font-size:1.1em;line-height:1.1em;border-bottom:1px dotted #2C2AB9;margin:2px;}
+.paragraph span.positive{color:#009;font-weight:700;}
+.paragraph span.negative{color:red;}
+fieldset.alert{-moz-border-radius:5px;-webkit-border-radius:5px;background-color:#fcfcfc;border:1px solid #966;border-radius:5px;box-shadow:0 1px 0 rgba(255,255,255,0.3) inset, 0 0 2px rgba(255,255,255,0.3) inset, 0 0 10px rgba(0,0,0,0.1) inset, 0 1px 20px rgba(0,0,0,0.1);display:block;margin:20px 150px 20px 10px;max-width:1200px;min-width:600px;padding-top:0;}
+fieldset.alert-info{background-color:#d9edf7;color:#31708f;}
+fieldset.alert-info legend{color:#31708f;margin-left:0;}
+fieldset.alert-info legend:before{content:"\f05a";font-family:FontAwesome;margin-right:3px;}
+fieldset.alert-warn{background-color:#f2dede;color:#a94442;}
+fieldset.alert-warn legend{color:#a94442;margin-left:0;}
+fieldset.alert-warn legend:before{content:"\f071";font-family:FontAwesome;margin-right:3px;}
+blockquote{min-width:500px;max-width:1000px;position:relative;z-index:2;background:#fff;font-size:16pt;border:1px solid #bbb;-webkit-border-radius:3px;-moz-border-radius:3px;border-radius:3px;margin:10px 50px 15px 10px;padding:10px 30px;}
+blockquote:before,blockquote:after{font-family:"FontAwesome";font-size:0.8em;line-height:1em;color:#999;position:absolute;z-index:1;}
+blockquote:before{content:"\f10d";left:5px;top:5px;}
+blockquote:after{content:"\f10e";right:5px;bottom:5px;}

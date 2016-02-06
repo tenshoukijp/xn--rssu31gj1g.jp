@@ -1,0 +1,63 @@
+%(hilight)s
+<h2><i class="fa fa-book fa-fw"></i>void カスタム::On_相場変更直前()</h2>
+<div class="code"><pre class="brush:cpp;">
+void カスタム::On_相場変更直前() {
+}
+</pre></div>
+<ul class="checklist">
+    <li><h3>タイミング</h3>
+    <ul>
+        <li>一季節に1回、相場が変更される直前のタイミングで呼び出される。<br>
+        <p>
+        <img src="./cnt_mod/mod_snmod/cnt_mod_scenario_mod_ref_007.png"><br>
+        </p>
+    </ul>
+
+    <li><h3>一般的用途</h3>
+    <ul>
+        <li>通常は、相場の値を変更する用途として、利用する。<br>
+        <li><b>このメソッドはセーブやロードによって何度も実行される、といったことがなく、<br>
+        ゲームを通して必ず「１季節ごとに１回だけ」実行される。<br>
+        よって、「１季節の最初に必ずやっておきたい処理」を記述するのに非常に向いている。</b>
+    </ul>
+    <li><h3>例①</h3>
+    <div class="code"><pre class="brush:cpp;">
+void カスタム::On_相場変更直前() {
+  // 夏だけは以下の相場にする。
+  if ( p年情報.季節 == 季節::夏 ) {
+    Set_米相場(8);  // 天翔記表示上は0.8のこと
+    Set_鉄砲相場(30); // 鉄砲相場を30にする。
+    Set_馬相場(10); // 馬相場を10に設定する。
+    Set_兵相場(15); // 兵相場を15に設定する。
+  }
+}
+</pre></div>
+    <li><h3>例②</h3>
+    <div class="code"><pre class="brush:cpp;">
+void カスタム::On_相場変更直前() {
+  // 春になると、全ての軍団に金が10000配られる
+  if ( p年情報.季節 == 季節::春 ) {
+
+    // 全ての軍団に対して
+    for ( int iGundanID=0; iGundanID &lt; 最大数::軍団情報::配列数; iGundanID++ ) {
+
+      // 軍団長の武将ＩＤを求める。
+      int iLeaderBushouID = p軍団情報[iGundanID].軍団長【武将番号】-1;
+
+      // ちゃんと軍団長がいるならば… 有効な軍団。
+      if ( 0 &lt;= iLeaderBushouID &amp;&amp; iLeaderBushouID &lt; 最大数::武将情報::配列数 ) {
+
+        // そこに60000を超えない範囲で金を配る。
+        int Gold = p軍団情報[iGundanID].金; // WORD型→int型にして容易にオーバーフローしてしまうのを対処
+        Gold += 10000;
+        if ( Gold &gt; 60000 ) {
+          Gold = 60000;
+        }
+        p軍団情報[iGundanID].金 = Gold;
+      }
+    }
+  }
+}
+</pre></div>
+
+</ul>

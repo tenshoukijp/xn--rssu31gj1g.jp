@@ -1,0 +1,123 @@
+<h2><i class="fa fa-book fa-fw"></i>シナリオタイトルやシナリオ詳細文を変更する｢一般MOD｣</h2>
+<ul class="checklist">
+    <li>
+    <h3>概要</h3>
+    <p>シナリオ作者にとって、シナリオタイトルやシナリオ詳細文を変更したいという要望はあるでしょう。<br>
+    </p>
+    <p>これらはScenarioModでも変更可能ですが、ScenarioModは、1人1つであるため、パッケージとしては配布しずらい、という問題があります。<br>
+    又、ScenarioModを利用していたとしても、、「シナリオ」というひとつのパッケージとしてScenarioModと分離しておきたいという要望もあるかと思います。<br>
+    </p>
+    <p>そこで、「シナリオタイトルやシナリオ詳細文の変更を目的とする一般Modのひな形」として、<b>SnCustomTitleMod</b>を用意しました。<br>
+    </p>
+    <li>
+    <h3>ダウンロード</h3>
+    <dl>
+        <dt>
+        <div class="download_file">DOWNLOAD ⇒ <a href="%(file)s">SnCustomTitleMod用プロジェクト</a>ファイル。</div>
+        </dt>
+        <dd>
+        <div class="update_time">└更新日 %(year)04d/%(mon)02d/%(mday)02d</div>
+        </dd>
+    </dl>
+    <li>
+    <h3>使い方</h3>
+    <ul>
+        <li>
+        <p>さて、では、「全てを解凍し」、「SnCustomTitleMod.sln」をVC++で開きましょう。<br>
+        <br>
+        より新しいVisual Studioのバージョンを利用している場合、以下のような、プロジェクト変換メッセージが出ると思いますが、問題ありません。<br>
+        </p>
+        <p><img src="./cnt_mod/mod_pluginmod/cnt_mod_sncustomtitle_01.png"><br>
+        </p>
+        <li>
+        <p>図のように「dllmain.cpp」のファイルを開きます。<br>
+        </p>
+        <p><img src="./cnt_mod/mod_pluginmod/cnt_mod_sncustomtitle_02.png"><br>
+        </p>
+        <li>
+        <p>画面上部の「Release」とある部分が「Debug」となってしまっている場合は、「Release」を選びなおしましょう。<br>
+        </p>
+
+        <li>
+        <p>ソースは簡単なものではありますが、これでもプログラム未経験者にとっては「グッとくる」ものがあるかと思います。<br>
+        しかし、気にする必要はありません。<br>
+        </p>
+        <p>このひな形については、「見様見真似」で大丈夫なようになっています。<br>
+        </p>
+
+        <li>
+        <p>まず、タイトル名の変更ですが、以下の部分に着目して、日本語を編集します。<br>
+
+        <b>最長でも全角１５文字までです。</b></p>
+        <li>
+        <p>元々天翔記にあるタイトル名をそのまま採用する場合は、<b>NULL</b>と記載します。<br>
+        </p>
+        <p><img src="./cnt_mod/mod_pluginmod/cnt_mod_sncustomtitle_03.png"><br>
+        </p>
+        <li>
+        <p>次に、詳細説明文の変更ですが、以下の部分に着目して、日本語を編集します。<br>
+        <b>ここまで日本語が見えていれば、「なんとなく見様見真似」でコピペしたり編集すればなんとかなるでしょう。</b><br>
+        </p>
+        <p><img src="./cnt_mod/mod_pluginmod/cnt_mod_sncustomtitle_04.png"><br>
+        </p>
+        <li>
+        <p>さて、編集が終わったらリビルドしてみましょう。<br>
+        ソリューションを右クリックすれば、ソリューションのリビルドができます。<br>
+        </p>
+        <p><img src="./cnt_mod/mod_pluginmod/cnt_mod_sncustomtitle_05.png"><br>
+        </p>
+        <li>
+        <p>エラーが出ずに、無事にリビルドできたでしょうか？<br>
+        エラーが出た場合は、日本語編集時のコピペ等で何か間違っていますので見返しましょう。<br>
+        </p>
+        <li>
+        <p>次に、バージョンや著作権表記を編集します。</p>
+        <li>
+        <p>ソリューションエキスプローラーで、「SnCustomTitleMod.rc」を右クリックし、コードの表示を選択します。<br>
+        </p>
+        <p><img src="./cnt_mod/mod_pluginmod/cnt_mod_sncustomtitle_06.png"><br>
+        </p>
+        <p>すると、以下のようになりますので、「<b><fonr color="red">赤枠</fonr></b>」のところを自分のハンドル名を入れたり、バージョンの数値や文字列を編集しましょう。<br>
+        </p>
+        <p><img src="./cnt_mod/mod_pluginmod/cnt_mod_sncustomtitle_08.png"><br>
+        </p>
+        <li>
+        <p>さて、再度リビルド(もしくはビルド)してみましょう。<br>
+        </p>
+        <p><img src="./cnt_mod/mod_pluginmod/cnt_mod_sncustomtitle_05.png"><br>
+        </p>
+        <p>これで、SnCustomTitleMod.dll が完成しました。<br>
+        </p>
+        <p>で、問題は、その肝心のSnCustomTitleMod.dllはどこに出来上がったんだ？ <br>
+        ということなのですが、以下のようにソリューションから右クリックすれば、 <br>
+        ｢エキスプローラでフォルダを開く￥<br>
+        というのがあります。<br>
+        ここで開いて、｢Release｣の中をみてみましょう。<br>
+        </p>
+        <p><img src="./cnt_mod/mod_pluginmod/cnt_mod_sncustomtitle_09.png"><br>
+        </p>
+        <p>その<b>「SnCustomTitleMod.dll」を｢天翔記｣フォルダにコピー</b>すればＯＫです。<br>
+        </p>
+        <li>
+        <p>天翔記を起動してみましょう!!<br>
+        変更が確認できましたか？<br>
+        </p>
+
+        <p><img src="./cnt_mod/mod_pluginmod/cnt_mod_sncustomtitle_10.png"><br>
+        </p>
+        <p><img src="./cnt_mod/mod_pluginmod/cnt_mod_sncustomtitle_11.png"><br>
+        </p>
+        <li><p><b>最後に、この「SnCustomTitleMod.dll」という名前を、<br>
+        「Sn******Mod.dll」<br>
+        というように好きな名前に変更しましょう。<br>
+        少なくとも最後に「Mod.dll」という文字列が含まれている必要があります。<br>
+        「SnCustomtTitleModというのはひな形名」ですので、<br>
+        「SnCustomTitleMod.dllという名前で配布しない」ようにしましょう。</b> <br>
+        <br>
+        </p>
+        <li>
+        <p>以上で、SnCustomTitleModの編集・ビルドの方法の説明を終了します。<br>
+        </p>
+        <p>お疲れ様でした。</p>
+    </ul>
+</ul>

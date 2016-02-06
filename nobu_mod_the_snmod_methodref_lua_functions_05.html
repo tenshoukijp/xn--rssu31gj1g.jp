@@ -1,0 +1,94 @@
+%(hilight)s
+<h2><i class="fa fa fa-book fa-fw"></i>Luaから実行できる関数を、ScenarioModで作成する ～他の例題～</h2>
+<ul class="checklist">
+    <li><h3>ScenarioModの関数を、Luaから呼べる形にした作成例</h3>
+    <p>特に個々について、ここでは解説を必要としないでしょう。<br>
+    異なる引数の数や型、返り値の数について、<br>
+    どのように記述するのかの参考としてください。<br>
+    </p>
+    <ul class="pointlist">
+        <li>
+        <h4>カスタム駆動関数.cpp</h4>
+        <div class="code"><pre class="brush:cpp;">
+// 指定の武将番号の武将の年齢を得る
+int Lua_GetBushouYearsOld(lua_State *L) {
+
+  // 引数を取得
+  int iBushouID = (int)lua_tointeger(L, 1);
+
+   // スタック削除
+  lua_pop(L, lua_gettop(L));
+
+  int years = Get_武将年齢(iBushouID);
+
+   // スタックに戻り値を積む
+  lua_pushinteger(L, years);
+
+   // 戻り値の数を返す
+  return 1;
+}
+
+
+// 吹き出し左上スタート
+int Lua_DoHukidashiStart(lua_State *L) {
+  // 1番目の引数を取得
+  int iBushouID = (int)lua_tointeger(L, 1);
+
+  // 2番目の引数を取得
+  string message = lua_tostring(L, 2);
+
+  噴出ダイアログ《通常・左上》開始(iBushouID, message );
+
+   // スタック削除
+  lua_pop(L, lua_gettop(L));
+
+   // 戻り値の数を返す
+  return 0;
+}
+
+// 吹き出し左上終了
+int Lua_DoHukidashiEnd(lua_State *L) {
+  噴出ダイアログ《通常・左上》終了();
+
+  // スタック削除
+  lua_pop(L, lua_gettop(L));
+
+  // 戻り値の数を返す
+  return 0;
+}
+
+
+void カスタム::On_起動時() {
+  // 上記関数群をＬの画用紙に登録
+  lua_register(L, &quot;GetBushouYearsOld&quot;, &amp;Lua_GetBushouYearsOld);
+  lua_register(L, &quot;DoHukidashiStart&quot;, &amp;Lua_DoHukidashiStart);
+  lua_register(L, &quot;DoHukidashiEnd&quot;, &amp;Lua_DoHukidashiEnd);
+
+
+  // test.lua というファイルの内容をＬの画用紙に書いて、実行
+  try {
+      LUA::Do_ファイル(&quot;test.lua&quot;);
+  } catch (...) { }
+}
+
+
+void カスタム::On_相場変更直前() {
+  // Lの画用紙にある、「soba_change」の関数を呼び出す。
+  try {
+      LUA::Do_コマンド(&quot;soba_change()&quot;);
+  } catch(...) { }
+}
+
+</pre></div>
+        <li>
+        <h4>test.lua</h4>
+        <div class="code"><pre class="brush:lua;">
+function soba_change()
+    local bushou_name = GetBushouYearsOld( 10 )  -- 武将番号【配列用】が10番目の武将の年齢
+    dprint(bushou_name)
+    DoHukidashiStart( 10, &quot;吹き出しがスタート\nしたよ～&quot; );
+    DoHukidashiEnd();
+end
+</pre></div>
+    </ul>
+</ul>

@@ -1,0 +1,386 @@
+<h2><i class="fa fa-list fa-fw"></i>TSMod設定キットの機能 〜環境編〜</h2>
+<ul class="checklist">
+    <li>
+    <h3>Vista以降で、BGMがループしない問題を解消</h3>
+    <p>天翔記のBGMが、Vista以降ループしない、という問題を解消しています。<br>
+    </p>
+    <ul class="pointlist">
+        <li>
+        <h4>TSMod.iniの値</h4>
+        <ul style="margin-top: 5px">
+            <li>デフォルトではこの機能はON
+        </ul>
+    </ul>
+    <li>
+    <h3>タイトルバーとメニューバーを隠す機能</h3>
+    <p>ゲームサイズ決定後、タイトルバーとメニューバーを隠します。<br>
+    ゲーム外の情報が消えることで、ゲームへの没入間が向上します。<br>
+    </p>
+    <p>このオプションがONの場合、<br>
+    「ウィンドウ枠の境界線付近を左クリック」するか、もしくは、<br>
+    「CTRL+M」でメニューの表示・非表示切り替えることが出来ます。<br>
+    </p>
+    <ul class="pointlist">
+        <li>
+        <h4>TSMod.iniの値</h4>
+        <ul style="margin-top: 5px">
+            <li>デフォルトではこの機能はON
+            <li>TSMod.iniにて設定を変更可能。
+        </ul>
+    </ul>
+    <li>
+    <h3>システムメニューより「中央の位置に戻す」機能</h3>
+    <p>タイトルバー表示がONのオプション時において、<br>
+    天翔記ウィンドウを移動させてしまったとしても、元に場所に戻せます。<br>
+    </p>
+    <p><img src="cnt_mod/cnt_mod_tsmd_systemmenu.png"><br>
+    </p>
+    <ul class="pointlist">
+        <li>
+        <h4>TSMod.iniの値</h4>
+        <ul style="margin-top: 5px">
+            <li>デフォルトではこの機能はON
+            <li>ただし、「タイトルバーとメニューバーを隠す機能」がデフォルトではONなため、<br>
+            デフォルト設定ではシステムメニューを出す機会はありません。
+        </ul>
+    </ul>
+    <li>
+    <h3>ESCキーでデモモードや戦争の委任の解除メニューを出せる機能</h3>
+    <p>元来は、マウスの左クリック＋右クリックなのですが、<br>
+    これがなかなか反応しないという問題がありますので、この機能が提供されます。</p>
+    <ul class="pointlist">
+        <li>
+        <h4>TSMod.iniの値</h4>
+        <ul style="margin-top: 5px">
+            <li>デフォルトではこの機能はON。
+        </ul>
+    </ul>
+    <li>
+    <h3>フルカラー家宝機能</h3>
+    <p>家宝をフルカラーで表示する機能となります。<br>
+    詳細は<a href="?page=nobu_kahou">フルカラー家宝キット </a></p>
+    <ul class="pointlist">
+        <li>
+        <h4>TSMod.iniの値</h4>
+        <ul style="margin-top: 5px">
+            <li>デフォルトではこの機能はON
+        </ul>
+    </ul>
+    <li>
+    <h3>セーブデータエディター起動機能</h3>
+    <p>天翔記のメニューから直接セーブデータエディタを起動する機能となります。<br>
+    </p>
+    <ul class="pointlist">
+        <li>
+        <h4>TSMod.iniの値</h4>
+        <ul style="margin-top: 5px">
+            <li><a href="?page=nobu_mod_the_tools_savedat">SaveDataEditor ver1.2</a> 以降で、より適切に機能します。
+        </ul>
+    </ul>
+    <li>
+    <h3>使用フォントを変更する機能</h3>
+    <p>天翔記で使用されているフォントは、デフォルトではＭＳゴシックですが、これを変更する機能です。<br>
+    </p>
+    <p>天翔明朝、天翔PC98、ＭＳゴシック、ＭＳ明朝、等から切り替えることが可能です。
+        適切なビットマップフォント(16pxビットマップフォント）を持つフォントであれば何でも自由に指定できますが、<br>
+    フォント名が長すぎるとメモリ破壊を起こすので注意してください。</p>
+    <ul class="pointlist">
+        <li>
+        <h4>天翔明朝フォント</h4>
+        <p>天翔明朝フォントは<a href="?page=nobu_font_tsmincho">コチラ</a></p>
+        <li>
+        <h4>TSMod.iniの値</h4>
+        <ul style="margin-top: 5px">
+            <li>TSMod.iniにて設定を変更可能。
+            <li>デフォルトでは｢天翔 明朝」が有効となっています。
+        </ul>
+    </ul>
+    <li>
+    <h3><a name="movie_from_local"></a>ムービーをCDからではなくローカルから再生する機能</h3>
+    <p>天翔記のムービーを変更したいと思った場合は、この機能を使うと便利です。<br>
+    </p>
+    <ul class="pointlist">
+        <li>
+        <h4>Movieフォルダ</h4>
+        <p><img src="./cnt_mod/cnt_mod_graphics_movie.png"> <br>
+        </p>
+        </li>
+        <p>天翔記をインストールしたフォルダに<b>｢Movie｣というフォルダ</b>を作り、そこにムービーをコピーすればそこから再生されます。</p>
+        <li>
+        <h4>CD-ROMとの優先順位</h4>
+        <p>CD内のムービー名と同じムービーファイルが、Movieフォルダに存在すれば、そちらを優勢して再生します。<br>
+        存在しないものは、CDの方が再生されます。<br>
+        </p>
+        <li>
+        <h4>サンプルのコーエー新ロゴムービー ＆ オープニング</h4>
+        <p><a href="./cnt_mod/mod_graphic/movie.zip">サンプルのダウンロード</a><br>
+        </p>
+
+        <fieldset style="margin-left: 20px" class="alert alert-info"><legend>Xvidのコーデック</legend>ムービー再生用のXvidのコーデックが入ってない場合、<br>
+        <a href="https://www.xvid.com/download/">Xvidコーデック</a> をインストールして下さい。</fieldset>
+
+        <fieldset style="margin-left: 20px" class="alert alert-info"><legend>ムービーの縦横サイズ</legend>TSModでムービーを再生する場合、ムービーサイズの縦横サイズがそのまま反映されます。<br>
+        (320x240以外のムービーサイズでも良いということです)</fieldset>
+        <li>
+        <h4>その他の関連項目</h4>
+        <p>関連項目：<a href="?page=nobu_movie_convert">天翔記で利用可能な.AVIフォーマットへの変換例</a></p>
+    </ul>
+    <ul class="pointlist">
+        <li>
+        <h4>TSMod.iniの値</h4>
+        <ul style="margin-top: 5px">
+            <li>デフォルトではこの機能はON
+        </ul>
+    </ul>
+    <li>
+    <h3>エンディングロゴをムービーに差し替える機能</h3>
+    <p>天翔記のゲーム終了時に出てくる「ロゴ」を、ムービーに差し替えます。<b><br>
+    movieフォルダの中に「ENDLOGO.AVI」という名前のムービー</b>を追加すると自動的に差し替わります。</p>
+    <ul class="pointlist">
+        <li>
+        <h4>ENDLOGO、サンプルのENDロゴムービー</h4>
+        <p><a href="./cnt_mod/mod_graphic/endlogo.zip">サンプルのダウンロード</a><br>
+        </p>
+        <fieldset style="margin-left: 20px" class="alert alert-info"><legend>Xvidのコーデック</legend>ムービー再生用のXvidのコーデックが入ってない場合、<br>
+        <a href="https://www.xvid.com/download/">Xvidコーデック</a> をインストールして下さい。</fieldset>
+    </ul>
+    <ul class="pointlist">
+        <li>
+        <h4>TSMod.iniの値</h4>
+        <ul style="margin-top: 5px">
+            <li>デフォルトではこの機能はON
+        </ul>
+    </ul>
+    <li>
+    <h3>特定シナリオの説明ムービーをローカルから再生する機能</h3>
+    <p>シナリオ専用のオープニングムービーを追加する機能となります。<br>
+    </p>
+    <ul class="pointlist">
+        <li>
+        <h4>Movieフォルダ</h4>
+        <p>天翔記をインストールしたフォルダに<b>｢Movie｣というフォルダ</b>を作り、そこにムービーを入れると再生されます。<br>
+        </p>
+        <br>
+        <li>
+        <h4>再生タイミング</h4>
+        <p>再生されるタイミングは、<br>
+        <b>シナリオを決定し、大名等の選択画面を経て、環境設定を決定した後、画面が一瞬暗くなるタイミング。メインゲームが始まる前</b>」<br>
+        です。<br>
+        </p>
+        <p>以下の３つのグループに分かれおり、最大で３回再生することが可能です。</p>
+        <ul class="arrowlist">
+            <li>
+            <h5>第１グループ</h5>
+            <p>選択シナリオメインムービー。<br>
+            <b>シナリオ1なら、SN1_OPENING.AVI</b>、<b>シナリオ6なら、SN6_OPENING.AVI</b>が再生されます。<br>
+            </p>
+            <li>
+            <h5>第２グループ</h5>
+            <p>選択シナリオランダムムービー。<br>
+            <b>シナリオ1を選択している時ならば、SN1_RANDOM*******.AVI</b><br>
+            <b> シナリオ5を選択している時ならば、SN5_RANDOM*******.AVI</b><br>
+            といったパターンに当てはまるムービーから ランダムで１つ再生されます。<br>
+            ｢*******｣の部分は文字数は問いません。<br>
+            ｢*******｣部分には、半角英数字とアンダーバー、日本語等を利用することができます。</p>
+            <li>
+            <h5>第３グループ</h5>
+            <p>シナリオ共通ランダムムービー。<br>
+            選択しているシナリオに関わらず、ランダムで再生可能なムービー。<br>
+            <b>SN_RANDOM*******.AVI</b><br>
+            といったパターンに当てはまるムービーから ランダムで１つ再生されます。<br>
+            ｢*******｣の部分は文字数は問いません。<br>
+            ｢*******｣部分には、半角英数字とアンダーバー、日本語等を利用することができます。</p>
+            <p>なお、ムービースキップのマウス押しですが、マウスボタンをほんの少し長め(0.3秒程度で)押すと、一気に全てスキップします。</p>
+        </ul>
+    </ul>
+    <ul class="pointlist">
+        <li>
+        <h4>TSMod.iniの値</h4>
+        <ul style="margin-top: 5px">
+            <li>デフォルトではこの機能はON
+        </ul>
+    </ul>
+    <li>
+    <h3>セーブ・ロード時にBGMが途切れない機能</h3>
+    <p>天翔記のセーブやロードをする度に音が途切れてしまっていましたが、途切れないように変更しました。<br>
+    </p>
+    <ul class="pointlist">
+        <li>
+        <h4>TSMod.iniの値</h4>
+        <ul style="margin-top: 5px">
+            <li>デフォルトではこの機能はON。
+            <li>TSMod.iniにて設定を変更可能。
+        </ul>
+    </ul>
+    <li>
+    <h3>戦争の本丸占拠時に勝ち鬨が上がる機能</h3>
+    <p>天翔記では本丸占拠時に勝ち鬨が上がるはずなのですが、対応する音源がないためか勝ち鬨が上がりません。<br>
+    そこで勝ち鬨があがるように修正しました。毎回ではなく３回に１度程度となります。</p>
+    <ul class="pointlist">
+        <li>
+        <h4>TSMod.iniの値</h4>
+        <ul style="margin-top: 5px">
+            <li><a href="?page=nobu_snd_n6pwav">フル効果音キット</a>の導入必須
+            <li>デフォルトではこの機能はON。
+        </ul>
+    </ul>
+    <li>
+    <h3>戦争の火攻めに成功すると火攻め音が鳴る機能</h3>
+    <p>天翔記では火攻め音が用意されていなかったため、成功した感触が得にくいものとなっていました。<br>
+    火攻めSEを鳴らすことでこの問題を解決しています。</p>
+    <ul class="pointlist">
+        <li>
+        <h4>TSMod.iniの値</h4>
+        <ul style="margin-top: 5px">
+            <li><a href="?page=nobu_snd_n6pwav">フル効果音キット</a>の導入必須
+            <li>デフォルトではこの機能はON。
+        </ul>
+    </ul>
+    <li>
+    <h3>天翔記のアイコンのピクセルを48x48に対応</h3>
+    <p>Windows7等、高解像度のアイコン表示では48x48にしている方も多いと思います。<br>
+    tenshou.exeに48x48のアイコンを含めて、自然で美しい表示を実現しています。<br>
+    </p>
+    <ul class="pointlist">
+        <li>
+        <h4>TSMod.iniの値</h4>
+        <ul style="margin-top: 5px">
+            <li>デフォルトではこの機能はON。
+        </ul>
+        <li>
+        <h4>その他、Modern UI風のIcon</h4>
+        <p>その他、Metro(Modern) UI風のIconが欲しい方はこちら。<br>
+        (256x256,64x64,48x48,32x32,16x16のマルチアイコンです)<br>
+        <img src="./cnt_img/tenshou_iron/tenshou_modern.png"><br>
+        └ <a href="./cnt_img/tenshou_iron/tenshou_modern.zip">このアイコンのダウンロード</a></p>
+    </ul>
+    <li>
+    <h3>タイムスタンプ自動修復機能</h3>
+    <p>実行しているtenshou.exeのタイムスタンプが、2005/02/20 11:24:26と異なる場合、<br>
+    これを検知し、タイムスタンプを2005/02/20 11:24:26へと矯正します。<br>
+    </p>
+    <ul class="pointlist">
+        <li>
+        <h4>TSMod.iniの値</h4>
+        <ul style="margin-top: 5px">
+            <li>デフォルトではこの機能はON。
+        </ul>
+    </ul>
+    <li>
+    <h3>起動時・解像度自動決定機能</h3>
+    <p>天翔記では、起動時に必ず｢画面サイズの選択｣が必要となりますが、<br>
+    TSMod.iniにてデフォルトの選択解像度を設定し、毎度の選択を不要とする機能です。</p>
+    <ul class="pointlist">
+        <li>
+        <h4>TSMod.iniの値</h4>
+        <ul style="margin-top: 5px">
+            <li>1024*768、800*600、640*480の中から選択可能</li>
+            <li>TSMod.iniにて設定を変更可能。
+            <li>デフォルトでは｢1024*768｣にてON。
+        </ul>
+    </ul>
+    <li>
+    <h3>より大きな解像度を利用する機能</h3>
+    <p>天翔記では最大解像度をより、大きな「1532x768」へと引き上げます。<br>
+    但し、顔グラフィックは８色限定となります。</p>
+    <ul class="pointlist">
+        <li>
+        <h4>TSMod.iniの値</h4>
+        <ul style="margin-top: 5px">
+            <li>TSMod.iniにて設定を変更可能。
+            <li>デフォルトではOFF。
+        </ul>
+    </ul>
+    <li>
+    <h3>携帯電話や小型モバイル用の解像に変更する機能</h3>
+    <p>天翔記には元来存在しない、800*480、1024*600 といった｢画面サイズの選択｣へと切り替わる機能です。</p>
+    <ul class="pointlist">
+        <li>
+        <h4>TSMod.iniの値</h4>
+        <ul style="margin-top: 5px">
+            <li>TSMod.iniにて設定を変更可能。
+            <li>デフォルトではOFF。
+        </ul>
+    </ul>
+    <li>
+    <h3>デモモードではスクリーンセイバーを起動しない機能</h3>
+    <p>デモモードでは、PCは一切操作せず「見ているだけ」といった状況が考えられます。<br>
+    このオプションはデモモードの時だけ、スクリーンセイバーの起動を防止するオプションとなります。<br>
+    </p>
+    <p>(ゲーム途中で「行方を見守る」として全てのプレイヤが抜けている場合も「デモモード」とみなします)</p>
+    <ul class="pointlist">
+        <li>
+        <h4>TSMod.iniの値</h4>
+        <ul style="margin-top: 5px">
+            <li>TSMod.iniにて設定を変更可能。
+            <li>デフォルトではON。
+        </ul>
+    </ul>
+    <li>
+    <h3>TSModのインターネット接続への許可を変更する機能</h3>
+    <p>TSModそれ自体には、インターネット接続を要する仕様はありませんが、<br>
+    ScenarioMod、及び将来の特殊Modにはインターネット接続を要する機能が存在します。<br>
+    </p>
+    <p>これらを有効とするか否かの切替機能となります。<br>
+    </p>
+    <ul class="pointlist">
+        <li>
+        <h4>TSMod.iniの値</h4>
+        <ul style="margin-top: 5px">
+            <li>TSMod.iniにて設定を変更可能。
+            <li>デフォルトではON。
+        </ul>
+    </ul>
+    <li>
+    <h3>セーブデータファイルを複数管理できる機能</h3>
+    <p>天翔記では元来セーブは、savedata.n6pというファイル１つで、ここに８つ保存が可能ですが、<br>
+    TSModでは、このファイル以外に、savedata*****.n6pといった名前をものを９ファイル。<br>
+    元のsavedat.n6pを含めて、10ファイル、総計80セーブの利用が可能です。<br>
+    </p>
+    <p>天翔記フォルダ(TSMod.dllと同じフォルダ)にセーブファイルを入れておくことで、セーブ時やロード時に利用できます。<br>
+    </p>
+    <p>以下のようにフォルダに複数のセーブデータを入れておくと…<br>
+    </p>
+    <p><img src="./cnt_mod/cnt_mod_savedata1.png"><br>
+    </p>
+    <p>ゲーム中このようにセーブデータファイルの選択肢が出るようになる。<br>
+    </p>
+    <p>(※<span class="negative">ファイル名に「コピー」という文字が含まれているものは何かのバックアップと判断して対象とはしません</span>)</p>
+    <p><img src="./cnt_mod/cnt_mod_savedata2.png"><br>
+    </p>
+    <ul class="pointlist">
+        <li>
+        <h4>TSMod.iniの値</h4>
+        <ul style="margin-top: 5px">
+            <li>デフォルトではこの機能はON。
+        </ul>
+    </ul>
+    <li>
+    <h3>実行時のメモリをテキストにて変更できる機能①(TSMod.ini)</h3>
+    <p>実行時のメモリをテキストにてメモリの内容を変更可能する機能となります。<br>
+    </p>
+    <ul class="pointlist">
+        <li>
+        <h4>TSMod.iniの値</h4>
+        <ul style="margin-top: 5px">
+            <li>TSMod.iniにて書き換えたいアドレスとテキスト内容、もしくは書き換えたいアドレスとバイナリ内容を記述可能です。
+            <li>メモリのアドレスはOllyDebuggerなどで調べると良いでしょう。
+            <li>バイナリのファイルのアドレスとは異なるので注意すること。(ニーモニックの並びとしては原則そっくりなので互いに場所を特定するための検索の対象とはなり得る)
+            <li>tenshou.exeの内容を書き換えずに、テキストレベルでやり取り可能となるところがこの機能のミソです。
+        </ul>
+    </ul>
+    <li>
+    <h3>実行時のメモリをテキストにて変更できる機能②(TSModEX.ini)</h3>
+    <p>実行時のメモリをテキストにてメモリの内容を変更可能する機能となります。</p>
+    <ul class="pointlist">
+        <li>
+        <h4>TSModEX.iniの値</h4>
+        <ul style="margin-top: 5px">
+            <li>TSMod.iniと同様に、<b>TSModEX.ini</b>というファイルでも、書き換えたいアドレスとテキスト内容、もしくは書き換えたいアドレスとバイナリ内容を記述可能です。
+            <li><b>TSMod.iniが処理された後、あらためて、TSModEX.iniが処理されます。</b></li>
+            <li>TSMod.iniは、作者側から内容が更新されて提供されるため、各人が内容を変更したとしても、うっかり上書きされてしまうことがありますが、TSModEX.iniは作者側からは提供しませんので、<br>
+            ｢この設定は自分の中では固定的で毎度行っている｣という設定などの設定内容を、TSMod.ini⇒TSModEX.iniへとコピーして、適宜設定を行うとよいでしょう。<br>
+            <li>試しに、TSModEX.iniというファイルを作成し、｢txt['4BC884'] = 'ＭＳ ゴシック'｣という内容で保存してみれば、フォントがＭＳゴシックになることを確認できるでしょう。<br>
+        </ul>
+    </ul>
+</ul>

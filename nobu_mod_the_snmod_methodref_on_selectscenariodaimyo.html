@@ -1,0 +1,41 @@
+%(hilight)s
+<h2><i class="fa fa-book fa-fw"></i>void カスタム::On_シナリオ大名選択直前(int シナリオ番号)</h2>
+<div class="code"><pre class="brush:cpp;">
+void カスタム::On_シナリオ大名選択直前(int シナリオ番号) {
+}
+</pre></div>
+<ul class="checklist">
+    <li>
+    <h3>タイミング</h3>
+    <ul>
+        <li>見た目的には特定のシナリオで大名選択画面になる直前。<br>
+        フェイドイン開始のタイミング程度で呼び出される。<br>
+        <p><img src="./cnt_mod/mod_snmod/cnt_mod_scenario_mod_ref_005.png"><br>
+        </p>
+    </ul>
+
+    <li>
+    <h3>一般的用途</h3>
+    <ul>
+        <li>特定のシナリオで与えられているデータの初期値を変更したい場合に利用する。<br>
+    </ul>
+    <li>
+    <h3>例①</h3>
+    <div class="code"><pre class="brush:cpp;">
+void カスタム::On_シナリオ大名選択直前(int シナリオ番号) {
+
+  if (シナリオ番号==3) { // シナリオが３番で
+
+    string title = Get_シナリオ名(シナリオ番号);
+
+    if ( Is_文字列マッチ(title, &quot;相剋の果て&quot;) ) { // タイトルに「相剋の果て」という文字列が含まれている
+
+      // 全てを巨城とする。
+      for ( int iCastleID=0; iCastleID &lt; 最大数::城情報::配列数; iCastleID++ ) {
+        p城情報[iCastleID].巨城 = 1;
+      }
+    }
+  }
+}
+</pre></div>
+</ul>

@@ -1,0 +1,67 @@
+<h2><i class="fa fa-font fa-fw"></i>フォントの切り替え</h2>
+<ul class="checklist">
+    <li>
+    <h3>概要</h3>
+    <p>天翔記は、デフォルトでは、｢ＭＳ ゴシック｣のフォントが指定されています。<br>
+    これではせっかくの戦国の雰囲気が出ません。<br>
+    </p>
+    <p>ここでは、このフォントを変更する方法の紹介となります。</p>
+    <li>
+    <h3>設定方法は２通り</h3>
+    <ul class="pointlist">
+        <li>
+        <h4>TSMod設定キットの方法</h4>
+        <p><a href="http://天翔記.jp/?page=nobu_mod_the_tsmod">TSMod設定キット</a>を利用すれば、TSMod.iniを編集することで簡単にフォントを切り替えることが出来ます。 <br>
+        こちらは使えそうなフォントは最初から羅列されています。<br>
+        また、別フォントを使いたいと思った際は、文字列にてフォント名を指定するだけとなります。</p>
+        <li>
+        <h4>Tenshou.exeのバイナリを直接変更する方法</h4>
+        <p>こちらはあまり建設的な方法ではありませんので、お勧めしません。 <br>
+        やむを得ない場合の最終手段と考えましょう。</p>
+        <ul>
+            <li>tenshou.exeを編集する話となりますが、編集する前にtenshou.exeをバックアップしておきましょう。
+            <li>天翔記のフォントの指定は、tenshou.exeをバイナリエディタで開けば、直接記載されていることがわかります。<br>
+            ｢<a href="http://www.vector.co.jp/soft/win95/util/se079072.html">Stirling</a>｣など、バイナリエディタで"ＭＳ ゴシック"という文字列でtenshou.exeを検索して下さい。<br>
+            <li>迂闊に文字列を置き換えると、tenshou.exe自体が動かなくなるので注意しましょう。<br>
+            <li>｢ＭＳ ゴシック｣とある文字を｢ＭＳ 明朝｣と置き換えるだけの単純なことですが、元と同じ長さに合わせるため、余った部分はNULL(00)で埋めておきます。<br>
+            <br>
+            <table>
+                <tr>
+                    <td>ＭＳ ゴシック<br>
+                    82 6C 82 72 20 83 53 83 56 83 62 83 4E<br>
+                    <br>
+                    <img src="./cnt_font/binary_1_before.png"><br>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="center">↓</td>
+                </tr>
+                <tr>
+                    <td>ＭＳ 明朝 + NULL４つ<br>
+                    82 6C 82 72 20 96 BE 92 A9 00 00 00 00<br>
+                    <br>
+                    <img src="./cnt_font/binary_2_after.png"><br>
+                    </td>
+                </tr>
+            </table>
+            </li>
+        </ul>
+        <fieldset class="alert alert-warn"><legend>exeを編集すると、タイムスタンプが変わることに注意</legend>バイナリでtenshou.exeを編集すると、tenshou.exeの更新日時(タイムスタンプ)が変更されてしまいます。<br>
+        神パッチはタイムスタンプに依存しているため、神パッチは使えなくなります。<br>
+        TSModに付属している「TimeStamper.exe」を実行するなどして、 tenshou.exeのタイムスタンプを元へと戻しましょう。<br>
+        </fieldset>
+        </li>
+    </ul>
+    <li>
+    <h3>備考</h3>
+    <ul class="pointlist">
+        <li>
+        <h4>16ドットのビットマップフォント</h4>
+        <p>｢16px(=12pt)のビットマップフォント｣を内蔵する(TTFやTTCなどの)フォントであれば、<br>
+        どのようなフォントでも理論上は入れ替え可能です。<br>
+        しかし、各文字の縦･横が｢ＭＳ ゴシック｣とほぼ同一であることが求められるために、<br>
+        現実的な問題としては、美しく見えるフォントは数が少ないと思われます。<br>
+        </p>
+    </ul>
+    </li>
+</ul>

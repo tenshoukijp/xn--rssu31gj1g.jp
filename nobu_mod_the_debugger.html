@@ -1,0 +1,66 @@
+<h2><i class="fa fa-bug fa-fw"></i>ModDebugger<br>
+（天翔記Mod開発者・改変者用、デバッグ用途コンソールモニター）</h2>
+<ul class="checklist">
+    <li>
+    <h3>概要</h3>
+    <p>ModDebuggerは、いわば、デバッグ情報の受信機です。</p>
+    <p>MOD開発者、MOD改変者用の支援アプリケーションであり、<br>
+    MODを作る人、編集する人にとって、デバッグがかなりやりやすくなるツールとなっています。</p>
+    <p><img src="./cnt_mod/mod_debugger/cnt_mod_debugger_007.png"></p>
+
+    <ul class="pointlist">
+        <li>
+        <h4>Mod開発の問題点と対策</h4>
+        <p>ScenarioModや、一般MOD他、MODはWindowsプログラムです。</p>
+        <p>Windowsプログラムでは、通常値を出力するコンソール部がありませんので、<br>
+        デバッグ・値の監視などがやりにくい、という問題があります。<br>
+        特に天翔記はVisual Studioで｢ブレイク｣といった｢プログラムが一時停止を伴うようなこと」をすると、<br>
+        しばしば、不正終了してしまいますので、一層デバッグがやりにいという実情があります。<br>
+        </p>
+        <p>このModDebuggerはそのような問題を解決するためのツールです。<br>
+        <b>Modが出力するデバッグ出力を、リアルタイムに表示</b>することが可能です。<br>
+        </p>
+    </ul>
+    <li>
+    <h3>ダウンロード</h3>
+    <dl>
+        <dt>
+        <div class="download_file">DOWNLOAD ⇒ <a href="%(file)s">ModDebugger</a>ファイル。</div>
+        </dt>
+        <dd>
+        <div class="update_time">└更新日 %(year)04d/%(mon)02d/%(mday)02d</div>
+        </dd>
+    </dl>
+    <p>「ModDebugger.exe」と「ソース」が添付されています。</p>
+    <li>
+    <h3>動作環境</h3>
+    <p>Windows XP 以上</p>
+    <li>
+    <h3>使い方</h3>
+    <p>ModDebugger.zipを解凍し、ModDebugger.exe を｢天翔記フォルダ (tenshou.exeがある場所)｣に置いてください。<br>
+    特にこの場所にある必要性はありませんが、TSMod.dllを導入されていれば、<br>
+    天翔記の｢メニュー｣にModDebuggerを起動するためのメニューアイテムが表示されます。<br>
+    </p>
+    <li>
+    <h3>補足事項</h3>
+    <p>このツールは、汎用的なコンソール風味のアプリケーションであり、<br>
+    基本的には、天翔記そのものに依存しません。又、特定のバージョンの天翔記である必要はありません。<br>
+    しかし、天翔記に対して、特別に、以下の様にに最適化されています。<br>
+    </p>
+    <ul class="pointlist">
+        <li>
+        <h4>天翔記専用のモード</h4>
+        <p>天翔記が立ち上がっていると、天翔記のみに対して、そのデバッグ出力(OutputDebugStringのみ)を監視するように、自動的に切り替わります。<br>
+        この際は、天翔記専用の、｢デバッグモニター監視ツール｣になります。 この間、他のアプリケーションの情報は拾いません。<br>
+        </p>
+        <li>
+        <h4>汎用のモード</h4>
+        <p><b>天翔記が立ち上がって｢いない｣間は、</b>Microsoftが提供する、<a href="http://technet.microsoft.com/ja-jp/sysinternals/bb896647(en-us).aspx">DebugView for Windows</a> と<br>
+        似たような挙動をコンソール画面で実現します。<br>
+        </p>
+        <p>Windows上で実行されている<b>全てのアプリケーションに対して</b>、<br>
+        そのデバッグ出力を監視します。(対象はOutputDebugString系列のみ)<br>
+        よって、天翔記が立ち上がっていない間は、汎用的な、｢デバッグモニター監視ツール｣になります。 <br>
+        </p>
+    </ul>
+</ul>

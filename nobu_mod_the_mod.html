@@ -1,0 +1,46 @@
+<h2><i class="fa fa-list fa-fw"></i>Modの３種類の区分</h2>
+<ul class="checklist">
+    <li>
+    <h3>概要</h3>
+    <p>ここでは、主として当サイトで提供している「<span class="positive">Modの大分類</span>」について説明します。</p>
+    <li>
+    <h3>３種類のMod</h3>
+    <p>Modには３種類の区分が存在します。</p>
+    <ul class="pointlist">
+
+        <li>
+        <h4>基盤MOD</h4>
+        <p>ベースとなるMODであり、これらが存在することで、他のMODが動作します。 <br>
+        一方、｢複数の基盤MOD｣が存在したとしても、どれか１つの基盤MODしか動作しません。 <br>
+        現在、基盤MODには、｢TSMod｣と｢PluginMod｣の２つあります。 <br>
+        両方存在する場合には、TSModが動作します。</p>
+        <li>
+        <h4>特殊MOD</h4>
+        <p>後述の｢一般MOD｣では対応できないような、特殊な機能を多数もたせることになったMODです。 <br>
+        名前が決め打たれており、TSModその他と様々な通信を行います。 <br>
+        現在、特殊MODには、ScenarioModが存在します。 <br>
+        </p>
+        <li>
+        <h4>一般MOD</h4>
+        <p>なんらかの特定の機能を持つ一般的なMOD。 <br>
+        各人が１から作成することが可能です。 <br>
+        一般MODは比較的自由に名前を付けることが出来ます。 <br>
+        主な一般MODには、MapDataObgkMod、MemoryEditorMod、SemiFullScreenModなどが存在します。 <br>
+        又、ひな形として、SnCustomTitleModが存在します。 <br>
+        </p>
+    </ul>
+    <li>
+    <h3>基盤Modと一般Modの呼び出し図</h3>
+    <ul class="pointlist">
+        <li>
+        <h4>TSModの場合</h4>
+        <p>TSModを導入している場合の、一般Mod当の呼び出し関係図は下図のようになります。</p>
+        <p>(下の層が上の層を呼び出す)</p>
+        <p><img src="./cnt_mod/cnt_mod_mod_01.png"></p>
+        <li>
+        <h4>PluginModの場合</h4>
+        <p>PluginModのみ導入している場合の呼出し関係構図。</p>
+        <p>(下の層が上の層を呼び出す)</p>
+        <p><img src="./cnt_mod/cnt_mod_mod_02.png"></p>
+    </ul>
+</ul>

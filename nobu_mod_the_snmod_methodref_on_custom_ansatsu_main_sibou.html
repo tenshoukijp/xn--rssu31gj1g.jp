@@ -1,0 +1,59 @@
+%(hilight)s
+<h2><i class="fa fa-book fa-fw"></i>AS条件::メイン::暗殺受動者死亡可否</h2>
+<div class="code"><pre class="brush:cpp;">
+int カスタム::On_カスタム条件(string 条件名, カスタム条件パラメタ型 パラメタ) {
+  if ( 条件名 == &quot;AS条件::メイン::暗殺受動者死亡可否&quot; ) {
+  }
+
+  // 変更しない場合-1
+  return -1;
+}
+</pre></div>
+<ul class="checklist">
+<li><h3>引数の補足</h3>
+	<ul class="pointlist">
+	<li><h4>パラメタ.整数1:</h4>
+	整数1は暗殺を実行した武将の武将番号
+	<li><h4>パラメタ.整数2:</h4>
+	整数2は暗殺対象となった暗殺される側の武将の武将番号
+	<li><h4>パラメタ.整数3:</h4>
+	現在予定されている死亡結果
+	</ul>
+<li><h3>タイミング</h3>
+<ul>
+<li>このカスタム条件は、メイン画面(=戦略画面中)いずれかの武将が暗殺を実行した際の死亡判定時に呼び出される。<br>
+<p><img src="./cnt_mod/mod_snmod/cnt_mod_scenario_mod_ref_085.png"></p>
+</ul>
+<li><h3>一般的用途</h3>
+<ul>
+<li>暗殺の死亡確率や死亡結果の制御・変更を目的として使用する。<br>
+</ul>
+<li><h3>例①</h3>
+<div class="code"><pre class="brush:cpp;">
+int カスタム::On_カスタム条件(string 条件名, カスタム条件パラメタ型 パラメタ) {
+
+  if ( 条件名 == &quot;AS条件::メイン::暗殺受動者死亡可否&quot; ) {
+    int 暗殺する側BushouID = パラメタ.整数1-1;
+    int 暗殺され側BushouID = パラメタ.整数2-1;
+    int 予定されている結果 = パラメタ.整数3;
+
+    if ( 0 &lt;= 暗殺する側BushouID &amp;&amp; 暗殺する側BushouID &lt; 最大数::武将情報::配列数 &amp;&amp;
+       0 &lt;= 暗殺され側BushouID &amp;&amp; 暗殺され側BushouID &lt; 最大数::武将情報::配列数 ) {
+
+      デバッグ出力&lt;&lt;Get_名前(暗殺する側BushouID)&lt;&lt; endl;
+      デバッグ出力&lt;&lt;Get_名前(暗殺され側BushouID)&lt;&lt; endl;
+      デバッグ出力&lt;&lt; 予定されている結果 &lt;&lt; endl;
+
+      // 相手より年齢が上なら、必ず暗殺成功
+      if ( Get_武将年齢(暗殺する側BushouID) &gt; Get_武将年齢(暗殺され側BushouID) ) {
+        return TRUE; // 死亡確定
+      }
+    }
+  }
+
+  // それ以外は条件を変えない。
+  return -1;
+}
+</pre></div>
+</ul>
+

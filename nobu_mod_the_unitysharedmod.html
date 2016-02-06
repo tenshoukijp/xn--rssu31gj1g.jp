@@ -1,0 +1,73 @@
+%(hilight)s
+<h2><i class="fa fa-plug fa-fw"></i>UnitySharedMod</h2>
+<ul class="checklist">
+    <li>
+    <h3>概要</h3>
+    <p>UnitySharedModは、Unityと天翔記を連動させるサンプルです。 <br>
+    Unityを所持してる方にのみ役立つ情報となります。 <br>
+    </p>
+    <p>開発ツール「Unity」で作成したアプリケーションと、「天翔記」の間で、 <br>
+    Modを中継点とするようなミニマムサンプルとなっています。 <br>
+    扱いとしては「 <a href="?page=nobu_mod_the_mod">一般Mod</a> 」となります。</p>
+    <p>天翔記だけではなく、「Unityでwin32ネイティブアプリに絡めたソフト制作」のヒントの１つでもあります。 <br>
+    </p>
+    <li>
+    <h3>ダウンロード</h3>
+    <dl>
+        <dt>
+        <div class="download_file">DOWNLOAD ⇒ <a href="%(file)s">UnitySharedMod</a>ファイル。</div>
+        </dt>
+        <dd>
+        <div class="update_time">└更新日 %(year)04d/%(mon)02d/%(mday)02d</div>
+        </dd>
+    </dl>
+    <li>
+    <h3>使い方</h3>
+    <ul class="pointlist">
+        <li>
+        <h4>下準備</h4>
+        <p>まず、UnitySharedMod.dll は一般Modですので、「天翔記フォルダ」に配置します。<br>
+        </p>
+        <li>
+        <h4>Unity側の記述</h4>
+        <p>Unityで、何かゲームオブジェクトを作成し、該当のゲームオブジェクトスクリプトとして、 <br>
+        以下のようにこのUnitySharedModを呼び出します。</p>
+        <p><img src="./cnt_mod/mod_unity/cnt_mod_unitysharedmod_01.png"><br>
+        </p>
+        <pre class="brush:csharp;">
+using System;
+using System.Runtime.InteropServices;
+
+using UnityEngine;
+
+
+public class WindowMod : MonoBehaviour
+{
+  [DllImport(&quot;../UnitySharedMod.dll&quot;)]
+  static extern void OnUnityInitialize();
+
+  [DllImport(&quot;../UnitySharedMod.dll&quot;)]
+  static extern void OnUnityFinalize();
+
+  void Start ()
+  {
+    OnUnityInitialize();
+  }
+
+  void OnApplicationQuit()
+  {
+    OnUnityFinalize();
+  }
+}
+</pre>
+        <li>
+        <h4>動作確認</h4>
+        <ul>
+            <li>天翔記を起動<br>
+            <li>Unity側で作成したソフトを起動<br>
+        </ul>
+        <li>
+        <h4>その他</h4>
+        <p>あとは、ファイルに添付されているソースを見てください。</p>
+    </ul>
+</ul>
