@@ -1,0 +1,30 @@
+<h2>LuaJit cp932版(SJis版)</h2>
+<br>
+<dl>
+    <dt>
+    <div class="download_file">DOWNLOAD ⇒ <a href="%(file)s">LuaJIT_SJIS</a>ファイル。</div>
+    </dt>
+    <dd>
+    <div class="update_time">└更新日 %(year)04d/%(mon)02d/%(mday)02d</div>
+    </dd>
+</dl>
+<br>
+<ul>
+<li>
+sjisに対応したLuaは公開されているが、sjisに対応した「LuaJit」が公開されいないようなので、ここに公開します。<br>
+バイナリのみ。<br><br>
+
+<li>LuaJit ver 2.0.1 cp932</li>
+<br>
+
+<li>いわゆる、ソースコード(正確には、Luaステート空間)の文字リテラルがcp932であってもエラーなどにならない、という対応です。<br>
+<br>
+<li>コンパイルオプションは以下のように変更しています。<br>
+cl /nologo /c /MD /O2 /W3 /Ob2 /Ot /arch:SSE2 /D_CRT_SECURE_NO_DEPRECATE</li>
+<br>
+<br>
+<li>ライセンス
+<ul><li>Luaのオリジナルライセンス(MITライセンス)
+<li>LuaJitライセンス(MITライセンス)
+</ul>を継承して、そのまま MITライセンス
+</li>

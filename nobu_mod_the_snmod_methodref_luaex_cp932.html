@@ -1,0 +1,154 @@
+<h2>C風文法拡張Lua cp932版</h2>
+<br>
+<dl>
+    <dt>
+    <div class="download_file">DOWNLOAD ⇒ <a href="%(file)s">LuaEx_SJIS</a>ファイル。</div>
+    </dt>
+    <dd>
+    <div class="update_time">└更新日 %(year)04d/%(mon)02d/%(mday)02d</div>
+    </dd>
+</dl>
+<br>
+<ul>
+Luaは組み込み型言語であるため、C言語側と、Lua側で文字コードの変換が発生しないのが理想です。<br>
+よって、Windows環境においては、Luaの段階でcp932(≒sjis)のソースが読み込み、実行可能な状況が望まいと言えます。<br>
+<br>
+また、LuaはC/C++に組み込まれるのが通常であるため、C風に近い文法規則を持っていると戸惑いが少ないと言えます。<br>
+<br>
+<br>
+<li>Lua ver 5.2.3 cp932</li>
+</ul>
+
+<hr height="1">
+<br><br>
+<div class="code"><pre>
+--------------------------------------------------
+   Lua 5.2.3 SJIS対応 + 拡張文法
+--------------------------------------------------
+
+○概要
+
+Lua 5.2.3を日本語(SJIS)対応し、文法を拡張したもの。
+
+
+(1) <b>SJis対応</b>については、「<a href="http://hammm.dw.land.to/lua/"><b>はむ！</b></a>」氏のものがベースです。
+
+    (以下「はむ！」氏公開のREADMEより)
+    ○特徴
+
+    ・文字列やコメントに日本語(SJIS)が使えます。
+    ・非常に限定的な修正のため、Luaの移植性に影響を与えません。
+    ・２バイト文字の判定方法はSJIS
+
+    ○注意点
+
+    ・関数や変数の名前には日本語(SJIS)が使えません。
+    ・エラーメッセージなどは日本語化していません。
+    ・EUC,UTF-8をお使いの場合は、オリジナルのままのLuaでも大丈夫です。
+    （もちろん本バージョンでも問題ありません）
+
+    ○修正点について
+
+    ・日本語化関連では、オリジナルのファイルのうち、修正したのはllex.cのみ。
+    ・ファイルmbenc.hを新規に追加しており、２バイトの判定ルーチンを記述しています。
+
+    ○その他
+    ・デフォルトではSJISコード用になっていますが、ANSIライブラリによる判定を行う
+    　ようにも変更できます。この場合はmbenc.hの中の以下のマクロを修正した上で、
+    　setlocale等を適切に行ってください。
+
+    　以下のどれちらか１つの値を1にすることで２バイト文字の判定方法を選べます。
+    　#define LUA_USE_ENC_SHIFT_JIS 1
+    　#define LUA_USE_ENC_ANSI 0
+
+
+
+(2) <b>C風拡張文法</b>については、「<a href="https://github.com/rti7743/rtilabs/tree/master/files/asobiba/lua"><b>rti7743</b></a>」氏のものがベースです。
+
+
+    (以下「rti7743」氏公開のREADMEより)
+    -- c-like lua
+    function add(x,y) {
+        return x + y
+    }
+
+    //階乗
+    function factorial_while(n) {
+        //whileで階乗してみる
+        sum = 1
+        i = 1
+        while(i <= n){
+           sum = sum * i
+           i = i + 1
+        }
+        return sum
+    }
+
+    //階乗
+    function factorial_for(n) {
+        //forで階乗してみる
+        //すまないが、 lua のforを 完全にc-likeにしきれていないんだ
+        sum = 1
+        for (i = 1 , n , 1 ) { //or for (i = 1 , n ) {
+           sum = sum * i;
+        }
+        return sum
+    }
+
+
+    //日本語・半角
+    function nihongo(str) {
+        if (str == "ｱｲｳ") {
+             return "ｱｲｳ"
+        }
+        else if (str == "表") {
+             return "表"
+        }
+        return "技能"
+    }
+
+
+(3) <b>否定の意味の「比較演算子」として「!=」</b>も利用することができます。
+    Lua標準では、「~=」が否定の比較演算子として用いられますが、これは珍しい表記です。
+    メジャーな言語の多くが採用する「!=」も利用可能となっています。
+
+
+(4) <b>テーブルの中に普通に「function」定義して、「メソッド」を追加</b>することが出来ます。<br>
+この場合、最初のパラメータは、暗黙で「self」という引数文字となります。<br>
+
+通常、luaのメソッド定義スタイルは
+
+    tbl = {}
+    function tbl:my_method(x, y) end
+
+ もしくは
+
+    tbl = {
+        my_method = function(self, x, y) end
+    }
+
+ですが、
+
+    tbl = {
+        function my_method(x, y) end
+    }
+
+と、記述することが出来ます。<br>
+この場合、function内には、暗黙の第1引数として「self」が存在します。<br>
+
+
+
+
+
+(5)<b>Lua5.2 Lua5.1 互換オプション</b>に関して
+　.slnの「プロジェクトファイル」にて、「C++プリプロセッサ」に対して、
+　「<b>LUA_COMPAT_ALL</b>」を追加しています。
+
+
+
+(6) ライセンス
+
+　Luaのオリジナルライセンス(MITライセンス)と同じ条件
+
+</pre></div>
+

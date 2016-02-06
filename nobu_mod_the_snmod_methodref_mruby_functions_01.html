@@ -1,0 +1,144 @@
+%(hilight)s
+<h2>mrubyで書いてある「グローバル」変数を読み込む</h2>
+<br>
+<br>
+
+<h4>～入門編～</h4>
+<ul>
+(※この章は、Lua版の<a href="?page=nobu_mod_the_snmod_methodref_lua_functions_01">ココ</a>と対応しています。)
+</ul>
+<ul>
+    <li>スクリプト言語「mruby」を用いて外部テキストを記述し、ScenarioMod内の変数へと読み込ませる。<br>
+    <br>
+    <br>
+    この章では、それらの機能の入門的利用方を解説します。
+</ul>
+
+
+<h4>一般的用途</h4>
+<ul>
+    <li>外部テキストファイルに、簡易な設定データ等を記述し、その値をScenarioModへと読み込む。<br>
+</ul>
+
+<h4>備考</h4>
+<ul>
+    <li>mrubyは外にテキストで記述する限り、<font color="red"><b>基本的には「正しさが全く期待できない」。<br>
+    記述してあるかもしれないし、ないかもしれないし、記述が間違ってるかもしれない。<br>
+    事前に何もチェックできないため、実行してみなければわからないのだ。<br></font> よって、何をやるにしても「例外エラーが」が極めて高い確率で発生しえる。<br>
+    <br>
+    このため、必ず <font color="green">try { } catch(...) { }</font> のような記述で囲む必要がある。</b></font><br>
+    <br>
+    try ... catch ... を省略した場合には、１つでも例外が発生すると、天翔記は不正終了してしまうだろう。
+</ul>
+<br>
+<hr height="1">
+例①
+<br>
+<br>
+<b>(カスタム駆動関数.cpp)</b>
+<br>
+<div class="code"><pre class="brush:cpp">
+string 読み込み変数 = &quot;デフォ&quot;; // この変数に、外部データから値を読み込む
+
+// 自分で定義した関数
+void Myパラメータインポート() {
+    // フィアルの読み取り＆実行にかかる。必ず try ... catch
+    try {
+        MRUBY::Do_ファイル(&quot;ScenarioMod.rb&quot;); // ScenarioMod.rb というファイルを「mruby言語解釈」して実行する。
+
+    // 何か例外エラーが発生した
+    } catch (MRUBY::例外型 e) {
+        デバッグ出力 &lt;&lt; &quot;ScenarioMod.rbで何かエラー:&quot; &lt;&lt; e &lt;&lt; endl;
+        return;  // このレベルでエラーしてるのはまずい。パラメタ読み取り即終了。
+    }
+
+    // ここまできたら、ファイルが読み込め、mrubyとしても最低限実行できたようだ。
+
+    // 変数の読み取りにかかる。必ず try ... catch
+    try {
+        読み込み変数 = MRUBY::Get_グローバル文字列(&quot;$test_var&quot;);
+    } catch(...) { }
+
+    デバッグ出力 &lt;&lt; &quot;変数:&quot; &lt;&lt; 読み込み変数 &lt;&lt; endl;
+}
+
+void カスタム::On_起動時() {
+    Myパラメータインポート();
+}
+</pre></div>
+
+
+<br>
+<br>
+そして、以下のように対象となるmrubyファイルを「天翔記フォルダ」に用意する。(文字コードはcp932 ≒ shiftjisにて保存のこと)
+<br>
+<b>(ScenarioMod.rb)側</b>
+<br>
+<div class="code"><pre class="brush:ruby">
+$test_var = &quot;ズキュキュン太&quot;
+</pre></div>
+<br>
+<br>
+<hr height="1">
+<font color="green"><b>グローバル変数の読み込みは、「実数」と「文字列」の２つに対応している。</b></font>
+<br>
+繰り返しとなるが、必ず「try...catch...」するのが必須である。
+<br>
+<br>
+それを踏まえて、3種類の変数を読み込んでみよう。
+<br>
+<br>
+例②
+<br>
+<br>
+<b>(カスタム駆動関数.cpp)</b>
+<br>
+<div class="code"><pre class="brush:cpp">
+int 読み込み変数1 = 0;
+double 読み込み変数2 = 1.5;
+string 読み込み変数3 = &quot;デフォ&quot;;
+
+void インポート関数() {
+    try {
+        MRUBY::Do_ファイル(&quot;MySetting.txt&quot;);
+    } catch (MRUBY::例外型 e) {
+
+        デバッグ出力 &lt;&lt; &quot;MySetting.txtで何かエラー:&quot; &lt;&lt; e &lt;&lt; endl;
+        return; // このレベルでエラーしてるのはまずい。パラメタ読み取り即終了。
+    }
+
+    try {
+        読み込み変数1 = (int)MRUBY::Get_グローバル数値(&quot;$test_variable&quot;); // 返り値は小数形式の型なので、intにする
+    } catch(...) { }
+
+    try {
+        読み込み変数2 = MRUBY::Get_グローバル数値(&quot;$test_double&quot;);
+    } catch(...) { }
+
+    try {
+        読み込み変数3 = MRUBY::Get_グローバル文字列(&quot;$test_string&quot;);
+    } catch(...) { }
+
+
+    デバッグ出力 &lt;&lt; &quot;変数1:&quot; &lt;&lt; 読み込み変数1 &lt;&lt; endl;
+    デバッグ出力 &lt;&lt; &quot;変数2:&quot; &lt;&lt; 読み込み変数2 &lt;&lt; endl;
+    デバッグ出力 &lt;&lt; &quot;変数3:&quot; &lt;&lt; 読み込み変数3 &lt;&lt; endl;
+}
+
+void カスタム::On_起動時() {
+    インポート関数();
+}
+</pre></div>
+
+<br>
+<br>
+そして、以下のように対象となるtxtファイルを「天翔記フォルダ」に用意する。
+<br>
+<b>(MySetting.txt)側</b>
+<br>
+<div class="code"><pre class="brush:ruby">
+$test_variable = "5.7"       # Luaとは異なり、mrubyでは、暗黙の「数文字」→「数値」への変換は行われない。「例外」が発生し、この値は読み込まれない。
+$test_double = "ジバニャン"  # "ジバニャン"を「実数」として解釈することは不可能である。「例外」が発生し、読み込み代入は行われないであろう。
+$test_string = 13.55         # Luaとは異なり、mrubyでは、暗黙の「数値」→「数文字」への変換は行われない。 「例外」が発生し、この値は読み込まれない。
+#
+</pre></div>

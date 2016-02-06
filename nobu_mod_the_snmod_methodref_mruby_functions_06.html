@@ -1,0 +1,111 @@
+%(hilight)s
+<h2>複雑なデータの取得 ２</h2>
+<br>
+<br>
+
+<h4>～データを取り込み用関数を登録して、複雑なデータに対処する。</h4>
+<ul>
+(※この章は、Lua版の<a href="?page=nobu_mod_the_snmod_methodref_lua_functions_06">ココ</a>と対応しています。)
+</ul>
+<ul>
+    <li>mrubyに記述しているテーブルデータを、ScenarioMod側へと読み込んでみましょう。<br>
+    <br>
+    ScenarioModでは、mrb_state* 型のmrbというグローバル変数がすでに登録されています。<br>
+    又、mrubyに最初から付属しているヘッダーファイルは、ほぼ全て読み込まれていますので、<br>
+    mrubyの様々なWeb上の情報をそのまま利用しやすいでしょう。<br>
+    <br>
+</ul>
+
+<hr height="1">
+<br>
+<br>
+以下のように対象となるtxtファイルを「天翔記フォルダ」に用意します。
+<br>
+<b>(BushouData.txt)側</b>
+<br>
+<div class="code"><pre class="brush:lua; highlight:[8]">
+data_list = [
+    {'名前'=&gt;&quot;武田信玄&quot; , '政治'=&gt;100, '戦闘'=&gt; 90, '智謀'=&gt;80},
+    {'名前'=&gt;&quot;上杉謙信&quot; , '政治'=&gt;70,  '戦闘'=&gt;120, '智謀'=&gt;70},
+    {'名前'=&gt;&quot;北条氏康&quot; , '政治'=&gt;105, '戦闘'=&gt; 80, '智謀'=&gt;90},
+]
+
+for data in data_list do
+    ImportBushouData( data['名前'], data['政治'], data['戦闘'], data['智謀'] )
+end
+</pre></div>
+<br>
+この取り込み用の「ImportBushouData」という関数をScenarioModに用意してやれば良いのです。<br>
+そうすれば、簡潔なプログラムとなります。<br>
+<br>
+
+<b>(カスタム駆動関数.cpp)</b>
+<br>
+<div class="code"><pre class="brush:cpp;highlight:[12,39,40,42]">
+
+struct myパラメタ型 {
+  string 名前;
+  int 政治;
+  int 戦闘;
+  int 智謀;
+};
+vector&lt;myパラメタ型&gt; vBushouDataList;
+
+
+
+// ImportBushouData に相当する関数。1人分のデータを受け取って、そのままC++内の配列へと付け足す。
+static mrb_value mrb_ImportBushouData(mrb_state *mrb, mrb_value self) {
+
+  myパラメタ型 data;
+
+  mrb_value 名前;
+  mrb_int 政治;
+  mrb_int 戦闘;
+  mrb_int 智謀;
+
+  mrb_get_args(mrb, &quot;Siii&quot;, &amp;名前, &amp;政治, &amp;戦闘, &amp;智謀); // S=String, i=整数 f=浮動小数
+
+  data.名前 = RSTRING_PTR(名前); // RObjectという共用の型をchar*と見なして～
+  data.政治 = 政治;
+  data.戦闘 = 戦闘;
+  data.智謀 = 智謀;
+
+
+  // C++内のリスト変数にdata追加
+  vBushouDataList.push_back(data);
+
+  // selfを返す。
+  return self;
+}
+
+
+
+void カスタム::On_起動時() {
+  struct RClass *krnm;
+  krnm = mrb-&gt;kernel_module; /* ココ２行は関数を特定のクラス内ではなく、グローバルに登録するため。*/
+
+  mrb_define_method(mrb, krnm, &quot;ImportBushouData&quot;, mrb_ImportBushouData, MRB_ARGS_REQ(4)); // 関数登録。引数４つだよ
+
+  try {
+    MRUBY::Do_ファイル(&quot;BushouData.txt&quot;);
+  }
+  catch (...) {}
+
+  for each(myパラメタ型 data in vBushouDataList) {
+    デバッグ出力 &lt;&lt; data.名前 &lt;&lt; endl;
+    デバッグ出力 &lt;&lt; data.政治 &lt;&lt; endl;
+    デバッグ出力 &lt;&lt; data.戦闘 &lt;&lt; endl;
+    デバッグ出力 &lt;&lt; data.智謀 &lt;&lt; endl;
+    デバッグ出力 &lt;&lt; string(20, '-') &lt;&lt; endl;
+  }
+}
+</pre></div>
+
+<br>
+
+というように、比較的簡潔なプログラムとなりました。<br>
+ファイルを読み込むよりも先に「ImportBushouData」という関数をmrbへと登録します。<br>
+そして、ファイルを読み込み、実行すれば、forループと、ImportBushouData　関数により、データが終わるまで、取得されることがわかるでしょうか。<br>
+<br>
+<br>
+このように独自の関数を登録を上手く利用すれば、プログラムの見通しをよくすることが可能となります。<br>
