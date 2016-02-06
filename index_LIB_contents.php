@@ -41,6 +41,9 @@ $content_hash = [
         [ 'html'=>'nobu_snd_inmm_ini.html', 'title'=>'inmm.ini設定用EXCEL' , 'dir'=>'音入替'],
     'nobu_snd_winamp' =>
         [ 'html'=>'nobu_snd_winamp.html', 'title'=>'没' , 'dir'=>'没'],
+    'nobu_snd_inmm_principle.html' =>
+        [ 'html'=>'nobu_snd_inmm_principle.html', 'title'=>'inmmの動作原理' , 'dir'=>'音入替'],
+
     'nobu_font_change' =>
         [ 'html'=>'nobu_font_change.html', 'title'=>'フォントの変更' , 'dir'=>'フォント入替'],
     'nobu_font_tsmincho' =>

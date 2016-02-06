@@ -1,0 +1,63 @@
+<h2><i class="fa fa-file-excel-o fa-fw"></i>_inmmの書き換え内容</h2>
+<ul class="checklist">
+    <li>
+    <h3>概要</h3>
+    <p>ここでは_inmmが直接行うバイナリ書き換えが記載されている。</p>
+    <li>
+    <h3>_inmmが書き換える内容</h3>
+    <p>_inmmをインストールしただけは書き換えは発生しません。<br>
+    _inmmcnfのパッチタブで初めて書き換えが発生します。<br>
+    koei->天翔記 のパッチは誰かが提供したものであり、そのターゲットはtenshou.exe n6paudio.dllです。<br>
+    </p>
+    <p>_inmmcnfでは「文字単語」レベルのマッチング→置換を行います。<br>
+    「winmm.dll」という単語を見つけると「_inmm.dll」という文字列へと置き換えます。<br>
+    「mmioOpenA」という単語を見つけると「_mmioOpenA」と置き換えます。以降同様。<br>
+    といった非常に単純なことが行われています。</p>
+    <ul class="pointlist">
+        <li>
+        <h4>(あ)基本状態</h4>
+        <ul class="arrowlist">
+            <li>
+            <h5>呼出しDLL名</h5>
+            <p>winmm.dll</p>
+            <li>
+            <h5>DLLが提供している関数名</h5>
+            <p>・mciSendCommandA<br>
+            ・mciGetDeviceIDA<br>
+            ・mmioAdvance<br>
+            ・mmioAscend<br>
+            ・mmioClose<br>
+            ・mmioDescend<br>
+            ・mmioGetInfo<br>
+            ・mmioOpenA<br>
+            ・mmioRead<br>
+            ・mmioSeek<br>
+            ・mmioSetInfo<br>
+            ・mmioWrite<br>
+            ・timeGetTime<br>
+            </p>
+        </ul>
+        <li>
+        <h4>(お)_inmmのinmmcnfによって置き換えられた後</h4>
+        <ul class="arrowlist">
+            <li>
+            <h5>呼出しDLL名</h5>
+            <p>_inmm.dll</p>
+            <li>
+            <h5>DLLが提供している関数名</h5>
+            <p>・mciSendCommandA<br>
+            ・_ciGetDeviceIDA<br>
+            ・_mioAdvance<br>
+            ・_mioAscend<br>
+            ・_mioClose<br>
+            ・_mioDescend<br>
+            ・_mioGetInfo<br>
+            ・_mioOpenA<br>
+            ・_mioRead<br>
+            ・_mioSeek<br>
+            ・_mioSetInfo<br>
+            ・_mioWrite<br>
+            ・_imeGetTime<br>
+            </p>
+        </ul>
+    </ul>
