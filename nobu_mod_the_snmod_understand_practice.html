@@ -43,7 +43,7 @@ string カスタム::On_噴出メッセージ直前(string 武将名, string 元
 
   if (武将名 == &quot;真田幸隆&quot;) {
 
-    if (Is_文字列マッチ(&quot;わが隊はすでに\x0A士気旺盛&quot;)) {
+    if (Is_文字列マッチ(元メッセージ, &quot;わが隊はすでに\x0A士気旺盛&quot;)) {
       return &quot;士気旺盛じゃ!?&quot;;
     }
   }
@@ -75,7 +75,7 @@ string カスタム::On_噴出メッセージ直前(string 武将名, string 元
 
   if (武将名 == &quot;真田幸隆&quot;) {
 
-     if (Is_文字列マッチ(&quot;わが隊はすでに\x0A士気旺盛&quot;)) {
+     if (Is_文字列マッチ(元メッセージ, &quot;わが隊はすでに\x0A士気旺盛&quot;)) {
         if ( Get_天気() == 天気::晴れ ) {
             return &quot;今日は晴天じゃ\x0A兵どもも士気旺盛じゃ&quot;;
 
