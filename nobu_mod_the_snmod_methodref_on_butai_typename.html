@@ -98,7 +98,60 @@
   // 変更しない場合NULL
   return NULL;
 }
+</pre></div>
+    <li>
+    <h3>例③</h3>
+    <p>武将情報画面で見る際に出る「隊」の字は、以下のように「Set_部隊名書式」関数で変更することが出来る。</p>
+    <p><img src="./cnt_mod/mod_snmod/cnt_mod_scenario_mod_ref_098.png"></p>
+    <div class="code"><pre class="brush:cpp; highlight:[16,33,38]"">
+部隊名リスト型＆ カスタム::On_部隊名表示直前(int 武将番号) {
+
+    int iBushouID = 武将番号 - 1; // 武将番号→武将番号【配列用】に
+
+    if (0 &lt;= iBushouID &amp;&amp; iBushouID &lt; 最大数::武将情報::配列数) {
+
+        if (p武将戸籍情報[iBushouID].顔番号 == 顔番号::長尾景虎) {
+
+            部隊名リスト型 nb = {
+                &quot;足軽&quot;,
+                &quot;騎馬&quot;,
+                &quot;鉄砲&quot;,
+                &quot;騎鉄&quot;
+            };
+            // 隊ではなく、軍を付ける
+            Set_部隊名書式(nb, &quot;%s軍&quot;);
+            return nb;
+        }
 
 
+        if (p武将戸籍情報[iBushouID].顔番号 == 顔番号::足利義輝) {
+
+            部隊名リスト型 nb = {
+                &quot;足軽&quot;,
+                &quot;騎馬&quot;,
+                &quot;鉄砲&quot;,
+                &quot;騎鉄&quot;
+            };
+
+            // 足軽(弓隊含む)か騎馬の時は、修飾として前に「御」、後ろに「軍」を付ける
+            if (p武将情報[iBushouID].兵態 == 兵態::騎馬 || p武将情報[iBushouID].兵態 == 兵態::足軽) {
+
+                Set_部隊名書式(nb, &quot;御%s軍&quot;);
+            }
+
+            // それ以外の時は、「隊」も何も付けない
+            else {
+                Set_部隊名書式(nb, &quot;%s&quot;);
+
+            }
+            return nb;
+        }
+
+
+    }
+
+    // 変更しない場合NULL
+    return NULL;
+}
 </pre></div>
 </ul>
