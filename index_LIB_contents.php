@@ -198,6 +198,8 @@ $content_hash = [
         [ 'html'=>'nobu_mod_the_snmod_methodref_on_deside_battle_attack.html', 'title'=>'' , 'dir'=>'ScenarioModのリファレンス'],
     'nobu_mod_the_snmod_methodref_on_battle_damaged' =>
         [ 'html'=>'nobu_mod_the_snmod_methodref_on_battle_damaged.html', 'title'=>'' , 'dir'=>'ScenarioModのリファレンス'],
+    'nobu_mod_the_snmod_methodref_on_change_movepower_in_battle' =>
+        [ 'html'=>'nobu_mod_the_snmod_methodref_on_change_movepower_in_battle.html', 'title'=>'' , 'dir'=>'ScenarioModのリファレンス'],
     'nobu_mod_the_snmod_methodref_on_battle_end' =>
         [ 'html'=>'nobu_mod_the_snmod_methodref_on_battle_end.html', 'title'=>'' , 'dir'=>'ScenarioModのリファレンス'],
     'nobu_mod_the_snmod_methodref_on_butai_typename' =>
