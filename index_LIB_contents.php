@@ -202,6 +202,8 @@ $content_hash = [
         [ 'html'=>'nobu_mod_the_snmod_methodref_on_change_movepower_in_battle.html', 'title'=>'' , 'dir'=>'ScenarioModのリファレンス'],
     'nobu_mod_the_snmod_methodref_on_battle_end' =>
         [ 'html'=>'nobu_mod_the_snmod_methodref_on_battle_end.html', 'title'=>'' , 'dir'=>'ScenarioModのリファレンス'],
+    'nobu_mod_the_snmod_methodref_on_battlescreen_end' =>
+        [ 'html'=>'nobu_mod_the_snmod_methodref_on_battlescreen_end.html', 'title'=>'' , 'dir'=>'ScenarioModのリファレンス'],
     'nobu_mod_the_snmod_methodref_on_butai_typename' =>
         [ 'html'=>'nobu_mod_the_snmod_methodref_on_butai_typename.html', 'title'=>'' , 'dir'=>'ScenarioModのリファレンス'],
     'nobu_mod_the_snmod_methodref_on_jobname' =>
