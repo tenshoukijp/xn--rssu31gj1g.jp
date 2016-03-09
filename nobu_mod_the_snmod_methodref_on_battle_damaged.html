@@ -70,7 +70,7 @@ void カスタム::On_被ダメージ時(int 武将番号, int ダメージ兵�
 static int iAttackBushouID = -1;
 static int iAttackMethodID = -1;
 
-void カスタム::On_攻撃方法決定時《戦争画面》(int 主体武将番号, int 客体武将番号, 攻撃方法決定時型パラメタ パラメタ) {
+void カスタム::On_攻撃方法決定時《戦争画面》(int 主体武将番号, int 客体武将番号, 攻撃方法決定時パラメタ型 パラメタ) {
     // 鉄砲攻撃を通じなくする。よって、攻撃者や攻撃方法をここで控えておく
 
     int iBushouID = 主体武将番号-1;
@@ -123,7 +123,7 @@ void カスタム::On_戦争終了() {
 static int iAttackBushouID = -1;
 static int iAttackMethodID = -1;
 
-void カスタム::On_攻撃方法決定時《戦争画面》(int 主体武将番号, int 客体武将番号, 攻撃方法決定時型パラメタ パラメタ) {
+void カスタム::On_攻撃方法決定時《戦争画面》(int 主体武将番号, int 客体武将番号, 攻撃方法決定時パラメタ型 パラメタ) {
     // 例③と同じソースを記述のこと
 }
 

@@ -1,7 +1,7 @@
 %(hilight)s
-<h2><i class="fa fa-book fa-fw"></i>void カスタム::On_攻撃方法決定時《戦争画面》(int 主体武将番号, int 客体武将番号, 攻撃方法決定時型パラメタ パラメタ)</h2>
+<h2><i class="fa fa-book fa-fw"></i>void カスタム::On_攻撃方法決定時《戦争画面》(int 主体武将番号, int 客体武将番号, 攻撃方法決定時パラメタ型 パラメタ)</h2>
 <div class="code"><pre class="brush:cpp;">
-void カスタム::On_攻撃方法決定時《戦争画面》(int 主体武将番号, int 客体武将番号, 攻撃方法決定時型パラメタ パラメタ) {
+void カスタム::On_攻撃方法決定時《戦争画面》(int 主体武将番号, int 客体武将番号, 攻撃方法決定時パラメタ型 パラメタ) {
 }
 </pre></div>
 <ul class="checklist">
@@ -17,7 +17,7 @@ PC/NPC、無関係に実行される。<br>
 </ul>
 <li><h3>例①</h3>
 <div class="code"><pre class="brush:cpp;">
-void カスタム::On_攻撃方法決定時《戦争画面》(int 主体武将番号, int 客体武将番号, 攻撃方法決定時型パラメタ パラメタ) {
+void カスタム::On_攻撃方法決定時《戦争画面》(int 主体武将番号, int 客体武将番号, 攻撃方法決定時パラメタ型 パラメタ) {
   int iBushouID = 主体武将番号-1;
   int iTargetID = 客体武将番号-1;
 
