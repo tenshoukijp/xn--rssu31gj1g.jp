@@ -74,8 +74,26 @@ int カスタム::On_武将最大兵数要求時(int 武将番号, int 基準最
   return -1;
 }
 </pre></div>
+
     <li>
     <h3>例③</h3>
+    <div class="code"><pre class="brush:cpp;">
+int カスタム::On_武将最大兵数要求時(int 武将番号, int 基準最大兵数, int 予定修正最大兵数) {
+
+    // その武将の（野望＋魅力＋基準値）÷３ を最大兵数と定義する
+    int iBushouID = 武将番号 - 1;
+
+    if (0 &lt;= iBushouID &amp;&amp; iBushouID &lt; 最大数::武将情報::配列数) {
+        return (p武将情報[iBushouID].野望 + p武将情報[iBushouID].魅力 + 基準最大兵数) / 3;
+    }
+
+    // 変更しない場合-1
+    return -1;
+}
+
+</pre></div>
+    <li>
+    <h3>例④</h3>
     <div class="code"><pre class="brush:cpp;">
 int カスタム::On_武将最大兵数要求時(int 武将番号, int 基準最大兵数, int 予定修正最大兵数) {
 
