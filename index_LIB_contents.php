@@ -222,6 +222,8 @@ $content_hash = [
         [ 'html'=>'nobu_mod_the_snmod_methodref_on_viewing_castle_retsuden.html', 'title'=>'' , 'dir'=>'ScenarioModのリファレンス'],
     'nobu_mod_the_snmod_methodref_on_kahou_typename' =>
         [ 'html'=>'nobu_mod_the_snmod_methodref_on_kahou_typename.html', 'title'=>'' , 'dir'=>'ScenarioModのリファレンス'],
+    'nobu_mod_the_snmod_methodref_on_request_bushou_custom_maxsoldier' =>
+        [ 'html'=>'nobu_mod_the_snmod_methodref_on_request_bushou_custom_maxsoldier.html', 'title'=>'' , 'dir'=>'ScenarioModのリファレンス'],
     'nobu_mod_the_snmod_methodref_on_tick' =>
         [ 'html'=>'nobu_mod_the_snmod_methodref_on_tick.html', 'title'=>'' , 'dir'=>'ScenarioModのリファレンス'],
     'nobu_mod_the_snmod_methodref_on_app_menu_select' =>

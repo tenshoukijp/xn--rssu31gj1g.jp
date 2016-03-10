@@ -1,0 +1,102 @@
+%(hilight)s
+<h2><i class="fa fa-book fa-fw"></i>int カスタム::On_武将最大兵数要求時(int 武将番号, int 基準最大兵数, int 予定修正最大兵数)</h2>
+<div class="code"><pre class="brush:cpp;">
+int カスタム::On_武将最大兵数要求時(int 武将番号, int 基準最大兵数, int 予定修正最大兵数) {
+  return -1;
+}
+</pre></div>
+<ul class="checklist">
+    <li>
+    <h3>引数の補足</h3>
+    <ul class="pointlist">
+        <li>
+        <h4>基準最大兵数:</h4>
+        基準最大兵数とは、TSMod.iniで設定している「基本となる最大兵士数」のみに従い、<br>
+        対象の武将の「身分に応じた最大兵士数」が渡ってくる。<br>
+        <li>
+        <h4>予定修正最大兵数:</h4>
+        予定修正最大兵数とは、TSModによる修正計算を全て含んだ最大兵士数であり、<br>
+        「Get_武将最大兵数」と同じ値である。<br>
+        ScenarioModによる変更がなければ、対象武将の現在所持できる最大兵数は、この値となる。
+    </ul>
+
+    <li>
+    <h3>使用禁止関数</h3>
+    <p><span class="negative">このイベントハンドラの中で「Get_武将最大兵数」の関数を直接・間接に関わらず呼び出してはならない。</span><br>
+    なぜなら、「Get_武将最大兵数」の結果を完全に解決するためには、このイベントハンドラの計算結果が必要だからである。<br>
+    呼び出した場合は、無限ループとなり、フリーズ、スタック不足などの症状を引き起こす。
+    <li>
+    <h3>タイミング</h3>
+    <ul>
+        <li>最大兵数が要求されるあらゆるタイミングで呼び出される。<br>
+        <p>TSMod.iniのオプションによっては、「自動兵士数回復」などがあるため、<br>
+        非常に頻繁にこのイベントハンドラは呼び出されることとなる。</p>
+    </ul>
+    <li>
+    <h3>一般的用途</h3>
+    <ul>
+        <li>特定の武将の最大兵数を変更したい場合に使用する。
+        <li>武将全体の最大兵数のありかた全体を再定義したい場合に利用する。
+    </ul>
+    <li>
+    <h3>例①</h3>
+    <div class="code"><pre class="brush:cpp;">
+int カスタム::On_武将最大兵数要求時(int 武将番号, int 基準最大兵数, int 予定修正最大兵数) {
+
+  // 身分など関係ない。野望の値がそのまま最大兵数だ
+  int iBushouID = 武将番号 - 1;
+
+  if (0 &lt;= iBushouID &amp;&amp; iBushouID &lt; 最大数::武将情報::配列数) {
+    return p武将情報[iBushouID].野望;
+  }
+
+  // 変更しない場合-1
+  return -1;
+}
+</pre></div>
+    <li>
+    <h3>例②</h3>
+    <div class="code"><pre class="brush:cpp;">
+int カスタム::On_武将最大兵数要求時(int 武将番号, int 基準最大兵数, int 予定修正最大兵数) {
+
+  // 上杉謙信だけ身分にかかわらず100だ
+  int iBushouID = 武将番号 - 1;
+
+  if (0 &lt;= iBushouID &amp;&amp; iBushouID &lt; 最大数::武将情報::配列数) {
+    if (p武将戸籍情報[iBushouID].顔番号 == 顔番号::長尾景虎) {
+      return 100;
+    }
+  }
+
+  // 変更しない場合-1
+  return -1;
+}
+</pre></div>
+    <li>
+    <h3>例③</h3>
+    <div class="code"><pre class="brush:cpp;">
+int カスタム::On_武将最大兵数要求時(int 武将番号, int 基準最大兵数, int 予定修正最大兵数) {
+
+  // 軍師なら、TSMod.iniの設定に基づいて計算された結果よりも、10多くする。
+  // 但しMAXは100
+  int iBushouID = 武将番号 - 1;
+
+  if (0 &lt;= iBushouID &amp;&amp; iBushouID &lt; 最大数::武将情報::配列数) {
+    int iGundanID = p武将情報[iBushouID].所属軍団【軍団番号】 - 1;
+
+    if (0 &lt;= iGundanID &amp;&amp; iGundanID &lt; 最大数::軍団情報::配列数) {
+      if (iBushouID == Get_軍師武将番号【配列用】(iGundanID)) {
+        int solmax = 予定修正最大兵数 + 10;
+
+        if (solmax &gt; 100) { solmax = 100; }
+        return solmax;
+      }
+    }
+  }
+
+  // 変更しない場合-1
+  return -1;
+}
+
+</pre></div>
+</ul>
