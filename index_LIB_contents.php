@@ -372,6 +372,8 @@ $content_hash = [
         [ 'html'=>'nobu_mod_the_data_castle.html', 'title'=>'城内マップ仕組み ' , 'dir'=>'ヘックスマップエディタ'],
     'nobu_mod_the_data_field' =>
         [ 'html'=>'nobu_mod_the_data_field.html', 'title'=>'野戦マップ仕組み ' , 'dir'=>'ヘックスマップエディタ'],
+    'nobu_mod_the_castlemod_in_retsuden' =>
+        [ 'html'=>'nobu_mod_the_castlemod_in_retsuden.html', 'title'=>'城列伝・城内マップMod ' , 'dir'=>'各種エディタ'],
     'nobu_mod_the_app' =>
         [ 'html'=>'nobu_mod_the_app.html', 'title'=>'CD版のDiskイメージ化' , 'dir'=>'初期設置'],
 
@@ -544,6 +546,8 @@ $filetime_hash = [
         './cnt_mod/mod_tensgmod/TenShougiMod.zip',
     'nobu_mod_the_memod' =>
         './cnt_mod/mod_memod/MemoryEditorMod.zip',
+    'nobu_mod_the_castlemod_in_retsuden' =>
+        './cnt_mod/mod_hexmap/CastleMapInRetsudenMod.zip',
     'nobu_mod_the_loilo_game_recorder' =>
         './cnt_mod/mod_loilo/LoiloGameRecorderMod.zip',
 
