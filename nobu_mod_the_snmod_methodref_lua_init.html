@@ -24,6 +24,10 @@
         <p>Lua5.3にて導入されたビット演算等や、追加のLua関数も、そのほとんどが追加されています。 <br>
         よって、Lua5.3向けに記述されたスクリプトすらも、それなりに高い確率で動作します。 <br>
         </p>
+        <li>
+        <h4>UTF8のBOM付ファイルを読み込み実行可能</h4>
+        <p>luaの5.1は本来UTF8のBOM付ファイルは読み込みができずエラーとなりますが、<br>
+        jLuaでは、Lua5.2以降同様実行が可能となっています。 <br>
     </ul>
 
     <li>
@@ -32,9 +36,12 @@
         <li>
         <h4>ModDebuggerへの出力機能</h4>
         <ul class="arrowlist">
-            <li><h5>dprint(...) 関数</h5>
-            <p>luaのprint関数と同じですが、出力先が「ModDebugger」となります。<br></p>
-            <li><h5>print(...) 関数</h5>
+            <li>
+            <h5>dprint(...) 関数</h5>
+            <p>luaのprint関数と同じですが、出力先が「ModDebugger」となります。<br>
+            </p>
+            <li>
+            <h5>print(...) 関数</h5>
             <p>こちらも出力先が「ModDebugger」となります。<br>
             (jLua.exeに関しては、こちらは、標準出力となります)</p>
         </ul>
@@ -62,7 +69,8 @@
             </p>
             <li>
             <h5>string系関数</h5>
-            <p>正規表現系のエンジン(string.match等)に関して、cp932(sjis)に適した対応がなされています。<br></p>
+            <p>正規表現系のエンジン(string.match等)に関して、cp932(sjis)に適した対応がなされています。<br>
+            </p>
             <p>luaの5.3にて新たに加えられたstring関数を持っています。<br>
             (<b>string.pack、string.unpack</b>)<br>
             </p>
@@ -70,8 +78,7 @@
             <h5>文字列エンコードを推測する関数</h5>
             <p>string.getencoding(文字列)<br>
             が追加されています。<br>
-            日本語系で、利用する可能性が高い「メジャーどころ」に絞った高速な判定です。
-            </p>
+            日本語系で、利用する可能性が高い「メジャーどころ」に絞った高速な判定です。</p>
             <li>
             <h5>table系関数</h5>
             <p>nilもしくは空のテーブルであることを判定するtable.emptyが追加されています。</p>
@@ -82,14 +89,7 @@
             <li>
             <h5>utf8系関数</h5>
             <p>luaの5.3にて加えられたutf8系ライブラリを全て持っています。<br>
-            (<b>utf8.encode(文字列, "cp932")</b>
-            )が特別に追加されています。
-            <br>
-            <li>
-            <h5>UTF8のBOM付ファイルを読み込み実行可能</h5>
-            <p>luaの5.1は本来UTF8のBOM付ファイルは読み込みができずエラーとなりますが、<br>
-            jLuaでは、Lua5.2以降同様実行が可能となっています。
-            <br>
+            (<b>utf8.encode(文字列, "cp932")</b> )が特別に追加されています。 <br>
             </p>
         </ul>
         <li>
@@ -206,7 +206,8 @@ for k, v in mytbl do
     dprint(k, v)
 end
 </pre></div>
-            <li><h5>classを完結に記述することが可能</h5>
+            <li>
+            <h5>classを完結に記述することが可能</h5>
 
             <div class="code"><pre class="brush:lua;">
 class 'Person'
