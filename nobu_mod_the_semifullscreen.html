@@ -26,29 +26,29 @@
 
     </ul>
 <li><h3>説明</h3>
-	<ul class="pointlist">
+  <ul class="pointlist">
 
-	    <li><h4>使い方</h4>
-	    <p>SemiFullScreenMod.cpl と SemiFullScreenMod.ini の２つのファイルを「天翔記フォルダ」へとコピー。<br></p>
-	    <li><h4>iniの編集</h4>
-	    <p>編集の仕方には２通りの方法があります。<br></p>
-	    <ul class="arrowlist">
-		    <li><h5>GUI画面を使って編集する方法</h5>
-		    <p>
-		    <img src="./cnt_mod/mod_pluginmod/cnt_mod_semifullscreen_ctrl.png"><br>
-		    <br>
-		    <b>SemiFullScreenMod.cpl を実行(ダブルクリック等)することで、設定画面が出てきます。</b><br>
-		    自動切換え解像度と、背景の色を選択し、「設定」を押してください。<br>
-		    設定情報を元に、SemiFullScreenMod.ini が書き換えられます。<br></p>
-		    <li><h5>テキストで直接編集する方法</h5>
-		    <p>SemiFullScreenMod.ini をテキストエディタなどで直接編集することも可能です。<br>
-		    </p>
-		    <div class="code"><pre class="brush:cpp">
-		    -- 天翔記の「メインゲーム」が始まったら、背景を紺色に、PCの画面解像度を「横1280 縦768」に切り替える場合。<br>
-		    cmd["environment_semi_fullscreen_w"] = 1280
-		    cmd["environment_semi_fullscreen_h"] = 768
-		    cmd["environment_semi_fullscreen_back_color"]=0x210D73
-		    </pre></div>
-	    </ul>
-	</ul>
+      <li><h4>使い方</h4>
+      <p>SemiFullScreenMod.cpl と SemiFullScreenMod.ini の２つのファイルを「天翔記フォルダ」へとコピー。<br></p>
+      <li><h4>iniの編集</h4>
+      <p>編集の仕方には２通りの方法があります。<br></p>
+      <ul class="arrowlist">
+        <li><h5>GUI画面を使って編集する方法</h5>
+        <p>
+        <img src="./cnt_mod/mod_pluginmod/cnt_mod_semifullscreen_ctrl.png"><br>
+        <br>
+        <b>SemiFullScreenMod.cpl を実行(ダブルクリック等)することで、設定画面が出てきます。</b><br>
+        自動切換え解像度と、背景の色を選択し、「設定」を押してください。<br>
+        設定情報を元に、SemiFullScreenMod.ini が書き換えられます。<br></p>
+        <li><h5>テキストで直接編集する方法</h5>
+        <p>SemiFullScreenMod.ini をテキストエディタなどで直接編集することも可能です。<br>
+        </p>
+        <div class="code"><pre class="brush:lua">
+        -- 天翔記の「メインゲーム」が始まったら、背景を紺色に、PCの画面解像度を「横1280 縦768」に切り替える場合。
+        cmd["environment_semi_fullscreen_w"] = 1280
+        cmd["environment_semi_fullscreen_h"] = 768
+        cmd["environment_semi_fullscreen_back_color"]=0x210D73
+        </pre></div>
+      </ul>
+  </ul>
 </ul>
