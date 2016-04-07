@@ -123,7 +123,7 @@ private ref class Test
 {
 
 private:
-    int MySumFunc(... array&lt;int&gt; ^values)
+    int MySumFunc(... cli::array&lt;int&gt; ^values)
     {
         int Sum = 0;
         for each (int v in values)
@@ -146,7 +146,7 @@ private:
     </p>
 
     <div class="code"><pre class="brush:cpp;">
-int MySumFunc(... array&lt;int&gt; ^values)
+int MySumFunc(... cli::array&lt;int&gt; ^values)
 {
     int Sum = 0;
     for each (int v in values)
