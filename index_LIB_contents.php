@@ -295,14 +295,14 @@ $content_hash = [
         [ 'html'=>'nobu_mod_the_snmod_methodref_ironpython_snmod.html', 'title'=>'IronPython from C++CLI' , 'dir'=>'外部IronPythonテキストデータ'],
 
 
-#    'nobu_mod_the_snmod_methodref_mruby_init' =>
-#        [ 'html'=>'nobu_mod_the_snmod_methodref_mruby_init.html', 'title'=>'mrubyを利用するための設定' , 'dir'=>'外部mrubyテキストデータ'],
-#    'nobu_mod_the_snmod_methodref_mruby_functions_01' =>
-#        [ 'html'=>'nobu_mod_the_snmod_methodref_mruby_functions_01.html', 'title'=>'mrubyのグローバル変数読み込み' , 'dir'=>'外部mrubyテキストデータ'],
-#    'nobu_mod_the_snmod_methodref_mruby_functions_06' =>
-#        [ 'html'=>'nobu_mod_the_snmod_methodref_mruby_functions_06.html', 'title'=>'複雑なデータの取り扱い ' , 'dir'=>'外部mrubyテキストデータ'],
+    'nobu_mod_the_snmod_methodref_mruby_init' =>
+        [ 'html'=>'nobu_mod_the_snmod_methodref_mruby_init.html', 'title'=>'mrubyを利用するための設定' , 'dir'=>'外部mrubyテキストデータ'],
+    'nobu_mod_the_snmod_methodref_mruby_functions_01' =>
+        [ 'html'=>'nobu_mod_the_snmod_methodref_mruby_functions_01.html', 'title'=>'mrubyのグローバル変数読み込み' , 'dir'=>'外部mrubyテキストデータ'],
+    'nobu_mod_the_snmod_methodref_mruby_functions_06' =>
+        [ 'html'=>'nobu_mod_the_snmod_methodref_mruby_functions_06.html', 'title'=>'複雑なデータの取り扱い ' , 'dir'=>'外部mrubyテキストデータ'],
     'nobu_mod_the_snmod_methodref_mruby_make' =>
-        [ 'html'=>'nobu_mod_the_snmod_methodref_mruby_make.html', 'title'=>'mrubyをcp932化手順 (おまけコーナー)' , 'dir'=>'その他の外部テキストデータ'],
+        [ 'html'=>'nobu_mod_the_snmod_methodref_mruby_make.html', 'title'=>'mrubyをcp932化手順 (おまけコーナー)' , 'dir'=>'外部mrubyテキストデータ'],
 
 
     'nobu_mod_the_snmod_using_csharp_knowledge' =>

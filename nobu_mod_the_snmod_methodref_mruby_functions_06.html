@@ -1,29 +1,23 @@
 %(hilight)s
-<h2>複雑なデータの取得 ２</h2>
-<br>
-<br>
+<h2><i class="fa fa fa-book fa-fw"></i>複雑なデータの取得 ２</h2>
+<ul class="checklist">
+    <li>
+    <h3>概要</h3>
 
-<h4>～データを取り込み用関数を登録して、複雑なデータに対処する。</h4>
-<ul>
-(※この章は、Lua版の<a href="?page=nobu_mod_the_snmod_methodref_lua_functions_06">ココ</a>と対応しています。)
-</ul>
-<ul>
-    <li>mrubyに記述しているテーブルデータを、ScenarioMod側へと読み込んでみましょう。<br>
+    (※この章は、Lua版の<a href="?page=nobu_mod_the_snmod_methodref_lua_functions_06">ココ</a>と対応しています。)
+
+    <li>
+    <h3>データを取り込み用関数を登録して、複雑なデータに対処する</h3>
+    <p>mrubyに記述しているテーブルデータを、ScenarioMod側へと読み込んでみましょう。<br>
     <br>
     ScenarioModでは、mrb_state* 型のmrbというグローバル変数がすでに登録されています。<br>
     又、mrubyに最初から付属しているヘッダーファイルは、ほぼ全て読み込まれていますので、<br>
     mrubyの様々なWeb上の情報をそのまま利用しやすいでしょう。<br>
-    <br>
-</ul>
+    </p>
 
-<hr height="1">
-<br>
-<br>
-以下のように対象となるtxtファイルを「天翔記フォルダ」に用意します。
-<br>
-<b>(BushouData.txt)側</b>
-<br>
-<div class="code"><pre class="brush:lua; highlight:[8]">
+    <p>以下のように対象となるtxtファイルを「天翔記フォルダ」に用意します。</p>
+    <b>(BushouData.txt)側</b>
+    <div class="code"><pre class="brush:lua; highlight:[8]">
 data_list = [
     {'名前'=&gt;&quot;武田信玄&quot; , '政治'=&gt;100, '戦闘'=&gt; 90, '智謀'=&gt;80},
     {'名前'=&gt;&quot;上杉謙信&quot; , '政治'=&gt;70,  '戦闘'=&gt;120, '智謀'=&gt;70},
@@ -34,14 +28,10 @@ for data in data_list do
     ImportBushouData( data['名前'], data['政治'], data['戦闘'], data['智謀'] )
 end
 </pre></div>
-<br>
-この取り込み用の「ImportBushouData」という関数をScenarioModに用意してやれば良いのです。<br>
-そうすれば、簡潔なプログラムとなります。<br>
-<br>
-
-<b>(カスタム駆動関数.cpp)</b>
-<br>
-<div class="code"><pre class="brush:cpp;highlight:[12,39,40,42]">
+    <p>この取り込み用の「ImportBushouData」という関数をScenarioModに用意してやれば良いのです。 <br>
+    </p>
+    <b>(カスタム駆動関数.cpp)</b>
+    <div class="code"><pre class="brush:cpp;highlight:[12,39,40,42]">
 
 struct myパラメタ型 {
   string 名前;
@@ -100,12 +90,9 @@ void カスタム::On_起動時() {
   }
 }
 </pre></div>
-
-<br>
-
-というように、比較的簡潔なプログラムとなりました。<br>
-ファイルを読み込むよりも先に「ImportBushouData」という関数をmrbへと登録します。<br>
-そして、ファイルを読み込み、実行すれば、forループと、ImportBushouData　関数により、データが終わるまで、取得されることがわかるでしょうか。<br>
-<br>
-<br>
-このように独自の関数を登録を上手く利用すれば、プログラムの見通しをよくすることが可能となります。<br>
+    <p>というように、比較的簡潔なプログラムとなりました。<br>
+    </p>
+    <p>ファイルを読み込むよりも先に「ImportBushouData」という関数をmrbへと登録します。 <br>
+    そして、ファイルを読み込み、実行すれば、forループと、ImportBushouData 関数により、データが終わるまで、取得されることがわかるでしょうか。</p>
+    <p>このように独自の関数を登録を上手く利用すれば、プログラムの見通しをよくすることが可能となります。</p>
+</ul>
