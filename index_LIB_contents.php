@@ -436,6 +436,8 @@ $content_hash = [
         [ 'html'=>'nobu_mod_the_ulua_src.html', 'title'=>'uLua Cソース' , 'dir'=>'uLua'],
     'nobu_mod_the_ulua_for_hidemaru' =>
         [ 'html'=>'nobu_mod_the_ulua_for_hidemaru.html', 'title'=>'uLua 秀丸セット' , 'dir'=>'uLua'],
+    'nobu_mod_the_wordlist_regex_compress' =>
+        [ 'html'=>'nobu_mod_the_wordlist_regex_compress.html', 'title'=>'単語のリストを１つの正規表現にする' , 'dir'=>'単語リストの正規表現圧縮'],
 
     'nobu_mod_the_digital_sign_index' =>
         [ 'html'=>'nobu_mod_the_digital_sign_index.html', 'title'=>'Windows 10以降で、「管理者権限のある正しいログインでもう一度試してください」' , 'dir'=>'デジタル署名関係'],
@@ -449,7 +451,6 @@ $content_hash = [
         [ 'html'=>'nobu_mod_the_digital_sign_index_legacy.html', 'title'=>' Windows8.1までで、「管理者権限のある正しいログインでもう一度試してください」' , 'dir'=>'デジタル署名関係'],
     'nobu_mod_the_secdrvchangeshell' =>
         [ 'html'=>'nobu_mod_the_secdrvchangeshell.html', 'title'=>'SecDrvChangeShell' , 'dir'=>'デジタル署名関係']
-
 
 
 ];
@@ -576,6 +577,8 @@ $filetime_hash = [
         './other_soft/jlua/jLuaHM.zip',
     'nobu_mod_the_lua_reference_chm' =>
         './other_soft/jlua/Lua.chm',
+    'nobu_mod_the_wordlist_regex_compress' =>
+        './other_soft/wordlistregexcompress/WordListRegexCompress.zip',
 
     'nobu_mod_the_secdrvmagicalpig' =>
         './other_soft/secdrvmagicalpig/SecDrvMagicalPig.zip',
@@ -583,6 +586,7 @@ $filetime_hash = [
         './other_soft/secdrvchangeshell/SecDrvChangeShell.zip',
     'nobu_mod_the_testsiningchange' =>
         './other_soft/testsignchange/TestSigningBird.zip'
+
 
 ];
 ?>

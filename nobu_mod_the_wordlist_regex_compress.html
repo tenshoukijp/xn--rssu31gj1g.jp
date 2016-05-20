@@ -1,0 +1,66 @@
+%(hilight)s
+<h2><i class="fa fa-file-text-o fa-fw"></i>「単語のリスト」を「１つの正規表現」へと置き換える。</h2>
+<ul class="checklist">
+    <li>
+    <h3>概要</h3>
+    <p>このプログラムは<span class="positive">Perlの「Regex::PreSuf」</span>を利用して作成したもので、<br>
+    「単語のリスト」を「１つの正規表現」とするものです。<br>
+    </p>
+    <p>「秀丸の強調表示用のファイル」など、単語のリストを圧縮し、容量を節約するようなシーンで利用してください。</p>
+    <li>
+    <h4>例①</h4>
+    <div class="code"><pre class="brush:ps;">
+apple
+append
+application
+</pre></div>
+    <p>という単語のリストであれば…</p>
+    <div class="code"><pre class="brush:ps;">
+app(end|l(ication|e))
+</pre></div>
+    <p>のようになります。</p>
+    <li>
+    <h4>例②</h4>
+    <div class="code"><pre class="brush:ps;">
+Vector
+Vector.Length3
+Vector.Dot3
+Vector.Cross3
+Vector.Distance3
+VectorToQuaternion
+</pre></div>
+    <p>という単語のリストであれば…</p>
+    <div class="code"><pre class="brush:ps;">
+Vector(ToQuaternion|\.(Cross|D(istance|ot)|Length)3)?
+</pre></div>
+    <p>のようになります。</p>
+    <li>
+    <h3>ダウンロード</h3>
+    <dl>
+        <dt>
+        <div class="download_file">DOWNLOAD ⇒ <a href="%(file)s">WordListRegexCompress</a>ファイル。</div>
+        </dt>
+        <dd>
+        <div class="update_time">└更新日 %(year)04d/%(mon)02d/%(mday)02d</div>
+        </dd>
+    </dl>
+    <li>
+    <h3>使い方</h3>
+    <p>コンソールプログラムとなっています。</p>
+    <p>「a.txt」に上述のような単語のリストが入っているものと仮定すると、</p>
+    <div class="code"><pre class="brush:ps;">
+WordListRegexCompress.exe a.txt
+</pre></div>
+    <p>のような形で、圧縮された正規表現が出てきます。<br>
+    </p>
+    <p>デフォルトでは、最大でも240文字程度を目安として改行を入れます。<br>
+
+    2番目の引数を入れることで、変更することが出来ます。</p>
+    <div class="code"><pre class="brush:ps;">
+WordListRegexCompress.exe a.txt 100
+</pre></div>
+    <p>などとすると、100文字以内を目安として改行を入れます。</p>
+    <li>
+    <h3>ライセンス</h3>
+    <p>本プログラム中で利用している<a href="http://www.perl.org">Perl</a>や<a href="http://search.cpan.org/~jhi/Regex-PreSuf-1.17/PreSuf.pm"><b>Regex::PreSuf</b></a>同様、GPLライセンスです。</p>
+</ul>
