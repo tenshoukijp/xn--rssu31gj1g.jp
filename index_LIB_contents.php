@@ -29,6 +29,10 @@ $content_hash = [
         [ 'html'=>'nobu_face_kaoswap_importer.html', 'title'=>'減色画像のKaoswap.n6pへの取込' , 'dir'=>'顔グラ減色'],
     'nobu_face_kaoswap_exmaker' =>
         [ 'html'=>'nobu_face_kaoswap_exmaker.html', 'title'=>'1932人や2932人用のKaoswapへ変換' , 'dir'=>'顔グラ減色'],
+    'nobu_face_reverse_diversion_list' =>
+        [ 'html'=>'nobu_face_reverse_diversion_list.html', 'title'=>'信長シリーズの顔グラ番号 図鑑' , 'dir'=>'顔グラ入替'],
+
+
     'nobu_mod_the_semifullscreen' =>
         [ 'html'=>'nobu_mod_the_semifullscreen.html', 'title'=>'スクリーン切り替えMod ' , 'dir'=>'フルカラー画面モード'],
     'nobu_snd_n6pwav' =>
@@ -438,6 +442,8 @@ $content_hash = [
         [ 'html'=>'nobu_mod_the_ulua_for_hidemaru.html', 'title'=>'uLua 秀丸セット' , 'dir'=>'uLua'],
     'nobu_mod_the_wordlist_regex_compress' =>
         [ 'html'=>'nobu_mod_the_wordlist_regex_compress.html', 'title'=>'単語のリストを１つの正規表現にする' , 'dir'=>'単語リストの正規表現圧縮'],
+    'nobu_mod_the_wordlist_regex_compress_hm' =>
+        [ 'html'=>'nobu_mod_the_wordlist_regex_compress_hm.html', 'title'=>'単語のリストを１つの正規表現にする ～秀丸セット～' , 'dir'=>'単語リストの正規表現圧縮'],
 
     'nobu_mod_the_digital_sign_index' =>
         [ 'html'=>'nobu_mod_the_digital_sign_index.html', 'title'=>'Windows 10以降で、「管理者権限のある正しいログインでもう一度試してください」' , 'dir'=>'デジタル署名関係'],
@@ -469,6 +475,8 @@ $filetime_hash = [
         './cnt_mod/mod_graphic/ConvertAllTo3Bit.zip',
     'nobu_face_list' =>
         './cnt_txt/武将一覧.zip',
+    'nobu_face_reverse_diversion_list' =>
+        './cnt_img/face_reverse_pull/NobuFaceTransition.zip',
     'nobu_mod_the_semifullscreen' =>
         './cnt_mod/mod_pluginmod/SemiFullScreenMod.zip',
     'nobu_snd_n6pwav' =>
@@ -579,6 +587,8 @@ $filetime_hash = [
         './other_soft/jlua/Lua.chm',
     'nobu_mod_the_wordlist_regex_compress' =>
         './other_soft/wordlistregexcompress/WordListRegexCompress.zip',
+    'nobu_mod_the_wordlist_regex_compress_hm' =>
+        './other_soft/wordlistregexcompress/HMWordListRegexCompress.zip',
 
     'nobu_mod_the_secdrvmagicalpig' =>
         './other_soft/secdrvmagicalpig/SecDrvMagicalPig.zip',
