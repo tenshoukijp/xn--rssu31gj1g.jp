@@ -2,10 +2,17 @@
 
 	MITランセンスとなります。
 
-	Copyright (c) 2017, 天翔記.jp
+	Copyright (c) 2017 天翔記.jp
 
 
-■marked.js(=HmCustomLivePreviewMD.js)について
+■HmCustomLivePreviewMD.cssについて
+
+	MITランセンスとなります。
+
+	Copyright (c) 2015-2016 Sindre Sorhus <sindresorhus@gmail.com> (sindresorhus.com)
+
+
+■HmCustomLivePreviewMD.js(=marked.js)について
 
 	MITランセンスとなります。
 
