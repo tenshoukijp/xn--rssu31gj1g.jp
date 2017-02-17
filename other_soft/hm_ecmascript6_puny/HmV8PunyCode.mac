@@ -1,0 +1,68 @@
+#PY = loaddll( hidemarudir + @"\hmV8.dll" );
+
+if ( !#PY ) {
+	message("hmV8関連ファイルが読み込めない");
+    endmacro;
+}
+
+
+#_ = dllfuncw( #PY, "DoFile", currentmacrodirectory + @"\HmV8PunyCode.js" );
+
+
+//--------------------------------------------------------------------
+// 以下 hmV8を利用した処理
+//--------------------------------------------------------------------
+
+#_ = dllfuncw( #PY, "DoString", R"ES6(
+
+var url = hm.Edit.SelectedText;
+if (url) {
+	var res = HmConvertPunyCode(url);
+    OutputResult(url, res);
+} else {
+    hm.Macro.Eval( f => { /*
+        message "秀丸エディタ上で変換したい(URL的な)文字列を選択してください";
+    */ } );
+}
+
+function HmConvertPunyCode(url) {
+
+    var ret = url;
+
+	try {
+        // 現在PunyCodeだ
+		if ( url.indexOf("xn--") != -1 ) {
+	        // ホスト名相当する部分を国際化ドメインに
+	        ret = punycode.toUnicode(url);
+        
+        } else {
+	        // ホスト名相当する部分をPunyCode処理
+	        ret = punycode.toASCII(url);
+        }
+
+        return ret
+
+	} catch (e) {
+		console.log(e);
+	}
+
+    return ret;
+}
+
+function OutputResult(url, res) {
+
+    // ECMASCript6→秀丸マクロ空間へと伝達
+    hm.Macro.Var['$url'] = url;
+    hm.Macro.Var['$res'] = res;
+
+    hm.Macro.Eval( f => { /*
+        insert $url + "("+$res+")";
+    */ } );
+}
+
+)ES6"
+);
+
+
+freedll( #PY );
+
