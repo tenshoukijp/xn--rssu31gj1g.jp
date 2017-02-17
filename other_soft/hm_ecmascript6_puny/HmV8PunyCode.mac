@@ -1,6 +1,6 @@
-#PY = loaddll( hidemarudir + @"\hmV8.dll" );
+#JS = loaddll( hidemarudir + @"\hmV8.dll" );
 
-if ( !#PY ) {
+if ( !#JS ) {
     message("hmV8関連ファイルが読み込めない");
     endmacro;
 }
@@ -14,7 +14,7 @@ if ( !#PY ) {
 // punycode.jsの最後の１行だけコメントアウトし、それ以外はそのまま貼り付け
 //--------------------------------------------------------------------
 
-#_ = dllfuncw( #PY, "DoString", R"PUNYCODE(
+#_ = dllfuncw( #JS, "DoString", R"PUNYCODE(
 
 'use strict';
 
@@ -470,7 +470,7 @@ const punycode = {
 // punycode.jsのライブラリを利用した簡易な処理
 //--------------------------------------------------------------------
 
-#_ = dllfuncw( #PY, "DoString", R"ES6(
+#_ = dllfuncw( #JS, "DoString", R"ES6(
 
 Main();
 
@@ -546,5 +546,5 @@ function OutputResult(sel, mod) {
 //====================================================================
 
 
-freedll( #PY );
+freedll( #JS );
 
