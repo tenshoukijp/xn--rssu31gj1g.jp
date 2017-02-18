@@ -281,13 +281,11 @@ $content_hash = [
     'nobu_mod_the_snmod_methodref_lua_init' =>
         [ 'html'=>'nobu_mod_the_snmod_methodref_lua_init.html', 'title'=>'ScenarioMod用Luaの特殊機能 ' , 'dir'=>'外部Luaテキストデータ'],
     'nobu_mod_the_snmod_methodref_lua_jlua' =>
-        [ 'html'=>'nobu_mod_the_snmod_methodref_lua_jlua.html', 'title'=>'jLua.exe' , 'dir'=>'jLua'],
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_mod_the_snmod_methodref_lua_jlua.html', 'title'=>'jLua.exe' , 'dir'=>'jLua'],
 
 
     'nobu_mod_the_jlua_for_hidemaru' =>
-        [ 'html'=>'nobu_mod_the_jlua_for_hidemaru.html', 'title'=>'jLua 秀丸セット' , 'dir'=>'jLua'],
-    'nobu_mod_the_lua_reference_chm' =>
-        [ 'html'=>'nobu_mod_the_lua_reference_chm.html', 'title'=>'Lua リファレンスマニュアル' , 'dir'=>'jLua'],
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_mod_the_jlua_for_hidemaru.html', 'title'=>'jLua 秀丸セット' , 'dir'=>'jLua'],
 
     'nobu_mod_the_snmod_methodref_ironpython_init' =>
         [ 'html'=>'nobu_mod_the_snmod_methodref_ironpython_init.html', 'title'=>'IronPython' , 'dir'=>'外部IronPythonテキストデータ'],
@@ -434,16 +432,374 @@ $content_hash = [
     'nobu_image_serias_package_icon' =>
         [ 'html'=>'nobu_image_serias_package_icon.html', 'title'=>'歴代シリーズアイコン' , 'dir'=>'他のゲーム'],
 
+    'nobu_tool_hm_net_lang_compare' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_net_lang_compare.html', 'title'=>'リファレンス' , 'dir'=>'.NET Framework・言語'],
+
+    'nobu_tool_hm_ironpython' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_ironpython.html', 'title'=>'hmPy' , 'dir'=>'.NET Framework via IronPython'],
+    'nobu_tool_hm_ironpython_update' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_ironpython_update.html', 'title'=>'hmPy 更新履歴' , 'dir'=>'.NET Framework via IronPython'],
+    'nobu_tool_hm_ironpython_debugmonitor' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_ironpython_debugmonitor.html', 'title'=>'hmPy デバッグモニター' , 'dir'=>'.NET Framework via IronPython'],
+    'nobu_tool_hm_ironpython_ide' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_ironpython_ide.html', 'title'=>'hmPy 開発環境' , 'dir'=>'.NET Framework via IronPython'],
+    'nobu_tool_hm_ironpython_ngen' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_ironpython_ngen.html', 'title'=>'hmPy NGenのススメ' , 'dir'=>'.NET Framework via IronPython'],
+    'nobu_tool_hm_ironpython_intro' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_ironpython_intro.html', 'title'=>'hmPyの基本思想' , 'dir'=>'.NET Framework via IronPython'],
+    'nobu_tool_hm_ironpython_api_lv1' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_ironpython_api_lv1.html', 'title'=>'基本のAPI' , 'dir'=>'.NET Framework via IronPython'],
+    'nobu_tool_hm_ironpython_api_lv2' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_ironpython_api_lv2.html', 'title'=>'応用のAPI' , 'dir'=>'.NET Framework via IronPython'],
+    'nobu_tool_hm_ironpython_var_stos' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_ironpython_var_stos.html', 'title'=>'hmPy 例題①' , 'dir'=>'hmPyの基本のAPIの例題集'],
+    'nobu_tool_hm_ironpython_drivespace' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_ironpython_drivespace.html', 'title'=>'hmPy 例題②' , 'dir'=>'hmPyの基本のAPIの例題集'],
+    'nobu_tool_hm_ironpython_webclient' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_ironpython_webclient.html', 'title'=>'hmPy 例題③' , 'dir'=>'hmPyの基本のAPIの例題集'],
+    'nobu_tool_hm_ironpython_outfile' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_ironpython_outfile.html', 'title'=>'hmPy 例題④' , 'dir'=>'hmPyの基本のAPIの例題集'],
+    'nobu_tool_hm_ironpython_winform_noclass' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_ironpython_winform_noclass.html', 'title'=>'hmPy 例題⑤' , 'dir'=>'hmPyの基本のAPIの例題集'],
+    'nobu_tool_hm_ironpython_excel' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_ironpython_excel.html', 'title'=>'hmPy 例題⑥' , 'dir'=>'hmPyの基本のAPIの例題集'],
+    'nobu_tool_hm_ironpython_outprocess' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_ironpython_outprocess.html', 'title'=>'hmPy 例題⑦' , 'dir'=>'hmPyの基本のAPIの例題集'],
+    'nobu_tool_hm_ironpython_winform' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_ironpython_winform.html', 'title'=>'hmPy 例題⑧' , 'dir'=>'hmPyの基本のAPIの例題集'],
+    'nobu_tool_hm_ironpython_loadmngdll' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_ironpython_loadmngdll.html', 'title'=>'外部マネージドdll読み込み' , 'dir'=>'.NET Framework via IronPython'],
+    'nobu_tool_hm_ironpython_win32api' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_ironpython_win32api.html', 'title'=>'IronPythonでwin32api' , 'dir'=>'ネイティブdllのWin32 APIの利用'],
+    'nobu_tool_hm_ironpython_win32api_bydll' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_ironpython_win32api_bydll.html', 'title'=>'IronPythonでwin32api' , 'dir'=>'ネイティブdllのWin32 APIの利用'],
+    'nobu_tool_hm_ironpython_cs_to_ipy' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_ironpython_cs_to_ipy.html', 'title'=>'C#からIronPythonへの変換' , 'dir'=>'.NET Framework via IronPython'],
+
+    'nobu_tool_hm_ironpython_utf16' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_ironpython_utf16.html', 'title'=>'Unicodeの利用' , 'dir'=>'.NET Framework via IronPython'],
+
+    'nobu_tool_hm_ironpython_list_and_tuple' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_ironpython_list_and_tuple.html', 'title'=>'hmPy 例題⑨' , 'dir'=>'hmPyの応用のAPIの例題集'],
+    'nobu_tool_hm_ironpython_examples' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_ironpython_examples.html', 'title'=>'IronPythonの様々な例' , 'dir'=>'hmPyの応用のAPIの例題集'],
+    'nobu_tool_hm_ironpython_calender' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_ironpython_calender.html', 'title'=>'IronPythonでカレンダー' , 'dir'=>'hmPyの応用のAPIの例題集'],
+    'nobu_tool_hm_ironpython_danddform' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_ironpython_danddform.html', 'title'=>'IronPythonでドラッグアンドドロップ' , 'dir'=>'hmPyの応用のAPIの例題集'],
+    'nobu_tool_hm_ironpython_csvhelper' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_ironpython_csvhelper.html', 'title'=>'IronPythonでCsvHelper' , 'dir'=>'hmPyの応用のAPIの例題集'],
+    'nobu_tool_hm_ironpython_htmlagility' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_ironpython_htmlagility.html', 'title'=>'IronPythonでHTML分析' , 'dir'=>'hmPyの応用のAPIの例題集'],
+    'nobu_tool_hm_ironpython_pastefilelist' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_ironpython_pastefilelist.html', 'title'=>'IronPythonでFileListPaste' , 'dir'=>'hmPyの応用のAPIの例題集'],
+    'nobu_tool_hm_ironpython_fontlist' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_ironpython_fontlist.html', 'title'=>'IronPythonでフォントリスト' , 'dir'=>'hmPyの応用のAPIの例題集'],
+    'nobu_tool_hm_ironpython_miniweb' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_ironpython_miniweb.html', 'title'=>'IronPythonでミニブラウザ' , 'dir'=>'hmPyの応用のAPIの例題集'],
+    'nobu_tool_hm_ironpython_htmlencdec' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_ironpython_htmlencdec.html', 'title'=>'IronPythonでHTMLエンコードデコード' , 'dir'=>'hmPyの応用のAPIの例題集'],
+    'nobu_tool_hm_ironpython_handpen' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_ironpython_handpen.html', 'title'=>'IronPythonで手書き入力' , 'dir'=>'hmPyの応用のAPIの例題集'],
+    'nobu_tool_hm_ironpython_wpf' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_ironpython_wpf.html', 'title'=>'IronPythonでWPF' , 'dir'=>'hmPyの応用のAPIの例題集'],
+    'nobu_tool_hm_ironpython_dynamicasm' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_ironpython_dynamicasm.html', 'title'=>'IronPythonでWPF' , 'dir'=>'hmPyの応用のAPIの例題集'],
+
+    'nobu_tool_hm_ironpython_api_866' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_ironpython_api_866.html', 'title'=>'hmPy 8.66以降で使える機能' , 'dir'=>'.NET Framework via IronPython'],
+    'nobu_tool_hm_ironpython_api_largestring' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_ironpython_api_largestring.html', 'title'=>'長大な文字列の秀丸への反映' , 'dir'=>'.NET Framework via IronPython'],
+
+    'nobu_tool_hm_ironpython_instdir' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_ironpython_instdir.html', 'title'=>'インストール場所の変更' , 'dir'=>'.NET Framework via IronPython'],
+
+    'nobu_tool_hm_ironpython_referece' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_ironpython_referece.html', 'title'=>'リファレンス' , 'dir'=>'.NET Framework via IronPython'],
+
+    'nobu_tool_hm_ironruby' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_ironruby.html', 'title'=>'hmRb' , 'dir'=>'.NET Framework via IronRuby'],
+    'nobu_tool_hm_ironruby_update' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_ironruby_update.html', 'title'=>'hmRb 更新履歴' , 'dir'=>'.NET Framework via IronRuby'],
+    'nobu_tool_hm_ironruby_debugmonitor' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_ironruby_debugmonitor.html', 'title'=>'hmRb デバッグモニター' , 'dir'=>'.NET Framework via IronRuby'],
+    'nobu_tool_hm_ironruby_winform' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_ironruby_winform.html', 'title'=>'hmRb 例題①' , 'dir'=>'.NET Framework via IronRuby'],
+    'nobu_tool_hm_ironruby_api_lv0' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_ironruby_api_lv0.html', 'title'=>'秀丸マクロから利用するhmRbの関数' , 'dir'=>'.NET Framework via IronRuby'],
+    'nobu_tool_hm_ironruby_api_lv1' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_ironruby_api_lv1.html', 'title'=>'基本のAPI' , 'dir'=>'.NET Framework via IronRuby'],
+    'nobu_tool_hm_ironruby_api_lv2' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_ironruby_api_lv2.html', 'title'=>'応用のAPI' , 'dir'=>'.NET Framework via IronRuby'],
+    'nobu_tool_hm_ironruby_loadmngdll' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_ironruby_loadmngdll.html', 'title'=>'外部マネージドdll読み込み' , 'dir'=>'.NET Framework via IronRuby'],
+    'nobu_tool_hm_ironruby_win32api' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_ironruby_win32api.html', 'title'=>'IronRubyでwin32api' , 'dir'=>'.NET Framework via IronRuby'],
+    'nobu_tool_hm_ironruby_ide' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_ironruby_ide.html', 'title'=>'IronRubyでide' , 'dir'=>'.NET Framework via IronRuby'],
+    'nobu_tool_hm_ironruby_ngen' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_ironruby_ngen.html', 'title'=>'NGenのススメ' , 'dir'=>'.NET Framework via IronRuby'],
+    'nobu_tool_hm_ironruby_api_866' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_ironruby_api_866.html', 'title'=>'hmRb 8.66以降で使える機能' , 'dir'=>'.NET Framework via IronRuby'],
+    'nobu_tool_hm_ironruby_charcode' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_ironruby_charcode.html', 'title'=>'hmRb デフォルトの文字コード' , 'dir'=>'.NET Framework via IronRuby'],
+    'nobu_tool_hm_ironruby_cs_to_irb' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_ironruby_cs_to_irb.html', 'title'=>'C#からIronRubyへの変換' , 'dir'=>'.NET Framework via IronRuby'],
+
+    'nobu_tool_hm_ironruby_referece' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_ironruby_referece.html', 'title'=>'リファレンス' , 'dir'=>'.NET Framework via IronRuby'],
+
+
+    'nobu_tool_hm_javascript' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_javascript.html', 'title'=>'hmJS' , 'dir'=>'.NET & ActiveX via JavaScript'],
+    'nobu_tool_hm_javascript_update' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_javascript_update.html', 'title'=>'hmJS 更新履歴' , 'dir'=>'.NET & ActiveX via JavaScript'],
+    'nobu_tool_hm_javascript_debugmonitor' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_javascript_debugmonitor.html', 'title'=>'デバッグメッセージ' , 'dir'=>'.NET & ActiveX via JavaScript'],
+    'nobu_tool_hm_javascript_api_866' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_javascript_api_866.html', 'title'=>'hmJS 8.66以降で使える機能' , 'dir'=>'.NET & ActiveX via JavaScript'],
+    'nobu_tool_hm_javascript_default_clr' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_javascript_default_clr.html', 'title'=>'標準の.NETライブラリの使い方' , 'dir'=>'.NET & ActiveX via JavaScript'],
+    'nobu_tool_hm_javascript_loadmngdll' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_javascript_loadmngdll.html', 'title'=>'マネージdllの読み込み' , 'dir'=>'.NET & ActiveX via JavaScript'],
+    'nobu_tool_hm_javascript_winform' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_javascript_winform.html', 'title'=>'.NET備え付けのマネージdll' , 'dir'=>'.NET & ActiveX via JavaScript'],
+
+    'nobu_tool_hm_javascript_api_lv0' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_javascript_api_lv0.html', 'title'=>'秀丸マクロから利用するhmJSの関数' , 'dir'=>'.NET & ActiveX via JavaScript'],
+    'nobu_tool_hm_javascript_api_lv1' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_javascript_api_lv1.html', 'title'=>'基本のAPI' , 'dir'=>'.NET & ActiveX via JavaScript'],
+    'nobu_tool_hm_javascript_api_lv2' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_javascript_api_lv2.html', 'title'=>'応用のAPI' , 'dir'=>'.NET & ActiveX via JavaScript'],
+
+    'nobu_tool_hm_javascript_activexobject' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_javascript_activexobject.html', 'title'=>'ActiveXObject' , 'dir'=>'.NET & ActiveX via JavaScript'],
+
+    'nobu_tool_hm_ecmascript' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_ecmascript.html', 'title'=>'hmV8' , 'dir'=>'.NET Framework via V8 ES6'],
+    'nobu_tool_hm_ecmascript_update' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_ecmascript_update.html', 'title'=>'hmV8 更新履歴' , 'dir'=>'.NET Framework via V8 ES6'],
+    'nobu_tool_hm_ecmascript_ngen' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_ecmascript_ngen.html', 'title'=>'hmV8 NGenのススメ' , 'dir'=>'.NET Framework via V8 ES6'],
+    'nobu_tool_hm_ecmascript_api_866' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_ecmascript_api_866.html', 'title'=>'hmV8 8.66以降で使える機能' , 'dir'=>'.NET Framework via V8 ES6'],
+
+    'nobu_tool_hm_ecmascript_grammer_00' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_ecmascript_grammer_00.html', 'title'=>'文法全体' , 'dir'=>'ECMAScript6の文法メモ'],
+    'nobu_tool_hm_ecmascript_grammer_01' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_ecmascript_grammer_01.html', 'title'=>'let' , 'dir'=>'ECMAScript6の文法メモ'],
+    'nobu_tool_hm_ecmascript_grammer_02' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_ecmascript_grammer_02.html', 'title'=>'const' , 'dir'=>'ECMAScript6の文法メモ'],
+    'nobu_tool_hm_ecmascript_grammer_03' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_ecmascript_grammer_03.html', 'title'=>'2進数・8進数' , 'dir'=>'ECMAScript6の文法メモ'],
+    'nobu_tool_hm_ecmascript_grammer_04' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_ecmascript_grammer_04.html', 'title'=>'テンプレート文字列' , 'dir'=>'ECMAScript6の文法メモ'],
+    'nobu_tool_hm_ecmascript_grammer_05' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_ecmascript_grammer_05.html', 'title'=>'分割代入' , 'dir'=>'ECMAScript6の文法メモ'],
+    'nobu_tool_hm_ecmascript_grammer_06' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_ecmascript_grammer_06.html', 'title'=>'正規表現のキャプチャ' , 'dir'=>'ECMAScript6の文法メモ'],
+    'nobu_tool_hm_ecmascript_grammer_07' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_ecmascript_grammer_07.html', 'title'=>'関数と引数' , 'dir'=>'ECMAScript6の文法メモ'],
+    'nobu_tool_hm_ecmascript_grammer_08' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_ecmascript_grammer_08.html', 'title'=>'for...of' , 'dir'=>'ECMAScript6の文法メモ'],
+    'nobu_tool_hm_ecmascript_grammer_09' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_ecmascript_grammer_09.html', 'title'=>'シンボル' , 'dir'=>'ECMAScript6の文法メモ'],
+    'nobu_tool_hm_ecmascript_grammer_10' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_ecmascript_grammer_10.html', 'title'=>'アロー関数' , 'dir'=>'ECMAScript6の文法メモ'],
+    'nobu_tool_hm_ecmascript_grammer_11' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_ecmascript_grammer_11.html', 'title'=>'Map と Set' , 'dir'=>'ECMAScript6の文法メモ'],
+    'nobu_tool_hm_ecmascript_grammer_12' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_ecmascript_grammer_12.html', 'title'=>'オブジェクトの初期化・プロパティ' , 'dir'=>'ECMAScript6の文法メモ'],
+    'nobu_tool_hm_ecmascript_grammer_13' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_ecmascript_grammer_13.html', 'title'=>'ジェネレータとイテレータ' , 'dir'=>'ECMAScript6の文法メモ'],
+    'nobu_tool_hm_ecmascript_grammer_14' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_ecmascript_grammer_14.html', 'title'=>'クラスの基本' , 'dir'=>'ECMAScript6の文法メモ'],
+    'nobu_tool_hm_ecmascript_grammer_15' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_ecmascript_grammer_15.html', 'title'=>'クラスの継承' , 'dir'=>'ECMAScript6の文法メモ'],
+    'nobu_tool_hm_ecmascript_grammer_16' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_ecmascript_grammer_16.html', 'title'=>'クラスへのアクセサー' , 'dir'=>'ECMAScript6の文法メモ'],
+    'nobu_tool_hm_ecmascript_grammer_17' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_ecmascript_grammer_17.html', 'title'=>'メタメソッド' , 'dir'=>'ECMAScript6の文法メモ'],
+
+    'nobu_tool_hm_ecmascript_puny' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_ecmascript_puny.html', 'title'=>'PunyCode' , 'dir'=>'既存のES6ライブラリの使用例'],
+
+
+
+
+    'nobu_tool_hm_loadclr' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_loadclr.html', 'title'=>'hmLoadCLR' , 'dir'=>'hmLoadCLR'],
+    'nobu_tool_hm_loadclr_intro' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_loadclr_intro.html', 'title'=>'hmLoadCLRの基本思想' , 'dir'=>'hmLoadCLR'],
+    'nobu_tool_hm_loadclr_debugmonitor' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_loadclr_debugmonitor.html', 'title'=>'デバッグメッセージ' , 'dir'=>'hmLoadCLR'],
+    'nobu_tool_hm_loadclr_loadmngdll' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_loadclr_loadmngdll.html', 'title'=>'マネージdllの読み込み' , 'dir'=>'hmLoadCLR'],
+    'nobu_tool_hm_loadclr_api_lv1' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_loadclr_api_lv1.html', 'title'=>'基本のAPI' , 'dir'=>'hmLoadCLR'],
+    'nobu_tool_hm_loadclr_api_lv2' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_loadclr_api_lv2.html', 'title'=>'応用のAPI' , 'dir'=>'hmLoadCLR'],
+    'nobu_tool_hm_loadclr_var_stos' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_loadclr_var_stos.html', 'title'=>'値のやりとり' , 'dir'=>'hmLoadCLR'],
+    'nobu_tool_hm_loadclr_list_and_dict' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_loadclr_list_and_dict.html', 'title'=>'リストや辞書' , 'dir'=>'hmLoadCLR'],
+    'nobu_tool_hm_loadclr_update' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_loadclr_update.html', 'title'=>'更新履歴' , 'dir'=>'hmLoadCLR'],
+    'nobu_tool_hm_loadclr_api_866' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_loadclr_api_866.html', 'title'=>'hmLoadCLR 8.66以降で使える機能' , 'dir'=>'hmLoadCLR'],
+    'nobu_tool_hm_loadclr_winform' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_loadclr_winform.html', 'title'=>'ウィンドウフォーム' , 'dir'=>'hmLoadCLR'],
+    'nobu_tool_hm_loadclr_neolua' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_loadclr_neolua.html', 'title'=>'NEOLUA独自の文法' , 'dir'=>'hmLoadCLR'],
+
+    'nobu_tool_hm_activeperl' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_activeperl.html', 'title'=>'hmPerl' , 'dir'=>'秀丸マクロ via ActivePerl'],
+    'nobu_tool_hm_activeperl_update' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_activeperl_update.html', 'title'=>'hmPerl' , 'dir'=>'秀丸マクロ via ActivePerl'],
+    'nobu_tool_hm_activeperl_debugmonitor' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_activeperl_debugmonitor.html', 'title'=>'hmPerl デバッグモニター' , 'dir'=>'秀丸マクロ via ActivePerl'],
+    'nobu_tool_hm_activeperl_api_866' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_activeperl_api_866.html', 'title'=>'hmPerl 866 でのAPI' , 'dir'=>'秀丸マクロ via ActivePerl'],
+    'nobu_tool_hm_activeperl_api_lv1' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_activeperl_api_lv1.html', 'title'=>'hmPerl 基本ののAPI' , 'dir'=>'秀丸マクロ via ActivePerl'],
+    'nobu_tool_hm_activeperl_src_commentary' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_activeperl_src_commentary.html', 'title'=>'ソース解説' , 'dir'=>'秀丸マクロ via ActivePerl'],
+    'nobu_tool_hm_activeperl_require' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_activeperl_require.html', 'title'=>'自作モジュールなどの読み込み' , 'dir'=>'秀丸マクロ via ActivePerl'],
+
+    'nobu_tool_hm_luajit' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_luajit.html', 'title'=>'hmLJ' , 'dir'=>'500倍速マクロ via LuaJIT'],
+    'nobu_tool_hm_luajit_update' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_luajit_update.html', 'title'=>'hmLJ 更新履歴' , 'dir'=>'500倍速マクロ via LuaJIT'],
+    'nobu_tool_hm_luajit_500x' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_luajit_500x.html', 'title'=>'hmLJ 秀丸マクロとのベンチマーク' , 'dir'=>'500倍速マクロ via LuaJIT'],
+    'nobu_tool_hm_luajit_ide' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_luajit_ide.html', 'title'=>'hmLJ 開発環境' , 'dir'=>'500倍速マクロ via LuaJIT'],
+    'nobu_tool_hm_luajit_intro' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_luajit_intro.html', 'title'=>'hmLJの基本思想' , 'dir'=>'500倍速マクロ via LuaJIT'],
+    'nobu_tool_hm_luajit_api_lv1' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_luajit_api_lv1.html', 'title'=>'基本のAPI' , 'dir'=>'500倍速マクロ via LuaJIT'],
+    'nobu_tool_hm_luajit_var_stos' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_luajit_var_stos.html', 'title'=>'LuaJITと秀丸マクロの値のやりとり' , 'dir'=>'500倍速マクロ via LuaJIT'],
+    'nobu_tool_hm_luajit_outprocess' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_luajit_outprocess.html', 'title'=>'外部プロセス' , 'dir'=>'500倍速マクロ via LuaJIT'],
+    'nobu_tool_hm_luajit_api_lv2' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_luajit_api_lv2.html', 'title'=>'応用のAPI' , 'dir'=>'500倍速マクロ via LuaJIT'],
+    'nobu_tool_hm_luajit_list_and_dict' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_luajit_list_and_dict.html', 'title'=>'リストや辞書' , 'dir'=>'500倍速マクロ via LuaJIT'],
+    'nobu_tool_hm_luajit_moduledll' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_luajit_moduledll.html', 'title'=>'dllの読み込み' , 'dir'=>'500倍速マクロ via LuaJIT'],
+    'nobu_tool_hm_luajit_addition' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_luajit_addition.html', 'title'=>'追加されえたAPI' , 'dir'=>'500倍速マクロ via LuaJIT'],
+    'nobu_tool_hm_luajit_win32api' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_luajit_win32api.html', 'title'=>'ffiとwin32api' , 'dir'=>'500倍速マクロ via LuaJIT'],
+    'nobu_tool_hm_luajit_instdir' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_luajit_instdir.html', 'title'=>'インストール場所について' , 'dir'=>'500倍速マクロ via LuaJIT'],
+    'nobu_tool_hm_luajit_cmdtool' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_luajit_cmdtool.html', 'title'=>'付属のコマンドツール hmLJ.exe' , 'dir'=>'500倍速マクロ via LuaJIT'],
+    'nobu_tool_hm_luajit_ide_hmset' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_luajit_ide_hmset.html', 'title'=>'LuaJIT秀丸セット' , 'dir'=>'500倍速マクロ via LuaJIT'],
+    'nobu_mod_the_lua_reference_chm' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_mod_the_lua_reference_chm.html', 'title'=>'Lua リファレンスマニュアル' , 'dir'=>'500倍速マクロ via LuaJIT'],
+
     'nobu_mod_the_ulua' =>
-        [ 'html'=>'nobu_mod_the_ulua.html', 'title'=>'uLua' , 'dir'=>'uLua'],
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_mod_the_ulua.html', 'title'=>'uLua' , 'dir'=>'uLua'],
     'nobu_mod_the_ulua_src' =>
-        [ 'html'=>'nobu_mod_the_ulua_src.html', 'title'=>'uLua Cソース' , 'dir'=>'uLua'],
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_mod_the_ulua_src.html', 'title'=>'uLua Cソース' , 'dir'=>'uLua'],
     'nobu_mod_the_ulua_for_hidemaru' =>
-        [ 'html'=>'nobu_mod_the_ulua_for_hidemaru.html', 'title'=>'uLua 秀丸セット' , 'dir'=>'uLua'],
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_mod_the_ulua_for_hidemaru.html', 'title'=>'uLua 秀丸セット' , 'dir'=>'uLua'],
     'nobu_mod_the_wordlist_regex_compress' =>
-        [ 'html'=>'nobu_mod_the_wordlist_regex_compress.html', 'title'=>'単語のリストを１つの正規表現にする' , 'dir'=>'単語リストの正規表現圧縮'],
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_mod_the_wordlist_regex_compress.html', 'title'=>'単語のリストを１つの正規表現にする' , 'dir'=>'単語リストの正規表現圧縮'],
     'nobu_mod_the_wordlist_regex_compress_hm' =>
-        [ 'html'=>'nobu_mod_the_wordlist_regex_compress_hm.html', 'title'=>'単語のリストを１つの正規表現にする ～秀丸セット～' , 'dir'=>'単語リストの正規表現圧縮'],
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_mod_the_wordlist_regex_compress_hm.html', 'title'=>'単語のリストを１つの正規表現にする ～秀丸セット～' , 'dir'=>'単語リストの正規表現圧縮'],
+    'nobu_tool_kbd_marker_jump' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_pochi_tto_naa.html', 'title'=>'秀丸エディタ・キーボードマーカージャンプ' , 'dir'=>'ブックマーク・しおり'],
+    'nobu_tool_hm_regexp_com' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_regexp_com.html', 'title'=>'秀丸エディタ・マクロ用・正規表現関数 COM版' , 'dir'=>'その他'],
+    'nobu_tool_hm_debugmonitor' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_debugmonitor.html', 'title'=>'秀丸エディタ・デバッグモニター' , 'dir'=>'デバッグ'],
+    'nobu_tool_hm_timer_msgbox' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_timer_msgbox.html', 'title'=>'時間制限付メッセージボックス' , 'dir'=>'通知・メッセージ'],
+    'nobu_tool_hm_sharedoutputpane' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_sharedoutputpane.html', 'title'=>'外部アプリケーションからのアウトプット枠' , 'dir'=>'外部アプリからアウトプット枠への出力'],
+    'nobu_tool_hm_sharedoutputpane_call' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_sharedoutputpane_call.html', 'title'=>'外部アプリケーションからのアウトプット枠' , 'dir'=>'外部アプリからアウトプット枠への出力'],
+    'nobu_tool_hm_sharedoutputpane_call2' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_sharedoutputpane_call2.html', 'title'=>'外部アプリケーションからのアウトプット枠2' , 'dir'=>'外部アプリからアウトプット枠への出力'],
+    'nobu_tool_hm_sharedoutputpane_update' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_sharedoutputpane_update.html', 'title'=>'外部アプリケーションからのアウトプット 更新履歴' , 'dir'=>'外部アプリからアウトプット枠への出力'],
+    'nobu_tool_hm_autocompleteex' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_autocompleteex.html', 'title'=>'入力補完EX' , 'dir'=>'単語補完拡張キット'],
+    'nobu_tool_hm_autocompleteex_exam_01' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_autocompleteex_exam_01.html', 'title'=>'入力補完EX' , 'dir'=>'単語補完拡張キット'],
+    'nobu_tool_hm_autocompleteex_exam_02' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_autocompleteex_exam_02.html', 'title'=>'入力補完EX' , 'dir'=>'単語補完拡張キット'],
+    'nobu_tool_hm_autocompleteex_exam_03' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_autocompleteex_exam_03.html', 'title'=>'入力補完EX' , 'dir'=>'単語補完拡張キット'],
+    'nobu_tool_hm_autocompleteex_exam_04' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_autocompleteex_exam_04.html', 'title'=>'入力補完EX' , 'dir'=>'単語補完拡張キット'],
+    'nobu_tool_hm_autocompleteex_exam_05' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_autocompleteex_exam_05.html', 'title'=>'入力補完EX' , 'dir'=>'単語補完拡張キット'],
+    'nobu_tool_hm_autocompleteex_exam_07' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_autocompleteex_exam_07.html', 'title'=>'入力補完EX' , 'dir'=>'単語補完拡張キット'],
+    'nobu_tool_hm_autocompleteex_exam_08' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_autocompleteex_exam_08.html', 'title'=>'入力補完EX' , 'dir'=>'単語補完拡張キット'],
+    'nobu_tool_hm_autocompleteex_exam_09' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_autocompleteex_exam_09.html', 'title'=>'入力補完EX' , 'dir'=>'単語補完拡張キット'],
+    'nobu_tool_hm_autocompleteex_exam_10' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_autocompleteex_exam_10.html', 'title'=>'入力補完EX' , 'dir'=>'単語補完拡張キット'],
+
+    'nobu_tool_hm_tantou_kaisetsu_01' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_tantou_kaisetsu_01.html', 'title'=>'秀丸担当者への解説' , 'dir'=>'秀丸用ツール'],
+    'nobu_tool_hm_tantou_kaisetsu_02' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_tantou_kaisetsu_02.html', 'title'=>'秀丸担当者への解説' , 'dir'=>'秀丸用ツール'],
+
+    'nobu_tool_hm_htmlpreview' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_htmlpreview.html', 'title'=>'HmHtmlPreview' , 'dir'=>'秀丸・HmHtmlPreview'],
+    'nobu_tool_hm_htmlpreview_update' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_htmlpreview_update.html', 'title'=>'HmHtmlPreview' , 'dir'=>'秀丸・HmHtmlPreview'],
+    'nobu_tool_hm_htmlpreview_live_or_file' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_htmlpreview_live_or_file.html', 'title'=>'ライブモードとファイルモード' , 'dir'=>'秀丸・HmHtmlPreview'],
+
+    'nobu_tool_hm_htmlpreviewchrome' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_htmlpreviewchrome.html', 'title'=>'HmHtmlPreviewChrome' , 'dir'=>'秀丸・HmHtmlPreviewChrome'],
+    'nobu_tool_hm_htmlpreviewchrome_update' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_htmlpreviewchrome_update.html', 'title'=>'HmHtmlPreviewChrome' , 'dir'=>'秀丸・HmHtmlPreviewChrome'],
+
+
+    'nobu_tool_hm_markdownpreview' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_markdownpreview.html', 'title'=>'HmMarkDownPreview' , 'dir'=>'秀丸・HmMarkDownPreview'],
+    'nobu_tool_hm_markdownpreview_update' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_markdownpreview_update.html', 'title'=>'HmMarkDownPreview' , 'dir'=>'秀丸・HmMarkDownPreview'],
+
+    'nobu_tool_hm_customlivepreview' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_customlivepreview.html', 'title'=>'HmCustomLivePreview' , 'dir'=>'秀丸・HmCustomLivePreview'],
+    'nobu_tool_hm_customlivepreview_update' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_customlivepreview_update.html', 'title'=>'HmCustomLivePreview' , 'dir'=>'秀丸・HmCustomLivePreview'],
+    'nobu_tool_hm_customlivepreview_custom_js1' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_customlivepreview_custom_js1.html', 'title'=>'HmCustomLivePreview' , 'dir'=>'秀丸・HmCustomLivePreview'],
+    'nobu_tool_hm_customlivepreview_custom_js2' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_customlivepreview_custom_js2.html', 'title'=>'HmCustomLivePreview' , 'dir'=>'秀丸・HmCustomLivePreview'],
+    'nobu_tool_hm_customlivepreview_custom_js3' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_customlivepreview_custom_js3.html', 'title'=>'HmCustomLivePreview' , 'dir'=>'秀丸・HmCustomLivePreview'],
+    'nobu_tool_hm_customlivepreview_custom_cs1' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_customlivepreview_custom_cs1.html', 'title'=>'HmCustomLivePreview' , 'dir'=>'秀丸・HmCustomLivePreview'],
+    'nobu_tool_hm_customlivepreview_custom_md' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_customlivepreview_custom_md.html', 'title'=>'HmCustomLivePreview' , 'dir'=>'秀丸・HmCustomLivePreview'],
+
+    'nobu_tool_hm_filter_micro' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_filter_micro.html', 'title'=>'最小のSDK' , 'dir'=>'秀丸・変換モジュール'],
+    'nobu_tool_hm_filter_micro_update' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_filter_micro_update.html', 'title'=>'最小のSDKの更新履歴' , 'dir'=>'秀丸・変換モジュール'],
+    'nobu_tool_hm_filter_regist' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_filter_regist.html', 'title'=>'登録の方法' , 'dir'=>'秀丸・変換モジュール'],
+    'nobu_tool_hm_filter_src_commentary' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_filter_src_commentary.html', 'title'=>'ソースのコメント' , 'dir'=>'秀丸・変換モジュール'],
+    'nobu_tool_hm_punyconverter' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_punyconverter.html', 'title'=>'日本語ドメイン⇔Punycode' , 'dir'=>'文字列変換'],
+
+
+
 
     'nobu_mod_the_digital_sign_index' =>
         [ 'html'=>'nobu_mod_the_digital_sign_index.html', 'title'=>'Windows 10以降で、「管理者権限のある正しいログインでもう一度試してください」' , 'dir'=>'デジタル署名関係'],
@@ -589,6 +945,85 @@ $filetime_hash = [
         './other_soft/wordlistregexcompress/WordListRegexCompress.zip',
     'nobu_mod_the_wordlist_regex_compress_hm' =>
         './other_soft/wordlistregexcompress/HMWordListRegexCompress.zip',
+
+    'nobu_tool_hm_sharedoutputpane' =>
+        './other_soft/hm_sharedoutputpane/HmSharedOutputPane.zip',
+    'nobu_tool_kbd_marker_jump' =>
+        './other_soft/kbd_marker_jump/pochi_tto_naa.zip',
+    'nobu_tool_hm_regexp_com' =>
+        './other_soft/hm_regexp_com/hm_regexp_com.zip',
+    'nobu_tool_hm_debugmonitor' =>
+        './other_soft/hm_debugmonitor/HmDebugMonitor.zip',
+    'nobu_tool_hm_timer_msgbox' =>
+        './other_soft/hm_timer_msgbox/TimerMessageBox.zip',
+    'nobu_tool_hm_ironpython' =>
+        './other_soft/hm_ironpython/hmPy.zip',
+    'nobu_tool_hm_ironpython_win32api' =>
+        './other_soft/hm_ironpython/clrtype.zip',
+    'nobu_tool_hm_ironpython_csvhelper' =>
+        './other_soft/hm_ironpython/CsvHelper.zip',
+    'nobu_tool_hm_ironpython_htmlagility' =>
+        './other_soft/hm_ironpython/hmHtmlAgility.zip',
+    'nobu_tool_hm_ironpython_pastefilelist' =>
+        './other_soft/hm_ironpython/pastefilelist.zip',
+    'nobu_tool_hm_ironpython_handpen' =>
+        './other_soft/hm_ironpython/handpen.zip',
+
+    'nobu_tool_hm_autocompleteex' =>
+        './other_soft/hm_autocompleteex/HmAutoCompleteEx.zip',
+    'nobu_tool_hm_autocompleteex_exam_01' =>
+        './other_soft/hm_autocompleteex/HmAutoCompleteExPlug.zip',
+
+    'nobu_tool_hm_filter_micro' =>
+        './other_soft/hm_filter_micro/HmFilterMicro.zip',
+
+    'nobu_tool_hm_ironruby' =>
+        './other_soft/hm_ironruby/hmRb.zip',
+    'nobu_tool_hm_ironruby_ide' =>
+        './other_soft/hm_ironruby/ir_patch.zip',
+
+    'nobu_tool_hm_javascript' =>
+        './other_soft/hm_javascript/hmJS.zip',
+
+    'nobu_tool_hm_ecmascript' =>
+        './other_soft/hm_ecmascript/hmV8.zip',
+
+    'nobu_tool_hm_loadclr' =>
+        './other_soft/hm_loadclr/hmLoadCLR.zip',
+
+    'nobu_tool_hm_activeperl' =>
+        './other_soft/hm_activeperl/hmPerl.zip',
+
+
+    'nobu_tool_hm_luajit' =>
+        './other_soft/hm_luajit/hmLJ.zip',
+    'nobu_tool_hm_luajit_cmdtool' =>
+        './other_soft/hm_luajit/hmLJ.exe.zip',
+    'nobu_tool_hm_luajit_moduledll' =>
+        './other_soft/hm_luajit/hmLJ.lib.zip',
+    'nobu_tool_hm_luajit_ide_hmset' =>
+        './other_soft/hm_luajit/hmLJHM.zip',
+
+    'nobu_tool_hm_tantou_kaisetsu_01' =>
+        './other_soft/hm_kaisetsu/wpfhide.zip',
+    'nobu_tool_hm_tantou_kaisetsu_02' =>
+        './other_soft/hm_kaisetsu/dlltest.zip',
+
+    'nobu_tool_hm_htmlpreview' =>
+        './other_soft/hm_htmlpreview/HmHtmlPreview.zip',
+    'nobu_tool_hm_htmlpreviewchrome' =>
+        './other_soft/hm_htmlpreviewchrome/HmHtmlPreviewChrome.zip',
+    'nobu_tool_hm_markdownpreview' =>
+        './other_soft/hm_markdownpreview/HmMarkDownPreview.zip',
+    'nobu_tool_hm_customlivepreview' =>
+        './other_soft/hm_customlivepreview/HmCustomLivePreview.zip',
+    'nobu_tool_hm_customlivepreview_custom_md' =>
+        './other_soft/hm_customlivepreviewmd/HmCustomLivePreviewMD.zip',
+
+
+    'nobu_tool_hm_punyconverter' =>
+        './other_soft/hm_punyconverter/HmPunyConverter.zip',
+
 
     'nobu_mod_the_secdrvmagicalpig' =>
         './other_soft/secdrvmagicalpig/SecDrvMagicalPig.zip',

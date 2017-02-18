@@ -9,9 +9,15 @@ $orgParamPage = $_GET['page'];
 
 // デフォルトのページ
 if ( $urlParamPage == "" ) {
-  $urlParamPage = "nobu_face_kaoswap_td_full";
+    $urlParamPage = "nobu_face_kaoswap_td_full";
 }
 
+// リダイレクト
+if ($content_hash[$urlParamPage]['301']) {
+    header( "HTTP/1.1 301 Moved Permanently" );
+    header( "Location: http://xn--pckzexbx21r8q9b.net/?page=" . $urlParamPage );
+    exit;
+}
 
 // コンテンツのページテンプレート読み込み
 $strPageTemplate = file_get_contents($content_hash[$urlParamPage]['html']);
@@ -21,14 +27,15 @@ $strPageTemplate = preg_replace('/^\xEF\xBB\xBF/', '', $strPageTemplate);
 
 // 素材顔系は特別
 if ( $_GET['gung'] && $_GET['tdir'] ) {
-  $strPageTemplate = get_nobu_face_custom();
+    $strPageTemplate = get_nobu_face_custom();
 }
+
 
 // eclipseのオートフォーマッタが変な所で改行するので対応
 $strPageTemplate = preg_replace('/<img\s+src/ms', '<img src', $strPageTemplate);
 
 // widthやheightが無いイメージタグにマッチしたら、widthやheightを入れる。
-$strPageTemplate = preg_replace_callback("/(<img src=[\"'])([^\"']+?)([\"'])(>)/",
+$strPageTemplate = preg_replace_callback("/(<img src=[\"'])([^\"']+?)([\"'])((\s+attr=[\"']noedge[\"'])?(\s+align=[\"'][a-z]+[\"'])?(\s+attr=[\"']noedge[\"'])?>)/",
                                    function ($matches) {
                                        // httpが含まれている。
                                        if (strpos($matches[0],'http') !== false) {
@@ -73,11 +80,11 @@ $strPageTemplate = str_replace("%(hilight)s", $strHilightJS, $strPageTemplate);
 // ファイルのアーカイブがあれば、更新日時へと置き換え
 $fileArchieve = $filetime_hash[$urlParamPage];
 if ($fileArchieve) {
-   $filetime = filemtime($fileArchieve);
-   $fileKeys   = Array( "%(file)s", "%(year)04d", "%(mon)02d", "%(mday)02d" );
-   $fileValues = Array($fileArchieve, date("Y", $filetime), date("m", $filetime), date("d", $filetime) );
+    $filetime = filemtime($fileArchieve);
+    $fileKeys   = Array( "%(file)s", "%(year)04d", "%(mon)02d", "%(mday)02d" );
+    $fileValues = Array($fileArchieve, date("Y", $filetime), date("m", $filetime), date("d", $filetime) );
 
-  $strPageTemplate = str_replace($fileKeys, $fileValues, $strPageTemplate);
+    $strPageTemplate = str_replace($fileKeys, $fileValues, $strPageTemplate);
 }
 
 
@@ -99,7 +106,7 @@ $strIndexTemplate = file_get_contents("index.html");
 // javascriptの一部を書き出す感じ
 $strMenuExpand = "";
 if ($orgParamPage != "" and $content_hash[$urlParamPage]['dir'] != "#") {
-   $strMenuExpand = "$( '#menu' ).multilevelpushmenu( 'expand', '" . $content_hash[$urlParamPage]['dir'] . "' )";
+    $strMenuExpand = "$( '#menu' ).multilevelpushmenu( 'expand', '" . $content_hash[$urlParamPage]['dir'] . "' )";
 }
 
 // メインのスタイルシート

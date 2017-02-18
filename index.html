@@ -11,22 +11,22 @@
 <link rel="shortcut icon" href="./favicon.ico">
 <link rel="apple-touch-icon" href="./apple-touch-icon.png">
 <link rel="stylesheet" type="text/css" href="./style.min.css?v=%(styleupdate)s">
-<link rel="stylesheet" type="text/css" href="./font-awesome/css/font-awesome-4.5.0.min.css">
+<link rel="stylesheet" type="text/css" href="./font-awesome/css/font-awesome-4.7.0.min.css">
 <link rel="stylesheet" type="text/css" href="./font-awesome/css/font-awesome-plugin.css?v=%(fontpluginupdate)s">
 <link rel="stylesheet" type="text/css" href="./jquery/jquery.multilevelpushmenu.min.css?v=%(mlpmcssdate)s">
 %(style_dynamic)s
-<script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.11.3.min.js"></script>
+<script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.12.4.min.js"></script>
 <script type='text/javascript'>
-window.jQuery || document.write('<script src="./jquery/jquery-1.11.3.min.js"><\/script>')
+window.jQuery || document.write('<script src="./jquery/jquery-1.12.4.min.js"><\/script>')
 </script>
 </head>
 
 <body>
 <script type="text/javascript">
 if(jQuery.support.opacity) {
-  %(shcore_head)s
+    %(shcore_head)s
 } else {
-  document.write("<script type='text/javascript' src='./jquery/modernizr-3.1.0.ie8.min.js'><\/script>");
+    document.write("<script type='text/javascript' src='./jquery/modernizr-3.1.0.ie8.min.js'><\/script>");
 }
 </script>
 
@@ -48,7 +48,6 @@ if(jQuery.support.opacity) {
     <ul>
         <li><a href="http://twitter.com/tenshouki_jp"><i class="fa fa-twitter fa-fw"></i>Twitter</a></li>
         <li><a href="https://github.com/tenshoukijp/xn--rssu31gj1g.jp"><i class="fa fa-github fa-fw"></i>GitHub</a></li>
-        <li><a href="http://天翔記.jp/cnt_txt/マイルストーン.xls"><i class="fa fa-file-excel-o fa-fw"></i>マイルストーン</a></li>
     </ul>
     </li>
     <li><a href="#"><i class="fa fa-hdd-o fa-fw"></i>初期設置</a>
@@ -119,7 +118,7 @@ if(jQuery.support.opacity) {
                     class='fa fa-video-camera fa-fw'></i>顔アニメの例)</span></a></li>
             </ul>
             </li>
-            <li><a href="?page=nobu_face_reverse_diversion_list"><i class="fa fa-link"></i><span id="nobu_face_reverse_diversion_list">信長シリーズ 顔グラ素材 流用図鑑</span></a></li>
+            <li><a href="?page=nobu_face_reverse_diversion_list"><i class="fa fa-user fa-fw"></i><span id="nobu_face_reverse_diversion_list">信長シリーズ 顔グラ素材 流用図鑑</span></a></li>
         </ul>
         </li>
         <li><a href="#"><i class="fa fa-image fa-fw"></i>家宝グラ入替</a>
@@ -288,15 +287,17 @@ if(jQuery.support.opacity) {
                 <li><a href="?page=nobu_mod_the_snmod_methodref_lua_functions_02"><i class="fa fa-book fa-fw"></i><span id="nobu_mod_the_snmod_methodref_lua_functions_02">「L」という画用紙の理解</span></a></li>
                 <li><a href="?page=nobu_mod_the_snmod_methodref_lua_functions_03"><i class="fa fa-book fa-fw"></i><span id="nobu_mod_the_snmod_methodref_lua_functions_03">複雑なデータの取り扱い</span></a></li>
                 <li><a href="?page=nobu_mod_the_snmod_methodref_lua_functions_04"><i class="fa fa-book fa-fw"></i><span id="nobu_mod_the_snmod_methodref_lua_functions_04">Lua側から実行できる関数の作成</span></a></li>
-                <li><a href="?page=nobu_mod_the_snmod_methodref_lua_functions_05"><i class="fa fa-book fa-fw"></i><span id="nobu_mod_the_snmod_methodref_lua_functions_05">Lua側から実行できる関数の作成<br>&nbsp;&nbsp;<font size="3">～その他の作成例～</font></span></a></li>
+                <li><a href="?page=nobu_mod_the_snmod_methodref_lua_functions_05"><i class="fa fa-book fa-fw"></i><span id="nobu_mod_the_snmod_methodref_lua_functions_05">Lua側から実行できる関数の作成<br>
+                &nbsp;&nbsp;<font size="3">～その他の作成例～</font></span></a></li>
                 <li><a href="?page=nobu_mod_the_snmod_methodref_lua_functions_06"><i class="fa fa-book fa-fw"></i><span id="nobu_mod_the_snmod_methodref_lua_functions_06">複雑なデータの取り扱い(改)</span></a></li>
                 <li><a href="?page=nobu_mod_the_snmod_methodref_lua_init"><i class="fa fa-book fa-fw"></i><span id="nobu_mod_the_snmod_methodref_lua_init">ScenarioMod用Luaの特殊機能</span></a></li>
-                <li><a href="#"><i class="fa fa-cube fa-fw"></i>jLua</a>
-                <h2><i class="fa fa-cube fa-fw"></i>jLua</h2>
+                <li><a href="?page=nobu_mod_the_lua_reference_chm"><i class="fa fa-question fa-fw"></i><span id="nobu_mod_the_lua_reference_chm">Lua 5.1～5.3 リファレンス<br>
+                日本語版</span></a></li>
+                <li><a href="#"><i class="fa fa-cube fa-fw"></i>Luaの確認ツール</a>
+                <h2><i class="fa fa-cube fa-fw"></i>Luaの確認ツール</h2>
                 <ul>
                     <li><a href="?page=nobu_mod_the_snmod_methodref_lua_jlua"><i class="fa fa-cube fa-fw"></i><span id="nobu_mod_the_snmod_methodref_lua_jlua">jLua.exe</span></a></li>
                     <li><a href="?page=nobu_mod_the_jlua_for_hidemaru"><i class="fa fa-dedent fa-fw"></i><span id="nobu_mod_the_jlua_for_hidemaru">jLua 秀丸セット</span></a></li>
-                    <li><a href="?page=nobu_mod_the_lua_reference_chm"><i class="fa fa-question fa-fw"></i><span id="nobu_mod_the_lua_reference_chm">Lua 5.1～5.3 リファレンス<br>日本語版</span></a></li>
                 </ul>
                 </li>
             </ul>
@@ -317,11 +318,13 @@ if(jQuery.support.opacity) {
                 <li><a href="?page=nobu_mod_the_snmod_methodref_mruby_functions_01"><i class="fa fa-book fa-fw"></i><span id="nobu_mod_the_snmod_methodref_mruby_functions_01">mrubyのグローバル変数読み込み</span></a></li>
                 <li><a href="?page=nobu_mod_the_snmod_methodref_mruby_functions_06"><i class="fa fa-book fa-fw"></i><span id="nobu_mod_the_snmod_methodref_mruby_functions_06">複雑なデータの取り扱い(改)</span></a></li>
                 <li><a href="?page=nobu_mod_the_snmod_methodref_mruby_make"><i class="fa fa-book fa-fw"></i><span id="nobu_mod_the_snmod_methodref_mruby_make">mrubyをcp932化手順<font
-                    size="2">(おまけコーナー)</font></span></a></li>            </ul>
+                    size="2">(おまけコーナー)</font></span></a></li>
+            </ul>
             <li><a href="#"><i class="fa fa-book fa-fw"></i>その他の外部テキストデータ</a>
             <h2><i class="fa fa-book fa-fw"></i>その他の外部テキストデータ</h2>
             <ul>
-                <li><a href="?page=nobu_mod_the_snmod_methodref_js_functions_01"><i class="fa fa-book fa-fw"></i><span id="nobu_mod_the_snmod_methodref_js_functions_01">JavaScript v8 エンジンを使う</span></a></li>
+                <li><a href="?page=nobu_mod_the_snmod_methodref_js_functions_01"><i class="fa fa-book fa-fw"></i><span id="nobu_mod_the_snmod_methodref_js_functions_01">JavaScript v8
+                エンジンを使う</span></a></li>
 
             </ul>
             </li>
@@ -441,28 +444,13 @@ if(jQuery.support.opacity) {
         </ul>
         </li>
         <li><a href="?page=nobu_image_serias_package_icon"><i class="fa fa-image fa-fw"></i><span id="nobu_image_serias_package_icon">歴代シリーズアイコン</span></a></li>
-        <li><a href="?page=nobu_face_reverse_diversion_list"><i class="fa fa-link"></i><span id="nobu_face_reverse_diversion_list">信長シリーズ 顔グラ素材 流用図鑑</span></a></li>
+        <li><a href="?page=nobu_face_reverse_diversion_list"><i class="fa fa-user fa-fw"></i><span id="nobu_face_reverse_diversion_list">信長シリーズ 顔グラ素材 流用図鑑</span></a></li>
     </ul>
     </li>
     <li><a href="#"><i class="fa fa-windows fa-fw"></i>他のソフト</a>
     <h2><i class="fa fa-windows fa-fw"></i>他のソフト</h2>
     <ul>
-        <li><a href="#"><i class="fa fa-cube fa-fw"></i>uLua</a>
-        <h2><i class="fa fa-cube fa-fw"></i>uLua</h2>
-        <ul>
-            <li><a href="?page=nobu_mod_the_ulua"><i class="fa fa-cube fa-fw"></i><span id="nobu_mod_the_ulua">uLua.exe</span></a></li>
-            <li><a href="?page=nobu_mod_the_ulua_src"><i class="fa fa-file-text-o fa-fw"></i><span id="nobu_mod_the_ulua_src">uLua Cソース</span></a></li>
-            <li><a href="?page=nobu_mod_the_ulua_for_hidemaru"><i class="fa fa-dedent fa-fw"></i><span id="nobu_mod_the_ulua_for_hidemaru">uLua 秀丸セット</span></a></li>
-            <li><a href="?page=nobu_mod_the_lua_reference_chm"><i class="fa fa-question fa-fw"></i><span id="nobu_mod_the_lua_reference_chm">Lua 5.1～5.3 リファレンス<br>日本語版</span></a></li>
-        </ul>
-        </li>
-        <li><a href="#"><i class="fa fa-cube fa-fw"></i>単語リストの正規表現圧縮</a>
-        <h2><i class="fa fa-list fa-fw"></i>単語リストの正規表現圧縮</h2>
-        <ul>
-            <li><a href="?page=nobu_mod_the_wordlist_regex_compress"><i class="fa fa-list fa-fw"></i><span id="nobu_mod_the_wordlist_regex_compress">単語リストの正規表現圧縮</span></a></li>
-            <li><a href="?page=nobu_mod_the_wordlist_regex_compress_hm"><i class="fa fa-list fa-fw"></i><span id="nobu_mod_the_wordlist_regex_compress_hm">単語リストの正規表現圧縮 秀丸セット</span></a></li>
-        </ul>
-        </li>
+        <li><a href="http://秀丸マクロ.net"><i class="fa fa-hidemaru fa-fw"></i>秀丸用ツール</a></li>
         <li><a href="#"><i class="fa fa-key fa-fw"></i>デジタル署名関係</a>
         <h2><i class="fa fa-key fa-fw"></i>デジタル署名関係</h2>
         <ul>
@@ -481,8 +469,6 @@ if(jQuery.support.opacity) {
         </li>
     </ul>
     </li>
-
-
 </ul>
 </nav></div>
 
@@ -495,12 +481,12 @@ function doMenuExpand() {
 <script type="text/javascript" src="./jquery/jquery.multilevelpushmenu.custom.min.js?v=%(mlpmcustomdate)s"></script>
 <script type="text/javascript">
 if(jQuery.support.opacity) {
-%(shcore_foot1)s
+    %(shcore_foot1)s
 }
 </script>
 <script type="text/javascript">
 if(jQuery.support.opacity) {
-%(shcore_foot2)s
+    %(shcore_foot2)s
 }
 </script>
 </body>
