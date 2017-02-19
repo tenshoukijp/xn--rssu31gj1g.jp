@@ -515,7 +515,7 @@ function GetConvertedPunyCode(sel) {
         return ret
 
     } catch (e) {
-        // とりあえずエラーは秀丸デバッグモニター(DBMON)へ
+        // とりあえずエラーは秀丸デバッグモニター(やDBMON)へ
         console.log(e);
 
 	    return ret;
