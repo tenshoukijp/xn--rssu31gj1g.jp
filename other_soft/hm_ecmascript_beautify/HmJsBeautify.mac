@@ -1,4 +1,10 @@
-// HmJsBeautify v1.001
+// HmJsBeautify v1.01
+// 
+// 秀丸エディタ v8.66以上. 
+// 「hmV8 v1.475以上」もしくは「hmJS v1.162以上」のどちらかを導入していること。
+// 
+// Copyright (C) 2017 天翔記.jp
+//------------------------------------------------------------------------------
 
 if (readonly) {
     message "ファイルが書き込み禁止になっています";
@@ -12,6 +18,8 @@ if (!#JS) {
     message "hmV8.dll関連のファイルがロード出来ません";
     endmacro;
 }
+
+disablebreak;
 
 #_ = dllfuncw( #JS, "DoString", R"JS(
 
@@ -42,7 +50,7 @@ if (filetype == ".html" || filetype == ".htm" || filetype == ".hta" || filetype 
     #_ = dllfuncw( #JS, "DoFile", currentmacrodirectory + @"\HmJsBeautifyHTML.js");
 
     #_ = dllfuncw( #JS, "DoString", R"JS(
-        var f = function(src) { return html_beautify(src , { 'end_with_newline' : true} ); }
+        var f = function(src) { return html_beautify(src , { 'end_with_newline' : true } ); }
         hm_beautify( f );
     )JS"
     );
@@ -55,7 +63,7 @@ else if (filetype == ".css" ) {
     #_ = dllfuncw( #JS, "DoFile", currentmacrodirectory + @"\HmJsBeautifyCSS.js");
 
     #_ = dllfuncw( #JS, "DoString", R"JS(
-        var f = function(src) { return css_beautify(src, { 'end_with_newline' : true} ); }
+        var f = function(src) { return css_beautify(src, { 'end_with_newline' : true } ); }
         hm_beautify( f );
     )JS"
     );
@@ -67,7 +75,7 @@ else if (filetype == ".js" || filetype == ".ts" ) {
     #_ = dllfuncw( #JS, "DoFile", currentmacrodirectory + @"\HmJsBeautifyJS.js");
 
     #_ = dllfuncw( #JS, "DoString", R"JS(
-        var f = function(src) { return js_beautify(src, { 'end_with_newline' : true} ); }
+        var f = function(src) { return js_beautify(src, { 'end_with_newline' : true } ); }
         hm_beautify( f );
     )JS"
     );
@@ -82,3 +90,5 @@ else {
 }
 
 freedll( #JS );
+
+enablebreak;
