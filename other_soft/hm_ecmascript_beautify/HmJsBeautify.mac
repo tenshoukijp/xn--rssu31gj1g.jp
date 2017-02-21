@@ -24,16 +24,16 @@ disablebreak;
 #_ = dllfuncw( #JS, "DoString", R"JS(
 
     // 選択していたら、選択範囲を整形。それ以外なら、全体を整形
-    // beatufy_algorithm には、整形関数を渡す。
-    function hm_beautify( beatufy_algorithm ) {
+    // algorithm には、整形関数を渡す。
+    function hm_beautify( algorithm ) {
         var dst = "";
         if ( hm.Macro.Var("selecting") ) {
             var src = hm.Edit.SelectedText;
-            dst = beatufy_algorithm(src);
+            dst = algorithm(src);
             hm.Edit.SelectedText = dst;
         } else {
             var src = hm.Edit.TotalText;
-            dst = beatufy_algorithm(src);
+            dst = algorithm(src);
             hm.Edit.TotalText = dst;
         }
     }
