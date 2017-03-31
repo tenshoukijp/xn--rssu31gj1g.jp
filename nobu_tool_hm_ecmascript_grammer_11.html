@@ -1,0 +1,180 @@
+%(hilight)s
+<h2><i class="fa fa-book fa-fw"></i>～文法メモ～ Map と Set</h2>
+
+<h2><i class="fa fa-book fa-fw"></i>Map</h2>
+
+<ul class="checklist">
+    <li>
+    <h3>「連想配列」「map」あるいは、「Dictionary」と言われるもの</h3>
+    <p>コンパイル系言語、スクリプト系言語を問わず、ほとんどの言語で存在する。</p>
+    <p>従来のJavaScriptえは、Objectで対応してきたが、Mapを利用することで</p>
+    <ul>
+        <li>Object のキーは「文字列」と「Symbol」ですが、Map では「任意の型」をキーにすることが出来る
+        <li>Mapはsize(要素数)を簡単に取得することが出来る。一方、Objectでは、forなどを利用して手動で取得する必要があった。
+        <li>Mapだとゴミが無い。Objectはプロトタイプを持つため、既定のキーが最初から存在した。<br>
+        (但し、これは、Objectでも、 「map = Object.Create(null)」として回避することは可能)
+    </ul>
+    <p>勘違いしてはならないのは、「いつでもMapを使った方がよい」というわけではないということ</p>
+    <ul>
+        <li>文字列でないキーが必要か？
+        <li>キーと値のペアを時々、追加したり削除したりするか？
+        <li>キーが実行時までわからなかったり、キーを直接調べる必要があるか？
+        <li>対象のMapコレクションをイテレートするか？
+        <li>全てが同じ型か？
+    </ul>
+    <p>こういった場合は、既存のObjectではなく、Mapを使ったほうがよいかもしれないサインとなります。</p>
+    <h3>ObjectでもMapでもさして変わらないが、最も簡単な例</h3>
+    <div class="code"><pre class="brush:js">
+let m = new Map();
+m.set("foo", "ふ～");
+m.set("baa", "ば～");
+m.set("ham", "はむ");
+m.set("egg", "えっぐ");
+hm.debuginfo(m.get("egg")); // えっぐ
+</pre></div>
+    <h3>文字列以外をキーに出来る</h3>
+    <p>参照系(function型やobject型)では、あくまでも一種の「メモリアドレス的な、レジストリーindex的」なものを キーとします。よって表記が同じかどうかではなく、対象のレジストリーindexが同じかどうかが重要です。</p>
+    <p>このあたりも他のプログラミング言語の連想配列と同様です。</p>
+    <div class="code"><pre class="brush:js">
+var myMap = new Map();
+
+var keyString = "文字列";
+var keyObj = {},
+var keyFunc = function () {};
+
+// 値を設定する
+myMap.set(keyString, "'文字列' と関連付けられた値");
+myMap.set(keyObj, "keyObj と関連付けられた値");
+myMap.set(keyFunc, "keyFunc と関連付けられた値");
+
+hm.debuginfo( myMap.size ); // 3
+
+// 値を取得する
+hm.debuginfo( myMap.get(keyString) );    // "'文字列' と関連付けられた値"
+hm.debuginfo( myMap.get(keyObj) );       // "keyObj と関連付けられた値"
+hm.debuginfo( myMap.get(keyFunc) );      // "keyFunc と関連付けられた値"
+
+hm.debuginfo( myMap.get("文字列") );     // "'文字列' と関連付けられた値"
+                         // keyString === '文字列' であるため
+hm.debuginfo( myMap.get({}) );            // undefined, keyObj !== {} であるため
+hm.debuginfo( myMap.get(function() {}) ); // undefined, keyFunc !== function () {}
+
+</pre></div>
+    <h3>for...ofを利用した反復</h3>
+    <p>.keys(), .values(), .entries()などが用意されています。<br>
+    デフォルトでは.entries()と同様の動作となります。</p>
+    <div class="code"><pre class="brush:js">
+let myMap = new Map();
+myMap.set(0, "zero");
+myMap.set(1, "one");
+for (let [key, value] of myMap) {
+  hm.debuginfo(key + " = " + value);
+}
+// 0 = zero
+// 1 = one
+
+for (let key of myMap.keys()) {
+  hm.debuginfo(key);
+}
+// 0
+// 1
+
+for (let value of myMap.values()) {
+  hm.debuginfo(value);
+}
+// zero
+// one
+
+for (let [key, value] of myMap.entries()) {
+  hm.debuginfo(key + " = " + value);
+}
+// 0 = zero
+// 1 = one
+
+// Mapを順々に処理
+myMap.forEach( (value, key) => hm.debuginfo(`${key}=${value}`) );
+
+myMap.set("test", 55);
+// 特定のキーを削除
+myMap.delete("test");
+
+// 全てのキーと値のペアを削除
+myMap.clear();
+
+</pre></div>
+
+    <h3>forEach</h3>
+    <p>.keys(), .values(), .entries()などが用意されています。<br>
+    デフォルトでは.entries()と同様の動作となります。ｓ</p>
+</ul>
+
+
+
+<h2><i class="fa fa-book fa-fw"></i>Set</h2>
+
+<ul class="checklist">
+    <li>
+    <h3>一意な値の「集合」の概念です</h3>
+    <p>コンパイル系言語、スクリプト系言語を問わず、似たようなことが出来る言語も数多くあります。<br>
+    Mapと類似したものであり、実際しばしばMapの代替としてSetが利用されます。</p>
+    <h3>Setの最も簡単な例</h3>
+    <div class="code"><pre class="brush:js">
+var mySet = new Set();
+
+mySet.add(1);
+mySet.add(5);
+mySet.add("some text");
+var o = {a: 1, b: 2};
+mySet.add(o);
+
+mySet.has(1); // true
+mySet.has(3); // 3 は集合にないため、false
+mySet.has(5);              // true
+mySet.has(Math.sqrt(25));  // true
+mySet.has("Some Text".toLowerCase()); // true
+mySet.has(o); // true
+
+mySet.size; // 4
+
+mySet.delete(5); // 集合から 5 を削除
+mySet.has(5);    // 5 が削除されているため false
+
+mySet.size; // 要素を 1 つ削除しているため 3
+</pre></div>
+    <h3>for...ofを利用した反復</h3>
+    <p>.keys(), .values(), など、mapと同じ関数が用意されています。<br>
+    異なる点は、.keys()も.values()も何もメソッドを利用しない状態でも、<br>
+    <b>全て結果は同じである</b>ということです。</p>
+    <div class="code"><pre class="brush:js">
+var mySet = new Set();
+
+mySet.add(1);
+mySet.add(5);
+mySet.add("some text");
+mySet.add(() => 3);
+
+
+// 以下の４つは全部同じとなる。
+
+for (let item of mySet) {
+    hm.debuginfo(item);
+}
+
+for (let item of mySet.keys()) {
+    hm.debuginfo(item);
+}
+
+for (let item of mySet.values()) {
+    hm.debuginfo(item);
+}
+
+// 全部クリア
+mySet.clear();
+</pre></div>
+    <h3>Setの初期化</h3>
+    <div class="code"><pre class="brush:js">
+let mySet = new Set( [1, 5, "some text", () => 3, 100 ] );
+</pre></div>
+    <p>というように最初に一気に初期化することが出来ます。<br>
+    </p>
+</ul>

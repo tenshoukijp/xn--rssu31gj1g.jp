@@ -1,0 +1,66 @@
+%(hilight)s
+<h2><i class="fa fa-book fa-fw"></i>～文法メモ～ クラスの基本</h2>
+
+<ul class="checklist">
+    <li>
+    <h3>クラスの骨格</h3>
+  <p>ECMAScript6ではよく見られる「class」を使って、クラスを定義出来るようになりました。<br>
+コンストラクターは、そのまま「constructor」というメソッド名です。
+  public/protected/privateといったアクセス修飾子はありません。<br></p>
+    <div class="code"><pre class="brush:js">
+class MyWindow {
+    constructor(x, y, w, h) {
+        this.title = "僕のウィンドウ",
+        this.x = x
+        this.y = y
+        this.w = w
+        this.h = h
+    }
+    show() {
+        return `タイトル:${this.title}, x:${this.x}, y:${this.y}, w:${this.w}, h:${this.h}`;
+    }
+}
+let win = new MyWindow(10, 20, 500, 300);
+hm.debuginfo(win.show());
+</pre></div>
+    <li>
+  <h3>匿名クラス</h3>
+  <p>関数同様に、クラスも匿名クラスが利用可能です。<br>
+          これにより「変数に代入」したり、「クラス定義そのものを返す関数」の定義なども可能です。<br></p>
+    <div class="code"><pre class="brush:js">
+let MyWindow = class {
+    constructor(x, y, w, h) {
+        this.title = "僕のウィンドウ",
+        this.x = x
+        this.y = y
+        this.w = w
+        this.h = h
+    }
+    show() {
+        return `タイトル:${this.title}, x:${this.x}, y:${this.y}, w:${this.w}, h:${this.h}`;
+    }
+}
+let win = new MyWindow(10, 20, 500, 300);
+hm.debuginfo(win.show());
+</pre></div>
+    <div class="code"><pre class="brush:js">
+function GetMyWindowClassType() {
+    let T = class {
+        constructor(x, y, w, h) {
+            this.title = "僕のウィンドウ",
+            this.x = x
+            this.y = y
+            this.w = w
+            this.h = h
+        }
+        show() {
+            return `タイトル:${this.title}, x:${this.x}, y:${this.y}, w:${this.w}, h:${this.h}`;
+        }
+    }
+    return T;
+}
+
+let MyClass = GetMyWindowClassType();
+hm.debuginfo(new MyClass(10,20,500,300).show());
+</pre></div>
+</ul>

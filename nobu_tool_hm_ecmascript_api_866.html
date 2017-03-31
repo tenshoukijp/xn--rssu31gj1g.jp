@@ -1,0 +1,63 @@
+%(hilight)s
+<h2><i class="fa fa-book fa-fw"></i>hmV8が持つ特別な関数一覧</h2>
+
+<p>ここでは、hmJSとの差分だけ記載します。</p>
+<ul class="checklist">
+    <li>
+    <h3>ヒアドキュメント用の関数「R」</h3>
+    <p>hmJSに特別に追加されている「R」という関数はヒアドキュメントのリテラル文字列そのまま、に相当近い機能です。<br>
+    一方、ECMAScript6には、「テンプレートリテラル」がありますが、２つは少し役割が異なりますので、<br>
+    気を付けて使い分けて下さい。<br>
+    <li>
+    <h3>hm.Macro.Eval(..)</h3>
+    <p>こちらも、同様です。<br>
+    「ソースコードとして書いてある通りに実行する」という意味では、<br>
+    やはりhmJSの方のサンプルと同じ書き方の方が良いと思われます。</p>
+    <li>
+    <h3>秀丸マクロの変数の読み書き ～hmJSとは別の記述方法～</h3>
+    <p>hmJSの書き方だけではなく、hmV8では、「hmPy/hmRb/hmLoadCLR」と同じように["..."]による、「より自然な記述法」も提供しています。</p>
+    <ul class="arrowlist">
+        <li>
+        <h5>hm.Macro.Var['変数名']</h5>
+        <p>対象の「秀丸マクロ」としてのシンボル名に対応する値を取得する。</p>
+        <li>
+        <h5>hm.Macro.Var['変数名'] = 新たな値</h5>
+        <p>対象の「秀丸マクロ」としてのシンボル名に、新たな値を設定する。<br>
+        (読み取り専用の値には設定出来ません）</p>
+    </ul>
+    <div class="code"><pre class="brush:python">
+#JS = loaddll( hidemarudir + @&quot;\hmV8.dll&quot; );
+
+#_ = dllfuncw( #JS, &quot;DoString&quot;, R&quot;JS(
+
+    // 秀丸マクロの「#aaa」という変数に3を設定。
+    hm.Macro.Var['#aaa'] = 3;
+
+    // 秀丸マクロの「$bbb」という変数に「あいうえお」を設定。
+    hm.Macro.Var['$bbb'] =&quot;あいうえお。&quot;;
+
+    // 秀丸マクロとして一連の文字列を実行
+    hm.Macro.Eval( qq =&gt; { /*
+        message($bbb);
+        $$message = $bbb + $bbb;
+        message($$message);
+
+        // アウトプット枠へ出力
+        #OP = loaddll(&quot;HmOutputPane.dll&quot;);
+        #ret = dllfunc(#OP, &quot;Output&quot;,hidemaruhandle(0), $$message);
+        freedll(#OP);
+    */ }
+    );
+
+    hm.debuginfo( hm.Macro.Var['$bbb'] );
+    hm.debuginfo( hm.Macro.Var['filename'] );
+
+    var hmdate = hm.Macro.Var['date'];
+    hm.debuginfo( hmdate );
+
+)JS&quot;
+);
+
+freedll( #JS );
+</pre></div>
+</ul>

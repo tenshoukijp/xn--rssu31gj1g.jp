@@ -1,0 +1,263 @@
+%(hilight)s
+<h2><i class="fa fa-python fa-fw"></i>hmPy (秀丸マクロ用 .NET Framework ライブラリ via IronPython)</h2>
+
+<ul class="checklist">
+    <li>
+    <h3>概要</h3>
+    <p>秀丸マクロで「<span class="positive">.NET Frameworkの多くの機能をシームレスに近い形で利用する</span>」ためのライブラリとなります。</p>
+    <p><img src="./other_soft/hm_ironpython/cnt_hm_ironpython_02.png" attr="noedge" align="middle"><img src="./other_soft/hm_ironpython/cnt_hm_ironpython_00.png" attr="noedge" align="middle"></p>
+    <li>
+    <h3>ダウンロード</h3>
+    <dl>
+        <dt>
+        <div class="download_file"><img src="./other_soft/hm_ironpython/cnt_hm_ironpython_minizip.png" attr="noedge" align="middle"> ⇒ <a href="%(file)s">hmPy.zip</a>ファイル。ver 1.511</div>
+        </dt>
+        <dd>
+        <div class="update_time">└更新日 %(year)04d/%(mon)02d/%(mday)02d</div>
+        </dd>
+    </dl>
+    <li>
+    <h3>動作環境</h3>
+    <ul class="pointlist">
+        <li>
+        <h4>秀丸</h4>
+        <p>秀丸エディタ ver8.66以上</p>
+        <li>
+        <h4>Microsoft VC++ 再頒布可能パッケージ</h4>
+        <p><a href="https://www.microsoft.com/ja-jp/download/details.aspx?id=40784">Visual Studio 2013 C++ ランタイム</a><br>
+        x86版をインストールしたことが無い方はインストールしてください。<br>
+        <span class="negative">お手持ちのOSが64bitか32bitかには関わりなく、x86版のインストールが必要です。</span></p>
+        <li>
+        <h4>Microsoft .NET</h4>
+        <p>.NET Framework 4.0以上。<br>
+        </p>
+        <li>
+        <h4>IronPython 2.7.5</h4>
+        <p><a href="http://IronPython.net/">http://IronPython.net/</a>より、<br>
+            <b>IronPython 2.7.5を「.msiのインストーラーを利用して」インストール</b>してください。<br>
+        (※インストーラーを経由してインストールすることでアセンブリのGAC登録などがされます)
+            <p>正確に、このバージョン「2.7.5」である必要性があります。<br>
+        <li>
+        <h4>秀丸エディタ 64bit版について</h4>
+        <p>秀丸エディタ64bit版をご利用の方は、<a href="/other_soft/hm_ironpython/hmPy_x64.zip">hmPy_x64.zip</a>をダウンロードし、hmPy.dllを差し替えてください。<br>
+        (又、この場合は、Microsoft VC++ 再頒布可能パッケージは、64bit版をインストールしてください。)</p>
+        <!--li>
+        <h4>専用のREPL(インタラクティブシェル)</h4>
+        <p><a href="/other_soft/hm_ironpython/ipy.zip">ipy.zip</a>は上記hmPy.zipに含まれるIronPython.dll用に調整されたインタラクティブシェルとなります。<br>
+        秀丸エディタ本体と同じフォルダに配置して使用すれば、軽いトライ＆エラーや機能確認がやりやすくなります。<br>
+        ipy.exeのライセンスは、IronPython.dllと同じです。<br>
+        <img src="./other_soft/hm_ironpython/cnt_hm_ironpython_ipy_01.png"></p>
+        </li-->
+    </ul>
+
+    <li>
+    <h3>インストール</h3>
+    <ul>
+        <li>hmPy.zipを解凍する。
+        <li><span class="negative">「hmPy.dll」を秀丸エディタのディレクトリ内(hidemaru.exeと同じ場所)へと コピー</span>する。<br>
+        (<span class="negative">原則的には、hidemaru.exeと同じ場所である必要があります。これは.NET FrameWorkのdllを動作させる仕組みに拠るためです。)</span>
+    </ul>
+    <li>
+    <h3>特徴</h3>
+    <ul class="pointlist">
+        <li>
+        <h4>.NET Frameworkの多くの機能が利用可能。</h4>
+        <fieldset class="alert"><legend>秀丸マクロから「.NET FrameWork」の「System.Windows.Formsコンポーネント系」を実行した例</legend><br>
+        <img src="./other_soft/hm_ironpython/cnt_hm_ironpython_01.png" attr="noedge"></fieldset>
+        <li>
+        <h4>汎用言語「IronPython」</h4>
+        <p>プログラミング言語としては「Python」派生の１つとなる「IronPython」となります。<br>
+        「IronPython」はMicrosoftによって「Visual Studio 2010・2012・2013・2015」にて正式にサポートされて続けている数少ない言語の１つです。</p>
+    </ul>
+    <li>
+    <h3>利用シーン</h3>
+    <ul class="pointlist">
+        <li>
+        <h4>マクロ内で豊富な.NETのAPIの機能を利用したい!!</h4>
+        <p>WindowsのAPIを綺麗に使いやすくした .NETを 秀丸マクロで取り扱うことが出来ます。<br>
+        <ul>
+            <li>文字列処理
+            <li>ウィンドウズの各機能へのアクセス
+            <li>各種GUIコンポーネントやイベントハンドラ
+            <li>インターネット上のデータの取得
+            <li>各種ファイル処理
+            <li>並列スレッド
+            <li>簡易な数学計算
+        </ul>
+        <p>に至るまで、.NET Frameworkへと自由に美しくアクセス可能です。<br>
+        </p>
+        <li>
+        <h4>秀丸エディタ 8.66 以降では、IronPythonをそのままマクロ内に記述出来る!!</h4>
+        <p>秀丸エディタ 8.66にて、「ヒアドキュメント」が実装されたため、<br>
+        IronPythonをそのままマクロ内に記述出来るようになりました。(エスケープ等の必要性がなくなりました!)<br>
+        詳細は後述されています。</p>
+        <li>
+        <h4>秀丸マクロの言語としてのパワーが弱い!! 汎用言語の記述力が欲しい!!</h4>
+        <p>IronPythonは、プログラミング上の「文法記述」としては、Python2.7とほぼ完全互換です。<br>
+        Pythonは世界中で、そして、あらゆる分野で利用される世界トップクラスの人気の言語です。<br>
+        <li>
+        <h4>インプロセスで動作する!!</h4>
+        <p><span class="negative">これまで秀丸マクロライブラリなどに、よくあがっていたマクロ</span>は<br>
+        「別途インタプリタが別プロセスとして実行され、その実行結果を返します」<br>
+        といったものが大半でした。<br>
+        (例えば、別途Perlインタプリタが入っていれば、それを呼び出し、解釈し、結果をアウトプット枠に表示します、など)</p>
+        <p><span class="positive">しかし、このhmPyは違います!!</span><br>
+        秀丸マクロと同じプロセス空間で動作していますので、ガッチリ秀丸と完全連携しています。<br>
+        </p>
+    </ul>
+    <li>
+    <h3>IronPythonである理由。</h3>
+    <ol>
+        <li>「ShiftJIS(CP932)との文字列やファイルのIOの文字コード」の変換を、可能な限り自然に隠ぺい的に行ってくれる<br>
+        <li>.NET FrameWorkの大半の機能が自然な表記で使える<br>
+        <li>世界で10本の指には入るユーザー数が存在するプログラミング言語、もしくはその派生言語。<br>
+        <li>少なくとも１日あたり100万人以上の使用ユーザーが居るメジャーな開発環境で<br>
+        2016年現在、正式ツールとして組み入れられている。<br>
+    </ol>
+    このすべて満たす「スクリプト言語」は、あらゆる言語の中で「IronPython」だけです。<br>
+    <li>
+
+    <h3>秀丸マクロとIronPythonの連携</h3>
+    <ul class="pointlist">
+        <li>HTMLにJavaScriptを埋め込むような感覚で、秀丸マクロにIronPythonを文字列として埋め込むことが出来ます。<br>
+        複数個所に埋め込んでも、記述の内容は持続性を持っています。<br>
+        又、HTMLに対するJavaScript同様に、中に埋め込むのではなく、ファイルの外に記述してもかまいません。<br>
+    </ul>
+
+    <li>
+    <h3>一番簡単なソース例</h3>
+    <p>「a」に「3」、「b」に「10」を定義し、足しこんで表示。</p>
+    <ul>
+        <div class="code"><pre class="brush:python">
+#PY = loaddll( hidemarudir + @&quot;\hmPy.dll&quot; );
+
+// 以下の文字列を「IronPythonの環境スコープへと追加書き込みし、追加分だけ実行する」
+#_ = dllfuncw(#PY, &quot;DoString&quot;, R&quot;IRONPYTHON(
+a = 3
+b = 10
+
+hm.Macro.Var[&quot;#a&quot;] = a  # python空間 ⇒ 秀丸マクロ空間へ代入
+hm.Macro.Var[&quot;#b&quot;] = b  # python空間 ⇒ 秀丸マクロ空間へ代入
+
+# 秀丸マクロとして文字列を評価して実行
+hm.Macro.Eval( r&quot;&quot;&quot;
+    message(str(#a));
+    message(str(#b));
+&quot;&quot;&quot;
+);
+
+c = a + b
+hm.debuginfo(c)  # DebugMonitorに表示。
+
+hm.Macro.Var[&quot;#c&quot;] = c  # python空間 ⇒ 秀丸マクロ空間へ代入
+
+)IRONPYTHON&quot;
+);
+
+// 秀丸マクロ空間に代入されている変数は、当然pythonの外から見える
+message(str(#c));
+
+freedll(#PY);
+</pre></div>
+        <img src="./other_soft/hm_ironpython/cnt_hm_ironpython_06.png">
+    </ul>
+    <h3>.NET FrameWork を使った簡単なソース例</h3>
+    <p>.NET FrameWorkを使って、ダイアログ表示</p>
+    <ul>
+        <div class="code"><pre class="brush:python">
+#PY = loaddll( hidemarudir + @&quot;\hmPy.dll&quot; );
+ 
+#_ = dllfuncw(#PY, &quot;DoString&quot;, R&quot;IRONPYTHON(
+
+import clr                 # .NETが使えるようにする。
+import System              #  Systemのシンボルを読み込み
+clr.AddReferenceByPartialName('System.Windows.Forms')  # System.Windows.Forms を使えるようにする。
+
+System.Windows.Forms.MessageBox.Show( &quot;秀丸からのメッセージ&quot;, &quot;秀丸からのタイトル&quot;, System.Windows.Forms.MessageBoxButtons.YesNoCancel )
+
+)IRONPYTHON&quot;
+);
+
+freedll(#PY);
+</pre></div>
+        <img src="./other_soft/hm_ironpython/cnt_hm_ironpython_04.png">
+    </ul>
+    <h3>フォームを利用した簡単な例</h3>
+    <ul>
+        <div class="code"><pre class="brush:python">
+#PY = loaddll( hidemarudir + @&quot;\hmPy.dll&quot; );
+
+#_ = dllfuncw(  #PY, &quot;DoString&quot;, R&quot;IRONPYTHON(
+import clr
+clr.AddReferenceByPartialName('System.Windows.Forms')
+clr.AddReferenceByPartialName('System.Drawing')
+
+from System.Windows.Forms import *
+from System.Drawing import *
+
+class IronPythonForm(Form):
+
+  def __init__(self):
+    self.Text = 'こんにちわ'
+    self.Size = Size(400, 200)
+    self.btn = Button()
+    self.btn.Location = Point(16, 16)
+    self.btn.Width = 200
+    self.btn.Text = &quot;クリック&quot;
+    self.btn.Click += self.btn_Click
+
+    self.count = 0;
+
+    self.Controls.Add(self.btn)
+
+  def btn_Click(self, sender, e):
+    self.count += 1
+    hm.Macro.Var['$count'] = self.count # 秀丸マクロの$count変数にpythonのself.countの値をコピー
+    MessageBox.Show( &quot;今開いているファイルは…\n&quot; + hm.Macro.Var['filename2'] );
+
+    hm.Macro.Eval(r&quot;&quot;&quot;
+      // アウトプット枠へ出力
+      #OP = loaddll(&quot;HmOutputPane.dll&quot;);
+      #ret = dllfunc(#OP, &quot;Output&quot;,hidemaruhandle(0), $count);
+      freedll(#OP);
+    &quot;&quot;&quot;)
+
+f = IronPythonForm()
+f.ShowDialog()
+
+)IRONPYTHON&quot;
+);
+
+freedll( #PY );
+</pre></div>
+
+    </ul>
+    <li>
+    <!--h3>注意点</h3>
+    <ul class="pointlist">
+        <li>「Pythonの標準ライブラリ」に相当するもののほとんどは、hmPy/IronPythonには標準では搭載していません。<br>
+        そのほとんどのものは.NET Frameworkと機能がかぶるためです。.NET Frameworkライブラリを積極的に活用しましょう。<br>
+        <br>
+    </ul-->
+    <li>
+    <h3>その他解説</h3>
+    <ul class="pointlist">
+        <li>左メニューに各解説を用意しました。
+    </ul>
+    <li>
+    <h3>ライセンス</h3>
+    <ul class="pointlist">
+        <li>
+        <h4>hmPy</h4>
+        <p>hmPyは、Apache License 2.0となります。<br>
+        </p>
+        <h4>ソースの場所</h4>
+        <ul>
+            <li><a href="https://github.com/tenshoukijp/xn--rssu31gj1g.jp/tree/master/other_soft/hm_ironpython">Github</a>にソースがあります。<br>
+        </ul>
+        <li>
+        <!-- h4>IronPython.dll や ipy.exe</h4>
+        <p>IronPythonについても、Apache License 2.0です。<br>
+        詳細は、<a href="http://ironpython.net/">http://ironpython.net/</a>を見てください。</p-->
+    </ul>
+</ul>

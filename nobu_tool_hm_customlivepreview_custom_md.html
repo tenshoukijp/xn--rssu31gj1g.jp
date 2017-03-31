@@ -1,0 +1,180 @@
+%(hilight)s
+<h2><i class="fa fa-book fa-fw"></i>秀丸エディタ・HmCustomLivePreviewのカスタム マークダウン編</h2>
+
+<ul class="checklist">
+    <li>
+    <h3>概要</h3>
+    <p>ここでは、前節「秀丸エディタ・HmCustomLivePreviewのカスタム」の最後の章です。</p>
+    <p>以下のような、「マークダウンのライブビュー」も、HmCustomLivePreview を利用すれば、<br>
+    簡単に実現可能です。</p>
+    <p><img src="./other_soft/hm_customlivepreview/hm_customlivepreview_17.png"></p>
+    <li>
+    <h3>ダウンロード</h3>
+    <dl>
+        <dt>
+        <div class="download_file">DOWNLOAD ⇒ <a href="%(file)s">HmCustomLivePreviewMD.zip</a>ファイル。</div>
+        </dt>
+        <dd>
+        <div class="update_time">└更新日 %(year)04d/%(mon)02d/%(mday)02d</div>
+        </dd>
+    </dl>
+    <li>
+    <h3>使い方</h3>
+    <ul>
+        <li>HmCustomLivePreviewMD.zipをダウンロードする。
+        <li>HmCustomLivePreview.dll と同じディレクトリに<br>
+        ・HmCustomLivePreviewMD.mac<br>
+        ・HmCustomLivePreviewMD.css<br>
+        ・HmCustomLivePreviewMD.js<br>
+        の３つをコピー。<br>
+        <li>適当に「HmCustomLivePreviewMD.macをマクロ登録」して実行。
+    </ul>
+    <li>
+    <h3>HmCustomLivePreviewMD.macの解説</h3>
+    <p>今回は、秀丸のテキストを、マークダウンとみなして、HTMLレンダリングするように組んだものとなります。<br>
+    HmCustomLivePreviewは、.NETライブラリだけではなく、JScriptで動作するライブラリも利用可能ですので、<br>
+    マークダウンのライブラリとしては最も有名な「<a href="https://github.com/chjj/marked">marked.js</a>」をそのまま利用しています。</p>
+    <div class="code"><pre class="brush:python">
+#dll = loaddll( currentmacrodirectory + @&quot;\HmCustomLivePreview.dll&quot; );
+if (!#dll) {
+  message(&quot;HmCustomLivePreview.dllを読み込むことが出来ません。&quot;);
+  endmacro;
+}
+
+
+// 以下 marked.js(https://github.com/chjj/marked/tree/master/lib)。のソースそのまま「HmCustomLivePreviewMD.js」として保存。
+// 一切編集していない。
+#_ = dllfuncw( #dll, &quot;DoFile&quot;, currentmacrodirectory + @&quot;\HmCustomLivePreviewMD.js&quot; );
+
+
+// 以下メイン処理
+#_ = dllfuncw( #dll, &quot;DoString&quot;, R&quot;JSCRIPT(
+
+function OnCustomTranslateHTML(filename, rawtext) {
+
+    // テキストをマークダウンとして解釈して、htmlに変換
+    var html = marked(rawtext);
+    return html;
+}
+
+)JSCRIPT&quot;
+);
+
+// HmCustomLivePreviewの表示
+#_ = dllfuncw( #dll, &quot;Show&quot;, hidemaruhandle(0) );
+
+</pre></div>
+    <p>HmCustomLivePreviewMD.macを見てみると、下図のようになります。</p>
+    <p><img src="./other_soft/hm_customlivepreview/hm_customlivepreview_15.png" attr="noedge"></p>
+    <p><span class="negative">たったこれだけのことで、マークダウンのリアルタイムビューの基礎が出来上がりました。</p>
+    <p>HmCustomLivePreviewを一度閉じましょう。</p>
+    <li>
+    <h3>さらに利便性を高める工夫</h3>
+    <ul>
+        <li>マークダウンでレンダリングされたHTMLに対して、<br>
+        Githubに似たようなCSS(=HmCustomLivePreviewMD.css)を割り当てる
+        <li>相対URLを有効に扱えるようにする
+        <li>無駄なテキスト変換の回避
+    </ul>
+    <p>といったことを実現するため、最終的には以下のようなソースとなっています。</p>
+    <div class="code"><pre class="brush:python">
+#dll = loaddll( currentmacrodirectory + @&quot;\HmCustomLivePreview.dll&quot; );
+if (!#dll) {
+    message(&quot;HmCustomLivePreview.dllを読み込むことが出来ません。&quot;);
+    endmacro;
+}
+
+//------------------------------------------------------------------------------------------------------------------------------
+// 「HmCustomLivePreviewMD.js」は「marked.js(https://github.com/chjj/marked/tree/master/lib)」のソースそのまま。
+//------------------------------------------------------------------------------------------------------------------------------
+#_ = dllfuncw( #dll, &quot;DoFile&quot;, currentmacrodirectory + @&quot;\HmCustomLivePreviewMD.js&quot; );
+
+
+//------------------------------------------------------------------------------------------------------------------------------
+// HmCustomLivePreviewの処理
+//------------------------------------------------------------------------------------------------------------------------------
+#_ = dllfuncw( #dll, &quot;DoString&quot;, R&quot;JSCRIPT(
+
+// 秀丸マクロシンボルのcurrentmacrodirectoryをJScript空間に読み込み。
+var currentmacrodirectory = hm.Macro.Var(&quot;currentmacrodirectory&quot;);
+
+// GithubっぽいCSSファイルの指定
+var css  = &quot;&lt;link href='&quot; + currentmacrodirectory+&quot;\\HmCustomLivePreviewMD.css&quot; + &quot;' rel='stylesheet'&gt;&quot; + &quot;\n&quot;;
+
+// 最後のテキスト
+var last = {
+    rawtext : &quot;&quot;,
+    all : &quot;&quot;,
+};
+
+function OnCustomTranslateHTML(filename, rawtext) {
+
+    // 軽量化の一環。前回と同じテキスト内容なら同じ結果
+    if (last.rawtext == rawtext ) {
+        return last.all;
+    }
+    last.rawtext = rawtext;
+
+    // テキストをマークダウンとして解釈して、htmlに変換
+    var html = marked(rawtext);
+
+    // 事故おこしてるようなら、元の文字列そのまま返す
+    if (!html) {
+        return rawtext;
+    }
+
+    // 編集中テキストに対する相対アドレスに対応するには、自身のベースURLを保つ必要がある。
+    var base = &quot;&quot;;
+    if ( filename &amp;&amp; !html.match(/&lt;base\s+/) ) {
+        base = &quot;&lt;base href='&quot; + filename + &quot;'&gt;&quot; + &quot;\n&quot;;
+    }
+
+    last.all = base + css + &quot;\n\n\n&quot; + html;
+    return last.all;
+}
+
+)JSCRIPT&quot;
+);
+
+// HmCustomLivePreviewの表示
+#_ = dllfuncw( #dll, &quot;Show&quot;, hidemaruhandle(0) );
+
+</pre></div>
+    <p>改良されたHmCustomLivePreviewMD.macを見てみると、下図のようになります。</p>
+    <p><img src="./other_soft/hm_customlivepreview/hm_customlivepreview_16.png" attr="noedge"></p>
+
+    <li>
+    <h3>独自のマークダウンの追加</h3>
+    <p>marked.jsでは、Githubのマークダウンなどで利用できる「チェックボックス」の機能が実装されていません。<br>
+    独自に追加するとすれば、以下のようになるでしょう。</p>
+    <div class="code"><pre class="brush:python;highlight:[10,11]">
+function OnCustomTranslateHTML(filename, rawtext) {
+
+    // 軽量化の一環。前回と同じテキスト内容なら同じ結果
+    if (last.rawtext == rawtext ) {
+        return last.all;
+    }
+    last.rawtext = rawtext;
+
+    // チェックボックスへの変換機能を追加。
+    rawtext = rawtext.replace(/\- \[x\]/g, '&lt;input type=&quot;checkbox&quot; checked=&quot;checked&quot;&gt;')
+                     .replace(/\- \[ \]/g, '&lt;input type=&quot;checkbox&quot;&gt;');
+
+    // テキストをマークダウンとして解釈して、htmlに変換
+    var html = marked(rawtext);
+
+</pre></div>
+
+    <li>
+    <h3>ライセンス</h3>
+    <ul class="pointlist">
+        <li>
+        <h4>HmCustomLivePreviewMD.mac / HmCustomLivePreviewMD.css</h4>
+        <p>パブリックドメインとなります。<br>
+        </p>
+        <li>
+        <h4>HmCustomLivePreviewMD.js</h4>
+        <p>MITライセンスとなります。<br>
+        詳細は、zip同封のLicense.txtや、<a href="https://github.com/chjj/marked">github - chjj / marked</a> を参照してください。</p>
+    </ul>
+</ul>

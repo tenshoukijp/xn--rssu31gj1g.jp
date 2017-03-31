@@ -1,0 +1,124 @@
+%(hilight)s
+<h2><i class="fa fa-book fa-fw"></i>～文法メモ～ イテレータとジェネレータ</h2>
+
+<ul class="checklist">
+    <li>
+    <h3>ジェネレータ</h3>
+    <p>各種スクリプト言語で、概ね「yield」というキーワードがあれば、<br>
+    同様の機能があると思われます。<br>
+    </p>
+    <p>各種言語で概ね共通したイメージとしては、<br>
+    ・関数を呼び出した時に、「yield文(や関数)」まで実行。<br>
+    ・該当関数の処理は一端停止しつつ、yieldの引数(等)の値を返す。<br>
+    ・次に同じ関数を呼び出した際には、一端停止したのを解除して、その続き(のステップ/行)から処理を再開</p>
+    <p>という感じです。<br>
+    ECMAScript6では「yield演算子」という名称となっています。</p>
+    <li>
+    <h3>yieldの一番簡単な例</h3>
+    <div class="code"><pre class="brush:js">
+function* sampleGenerator(i) {
+  yield i + 1; // ここで i+1を返して、関数は(次の呼び出しまで)一端停止
+  yield i + 2; // ここで i+2を返して、関数は(次の呼び出しまで)一端停止
+  yield i + 3; // ここで i+2を返して、関数は(次の呼び出しまで)一端停止
+}
+
+var gen = sampleGenerator(10);
+
+hm.debuginfo(gen.next().value); // 10
+hm.debuginfo(gen.next().value); // 11
+hm.debuginfo(gen.next().value); // 12
+</pre></div>
+    <li>
+    <h3>yieldの単純な例</h3>
+    <div class="code"><pre class="brush:js">
+function* idMaker(){
+    var index = 0;
+    while(true) {
+        yield index++;
+    }
+}
+
+var gen = idMaker();
+
+hm.debuginfo(gen.next().value); // 0
+hm.debuginfo(gen.next().value); // 1
+hm.debuginfo(gen.next().value); // 2
+</pre></div>
+    <li>
+    <h3>yieldの中で別のyieldを使う</h3>
+    <p>yieldの中で別のyieldを使用する場合には、<br>
+    「yield*」といった独特の表記となります。</p>
+    <div class="code"><pre class="brush:js">
+function* anotherGenerator(i) {
+  yield i + 1;
+  yield i + 2;
+  yield i + 3;
+}
+function* generator(i){
+  yield i;
+  yield* anotherGenerator(i);
+  yield i + 10;
+}
+
+var gen = generator(10);
+
+hm.debuginfo(gen.next().value); // 10
+hm.debuginfo(gen.next().value); // 11
+hm.debuginfo(gen.next().value); // 12
+hm.debuginfo(gen.next().value); // 13
+hm.debuginfo(gen.next().value); // 20
+</pre></div>
+
+    <li>
+    <h3>yieldが返しているもの</h3>
+    <p>「yield」(より厳密には「yield.next()」)が返しているものは、<br>
+    ・{ value : 今回の値, done:false }<br>
+    もしくは、<br>
+    ・{ done:true }<br>
+    です。</p>
+
+    <div class="code"><pre class="brush:js">
+function* sampleGenerator() {
+  yield "あ"
+  yield "い"
+  yield "う"
+}
+
+var gen = sampleGenerator();
+
+hm.debuginfo(gen.next()); // {"value":"あ","done":false}
+hm.debuginfo(gen.next()); // {"value":"い","done":false}
+hm.debuginfo(gen.next()); // {"value":"う","done":false}
+hm.debuginfo(gen.next()); // {"done":true}
+</pre></div>
+    <li>
+    <h3>for...ofなどによるジェネレータのループ</h3>
+    <p>「for...of」先述した仕組みで「done:true」が出現するまで、<br>
+    １つ１つ要素を出すといったことに対応しているため、以下のような順次処理が可能です。</p>
+
+    <div class="code"><pre class="brush:js">
+function* sampleGenerator() {
+  yield "あ"
+  yield "い"
+  yield "う"
+}
+
+
+for (let e of sampleGenerator()) {
+    hm.debuginfo(e);
+}
+// "あ"
+// "い"
+// "う"
+
+for (let e of sampleGenerator()) {
+    hm.debuginfo(e);
+}
+// "あ"
+// "い"
+// "う"
+
+</pre></div>
+    <p>２つ「for...of」があります。<br>
+    ２番めのfor...ofの際、ジェネレータがちゃんとリセット(再び最初から実行)されていることに注目してください。</p>
+</ul>

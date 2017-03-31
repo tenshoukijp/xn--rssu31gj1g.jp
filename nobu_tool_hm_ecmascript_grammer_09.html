@@ -1,0 +1,85 @@
+%(hilight)s
+<h2><i class="fa fa-book fa-fw"></i>～文法メモ～ シンボル</h2>
+
+<ul class="checklist">
+    <li>
+    <h3>シンボルは「呼び出す度に一意な値」を返す</h3>
+    <p>この性質は他の言語にはあまり存在しない概念ですから、もう少しよくみてみましょう。</p>
+    <h3>シンボルとコンストラクタ</h3>
+    <p>シンボルはSymbolクラスのコンストラクタを呼ぶことで作成されます。<br>
+    引数を指定することが出来ます。</p>
+    <div class="code"><pre class="brush:js">
+sb1 = Symbol()
+sb2 = Symbol('name')
+</pre></div>
+    <p>シンボルはSymbolクラスのコンストラクタを呼ぶ度に新しい値が生成されます。<br>
+    よって下記コードのように同じ'name'を引数としたとしても、呼び出す度に違う値が生成されます。</p>
+    <div class="code"><pre class="brush:js">
+sb1 = Symbol()
+sb2 = Symbol('name')
+sb3 = Symbol('name')
+
+sb2 === sb3 // false
+Symbol('name') === Symbol('name') // false
+</pre></div>
+    <li>
+    <h3>シンボル名で値を共有したい場合は、Symbol.for(...)で作成</h3>
+    <div class="code"><pre class="brush:js">
+let a = Symbol.for('name'); // 新しくシンボルが作られる
+let b = Symbol.for('name'); // すでに存在すればそのシンボルが返される
+hm.debuginfo(a == b) // true
+</pre></div>
+    <li>
+    <h3>Symbol.keyForで、シンボルからシンボル名への逆引きが可能</h3>
+    <div class="code"><pre class="brush:js">
+let a = Symbol.for('name'); // 新しくシンボルが作られる
+
+hm.debuginfo(Symbol.keyFor(a)) // name
+</pre></div>
+    <h3>enumの替わりに使う</h3>
+    <div class="code"><pre class="brush:js">
+const RED    = Symbol();
+const YELLOW = Symbol();
+const BLUE   = Symbol();
+
+// …
+
+let color = RED;
+
+
+if (color == RED) {
+   hm.debuginfo("色は赤です");
+}
+</pre></div>
+    <p>このようにすることで、「数値など」と比較し手抜きをすることは不可能となり、<br>
+    あくまでも RED or YELLOW or BLUE との比較を課すことが出来ます。
+    <h3>classのメンバ変数をどうしてもprivateにしたい</h3>
+    <p>classやオブジェクトの特定のプロパティを外部から見えなくするのに使えなくもないですが、<br>
+    余計にソースが歪みますので、あまりそのような目的に利用するべきではないでしょう。<br>
+    </p>
+    <h3>keysなどで取得させたくないメンバに利用する</h3>
+    <p>private目的というよりも、こちらのkeysでは取得させたくないメンバとして利用する、<br>
+    というのは仕掛けとして有りだと思います。</p>
+    <li>
+    <h3>Symbolsとfor...inイテレーション</h3>
+    <p>Symbolはfor...inイテレーションからは見えません。</p>
+    <div class="code"><pre class="brush:js">
+var obj = {};
+
+obj[Symbol("a")] = "a";
+obj[Symbol.for("b")] = "b";
+obj["c"] = "c";
+obj.d = "d";
+
+for (var i in obj) {
+   hm.debuginfo(i); // 結果 "c" and "d"
+}
+</pre></div>
+    <li>
+    <h3>SymbolsとJSON.stringify()</h3>
+    <p>for...in同様、こちらからもSymbolのプロパティは無視されます。</p>
+    <div class="code"><pre class="brush:js">
+JSON.stringify({[Symbol("foo")]: "foo"});
+// '{}'
+</pre></div>
+</ul>

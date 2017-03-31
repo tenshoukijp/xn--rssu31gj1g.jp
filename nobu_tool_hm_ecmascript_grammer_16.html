@@ -1,0 +1,92 @@
+%(hilight)s
+<h2><i class="fa fa-book fa-fw"></i>～文法メモ～ クラスへのアクセサー</h2>
+
+<ul class="checklist">
+    <li>
+    <h3>クラスとプロパティ</h3>
+  <p>すでに「プロパティ」の項目のところで解説していますが、<br>
+復習となります。
+</p>
+    <div class="code"><pre class="brush:js">
+class BaseWindow {
+    constructor(x, y, w, h) {
+        this.title = "ベースのクラスのデフォのタイトル",
+        this.x = x
+        this.y = y
+        this.w = w
+        this.h = h
+    }
+    show() {
+        return `タイトル:${this.title}, x:${this.x}, y:${this.y}, w:${this.w}, h:${this.h}`;
+    }
+}
+
+class MyWindow extends BaseWindow {
+    constructor(x, y, w, h) {
+        super(x, y, w, h);
+        this.title = "僕のクラスのタイトル";
+    }
+    get top() {
+        return this.x
+    }
+    set top(value) {
+        if (0 &lt; value &amp;&amp; value &lt; 2000) {
+            this.x = value
+        } else {
+            throw new RangeError("Window Position Out Of Bound Exception");
+        }
+    }
+}
+
+let win = new MyWindow(10, 20, 500, 300);
+try {
+    win.top = 100;
+    hm.debuginfo(win.show()); // タイトル:僕のクラスのタイトル, x:100, y:20, w:500, h:300
+    win.top = -100; // ここで例外発生
+    hm.debuginfo(win.show());
+} catch(e) {
+    hm.debuginfo(e.message); // "Window Position Out Of Bound Exception"
+}
+</pre></div>
+    <li>
+  <h3>クラスとジェネレータ</h3>
+  <p>クラスのプロパティとして特殊なシンボルとなる「Symbol.iterator」に対して、<br>
+ジェネレータの匿名関数を代入することで、クラスのインスタンスそのものをイタレートの対象出来ます。<br>
+例えば「for...of」の対象と出来ます。</p>
+    <div class="code"><pre class="brush:js">
+class MyIterableClass {
+    constructor() {
+    }
+    *[Symbol.iterator]() {
+        yield 10;
+        yield 20;
+        yield 30;
+    }
+}
+
+let mic = new MyIterableClass();
+for (let m of mic) {
+    hm.debuginfo(m);
+}
+// 結果 10 20 30
+</pre></div>
+<p>汎用的にした場合には、下記のようになるでしょう。</p>
+    <div class="code"><pre class="brush:js">
+class MyIterableClass {
+    constructor() {
+        this.data = [10, 20, 30]
+    }
+    *[Symbol.iterator]() {
+        for (let v of this.data) {
+            yield v;
+        }
+    }
+}
+
+let mic = new MyIterableClass();
+for (let m of mic) {
+    hm.debuginfo(m);
+}
+// 結果 10 20 30
+</pre></div>
+</ul>

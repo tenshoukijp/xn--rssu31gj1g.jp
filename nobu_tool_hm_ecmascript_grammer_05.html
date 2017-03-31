@@ -1,0 +1,92 @@
+%(hilight)s
+<h2><i class="fa fa-book fa-fw"></i>～文法メモ～ 配列の分割代入</h2>
+
+<ul class="checklist">
+    <li>
+    <h3>概要</h3>
+    <p>分割代入することで、「配列」や「オブジェクト」を分解し、<br>
+    その配列の要素やオブジェクトのプロパティを一気に、個々の変数へと代入できます。<br>
+    この機能により、他のスクリプト言語の「多重代入」に似たことを実現出来ます。</p>
+    <li>
+    <h3>配列の要素の分割代入</h3>
+    <div class="code"><pre class="brush:js">
+let [var1, var2] = [10, 20];
+
+hm.debuginfo(var1); // 10
+hm.debuginfo(var2); // 20
+</pre></div>
+    <li>
+    <h3>配列の要素の分割代入と「...」演算子</h3>
+    <p>「...」演算子を利用することで、「残りの要素を配列にして」、<br>
+    １つの変数に代入します。</p>
+    <div class="code"><pre class="brush:js">
+let [var1, var2, ...other] = [10, 20, 30, 40, 50]
+hm.debuginfo(var1); // 10
+hm.debuginfo(var2); // 20
+hm.debuginfo(other); // 30,40,50。others は [30,40,50] という配列
+</pre></div>
+    <li>
+    <h3>オブジェクトのプロパティの分割代入</h3>
+    <div class="code"><pre class="brush:js">
+let {foo, bar} = {foo:"こちら", bar:"あちら"};
+hm.debuginfo(foo); // こちら
+hm.debuginfo(bar); // あちら
+</pre></div>
+    <li>
+    <h3>オブジェクトのプロパティの分割代入(変数名を変更)</h3>
+    <p>受け取る変数名を変更する場合には、以下のようにします</p>
+    <div class="code"><pre class="brush:js">
+let {foo:x, bar:y} = {foo:"こちら", bar:"あちら"}
+hm.debuginfo(x); // こちら
+hm.debuginfo(y); // あちら
+</pre></div>
+    <li>
+    <h3>オブジェクトのプロパティの分割代入(デフォルト値)</h3>
+    <p>オブジェクトのプロパティに対応するものが無かった場合に備え、デフォルト値を設定しておくことが出来ます。</p>
+    <div class="code"><pre class="brush:js">
+let {foo="どちら", bar} = {bar:"あちら"}
+hm.debuginfo(foo); // どちら
+hm.debuginfo(bar); // あちら
+</pre></div>
+    <h3>宣言時以外の分割代入</h3>
+    <p>配列については宣言時と同様に代入できます。</p>
+    <div class="code"><pre class="brush:js">
+let var1, var2;
+[var1, var2, ...other] = [10, 20, 30, 40, 50]
+hm.debuginfo(var1); // 10
+hm.debuginfo(var2); // 20
+hm.debuginfo(other); // 30,40,50。others は [30,40,50] という配列
+</pre></div>
+    <p>しかし、オブジェクトのプロパティは要注意です。<br>
+    以下は間違いです。</p>
+    <div class="code"><pre class="brush:js">
+let foo, bar;
+{foo, bar} = {foo:"こちら", bar:"あちら"} // エラーとなってしまう。
+</pre></div>
+    <p>これは、初期化時以外は{...}が複数ステートメントを囲い込むブロックとみなされてしまうためです。<br>
+    このため、全体を(...)で囲む必要があります。</p>
+    <p>以下のようにするのが正しくなります。<br>
+    ここは気づきにくいポイントですので注意してください。</p>
+    <div class="code"><pre class="brush:js">
+let foo, bar;
+({foo, bar} = {foo:"こちら", bar:"あちら"}) // このように( )で全体を囲い込む必要がある。
+hm.debuginfo(foo); // こちら
+hm.debuginfo(bar); // あちら
+</pre></div>
+    <h3>変数の値を入れ替える</h3>
+    <div class="code"><pre class="brush:js">
+let [var1, var2] = [10, 20];
+[var1, var2] = [var2, var1];
+hm.debuginfo(var1); // 20
+hm.debuginfo(var2); // 10
+</pre></div>
+    <h3>関数から複数の値を返す</h3>
+    <div class="code"><pre class="brush:js">
+function multi_return_func() {
+    return [10, 20];
+}
+let [var1, var2] = multi_return_func();
+hm.debuginfo(var1); // 10
+hm.debuginfo(var2); // 20
+</pre></div>
+</ul>

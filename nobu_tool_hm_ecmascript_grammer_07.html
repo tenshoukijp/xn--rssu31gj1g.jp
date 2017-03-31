@@ -1,0 +1,100 @@
+%(hilight)s
+<h2><i class="fa fa-book fa-fw"></i>～文法メモ～ 関数の引数</h2>
+
+<ul class="checklist">
+    <li>
+    <h3>デフォルト引数</h3>
+    <div class="code"><pre class="brush:js">
+function multiply(a, b = 1) {
+  return a*b;
+}
+
+multiply(5); // 5
+</pre></div>
+<p>2番めの引数で、undefined(nullではない)を渡してもデフォルト引数が利用されます</p>
+    <div class="code"><pre class="brush:js">
+function setBackgroundColor(element, color = 'rosybrown') {
+  element.style.backgroundColor = color;
+}
+
+setBackgroundColor(someDiv);            // color に 'rosybrown' が設定される
+setBackgroundColor(someDiv, undefined); // これも color に 'rosybrown' が設定される
+setBackgroundColor(someDiv, 'blue');    // color に 'blue' が設定される
+</pre></div>
+    <li>
+    <h3>デフォルト引数は後続のデフォルト引数で再利用可能</h3>
+    <p>n番目の引数を使って、n+1番め以降の後続の引数のデフォルト値とすることが出来ます。</p>
+    <div class="code"><pre class="brush:js">
+function mul(a, b = a) {
+    return a * b;
+}
+
+hm.debuginfo( mul(3) ); // 9
+</pre></div>
+    <h3>式などもデフォルト引数に出来ます</h3>
+    <p>この性質を利用すれば、引数が渡されていないとエラーを出すことなども可能です。</p>
+    <div class="code"><pre class="brush:js">
+function CheckArgumentException() {
+    return "NoArgumentException";
+}
+
+function abc( val = CheckArgumentException() ) {
+    return val.toString();
+}
+
+hm.debuginfo( abc() ); // "NoArgumentException"
+</pre></div>
+
+    <li>
+    <h3>関数と名前付き引数</h3>
+  <p>分割代入の性質を利用することで、関数の引数を名前引数であるかのように扱うことが出来ます。<br>
+  このテクニックは様々なスクリプト言語で利用されています。</p>
+    <div class="code"><pre class="brush:js">
+function mywindow({top = 10, left = 10, width = 100, height = 60}) {
+    return [top, left, width, height]
+}
+
+hm.debuginfo(mywindow({top:200, height:300})); // [200,10,100,300]
+</pre></div>
+<p>分割代入の機能を利用しているだけですので、特定の値だけを取り出す目的にも使えます</p>
+    <div class="code"><pre class="brush:js">
+function printtop({top}) {
+    hm.debuginfo(top)
+}
+
+let data = {top:200, height:300};
+printtop(data);
+</pre></div>
+    <li>
+    <h3>可変長引数</h3>
+    <div class="code"><pre class="brush:js">
+function sum(...args) {
+    let sum = 0;
+    for(let n of args) {
+        sum += n;
+    }
+    return sum
+}
+
+hm.debuginfo(sum(100,200,300));
+
+</pre></div>
+    <li>
+    <h3>配列を複数個の引数へと展開する</h3>
+    <div class="code"><pre class="brush:js">
+function sum(...args) {
+    let sum = 0;
+    for(let n of args) {
+        sum += n;
+    }
+    return sum
+}
+
+let sum1 = sum(10,20,30)
+hm.debuginfo(sum1);
+
+let arr = [10,20,30]
+let sum2 = sum(...arr) // 配列を引数リストに展開
+hm.debuginfo(sum2);
+</pre></div>
+</ul>
