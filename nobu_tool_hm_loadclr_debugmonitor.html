@@ -1,0 +1,32 @@
+%(hilight)s
+<h2><i class="fa fa-bug fa-fw"></i>hmLoadCLRと「秀丸・デバッグ出力モニター」</h2>
+
+<ul class="checklist">
+    <li>
+    <h3>概要</h3>
+    <p>hmLoadCLRでのエラーを知るにはどうするのか、が掲載されています。</p>
+    <h3>秀丸エディタ・デバッグ出力モニター</h3>
+    <p>秀丸マクロのエラーは「ダイアログ」で表示されますが、<br>
+    「hmLoadCLR」については、ダイアログではエラーを表示しません。<br>
+    (あえて出していません)</p>
+    <p>hmLoadCLRでは、エラーは「<a href="?page=nobu_tool_hm_debugmonitor">秀丸・デバッグ出力モニター</a>」に表示されます。</p>
+    <p><img src="./other_soft/hm_loadclr/cnt_hm_loadclr_07.png"></p>
+
+    <h3>意図的に、秀丸エディタ・デバッグ出力モニターに出す場合</h3>
+    <p>hmLoadCLR内部に、「hm.debuginfo」関数というのを特別に追加しています。</p>
+    <ul>
+        <div class="code"><pre class="brush:python">
+#MNG = loaddll( hidemarudir + @&quot;\hmPy.dll&quot; );
+
+#_ = dllfuncw(#MNG, &quot;DoString&quot;, R&quot;MNG(
+
+hm.debuginfo('hmLoadCLR側からデバッグモニターへ')
+
+)MNG&quot;
+);
+
+freedll(#MNG);
+</pre></div>
+
+    </ul>
+</ul>
