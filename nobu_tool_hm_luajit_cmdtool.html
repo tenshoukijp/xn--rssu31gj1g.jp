@@ -1,0 +1,119 @@
+%(hilight)s
+<h2><i class="fa fa-cube fa-fw"></i>hmLJ.exeの機能</h2>
+<ul class="checklist">
+    <li>
+    <h3>概要</h3>
+    <p>hmLJ.exeは、Luaの機能をコンソールにて確認するためのツールです。<br></p>
+    <p><img src="./other_soft/hm_luajit/cnt_hm_luajit_exe.png" attr="noedge" align="middle"></p>
+    <p>hmLJ.exeはマクロ実行の上では必要ではありません。</p>
+    <p>しかし、hmLJ.exeを導入することで、hmLJの利用の幅を広げることが出来ます。<br>
+    例えば、
+    </p>
+    <ul class="pointlist">
+
+        <li><h4>lua挙動確認</h4><p>luajitの挙動、lua記述の基本的な動作確認</p>
+        <li><h4>バイトコードやexe作成</h4><p>***.luaを、コンパイルしたり、exe形式に変換する目的でも利用可能です。</p>
+        <li><h4>開発環境作成</h4><p>文法チェックやバイトコードへのコンパイルなど、秀丸上でluajit実行のエディタ支援環境を作るといった目的にも適しています。</p>
+    </ul>
+
+    <li>
+    <h3>ダウンロード</h3>
+    <dl>
+        <dt>
+        <div class="download_file"><img src="./other_soft/hm_luajit/cnt_hm_luajit_minizip.png" attr="noedge" align="middle"> ⇒ <a href="%(file)s">hmLJ.exe.zip</a>ファイル。ver 2.041</div>
+        </dt>
+        <dd>
+        <div class="update_time">└更新日 %(year)04d/%(mon)02d/%(mday)02d</div>
+        </dd>
+    </dl>
+
+    <li>
+    <h3>シンタックス系のカスタム項目</h3>
+    <p>シンタックス系のカスタム項目としては、hmLJと同一です。</p>
+    <li>
+    <h3>コマンドライン系のカスタム項目</h3>
+    <ul class="pointlist">
+        <li>
+        <h4>対話型コンソールとしての実行</h4>
+        <div class="code"><pre class="brush:ps">
+    hmLJ.exe
+    </pre></div>
+        <li>
+        <h4>スクリプトとしての実行</h4>
+        <div class="code"><pre class="brush:ps">
+    hmLJ.exe ****.lua (他の引数)
+    </pre></div>
+        <li>
+        <h4>文法チェッカーとしての実行</h4>
+        <div class="code"><pre class="brush:lua">
+    hmLJ.exe -e"_,err = loadfile('a.lua'); print(err)"
+    </pre></div>
+        <li>
+        <h4>対象をバイトコードにコンパイルする</h4>
+        <p>対象がファイルになっていない場合は、luaのload関数やstring.dump( func, 1 )を組み合わせて</p>
+        <div class="code"><pre class="brush:lua">
+local data = string.dump(load(&quot;aaa = {1,2,3}\nprint(a)&quot;), 1)
+local f = io.open(&quot;a.out&quot;, &quot;wb&quot;)
+f:write(data)
+f:close()
+    </pre></div>
+        <p>といったようなluaファイルを実行することで、バイトコードをa.outに得ることが出来ます。</p>
+
+        <p>対象がファイルになっている場合も同様に</p>
+        <div class="code"><pre class="brush:lua">
+local data = string.dump(loadfile(&quot;test.lua&quot;), 1)
+local f = io.open(&quot;a.out&quot;, &quot;wb&quot;)
+f:write(data)
+f:close()
+    </pre></div>
+        <p>とすれば良いだけです。</p>
+        <p>バイトコードファイルは、</p>
+        <div class="code"><pre class="brush:ps">
+hmLJ.exe a.out
+    </pre></div>
+    <p>のように実行しても良いですし、<br>
+    hmLJ.dllで利用したいならlua中でloadfile関数などを利用して
+        <div class="code"><pre class="brush:lua">
+local fcnk = loadfile("a.out")
+fcnk()
+    </pre></div>
+    <p>のように実行することが出来ます。</p>
+        <li>
+        <h4>bin2cとしての実行</h4>
+        ソースコードを、C言語ソースへと貼り付け可能なソースコードとして出力します。<br>
+        <div class="code"><pre class="brush:ps">
+    hmLJ.exe *****.lua -bin2c
+    </pre></div>
+        <li>
+        <h4>リンカとしての実行</h4>
+        全ての引数の一番後ろに「-link」と付けてください。<br>
+        <div class="code"><pre class="brush:ps">
+    hmLJ.exe ****.lua ****.exe -link
+    </pre></div>
+        <p>対象はluaのスクリプトでなくとも、バイトコードにコンパイル済みのものでも大丈夫です。<br>
+        (****.outはバイトコードにコンパイル済みのファイルとする)</p>
+        <div class="code"><pre class="brush:ps">
+    hmLJ.exe ****.out ****.exe -link
+    </pre></div>
+        <li>
+        <h4>例</h4>
+        文字エンコード「CP932(Shift-JIS)」のファイルで、
+        <div class="code"><pre class="brush:lua">
+    for i, v in pairs({"表示", "ソート"}) do
+        print(i, v)
+    end
+    </pre></div>
+        というファイルをtest.luaというファイル名で用意。hmLJ.exeと同じディレクトリに保存します。<br>
+        <br>
+        コマンドプロンプトでhmLJ.exeのディレクトリまで移動した後、<br>
+
+        <div class="code"><pre class="brush:ps" >
+    hmLJ.exe test.lua test.exe -link
+    </pre></div>
+        とすると、test.exeが出来上がります。<br>
+        <br>
+        このファイルは単体で実行可能であり、<br>
+        他のファイル等への依存はありません。<br>
+        <br>
+    </ul>
+</ul>

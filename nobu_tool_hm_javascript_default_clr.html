@@ -1,0 +1,42 @@
+%(hilight)s
+<h2><i class="fa fa-book fa-fw"></i>最初から読み込み済みの「System.***」</h2>
+
+<ul class="checklist">
+    <li>
+    <h3>概要</h3>
+    <p>hmJSでは、よく利用するということで、「mscorelib」「System」「System.Core」に属するもの、<br>
+    いわゆる「コアライブラリ」と呼ばれるものは、すべてロード済みです。</p>
+
+    <div class="code"><pre class="brush:csharp">
+#JS = loaddll( hidemarudir + @&quot;\hmJS.dll&quot; );
+
+#_ = dllfuncw( #JS, &quot;DoString&quot;, R&quot;(
+
+// 数学関数があるので、浮動小数計算も自由自在。
+var num = clr.System.Math.Floor(3.3);
+hm.debuginfo(num);
+
+// 現在のカルチャーに合わせて書式化
+var birthday = new clr.System.DateTime(2016, 10, 22);
+var longbirth = birthday.ToLongDateString();
+hm.debuginfo(longbirth);
+
+// 次々と乱数発生
+var rand = new clr.System.Random();
+hm.debuginfo(rand.Next());
+hm.debuginfo(rand.Next());
+hm.debuginfo(rand.Next());
+
+// CLRのSystem.int32の配列
+numbers = host.newArr(clr.System.Int32, 20);
+for (var i = 0; i &lt; numbers.Length; i++) { numbers[i] = i; }
+hm.debuginfo(clr.System.String.Join(', ', numbers));
+)&quot;);
+
+freedll(#JS);
+</pre></div>
+
+    <p>この他にも、複雑なものもありますが、基本的には「ClearScript」の「JScriptEngine」となりますので、<br>
+    <a href="https://clearscript.codeplex.com/">こちら</a>を参照してください。<br>
+    </p>
+</ul>

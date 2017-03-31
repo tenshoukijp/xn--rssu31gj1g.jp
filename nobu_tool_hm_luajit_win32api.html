@@ -1,0 +1,91 @@
+%(hilight)s
+<h2><i class="fa fa-book fa-fw"></i>「hmLJ」から「ネイティブdll」のWin32 APIを利用する。</h2>
+
+<ul class="checklist">
+    <li>
+    <h3>概要</h3>
+    <p>hmLJでwin32を利用したプログラムを呼び出す王道は、<br>
+    あくまでもlua/luajit用のモジュールを作るといったものです。<br>
+    </p>
+    <p>しかし、「比較的簡易なwin32apiをポツポツ数個利用するだけなのに…」といった場合は、<br>
+    hmLJ(LuaJit)に備わっている<a href="http://luajit.org/ext_ffi.html">FFI library</a>を利用するのが便利かもしれません。</p>
+    <li>
+    <h3>FFI FFI Library</h3>
+    <p>以下のページにFFIの使い方のリファレンスが掲載されています。</p>
+    <ul class="pointlist">
+        <li>
+        <h4><a href="http://luajit.org/ext_ffi.html">FFI Library</a></h4>
+        <li>
+        <h4><a href="http://luajit.org/ext_ffi_tutorial.html">FFI Tutorial</a></h4>
+        <li>
+        <h4><a href="http://luajit.org/ext_ffi_api.html">ffi.* API Functions</a></h4>
+        <li>
+        <h4><a href="http://luajit.org/ext_ffi_semantics.html">FFI Semantics</a></h4>
+    </ul>
+    <li>
+    <h3>FFI Libraryの使用例</h3>
+    <p>luajitのFFIの使用例はネット上を検索すれば数多く発見できるでしょう。<br>
+    ここでは、代表的な例を例示します。</p>
+
+    <div class="code"><pre class="brush:python">
+#L = loaddll( hidemarudir + &quot;\\hmLJ.dll&quot;);
+
+#_ = dllfunc(#L, &quot;SetStrVar&quot;, &quot;szOrgPath&quot;, &quot;C:\\Program Files&quot;);
+
+// win32APIの「PathQuoteSpaces」を利用してみる
+// 「PathQuoteSpaces」は文字列に空白があれば二重引用符で囲む関数。
+#_ = dllfunc(#L, &quot;DoString&quot;, &quot;&quot;+
+&quot;ffi.cdef[[\n&quot; +
+&quot;typedef char *         LPTSTR;  \n&quot; +
+&quot;int PathQuoteSpacesA(LPTSTR lpFilename);\n&quot; +
+&quot;]]\n&quot; +
+&quot;shlwapi = ffi.load('shlwapi')\n&quot; +
+&quot;szPathBuf = ffi.new('char[?]', 256, szOrgPath)\n&quot; +
+&quot;ret = shlwapi.PathQuoteSpacesA( szPathBuf )\n&quot; +
+&quot;szPathBuf = ffi.string(szPathBuf)&quot;
+);
+
+//
+$strQuotePath = dllfuncstr(#L, &quot;GetStrVar&quot;, &quot;szPathBuf&quot;);
+
+message($strQuotePath);
+
+// 「GetModuleFileNameA」を利用する。
+// 「GetModuleFileNameA」引数で指定したプロセスアドレス空間に展開されているプログラム(exeやdll等)のフルパス名を取得する関数
+#_ = dllfunc(#L, &quot;DoString&quot;, &quot;&quot;+
+&quot;ffi.cdef[[\n&quot; +
+&quot;typedef void *         HMODULE; \n&quot; +
+&quot;typedef char *         LPTSTR;  \n&quot; +
+&quot;typedef unsigned short DWORD;   \n&quot; +
+&quot;DWORD GetModuleFileNameA(HMODULE hModule, LPTSTR lpFilename, DWORD nSize);\n&quot; +
+&quot;]]\n&quot; +
+&quot;kernel32 = ffi.load('kernel32')\n&quot; +
+&quot;szPathBuf = ffi.new('char[?]', 256)\n&quot; +
+&quot;ret = kernel32.GetModuleFileNameA( nil, szPathBuf, 256 )\n&quot; +
+&quot;szPathBuf = ffi.string(szPathBuf)&quot;
+);
+
+$strBufFileName = dllfuncstr(#L, &quot;GetStrVar&quot;, &quot;szPathBuf&quot;);
+
+message($strBufFileName);
+
+// wsprintfAを利用する。
+// 但し、「sprintfタイプの可変引数以外の目的」でcdeclを利用する機会は普通ないため、
+// このような無意味なことはやめて、lua層のstring.formatを使うのが良い
+#_ = dllfunc(#L, &quot;DoString&quot;, &quot;&quot;+
+&quot;ffi.cdef[[\n&quot; +
+&quot;int wsprintfA(char *buffer, const char *format, ...);\n&quot; +
+&quot;]]\n&quot; +
+&quot;user32 = ffi.load('user32')\n&quot; +
+&quot;szBuf = ffi.new('char[?]', 256)\n&quot; +
+&quot;ret = user32.wsprintfA( szBuf, '表示%sは%sです。', 'OK', '123' )\n&quot; +
+&quot;szBuf = ffi.string(szBuf)&quot;
+);
+
+$strBufSprintf = dllfuncstr(#L, &quot;GetStrVar&quot;, &quot;szBuf&quot;);
+
+message($strBufSprintf);
+
+freedll(#L)
+</pre></div>
+</ul>

@@ -1,0 +1,63 @@
+%(hilight)s
+<h2><i class="fa fa-book fa-fw"></i>HmNodeJS Nodeのウィンドウをデバッグ表示</h2>
+<ul class="checklist">
+    <li>
+        <h3>概要</h3>
+        <p>ここでは、HmNodeJSの利用において、HmNodeProxyやnode.jsを視覚的に起動した状態で利用する方法を説明します。</p>
+        <p><img src="./other_soft/hm_nodejs/cnt_hm_nodejs_01.png"></p>
+
+    <li>
+        <h3>Nodeのウィンドウのデバッグ表示のための記述</h3>
+        <p>以下のサンプルのように、HmNodeClient.Options型のShowConsoleにtrueを代入し、<br>optionsインスタンスをHmNodeClientのコンストラクタの3番目の引数として渡します。</p>
+        <div class="code">
+            <pre class="brush:python highlight:[9,10,11];">
+#V8 = loaddll( hidemarudir + @&quot;\hmV8.dll&quot; );
+
+#_ = dllfuncw( #V8, &quot;DoString&quot;, R&quot;ES6(
+
+host.lib(clr, &quot;HmNodeClient&quot; );
+
+var currentmacrodirectory = hm.Macro.Var[&quot;currentmacrodirectory&quot;];
+
+var options = new clr.HmNodeClient.Options();
+options.ShowConsole = true;
+var client = new clr.HmNodeClient(50001, currentmacrodirectory + &quot;/HmNodeSample.js&quot;, options);
+
+client.Start();
+
+var NameValueCollection = clr.System.Collections.Specialized.NameValueCollection;
+var param = new NameValueCollection();
+param.Add(&quot;word1&quot;, &quot;C:/abc/♬e.mac&quot;);
+param.Add(&quot;myppp&quot;, &quot;そそそそそ&quot;);
+var res = client.GetResponse(param);
+
+console.log(res.Data);
+console.log(res.StatusDescription+&quot;いいい&quot;);
+console.log(res.StatusCode+&quot;あああ&quot;);
+console.log(res.CallCount);
+
+hm.Macro.Var[&quot;$data&quot;] = res.Data + res.CallCount;
+)ES6&quot;
+);
+
+message $data;
+
+freedll( #V8 );
+</pre>
+        </div>
+    <li>
+        <h3>Nodeウィンドウなどを手動で閉じると不正な状態になるので注意</h3>
+        <p><img src="./other_soft/hm_nodejs/cnt_hm_nodejs_02.png"></p>
+        <p>
+            Nodeウィンドウは、本来秀丸を閉じると、自動で閉じるように組まれていますので、<br>
+            手動でいきなり閉じると、状態が一致しなくなり、不正な状態となります。
+        </p>
+        <p>
+            どうしても閉じる必要性がある場合には、こちらのアイコンの方を閉じて下さい。<br>
+            </p>
+        <p><img src="./other_soft/hm_nodejs/cnt_hm_nodejs_01.png"></p>
+        <p>
+            又、「該当の秀丸プロセス」も閉じて下さい。(マクロを実行した際に、開いていた秀丸のタブを１つ閉じる)
+        </p>
+
+</ul>

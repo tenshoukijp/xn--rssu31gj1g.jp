@@ -1,0 +1,54 @@
+%(hilight)s
+<h2><i class="fa fa-history fa-fw"></i>hmLoadCLR 更新履歴</h2>
+
+<ul class="checklist">
+    <li>
+    <h3>2017/03/25 ver. 1.4.8.1</h3>
+    <ul>
+        <li>DoStringやDoFileより早い段階で、<br>
+        秀丸マクロ側より、SetNumVarやGetStrVarなどの直接マニュアルによる代入・取得関数を使うとdllの利用形態が取得できないバグの修正。
+    </ul>
+    <li>
+    <h3>2017/03/24 ver. 1.4.7.8</h3>
+    <ul>
+        <li>NeoLuaのbool値を、秀丸の整数型へと代入した際には、真=1, 偽=0 へとマッピングするようにした。
+    </ul>
+    <li>
+    <h3>2016/12/16 ver. 1.4.5.6</h3>
+    <p>AssemblyPathはluaの作法と異なるため、変更。package.pathに追加していく形とした。<br>
+    AssemblyLoadはload_assemblyというIronRubyと同じ関数名とした。<br>
+    詳細は、<a href="?page=nobu_tool_hm_loadclr_loadmngdll">こちら</a></p>
+    <li>
+    <h3>2016/12/15 ver. 1.4.5.5</h3>
+    <p>秀丸変数となる「currentmacrodirectory」に存在するマネージ.dllは、<br>
+    .NET Frameworkのライブラリと同様に、「登録済みのdll」であるかのように、<br>
+    アセンブリ名だけで、ロード出来るようになった。<br>
+    又、AssemblyPathテーブルにパスを追加していくことで、独自のディレクトリを.dllのロード場所とみなすことが可能となった。<br>
+    詳細は、<a href="?page=nobu_tool_hm_loadclr_loadmngdll">こちら</a></p>
+    <li>
+    <h3>2016/11/06 ver. 1.4.5.1</h3>
+    <ul>
+        <li>x86でもx64でも安定した動作を行うように修正。
+    </ul>
+    <li>
+    <h3>2016/10/22 ver. 1.4.0.8</h3>
+    <ul>
+        <li><a href="?page=nobu_tool_hm_loadclr_api_866">秀丸エディタ 8.66以降で使える機能</a>のうち、関数名の多くをプロパティのような形へと変更。
+        <li>秀丸エディタ v8.66系以上で使える機能の多くが、実行速度が若干速くなった。
+    </ul>
+    <li>
+    <h3>2016/10/01 ver. 1.1.0.0</h3>
+    <ul>
+        <li><a href="?page=nobu_tool_hm_loadclr_api_866">秀丸エディタ 8.66以降で使える機能</a>のうち、下記のものを追加。
+        <ul>
+        <li>hm.GetSelectedText()
+        <li>hm.GetCursorPos()
+        <li>hm.EvalMacro(...)
+        </ul>
+    </ul>
+    <li>
+    <h3>2016/09/28 ver. 1.0.0.0</h3>
+    <ul>
+        <li>初公開。コンセプトモデル。<br>
+    </ul>
+</ul>

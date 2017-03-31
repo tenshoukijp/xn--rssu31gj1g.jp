@@ -1,0 +1,56 @@
+%(hilight)s
+<h2><i class="fa fa-book fa-fw"></i>「hmLJ」の例題 外部プロセスの呼び出し</h2>
+
+<ul class="checklist">
+    <li>
+    <h3>概要</h3>
+    <p>秀丸マクロから外部プロセスを呼び出す手段自体は提供されていますが、<br>
+    秀丸マクロ自体、分析機能が貧弱であるため、結果の分析に苦労します。<br>
+    しかし、Lua程度の文法と基本ライブラリがあれば、結果の取得や分析に苦労することはありません<br>
+    <br>
+    また出力結果を文字列として取得するだけではなく、<br>
+    プログラムが返す「リターン値やexit値の取得」なども簡単です。</p>
+    </p>
+
+    <h3>外部プロセスを呼び出し、結果を文字列で受け取る</h3>
+    <p>すでに存在する外部のプロセスを呼び出して処理をする、といったシーンは現在もそれなりに存在します。<br>
+    特にコンソールコマンドの類はその傾向があることでしょう。</p>
+
+    <div class="code"><pre class="brush:python">
+#L = loaddll( hidemarudir + &quot;\\&quot; + &quot;hmLJ.dll&quot; );
+
+#_ = dllfunc(#L, &quot;SetStrVar&quot;, &quot;g_str_command&quot;, &quot;dir&quot;);
+
+#_ = dllfunc(#L, &quot;DoFile&quot;, currentmacrodirectory + &quot;\\outprocess.lua&quot;); // 外部ファイルの実行
+
+$output = dllfuncstr(#L, &quot;GetStrVar&quot;, &quot;output&quot;); // 結果を取得
+
+message($output);
+
+freedll( #L );
+endmacro;
+
+</pre></div>
+
+    <h3>外部の「.lua」ファイルを用意</h3>
+    <p>上記マクロと同じディレクトリに、outprocess.luaというファイルを用意しましょう。<br>
+    文字コードはcp932(sjis)なので、気をつけてください。<br>
+    </p>
+
+    <div class="code"><pre class="brush:lua">
+-- os.shell_execute は対象プログラムの出力文字が返ってくる。
+-- なお、結果の文字列ではなく、外部プロセス側のリターンコードを受け取る場合には、os.executeで実行してください。
+function os.shell_execute(str_command)
+    local handle = io.popen(str_command)
+    local result = handle:read("*a")
+    handle:close()
+    return result
+end
+
+output = os.shell_execute(g_str_command)
+hm.debuginfo(output)
+
+</pre></div>
+    <p><img src="./other_soft/hm_luajit/cnt_hm_luajit_15.png"></p>
+    <p><img src="./other_soft/hm_luajit/cnt_hm_luajit_16.png"></p>
+</ul>

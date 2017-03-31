@@ -1,0 +1,149 @@
+%(hilight)s
+<h2><i class="fa fa-book fa-fw"></i>C#などで作った外部の「マネージドな.dll」の読み込み</h2>
+
+<ul class="checklist">
+    <li>
+    <h3>概要</h3>
+    <p>hmJSは、好きなフォルダに置いた自作のマネージドな.dllを(特に署名などもなく)突如自由に読みだして利用することが可能です。</p>
+    <p>「C#」はもちろんのこと「VB.net」「C++/CLI」「F#」「JScript.net」などで作成したdllを読み込むことが出来ます。</p>
+
+    <h3>C#のソースから.dllを作成。</h3>
+    <p>最小限のサンプルとするため、わかりやすい構成としましょう。<br>
+    </p>
+    <p>hmJS自体は、.NET Framework 4.0で構成されていますが、<br>
+    あなたが利用する.dllは、<span class="negative">.NET Framework 4.6など、hmJSより新しいバージョンのアセンブリでも大丈夫</span>です!!<br>
+    ここは普通の.NETの制限より非常に緩く出来ています。<br>
+    <span class="negative">あなたのPCに入っている.NET Frameworkの一番新しいバージョンで作成しても問題ありません。</span></p>
+    <ul>
+        <li>ファイル名は「TestSample.dll」
+        <li>名前空間は「TestNameSpace」
+        <li>クラス名は「TestClass」
+        <li>メソッドは「TestFuncNum」と「TestFuncStr」と「TestFuncMax」
+    </ul>
+    <p>とします。</p>
+    <p>コンパイルし、<span class="positive">TestSample.dll</span>といった名前にしたとしましょう。</p>
+    <div class="code"><pre class="brush:csharp">
+using System;
+
+namespace TestNameSpace
+{
+    public class TestClass
+    {
+        public TestClass() { }
+        public int TestFuncNum(int x)
+        {
+            return x + 3;
+        }
+
+        public String TestFuncStr(String s)
+        {
+            return s + s;
+        }
+
+        // 可変長引数
+        public int TestFuncMax(params int[] a)
+        {
+            int max = a[0];
+            for(int i=1; i&lt;a.Length; ++i)
+            {
+              if(max &lt; a[i])
+                max = a[i];
+            }
+            return max;
+        }
+    }
+}
+
+</pre></div>
+
+    <h3>loadするhmJSの例</h3>
+    <p>host.libを利用することでアセンブリを読み込むことが出来ます。<br>
+    </p>
+    <p>読み込めたマネージdllの内容は、hmJSに取り込まれ、直接JavaScriptで以下のように利用可能です。</p>
+    <div class="code"><pre class="brush:python">
+// マクロが置いてある場所に.dllが置いてあるものとする。
+// マクロが置いてある場所と、.dllが置いてある場所が違うなら、「&quot;C:/xxx/xxx/xx.dll&quot;」などと具体的にフルパスを指定すれば良い
+#JS = loaddll( hidemarudir + @&quot;\hmJS.dll&quot; );
+
+#_ = dllfuncw( #JS, &quot;DoString&quot;, R&quot;JS(
+
+currentmacrodirectory = hm.Macro.Var('currentmacrodirectory');
+var addlib = host.lib(currentmacrodirectory + &quot;/TestSample.dll&quot;);
+
+var obj = new addlib.TestNameSpace.TestClass();
+result_num = obj.TestFuncNum(10)
+result_str = obj.TestFuncStr(&quot;あいう&quot;)
+
+result_max = obj.TestFuncMax(1, 100, -5, 101, 10)
+hm.debuginfo(result_max)
+
+result_max = obj.TestFuncMax(1, 10)
+hm.debuginfo(result_max)
+
+hm.Macro.Var('#result_num', result_num);
+hm.Macro.Var('$result_str', result_str);
+
+)JS&quot;
+);
+
+message(str(#result_num));
+message($result_str);
+
+freedll( #JS );
+
+</pre></div>
+    <h3>hidemarudirやcurrentmacrodirectoryは読み込み対象ディレクトリとなっている</h3>
+    <p>hmJSでは、<span class="positive">実行するマクロファイルと同じ場所(currentmacrodirectory)に、読み込み対象の.dllがある場合、<br>
+    フルパスを指定せず、以下のように.NET Frameworkの既存のライブラリを呼び出すのと同様の感覚で、読み込んで利用することが出来ます。</span><br>
+    </p>
+
+    <div class="code"><pre class="brush:python">
+var addlib = host.lib(&quot;TestSample&quot;); // hidemarudir もしくは、currentmacrodirectoryにあるTestSample.dllのロードを試みる
+</pre></div>
+
+    <h3>自作の個人的なディレクトリを、「.dll(アセンブリ)の置き場所」として認識させる</h3>
+    <p>アセンブリの.dllは本来配置場所が自由ではありません。<br>
+    これを特別に追加するため、「IronPythonなら、sys.path.append」、「IronRubyなら、$LOAD_PATH.push」があります。<br>
+
+    </p>
+    <ul class="pointlist">
+        <li>
+        <h4>AssemblyPath.Add(...)</h4>
+        <p>これらと同様の機能を提供するため、hmJSには、「AssemblyPath」という変数名の「List&lt;String&gt;型」のオブジェクトを提供しています。<br>
+        ここにパスを加えていくことで、該当のフォルダにあるアセンブリを自然な形で読み込むことが出来ます。<br>
+        <span class="red">特にC#など自作の.dllの中から、他の.dllを読み込んでおり、その両方を該当のディレクトリに入れている場合は、この設定が必須です。</span></p>
+        <li>
+        <h4>host.lib(clr, "...")</h4>
+        <p>また、上述までのソースとは異なり、「host.lib」関数の第１引数に、「clr」を指定し、第２引数に読み込みたいアセンブリを指定することで、<br>
+        読み込み対象の.dll内の内容は、clrオブジェクトへと追加されていきます。</p>
+    </ul>
+    <div class="code"><pre class="brush:python">
+#JS = loaddll( hidemarudir + @&quot;\hmJS.dll&quot; );
+
+#_ = dllfuncw( #JS, &quot;DoString&quot;, R&quot;JS(
+
+// C:\aaaのフィルダは.dllの置き場所として加える。
+AssemblyPath.Add(&quot;C:/aaa&quot;);
+
+// var addlib = host.lib(&quot;C:/aaa/TestSample.dll&quot;); と別変数に受けるのではなく、既存の「clr」にたしこむ形で受
+host.lib(clr, &quot;TestSample&quot;);
+
+var obj = new clr.TestNameSpace.TestClass();
+result_num = obj.TestFuncNum(10)
+result_str = obj.TestFuncStr(&quot;あいう&quot;)
+
+result_max = obj.TestFuncMax(1, 100, -5, 101, 10)
+hm.debuginfo(result_max)
+
+result_max = obj.TestFuncMax(1, 10)
+hm.debuginfo(result_max)
+
+hm.Macro.Var('#result_num', result_num);
+hm.Macro.Var('$result_str', result_str);
+
+)JS&quot;
+);
+
+freedll( #JS );
+</pre></div>
+</ul>

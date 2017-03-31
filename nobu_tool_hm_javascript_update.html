@@ -1,0 +1,64 @@
+%(hilight)s
+<h2><i class="fa fa-history fa-fw"></i>hmJS 更新履歴</h2>
+
+<ul class="checklist">
+    <li>
+    <h3>2017/03/24 ver. 1.4.7.8</h3>
+    <ul>
+        <li>JavaScriptのbool値を、秀丸の整数型へと代入した際には、真=1, 偽=0 へとマッピングするようにした。
+    </ul>
+    <li>
+    <h3>2017/03/13 ver. 1.4.7.5</h3>
+    <p>JavaScriptにエラーがあった場合に、適格なエラーメッセージが出るようになった。<br>
+    (エラーの箇所がわかるような文言となった)</p>
+    <li>
+    <h3>2016/12/15 ver. 1.1.6.2</h3>
+    <p>秀丸変数となる「currentmacrodirectory」に存在するマネージ.dllは、<br>
+    .NET Frameworkのライブラリと同様に、「登録済みのdll」であるかのように、<br>
+    アセンブリ名だけで、ロード出来るようになった。<br>
+    又、AssemblyPathオブジェクトにパスを追加していくことで、独自のディレクトリを.dllのロード場所とみなすことが可能となった。<br>
+    詳細は、<a href="?page=nobu_tool_hm_javascript_loadmngdll">こちら</a></p>
+    <li>
+    <h3>2016/12/02 ver. 1.1.5.9</h3>
+    <p>console.logやconsole.assertなどについて、より各ブラウザに実装されているものに近づけた。<br>
+    詳細は<a href="?page=nobu_tool_hm_javascript_api_866">こちら</a></p>
+    <li>
+    <h3>2016/11/22 ver. 1.1.5.7</h3>
+    <p>console.logやconsole.assertなど、よく利用されているものは、やはりスタブ関数だけでもあった方が便利そうなので、<br>
+    エラーにはならない程度のものを用意。<br>
+    詳細は<a href="?page=nobu_tool_hm_javascript_api_866">こちら</a></p>
+    <p>本来の出力を満たすようなものではなく、エラーにならずデバッグ出力モニターに出る、といった程度のもの。</p>
+    <li>
+    <h3>2016/11/22 ver. 1.1.5.6</h3>
+    <p>hm.debuginfo(...)の性能アップ。より妥当な表示を実現した。</p>
+    <li>
+    <h3>2016/11/18 ver. 1.1.5.5</h3>
+    <ul>
+        <li>
+        <p>下記のように</p>
+        <div class="code"><pre class="brush:js">hm.debuginfo([1,2,3])</pre></div>
+        <p>などモニターデバッグへと出力した場合に、「WindowsScriptItem」といった内部管理的な型情報が出力されていたが、<br>
+        あまり意味が無いため、「JavaScript系の型であれば、.toString()したものを、」「.NET系の型であれば、.ToString()したものを」出力するようにした。</p>
+    </ul>
+    <li>
+    <h3>2016/11/12 ver. 1.1.5.4</h3>
+    <ul>
+        <li>hmV8のソース修正に合わせた整理。
+    </ul>
+    <li>
+    <h3>2016/11/06 ver. 1.1.5.1</h3>
+    <ul>
+        <li>x86でもx64でも安定した動作を行うように修正。
+    </ul>
+    <li>
+    <h3>2016/10/22 ver. 1.1.0.1</h3>
+    <ul>
+        <li>自作のC#などによるアセンブリdllなどのロードの仕方を変更し、<br>
+        「host.LoadFile」→「host.lib」というように、標準のライブラリのロードの仕方と同じ関数を使うようにした。<br>
+        詳細は、<a href="?page=nobu_tool_hm_javascript_loadmngdll">こちら</a>
+    </ul>
+    <h3>2016/10/21 ver. 1.0.0.8</h3>
+    <ul>
+        <li>初公開。コンセプトモデル。<br>
+    </ul>
+</ul>

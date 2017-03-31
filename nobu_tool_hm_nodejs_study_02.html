@@ -1,0 +1,81 @@
+%(hilight)s
+<h2><i class="fa fa-book fa-fw"></i>HmNodeJS Node用のJS側の「正しい終了記述」</h2>
+<ul class="checklist">
+    <li>
+        <h3>概要</h3>
+        <p>ここでは、HmNodeJSの利用において、Node側が利用する.jsの正しい終了方法の記述を説明します。<br>
+        なぜ正しい記述が必要なのかというと、<span class="negative">HmNoceJSは秀丸エディタが全て終了すると、<br>
+        自身が起動した各チャンネルに割り当てたnode.jsを全て終了</span>します。</p>
+        <p>しかし、<br>
+        ・本当に終了して良いタイミングなのか？<br>
+        ・後処理をする必要があるのか？<br>
+        などは、チャンネル番号に紐づけられたnode.jsが実行しているjavascript自身でないとわかりません。</p>
+        <p>よって、HmNodeJSは終了リクエストとして「<b>query_node_terminate</b>」という文字列を、<br>
+        対象のチャンネル番号のnode.exeの<span class="positive">標準入力へと送信</span>するので、<br>
+        その文字列を受け取ったら、nodeが自分自身のプロセスを正しく終了するよう、以下のように記載しておくのが理想的です。</p>
+    <li>
+        <h3>Node側が利用する .js における、正しい終了のための記述</h3>
+        <div class="code">
+            <pre class="brush:js;highlight:[36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55]">
+var http = require('http');
+var url = require('url');
+var qs = require('querystring');
+
+var port = process.argv[2]
+
+var server = http.createServer();
+server.on('request', doRequest);
+server.listen(port);
+
+console.log('Server running!');
+
+// リクエストの処理
+function doRequest(req, res) {
+    var data = &quot;aaa&quot;;
+
+    // GETリクエストだったら
+    if (req.method === 'GET') {
+        var url_parts = url.parse(req.url,true);
+        console.log(url_parts);
+        data += url_parts.query[&quot;word1&quot;];
+        data += url_parts.query[&quot;myppp&quot;];
+    }
+
+    res.writeHead(200, { 'Content-Type': 'text/plain' });
+    res.write(data);
+    res.end();
+    console.log(&quot;ノード側:OK&quot;);
+}
+
+/*
+ * ここから下が、正しい終了記述の典型的なパターン。
+ * 「query_node_terminate」という文字列が標準入力にインプットされると、
+ * この.jsを起動したnodeを終了する。
+ */
+var readline = require('readline'),
+rl = readline.createInterface(process.stdin, process.stdout);
+
+rl.on('line', doLine);
+rl.on('close', doClose);
+
+function doLine(line) {
+    switch(line.trim()) {
+        case 'query_node_terminate':
+            rl.close();
+            process.stdin.destroy();
+            break;
+        default:
+            break;
+    }
+}
+
+function doClose() {
+    process.exit(0);
+}
+
+console.log('running!');
+
+</pre>
+        </div>
+
+</ul>

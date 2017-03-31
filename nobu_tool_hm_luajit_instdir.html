@@ -1,0 +1,23 @@
+%(hilight)s
+<h2><i class="fa fa-book fa-fw"></i>インストール場所の変更</h2>
+
+<ul class="checklist">
+    <li>
+    <h3>概要</h3>
+    <p>複数のマクロから利用することを考慮すると、<br>
+    hmLJ.dllの配置場所は、秀丸本体と同じ場所、<br>
+    とするのが最もわかりやすいでしょう。</p>
+    <p>もちろん、そのような制限があるわけではなく、hmLJ.dll自体はどこにおいても自由です、<br>
+    その際は、loaddllの際に、正しく該当の場所を指定して下さい。</p>
+
+    <p>例えば、マクロ本体と同じディレクトリにhmLJ.dllをコピーして運用するならば</p>
+    <div class="code"><pre class="brush:python">
+#L = loaddll( currentmacrodirectory + &quot;\\&quot; + &quot;hmLJ.dll&quot; );
+
+-- ・・・何か処理
+
+freedll( #L );
+
+</pre></div>
+<p>といったこととなるでしょう。</p>
+</ul>

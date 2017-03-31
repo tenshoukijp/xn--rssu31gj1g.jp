@@ -1,0 +1,162 @@
+%(hilight)s
+<h2>
+    <i class="fa fa-book fa-fw"></i>HmNodeJS はじめての実行
+</h2>
+<ul class="checklist">
+    <li>
+        <h3>概要</h3>
+        <p>
+            ここでは、hmNodeJSの具体的な利用方法を解説します。<br>
+            「HmNodeSample.mac」と「HmNodeSample.js」は同じ場所において、HmNodeSample.macを実行してください。
+        </p>
+    <li>
+        <h3>HmNodeJSを利用した、ミニマムなサンプル</h3>
+        <fieldset class="code">
+            <legend>HmNodeSample.mac</legend><pre class="brush:python;">
+#V8 = loaddll( hidemarudir + @&quot;\hmV8.dll&quot; );
+
+#_ = dllfuncw( #V8, &quot;DoString&quot;, R&quot;ES6(
+
+// ライブラリの読み込み
+host.lib(clr, &quot;HmNodeClient&quot; );
+
+// このマクロファイルが置いてある場所をJSで獲得
+var currentmacrodirectory = hm.Macro.Var[&quot;currentmacrodirectory&quot;];
+
+// 50001番を、HmNodeSample.js 用のチャンネルとして結びつける。
+// 一度結びつけると、「全ての秀丸」を終了するまでは、結びつけを変更することは出来ない。
+var client = new clr.HmNodeClient(50001, currentmacrodirectory + &quot;/HmNodeSample.js&quot;);
+
+// 上記結びつき状態で 通信開始
+client.Start();
+
+// GETリクエストするため、word1=****&amp;myapp=***** みたいなパラメータを構築する。
+var NameValueCollection = clr.System.Collections.Specialized.NameValueCollection;
+var param = new NameValueCollection();
+param.Add(&quot;word1&quot;, &quot;C:/abc/♬e.mac&quot;);
+param.Add(&quot;myppp&quot;, &quot;そそそそそ&quot;);
+
+// 上記パラメータを伴って、httpリクエストをNodeに投げる
+var res = client.GetResponse(param);
+
+// 
+console.log(res.Data);
+console.log(res.StatusDescription+&quot;いいい&quot;);
+console.log(res.StatusCode+&quot;あああ&quot;);
+console.log(res.CallCount);
+
+hm.Macro.Var[&quot;$data&quot;] = res.Data + res.CallCount;
+
+)ES6&quot;
+);
+
+
+message $data;
+
+freedll( #V8 );
+</pre>
+        </fieldset>
+    <li>
+        <h3>各データ型の概要</h3>
+        <ul class="pointlist">
+            <li>
+                <h4>HmNodeClient</h4>
+                <p>
+                    HmNodeClientのコンストラクタには、<br>
+                </p>
+                <ul>
+                    <li>チャンネル番号<br>
+                    <li>
+                        「該当チャンネルでnode.jsが起動するjavascriptファイルのフルパス」を指定します。<br>
+                        (このjavascriptはnode側で処理されます。)
+                </ul>
+
+            <li>
+                <h4>NameValueCollection</h4>
+                <p>
+                    Node.jsにはhttp://localhost:チャンネル番号/word1=****&amp;myapp=*****<br>
+                    のようにGETリクエストの形で、GetResopnseメソッドの引数に渡してアクセスし、結果を得ることが出来ます。
+                </p>
+
+            <li>
+                <h4>レスポンス結果</h4>
+                <ul class="arrowlist">
+                    <li>
+                        <h5>Data</h5>
+                        <p>
+                            node.jsが、Webリクエストに対して返したデータ。<br>
+                            何をどのように返すのかは、チャンネル番号に結び付けたjavascriptで定義します。<br>
+                            通常、「テキスト」「JSon」「XML」「HTML」などを返すことが多くなるのではないかと思います。
+                        </p>
+                    <li>
+                    <li>
+                        <h5>StatusCode</h5>
+                        <p>
+                            エラーなどがあった際に、ステータスコードを含めた文字列が入っています。
+                        </p>
+                    <li>
+                        <h5>StatusDescription</h5>
+                        <p>
+                            エラーなどがあった際に、エラー内容の詳細の文字列が入っています。
+                        </p>
+                    <li>
+                        <h5>CallCount</h5>
+                        <p>
+                            Webリクエストとして成功したカウンタが入っています。<br>
+                            この値を見ることで<br>
+                        </p><ul>
+                            <li>このチャンネルで初めてWebRequestしたのか
+                            <li>何回以上WebRequestしたことがあるのか
+                        </ul>
+                        <p>などが判定可能です。</p>
+                    </li>
+                </ul>
+        </ul>
+
+    <li>
+        <h3>Node側が利用する「HmNodeSample.js」</h3>
+        <p>以下は、チャンネルに結び付けたnode.jsが実行するjavascriptの内容です。<br></p>
+        <p>nodeは、チャンネル単位で、以下のようにプロセスとして起動されます。</p>
+        <div class="code"><pre class="brush:ps;">
+        node.exe "javascriptのファイルのフルパス" チャンネル番号
+        </pre></div>
+        <p>javascriptの内容自体は、node.jsの入門中の入門ですので説明は割愛します。</p>
+        <fieldset class="code">
+            <legend>HmNodeSample.js</legend><pre class="brush:js;">
+var http = require('http');
+var url = require('url');
+var qs = require('querystring');
+
+var port = process.argv[2]
+
+var server = http.createServer();
+server.on('request', doRequest);
+server.listen(port);
+
+console.log('Server running!');
+
+// リクエストの処理
+function doRequest(req, res) {
+    var data = &quot;aaa&quot;;
+
+    // GETリクエストだったら
+    if (req.method === 'GET') {
+        var url_parts = url.parse(req.url,true);
+        console.log(url_parts);
+        data += url_parts.query[&quot;word1&quot;];
+        data += url_parts.query[&quot;myppp&quot;];
+    }
+
+    res.writeHead(200, { 'Content-Type': 'text/plain' });
+    res.write(data);
+    res.end();
+    console.log(&quot;ノード側:OK&quot;);
+}
+
+</pre>
+        </fieldset>
+    <li>
+        <h3>実行結果</h3>
+        <p><img src="./other_soft/hm_nodejs/cnt_hm_nodejs_03.png"></p>
+
+</ul>
