@@ -1,0 +1,51 @@
+%(hilight)s
+<h2><i class="fa fa-book fa-fw"></i>NGenのススメ ～読み込み実行の高速化～</h2>
+
+<ul class="checklist">
+    <li>
+    <h3>概要</h3>
+    <p>hmV8はモジュールとして4「ClearScript.dll / ClearScript-32.dll」など、<br>
+    最初にClearScript系を読み込みをし、プログラムが自動的に、中間言語をCPUが実行出来るネイティブイメージに変換するため、<br>
+    スクリプトを実行しはじめるまでに少し時間がかかります。<br>
+    </p>
+    <p>実際に、hmV8.dllを利用したマクロ(EcmaScriptスクリプト)を実行すると、<br>
+    少し待ち時間を体感出来るハズです。<br>
+    </p>
+    <p>同じスクリプトを２回目以降実行する分には、この時間は大幅に短縮されます。<br>
+    <h3>NGenを利用し、待ち時間を大幅短縮</h3>
+    <p>NGen(ネイティブ イメージ ジェネレーター)を利用することで、hmV8.dllが利用するClearScript.dllやClearScriptV8-32.dllの <span class="positive">この最初の待ち時間を大幅にカット</span>することが出来ます。</p>
+    <ul class="pointlist">
+        <li>
+        <h4>「管理者権限」でプロンプトを実行</h4>
+        <p>管理者権限でプロンプトを実行します。管理者権限であることが必須です。</p>
+        <li>
+        <h4>.NET Frameworkのフォルダへと移動</h4>
+        <div class="code"><pre class="brush:ps">
+cd C:\Windows\Microsoft.NET\Framework\v4.0.30319
+</pre></div>
+        <li>
+        <h4>ClearScript.dll/ClearScript-32.dllのネイティブイメージを作成</h4>
+        <p>以下のように「ngen install」のコマンドを利用して、ネイティブイメージを作成してください。<br>
+        「C:\usr\hidemaru\ClearScript***」の部分は、実際のあなたの秀丸のディレクトリやClearScriptの位置に合わせてください。
+        <div class="code"><pre class="brush:ps">
+ngen install "C:\usr\hidemaru\ClearScript.dll"
+ngen install "C:\usr\hidemaru\ClearScriptV8-32.dll"
+</pre></div>
+
+        <li>
+        <h4>64bitのhmV8を利用している人は…</h4>
+        <span class="negative">もしも、<b>x86版のhmV8.dllではなく、x64版のhmV8.dllを利用している人</b>は、</span>
+        <div class="code"><pre class="brush:ps">
+cd C:\Windows\Microsoft.NET\Framework64\v4.0.30319
+</pre></div>
+        <span class="negative">といったように、64版のFrameworkディレクトリへと移動してください</span>
+        <div class="code"><pre class="brush:ps">
+ngen install "C:\usr\hidemaru\ClearScript.dll"
+ngen install "C:\usr\hidemaru\ClearScriptV8-64.dll"
+</pre></div>
+        <p>となります</p>
+    </ul>
+    <h3>hmV8(のいずれかのファイル)が更新されたら、再度NGenする必要があります。</h3>
+
+    <p><img src="./other_soft/hm_ecmascript/cnt_hm_ecmascript_ngen_01.png"></p>
+</ul>

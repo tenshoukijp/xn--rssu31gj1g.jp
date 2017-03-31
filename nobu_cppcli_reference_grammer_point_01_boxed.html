@@ -1,0 +1,72 @@
+%(hilight)s
+<h2><i class="fa fa-pencil-square-o fa-fw"></i>ボックス化</h2>
+
+<ul class="checklist">
+    <li>
+    <h3>概要</h3>
+    <p>ここでは、C++/CLIの着目すべき文法のうち、ボックス化を中心に解説しています。<br>
+    </p>
+    </li>
+    <li>
+    <h3>プリミティブなボックス化</h3>
+    <p>基本型→Object型へと意図して変換したい場合、ボックス化が行われます。</p>
+
+    <fieldset class="code"><legend>ボックス化のプリミティブな例</legend> <pre class="brush:cpp;">
+int main() {
+  String^ b = (2).ToString(); // 「2」をSystem::Int32型へ、そのToString()メソッドを呼び出す。System::Int32というvalue classへのボックス化なので「.」でメソッドにアクセス。
+  int c = (&quot;16&quot;)-&gt;ToInt32();  // &quot;16&quot;をString^型にボックス化して、ToInt32()メソッドを呼び出す。String^というref classへのボックス化なので「-&gt;」でメソッドにアクセス。
+
+  return 0;
+}
+</pre></fieldset>
+
+    <li><h3>Object^型へのボックス化</h3>
+    <p>C++/CLIではすべての型はObject型から派生しているとしています。<br>
+    Objectはref classです。<br>
+    しかしint,charなどの基本型やvalue classなどは、Object型から派生していると<span class="positive">みなさないですむ場合</span>は<br>
+    そうしたほうが高速にプログラムを動かせるのでそうしています。<br>
+    </p>
+    <p>このような型でも、Objectとみなしたい場合、ボックス化が行われます。</p>
+    <p>ボックス化とは値型データを、マネージヒープ上に箱（メモリ）を確保しそこにコピーする作業です。<br>
+    コピーしたものは本物のObject派生型になります。</p>
+    <p>基本型をObjectとみなしたい例として、コレクション型を作るとき、コレクションへの追加関数として、Add(Object^ o)と定義する場合などがあります。</p>
+    <p>以下のように書くと、ハンドルは常にマネージヒープを指しているので、2 がボックス化されaがそれを指すようになります。</p>
+
+    <fieldset class="code"><legend>ボックス化</legend> <pre class="brush:cpp;">
+int^ a = 2;
+</pre></fieldset>
+
+
+
+    <fieldset class="code"><legend>ボックス化</legend> <pre class="brush:cpp;">
+void PrintObject(Object^ o)
+{
+    System::Console::WriteLine(o-&gt;ToString());
+}
+
+ref class R
+{
+};
+
+value class V
+{
+};
+
+int main()
+{
+    R r1;
+    R^ r2 = gcnew R;
+    V v1;
+    V^ v2 = gcnew V;
+    int a = 2;
+    char c = 'a';
+    PrintObject(%r1); // スタックライクをハンドルに代入するには % を使います。
+    PrintObject(r2);
+    PrintObject(v1); // ボックス化
+    PrintObject(v2);
+    PrintObject(a); // ボックス化
+    PrintObject(c); // ボックス化
+    PrintObject(&quot;AAA&quot;); // ボックス化 (String^)
+}
+</pre></fieldset>
+</ul>

@@ -1,0 +1,100 @@
+%(hilight)s
+<h2><i class="fa fa-cube fa-fw"></i>ゲーム プログラミング パターンズ ２章</h2>
+
+<ul class="checklist">
+    <li>
+    <h3>概要</h3>
+    <p>この説では「コマンドパターン」についてまとめている。
+    <li>
+    <h3>２章</h3>
+    <p>コマンドパターンは、「ゲームキャラクターなどのアクターとその行動」「コントローラー等の入力」「間を取り持つコマンド」と<br>
+    ３つの層に分けるのがコツである。
+    <fieldset class="code"><legend>ゲームキャラクターと、コントローラーへのボタンとの紐づけのデザインパターン</legend> <pre class="brush:cpp;">
+
+/*
+ * アクター
+ */
+class GameActor {
+public:
+    virtual void jump() {}
+    virtual void fire() {}
+};
+
+class GameActorPlayer : public GameActor {
+public:
+    virtual void jump() { std::cout &lt;&lt; &quot;jump&quot; &lt;&lt; end;  }
+    virtual void fire() { std::cout &lt;&lt; &quot;gire&quot; &lt;&lt; end;  }
+};
+
+/*
+ * コマンド
+ */
+class Command {
+public:
+    virtual ~Command() {}
+    virtual void execute(GameActor&amp; actor) = 0;
+};
+
+// 各種のコマンド
+class JumpCommand : public Command {
+public:
+    virtual void execute(GameActor&amp; actor) {
+        actor.jump();
+    }
+};
+
+class FireCommand : public Command {
+public:
+    virtual void execute(GameActor&amp; actor) {
+        actor.fire();
+    }
+};
+
+// その他のコマンドなど…
+
+
+/*
+ * 入力ハンドル
+ */
+class InputHandler {
+public:
+    void handleInput();
+    // 以下、コマンドをボタンに割り当てるメソッドなど
+private:
+    Command* buttonX_;
+    Command* buttonY_;
+    Command* buttonA_;
+    Command* buttonB_;
+
+    Command* InputHandler::handleInput() {
+        if (isPressed(BUTTON_X)) {
+            return buttonX_;
+        }
+        if (isPressed(BUTTON_Y)) {
+            return buttonY_;
+        }
+        if (isPressed(BUTTON_A)) {
+            return buttonA_;
+        }
+        if (isPressed(BUTTON_B)) {
+            return buttonB_;
+        }
+
+        // 何も押されていないので何もしない
+        return NULL;
+    }
+};
+
+/*
+ * 呼び出し部
+ */
+InputHandler inputHandler;
+GameActor player = GameActorPlayer();
+void TickPlayerController() {
+    Command *command = inputHandler.handleInput();
+    if (command) {
+        command-&gt;execute(actor);
+    }
+}
+</pre></fieldset>
+</ul>

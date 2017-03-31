@@ -1,0 +1,641 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--nobanner-->
+<html>
+<head>
+<title>秀丸マクロ.net</title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta http-equiv="content-style-type" content="text/css">
+<meta name="description" content="秀丸マクロの .NET系を中心としたサイト">
+<link rel="shortcut icon" href="./v8_favicon.ico">
+<link rel="apple-touch-icon" href="./apple-touch-icon.png">
+<link rel="stylesheet" type="text/css" href="./style.min.css?v=%(styleupdate)s">
+<link rel="stylesheet" type="text/css" href="./font-awesome/css/font-awesome-4.7.0.min.css">
+<link rel="stylesheet" type="text/css" href="./font-awesome/css/font-awesome-plugin.css?v=%(fontpluginupdate)s">
+<link rel="stylesheet" type="text/css" href="./jquery/jquery.multilevelpushmenu.min.css?v=%(mlpmcssdate)s">
+%(style_dynamic)s
+<script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.12.4.min.js"></script>
+<script type='text/javascript'>
+window.jQuery || document.write('<script src="./jquery/jquery-1.12.4.min.js"><\/script>')
+</script>
+</head>
+
+<body>
+<script type="text/javascript">
+if (jQuery.support.opacity) {
+%(shcore_head)s
+} else {
+document.write("<script type='text/javascript' src='./jquery/modernizr-3.1.0.ie8.min.js'><\/script>");
+}
+</script>
+
+    <div id="pushobj">
+        <div id="eventpanel"></div>
+        <table style="margin: 0px; padding: 0px">
+            <tr>
+                <td class="paragraph" width="1150">%(content_dynamic)s</td>
+            </tr>
+        </table>
+    </div>
+
+    <div id="menu">
+        <nav>
+            <h2><i class="fa fa-reorder fa-fw"></i>目次</h2>
+            <ul>
+                <li><a href="./"><i class="fa fa-hidemaru fa-fw"></i>ホーム</a>
+
+                <li>
+                    <a href="./"><i class="fa fa-windows fa-fw"></i>.NET Framework・言語</a>
+                    <h2><i class="fa fa-windows fa-fw"></i>.NET Framework・言語</h2>
+                    <ul>
+
+                        <li>
+                            <a href="#"><i class="fa fa-v8 fa-fw"></i>.NET Framework via V8 ES6</a>
+                            <h2><i class="fa fa-v8 fa-fw"></i>.NET Framework via V8 ES6</h2>
+                            <ul>
+                                <li>
+                                    <a href="?page=nobu_tool_hm_ecmascript">
+                                        <i class="fa fa-v8 fa-fw"></i><span id="nobu_tool_hm_ecmascript">
+                                            hmV8<br>
+                                            .NET Framework<font size="3"> via </font>V8 ES6
+                                        </span>
+                                    </a>
+                                </li>
+                                <li><a href="?page=nobu_tool_hm_ecmascript_update"><i class="fa fa-history fa-fw"></i><span id="nobu_tool_hm_ecmascript_update">更新履歴</span></a></li>
+                                <li id="menu_separator"></li>
+                                <li>
+                                    <a href="?page=nobu_tool_hm_ecmascript_ngen">
+                                        <i class="fa fa-book fa-fw"></i><span id="nobu_tool_hm_ecmascript_ngen">
+                                            NGenのススメ<br>
+                                            ～読み込み実行の高速化～
+                                        </span>
+                                    </a>
+                                </li>
+                                <li id="menu_separator"></li>
+                                <li><a href="?page=nobu_tool_hm_ecmascript_api_866"><i class="fa fa-book fa-fw"></i><span id="nobu_tool_hm_ecmascript_api_866">hmV8専用の関数群</span></a></li>
+
+                                <li>
+                                    <a href="#"><i class="fa fa-book fa-fw"></i>既存のES6ライブラリの使用例</a>
+                                    <h2><i class="fa fa-book fa-fw"></i>既存のES6ライブラリの使用例</h2>
+                                    <ul>
+                                        <li><a href="?page=nobu_tool_hm_ecmascript_md"><i class="fa fa-book fa-fw"></i><span id="nobu_tool_hm_ecmascript_md">マークダウン ⇒ HTML への変換</span></a></li>
+                                        <li><a href="?page=nobu_tool_hm_ecmascript_beautify"><i class="fa fa-book fa-fw"></i><span id="nobu_tool_hm_ecmascript_beautify">JavaScript/CSS/HTMLの整形</span></a></li>
+                                        <li><a href="?page=nobu_tool_hm_ecmascript_puny"><i class="fa fa-book fa-fw"></i><span id="nobu_tool_hm_ecmascript_puny">日本語ドメイン ⇔ PunyCode 相互変換</span></a></li>
+                                    </ul>
+                                </li>
+                                <li id="menu_separator"></li>
+                                <li>
+                                    <a href="#"><i class="fa fa-book fa-fw"></i>ECMAScript6の文法メモ</a>
+                                    <h2><i class="fa fa-book fa-fw"></i>ECMAScript6の文法メモ</h2>
+                                    <ul>
+                                        <li><a href="?page=nobu_tool_hm_ecmascript_grammer_00"><i class="fa fa-book fa-fw"></i><span id="nobu_tool_hm_ecmascript_grammer_00">ECMAScript6の文法詳細</span></a></li>
+                                        <li><a href="?page=nobu_tool_hm_ecmascript_grammer_01"><i class="fa fa-book fa-fw"></i><span id="nobu_tool_hm_ecmascript_grammer_01">let</span></a></li>
+                                        <li><a href="?page=nobu_tool_hm_ecmascript_grammer_02"><i class="fa fa-book fa-fw"></i><span id="nobu_tool_hm_ecmascript_grammer_02">const</span></a></li>
+                                        <li><a href="?page=nobu_tool_hm_ecmascript_grammer_03"><i class="fa fa-book fa-fw"></i><span id="nobu_tool_hm_ecmascript_grammer_03">2進数・8進数</span></a></li>
+                                        <li><a href="?page=nobu_tool_hm_ecmascript_grammer_04"><i class="fa fa-book fa-fw"></i><span id="nobu_tool_hm_ecmascript_grammer_04">テンプレート文字列</span></a></li>
+                                        <li><a href="?page=nobu_tool_hm_ecmascript_grammer_05"><i class="fa fa-book fa-fw"></i><span id="nobu_tool_hm_ecmascript_grammer_05">分割代入</span></a></li>
+                                        <li><a href="?page=nobu_tool_hm_ecmascript_grammer_06"><i class="fa fa-book fa-fw"></i><span id="nobu_tool_hm_ecmascript_grammer_06">正規表現のキャプチャ</span></a></li>
+                                        <li><a href="?page=nobu_tool_hm_ecmascript_grammer_07"><i class="fa fa-book fa-fw"></i><span id="nobu_tool_hm_ecmascript_grammer_07">関数と引数</span></a></li>
+                                        <li><a href="?page=nobu_tool_hm_ecmascript_grammer_08"><i class="fa fa-book fa-fw"></i><span id="nobu_tool_hm_ecmascript_grammer_08">for...of</span></a></li>
+                                        <li><a href="?page=nobu_tool_hm_ecmascript_grammer_09"><i class="fa fa-book fa-fw"></i><span id="nobu_tool_hm_ecmascript_grammer_09">シンボル</span></a></li>
+                                        <li><a href="?page=nobu_tool_hm_ecmascript_grammer_10"><i class="fa fa-book fa-fw"></i><span id="nobu_tool_hm_ecmascript_grammer_10">アロー関数</span></a></li>
+                                        <li><a href="?page=nobu_tool_hm_ecmascript_grammer_11"><i class="fa fa-book fa-fw"></i><span id="nobu_tool_hm_ecmascript_grammer_11">Map と Set</span></a></li>
+                                        <li><a href="?page=nobu_tool_hm_ecmascript_grammer_12"><i class="fa fa-book fa-fw"></i><span id="nobu_tool_hm_ecmascript_grammer_12">オブジェクトの初期化・プロパティ</span></a></li>
+                                        <li><a href="?page=nobu_tool_hm_ecmascript_grammer_13"><i class="fa fa-book fa-fw"></i><span id="nobu_tool_hm_ecmascript_grammer_13">ジェネレータとイテレータ</span></a></li>
+                                        <li><a href="?page=nobu_tool_hm_ecmascript_grammer_14"><i class="fa fa-book fa-fw"></i><span id="nobu_tool_hm_ecmascript_grammer_14">クラスの基本</span></a></li>
+                                        <li><a href="?page=nobu_tool_hm_ecmascript_grammer_15"><i class="fa fa-book fa-fw"></i><span id="nobu_tool_hm_ecmascript_grammer_15">クラスの継承</span></a></li>
+                                        <li><a href="?page=nobu_tool_hm_ecmascript_grammer_16"><i class="fa fa-book fa-fw"></i><span id="nobu_tool_hm_ecmascript_grammer_16">クラスへのアクセサー</span></a></li>
+                                        <li><a href="?page=nobu_tool_hm_ecmascript_grammer_17"><i class="fa fa-book fa-fw"></i><span id="nobu_tool_hm_ecmascript_grammer_17">メタメソッド</span></a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li>
+                            <a href="#"><i class="fa fa-js fa-fw"></i>.NET & ActiveX via JavaScript</a>
+                            <h2><i class="fa fa-js fa-fw"></i>.NET & ActiveX via JavaScript</h2>
+                            <ul>
+                                <li>
+                                    <a href="?page=nobu_tool_hm_javascript">
+                                        <i class="fa fa-js fa-fw"></i><span id="nobu_tool_hm_javascript">
+                                            hmJS<br>
+                                            .NET &amp; ActiveX<font size="3"> via </font>JavaScript
+                                        </span>
+                                    </a>
+                                </li>
+                                <li><a href="?page=nobu_tool_hm_javascript_update"><i class="fa fa-history fa-fw"></i><span id="nobu_tool_hm_javascript_update">更新履歴</span></a></li>
+                                <li id="menu_separator"></li>
+                                <li><a href="?page=nobu_tool_hm_javascript_debugmonitor"><i class="fa fa-bug fa-fw"></i><span id="nobu_tool_hm_javascript_debugmonitor">デバッグメッセージ</span></a></li>
+                                <li id="menu_separator"></li>
+                                <li><a href="?page=nobu_tool_hm_javascript_api_lv0"><i class="fa fa-book fa-fw"></i><span id="nobu_tool_hm_javascript_api_lv0">秀丸マクロから利用するhmJSの関数</span></a></li>
+                                <li><a href="?page=nobu_tool_hm_javascript_api_866"><i class="fa fa-book fa-fw"></i><span id="nobu_tool_hm_javascript_api_866">hmJS専用の関数群</span></a></li>
+                                <li><a href="?page=nobu_tool_hm_javascript_default_clr"><i class="fa fa-book fa-fw"></i><span id="nobu_tool_hm_javascript_default_clr">.NETコアライブラリの使い方</span></a></li>
+                                <li><a href="?page=nobu_tool_hm_javascript_loadmngdll"><i class="fa fa-book fa-fw"></i><span id="nobu_tool_hm_javascript_loadmngdll">｢C#｣で自作したdllの読み込み</span></a></li>
+                                <li>
+                                    <a href="?page=nobu_tool_hm_javascript_winform">
+                                        <i class="fa fa-book fa-fw"></i><span id="nobu_tool_hm_javascript_winform">
+                                            手動で追加する.NET標準dllの例<br>
+                                            ～ Form等 ～
+                                        </span>
+                                    </a>
+                                </li>
+                                <li id="menu_separator"></li>
+                                <li><a href="?page=nobu_tool_hm_javascript_activexobject"><i class="fa fa-book fa-fw"></i><span id="nobu_tool_hm_javascript_activexobject">ActiveXObject</span></a></li>
+                                <li id="menu_separator"></li>
+                                <li>
+                                    <a href="?page=nobu_tool_hm_javascript_api_lv1">
+                                        <i class="fa fa-book fa-fw"></i><span id="nobu_tool_hm_javascript_api_lv1" style="font-size: 0.9em">秀丸マクロからの問い合わせ基本API</span><br>
+                                        <span id="nobu_tool_hm_javascript_api_lv1" style="font-size: 0.7em">(hmJSでこれらのAPIの利用機会は、ほぼありません)</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="?page=nobu_tool_hm_javascript_api_lv2">
+                                        <i class="fa fa-book fa-fw"></i><span id="nobu_tool_hm_javascript_api_lv2" style="font-size: 0.9em">秀丸マクロからの問い合わせ応用API</span><br>
+                                        <span id="nobu_tool_hm_javascript_api_lv2" style="font-size: 0.7em">(hmJSでこれらのAPIの利用機会は、ほぼありません)</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li>
+                            <a href="#"><i class="fa fa-python fa-fw"></i>.NET Framework via IronPython</a>
+                            <h2><i class="fa fa-python fa-fw"></i>.NET Framework via IronPython</h2>
+                            <ul>
+                                <li>
+                                    <a href="?page=nobu_tool_hm_ironpython">
+                                        <i class="fa fa-python fa-fw"></i><span id="nobu_tool_hm_ironpython">
+                                            hmPy<br>
+                                            .NET Framework<font size="3"> via </font>IronPython
+                                        </span>
+                                    </a>
+                                </li>
+                                <li><a href="?page=nobu_tool_hm_ironpython_update"><i class="fa fa-history fa-fw"></i><span id="nobu_tool_hm_ironpython_update">更新履歴</span></a></li>
+                                <!-- li><a href="?page=nobu_tool_hm_ironpython_instdir"><i class="fa fa-book fa-fw"></i><span id="nobu_tool_hm_ironpython_instdir">インストール場所の変更</span></a></li -->
+                                <!-- li>
+                            <a href="?page=nobu_tool_hm_ironpython_ngen">
+                                <i class="fa fa-book fa-fw"></i><span id="nobu_tool_hm_ironpython_ngen">
+                                    NGenのススメ<br>
+                                    ～読み込み実行の高速化～
+                                </span>
+                            </a>
+                        </li -->
+                                <li><a href="?page=nobu_tool_hm_ironpython_intro"><i class="fa fa-book fa-fw"></i><span id="nobu_tool_hm_ironpython_intro">hmPyの基本思想</span></a></li>
+                                <li id="menu_separator"></li>
+                                <li><a href="?page=nobu_tool_hm_ironpython_debugmonitor"><i class="fa fa-bug fa-fw"></i><span id="nobu_tool_hm_ironpython_debugmonitor">デバッグメッセージ</span></a></li>
+                                <li><a href="?page=nobu_tool_hm_ironpython_ide"><i class="fa fa-book fa-fw"></i><span id="nobu_tool_hm_ironpython_ide">開発環境</span></a></li>
+
+                                <li id="menu_separator"></li>
+                                <li><a href="?page=nobu_tool_hm_ironpython_api_lv0"><i class="fa fa-book fa-fw"></i><span id="nobu_tool_hm_ironpython_api_lv0">秀丸マクロから利用するhmPyの関数</span></a></li>
+                                <li><a href="?page=nobu_tool_hm_ironpython_api_866"><i class="fa fa-book fa-fw"></i><span id="nobu_tool_hm_ironpython_api_866">hmPy専用の関数群</span></a></li>
+
+                                <li id="menu_separator"></li>
+                                <li>
+                                    <a href="#"><i class="fa fa-book fa-fw"></i>秀丸マクロからの問い合わせAPI<span style="font-size: 0.7em">(hmPyでこれらのAPIの利用機会は、ほぼありません)</span></a>
+                                    <h2><i class="fa fa-book fa-fw"></i>秀丸マクロからの問い合わせAPI<span style="font-size: 0.7em">(hmPyでこれらのAPIの利用機会は、ほぼありません)</span></h2>
+                                    <ul>
+                                        <li><a href="?page=nobu_tool_hm_ironpython_api_lv1"><i class="fa fa-book fa-fw"></i><span id="nobu_tool_hm_ironpython_api_lv1">基本のAPI</span></a></li>
+                                        <li><a href="?page=nobu_tool_hm_ironpython_api_lv2"><i class="fa fa-book fa-fw"></i><span id="nobu_tool_hm_ironpython_api_lv2">応用のAPI</span></a></li>
+                                        <li><a href="?page=nobu_tool_hm_ironpython_var_stos"><i class="fa fa-book fa-fw"></i><span id="nobu_tool_hm_ironpython_var_stos">単純な数値や文字列の具体的な例</span></a></li>
+                                        <li><a href="?page=nobu_tool_hm_ironpython_list_and_tuple"><i class="fa fa-book fa-fw"></i><span id="nobu_tool_hm_ironpython_list_and_tuple">リストやタプルの具体的な例</span></a></li>
+
+                                    </ul>
+                                </li>
+
+                                <li id="menu_separator"></li>
+                                <li><a href="?page=nobu_tool_hm_ironpython_utf16"><i class="fa fa-book fa-fw"></i><span id="nobu_tool_hm_ironpython_utf16">文字コードの指定</span></a></li>
+                                <li><a href="?page=nobu_tool_hm_ironpython_api_largestring"><i class="fa fa-book fa-fw"></i><span id="nobu_tool_hm_ironpython_api_largestring">長大文字列を秀丸エディタに反映</span></a></li>
+                                <li id="menu_separator"></li>
+                                <li><a href="?page=nobu_tool_hm_ironpython_loadmngdll"><i class="fa fa-book fa-fw"></i><span id="nobu_tool_hm_ironpython_loadmngdll">｢C#｣で作ったdllの読み込み</span></a></li>
+                                <li><a href="?page=nobu_tool_hm_ironpython_loadpylib"><i class="fa fa-book fa-fw"></i><span id="nobu_tool_hm_ironpython_loadpylib">IronPythonの標準ライブラリの読み込み</span></a></li>
+                                
+                                <li><a href="?page=nobu_tool_hm_ironpython_cs_to_ipy"><i class="fa fa-book fa-fw"></i><span id="nobu_tool_hm_ironpython_cs_to_ipy">｢C#｣から｢IronPython｣への変換</span></a></li>
+                                <li><a href="?page=nobu_tool_hm_ironpython_win32api_bydll"><i class="fa fa-book fa-fw"></i><span id="nobu_tool_hm_ironpython_win32api_bydll">ネイティブdllのWin32 APIの利用</span></a></li>
+                                <!-- li><a href="?page=nobu_tool_hm_ironpython_win32api"><i class="fa fa-book fa-fw"></i><span id="nobu_tool_hm_ironpython_win32api">clrtype.pyモジュールを使う場合</span></a></li -->
+                                <li id="menu_separator"></li>
+                                <li>
+                                    <a href="#"><i class="fa fa-book fa-fw"></i>hmPyの様々な例題集</a>
+                                    <h2><i class="fa fa-book fa-fw"></i>hmPyの様々な例題集</h2>
+                                    <ul>
+                                        <li><a href="?page=nobu_tool_hm_ironpython_examples"><i class="fa fa-book fa-fw"></i><span id="nobu_tool_hm_ironpython_examples">IronPythonの様々な.NETを使ったコード例</span></a></li>
+                                        <li><a href="?page=nobu_tool_hm_ironpython_drivespace"><i class="fa fa-book fa-fw"></i><span id="nobu_tool_hm_ironpython_drivespace">ドライブの空き容量</span></a></li>
+                                        <li><a href="?page=nobu_tool_hm_ironpython_webclient"><i class="fa fa-book fa-fw"></i><span id="nobu_tool_hm_ironpython_webclient">Webデータの取得</span></a></li>
+                                        <li><a href="?page=nobu_tool_hm_ironpython_outfile"><i class="fa fa-book fa-fw"></i><span id="nobu_tool_hm_ironpython_outfile">.py ファイルの読み込み</span></a></li>
+                                        <li><a href="?page=nobu_tool_hm_ironpython_winform_noclass"><i class="fa fa-book fa-fw"></i><span id="nobu_tool_hm_ironpython_winform_class">フォームやGUI</span></a></li>
+                                        <li><a href="?page=nobu_tool_hm_ironpython_excel"><i class="fa fa-book fa-fw"></i><span id="nobu_tool_hm_ironpython_excel">Excel</span></a></li>
+                                        <li><a href="?page=nobu_tool_hm_ironpython_outprocess"><i class="fa fa-book fa-fw"></i><span id="nobu_tool_hm_ironpython_outprocess">外部プロセス実行と結果取得</span></a></li>
+                                        <li><a href="?page=nobu_tool_hm_ironpython_winform"><i class="fa fa-book fa-fw"></i><span id="nobu_tool_hm_ironpython_winform">クラスを使ったフォームやGUI</span></a></li>
+                                        <li><a href="?page=nobu_tool_hm_ironpython_danddform"><i class="fa fa-book fa-fw"></i><span id="nobu_tool_hm_ironpython_danddform">ドラッグアンドドロップ</span></a></li>
+                                        <li><a href="?page=nobu_tool_hm_ironpython_calender"><i class="fa fa-book fa-fw"></i><span id="nobu_tool_hm_ironpython_calender">カレンダーの利用</span></a></li>
+                                        <li><a href="?page=nobu_tool_hm_ironpython_fontlist"><i class="fa fa-book fa-fw"></i><span id="nobu_tool_hm_ironpython_fontlist">フォントリストとプレビュー</span></a></li>
+                                        <li><a href="?page=nobu_tool_hm_ironpython_pastefilelist"><i class="fa fa-book fa-fw"></i><span id="nobu_tool_hm_ironpython_pastefilelist">クリップボード内のファイルリストのペースト</span></a></li>
+                                        <li><a href="?page=nobu_tool_hm_ironpython_handpen"><i class="fa fa-book fa-fw"></i><span id="nobu_tool_hm_ironpython_handpen">手書き入力</span></a></li>
+                                        <li><a href="?page=nobu_tool_hm_ironpython_miniweb"><i class="fa fa-book fa-fw"></i><span id="nobu_tool_hm_ironpython_miniweb">ミニウェブブラウザ</span></a></li>
+                                        <li><a href="?page=nobu_tool_hm_ironpython_htmlencdec"><i class="fa fa-book fa-fw"></i><span id="nobu_tool_hm_ironpython_htmlencdec">HTMLのエンコードとデコード</span></a></li>
+                                        <li><a href="?page=nobu_tool_hm_ironpython_htmlagility"><i class="fa fa-book fa-fw"></i><span id="nobu_tool_hm_ironpython_htmlagility">HTMLの高度なパース</span></a></li>
+                                        <li><a href="?page=nobu_tool_hm_ironpython_csvhelper"><i class="fa fa-book fa-fw"></i><span id="nobu_tool_hm_ironpython_csvhelper">難解なCSVの正しい読み取り</span></a></li>
+                                        <li><a href="?page=nobu_tool_hm_ironpython_wpf"><i class="fa fa-book fa-fw"></i><span id="nobu_tool_hm_ironpython_wpf">秀丸マクロ内でWPF</span></a></li>
+                                        <li><a href="?page=nobu_tool_hm_ironpython_dynamicasm"><i class="fa fa-book fa-fw"></i><span id="nobu_tool_hm_ironpython_dynamicasm">マクロから渡した関数名でリアルタイムに.dllを生成</span></a></li>
+                                    </ul>
+                                </li>
+                                <li id="menu_separator"></li>
+                                <li><a href="?page=nobu_tool_hm_ironpython_referece"><i class="fa fa-book fa-fw"></i><span id="nobu_tool_hm_ironpython_reference">リファレンス</span></a></li>
+                            </ul>
+
+                        <li>
+                            <a href="#"><i class="fa fa-ruby fa-fw"></i>.NET Framework via IronRuby</a>
+                            <h2><i class="fa fa-ruby fa-fw"></i>.NET Framework via IronRuby</h2>
+                            <ul>
+                                <li>
+                                    <a href="?page=nobu_tool_hm_ironruby">
+                                        <i class="fa fa-ruby fa-fw"></i><span id="nobu_tool_hm_ironruby">
+                                            hmRb<br>
+                                            .NET Framework<font size="3"> via </font>IronRuby
+                                        </span>
+                                    </a>
+                                </li>
+                                <li><a href="?page=nobu_tool_hm_ironruby_update"><i class="fa fa-history fa-fw"></i><span id="nobu_tool_hm_ironruby_update">更新履歴</span></a></li>
+                                <li>
+                                    <a href="?page=nobu_tool_hm_ironruby_ngen">
+                                        <i class="fa fa-book fa-fw"></i><span id="nobu_tool_hm_ironruby_ngen">
+                                            NGenのススメ<br>
+                                            ～読み込み実行の高速化～
+                                        </span>
+                                    </a>
+                                </li>
+                                <li id="menu_separator"></li>
+                                <li><a href="?page=nobu_tool_hm_ironruby_ide"><i class="fa fa-book fa-fw"></i><span id="nobu_tool_hm_ironruby_ide">開発環境</span></a></li>
+                                <li><a href="?page=nobu_tool_hm_ironruby_cs_to_irb"><i class="fa fa-book fa-fw"></i><span id="nobu_tool_hm_ironruby_cs_to_irb">｢C#｣から｢IronRuby｣への変換</span></a></li>
+                                <li id="menu_separator"></li>
+                                <li><a href="?page=nobu_tool_hm_ironruby_debugmonitor"><i class="fa fa-bug fa-fw"></i><span id="nobu_tool_hm_ironruby_debugmonitor">デバッグメッセージ</span></a></li>
+                                <li id="menu_separator"></li>
+                                <li><a href="?page=nobu_tool_hm_ironruby_api_lv0"><i class="fa fa-book fa-fw"></i><span id="nobu_tool_hm_ironruby_api_lv0">秀丸マクロから利用するhmRbの関数</span></a></li>
+                                <li><a href="?page=nobu_tool_hm_ironruby_api_866"><i class="fa fa-book fa-fw"></i><span id="nobu_tool_hm_ironruby_api_866">hmRb専用の関数群</span></a></li>
+                                <li><a href="?page=nobu_tool_hm_ironruby_charcode"><i class="fa fa-book fa-fw"></i><span id="nobu_tool_hm_ironruby_charcode">文字コードの指定</span></a></li>
+                                <li id="menu_separator"></li>
+                                <li><a href="?page=nobu_tool_hm_ironruby_winform"><i class="fa fa-book fa-fw"></i><span id="nobu_tool_hm_ironruby_winform">クラスを使ったフォームやGUI</span></a></li>
+                                <li><a href="?page=nobu_tool_hm_ironruby_loadmngdll"><i class="fa fa-book fa-fw"></i><span id="nobu_tool_hm_ironruby_loadmngdll">｢C#｣で作ったdllの読み込み</span></a></li>
+                                <li><a href="?page=nobu_tool_hm_ironruby_win32api"><i class="fa fa-book fa-fw"></i><span id="nobu_tool_hm_ironruby_win32api">ネイティブdllのWin32 APIの利用</span></a></li>
+                                <li id="menu_separator"></li>
+                                <li>
+                                    <a href="?page=nobu_tool_hm_ironruby_api_lv1">
+                                        <i class="fa fa-book fa-fw"></i><span id="nobu_tool_hm_ironruby_api_lv1" style="font-size: 0.9em">秀丸マクロからの問い合わせ基本API</span><br>
+                                        <span id="nobu_tool_hm_ironruby_api_lv1" style="font-size: 0.7em">(hmRbでこれらのAPIの利用機会は、ほぼありません)</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="?page=nobu_tool_hm_ironruby_api_lv2">
+                                        <i class="fa fa-book fa-fw"></i><span id="nobu_tool_hm_ironruby_api_lv2" style="font-size: 0.9em">秀丸マクロからの問い合わせ応用API</span><br>
+                                        <span id="nobu_tool_hm_ironruby_api_lv2" style="font-size: 0.7em">(hmRbでこれらのAPIの利用機会は、ほぼありません)</span>
+                                    </a>
+                                </li>
+                                <li id="menu_separator"></li>
+                                <li><a href="?page=nobu_tool_hm_ironruby_referece"><i class="fa fa-book fa-fw"></i><span id="nobu_tool_hm_ironruby_reference">リファレンス</span></a></li>
+                            </ul>
+                        </li>
+
+                        <li>
+                            <a href="#"><i class="fa fa-lua fa-fw"></i>hmLoadCLR</a>
+                            <h2><i class="fa fa-lua fa-fw"></i>hmLoadCLR</h2>
+                            <ul>
+                                <li><a href="?page=nobu_tool_hm_loadclr"><i class="fa fa-lua fa-fw"></i><span id="nobu_tool_hm_loadclr">hmLoadCLR</span></a></li>
+                                <li><a href="?page=nobu_tool_hm_loadclr_update"><i class="fa fa-history fa-fw"></i><span id="nobu_tool_hm_loadclr_update">更新履歴</span></a></li>
+                                <li><a href="?page=nobu_tool_hm_loadclr_intro"><i class="fa fa-book fa-fw"></i><span id="nobu_tool_hm_loadclr_intro">hmLoadCLRの基本思想</span></a></li>
+                                <li><a href="?page=nobu_tool_hm_loadclr_debugmonitor"><i class="fa fa-book fa-fw"></i><span id="nobu_tool_hm_loadclr_debugmonitor">デバッグメッセージ</span></a></li>
+                                <li><a href="?page=nobu_tool_hm_loadclr_api_lv0"><i class="fa fa-book fa-fw"></i><span id="nobu_tool_hm_loadclr_api_lv0">秀丸マクロから利用するhmLoadCLRの関数</span></a></li>
+                                <li><a href="?page=nobu_tool_hm_loadclr_api_866"><i class="fa fa-book fa-fw"></i><span id="nobu_tool_hm_loadclr_api_866">hmLoadCLR専用の関数群</span></a></li>
+                                <li><a href="?page=nobu_tool_hm_loadclr_loadmngdll"><i class="fa fa-book fa-fw"></i><span id="nobu_tool_hm_loadclr_loadmngdll">｢C#｣で作ったdllの読み込み</span></a></li>
+                                <li><a href="?page=nobu_tool_hm_loadclr_winform"><i class="fa fa-book fa-fw"></i><span id="nobu_tool_hm_loadclr_winform">既存の.NETのクラスの使い方</span></a></li>
+
+                                <li>
+                                    <a href="#"><i class="fa fa-book fa-fw"></i>秀丸マクロからの問い合わせAPI<span style="font-size: 0.7em">(hmLoadCLRでこれらのAPIの利用機会は、ほぼありません)</span></a>
+                                    <h2><i class="fa fa-book fa-fw"></i>秀丸マクロからの問い合わせAPI<span style="font-size: 0.7em">(hmLoadCLRでこれらのAPIの利用機会は、ほぼありません)</span></h2>
+                                    <ul>
+                                        <li><a href="?page=nobu_tool_hm_loadclr_api_lv1"><i class="fa fa-book fa-fw"></i><span id="nobu_tool_hm_loadclr_api_lv1">基本のAPI</span></a></li>
+                                        <li><a href="?page=nobu_tool_hm_loadclr_api_lv2"><i class="fa fa-book fa-fw"></i><span id="nobu_tool_hm_loadclr_api_lv2">応用のAPI</span></a></li>
+                                        <li><a href="?page=nobu_tool_hm_loadclr_var_stos"><i class="fa fa-book fa-fw"></i><span id="nobu_tool_hm_loadclr_var_stos">単純な数値や文字列の具体的な例</span></a></li>
+                                        <li><a href="?page=nobu_tool_hm_loadclr_list_and_dict"><i class="fa fa-book fa-fw"></i><span id="nobu_tool_hm_loadclr_list_and_dict">リストやタプルの具体的な例</span></a></li>
+                                    </ul>
+                                </li>
+
+                                <li><a href="?page=nobu_tool_hm_loadclr_neolua"><i class="fa fa-book fa-fw"></i><span id="nobu_tool_hm_loadclr_neolua">hmLoadCLRの独自の文法</span></a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-nodejs fa-fw"></i>Node.jsとの通信ライブラリ</a>
+                            <h2><i class="fa fa-nodejs fa-fw"></i>Node.jsとの通信ライブラリ</h2>
+                            <ul>
+                                <li><a href="?page=nobu_tool_hm_nodejs"><i class="fa fa-nodejs fa-fw"></i><span id="nobu_tool_hm_nodejs">HmNodeJS</span></a></li>
+                                <li><a href="?page=nobu_tool_hm_nodejs_update"><i class="fa fa-history fa-fw"></i><span id="nobu_tool_hm_nodejs_update">更新情報</span></a></li>
+                                <li><a href="?page=nobu_tool_hm_nodejs_study_07"><i class="fa fa-book fa-fw"></i><span id="nobu_tool_hm_nodejs_study_07">HmNodeJSの概要図</span></a></li>
+                                <li><a href="?page=nobu_tool_hm_nodejs_study_01"><i class="fa fa-book fa-fw"></i><span id="nobu_tool_hm_nodejs_study_01">HmNodeJS はじめての実行</span></a></li>
+                                <li><a href="?page=nobu_tool_hm_nodejs_study_04"><i class="fa fa-book fa-fw"></i><span id="nobu_tool_hm_nodejs_study_04">チャンネル単位の意味</span></a></li>
+                                <li><a href="?page=nobu_tool_hm_nodejs_study_02"><i class="fa fa-book fa-fw"></i><span id="nobu_tool_hm_nodejs_study_02">node.js側の正しい終了記述</span></a></li>
+                                <li id="menu_separator"></li>
+                                <li><a href="?page=nobu_tool_hm_nodejs_study_03"><i class="fa fa-book fa-fw"></i><span id="nobu_tool_hm_nodejs_study_03">node.jsのウィンドウをデバッグ表示</span></a></li>
+                                <li><a href="?page=nobu_tool_hm_nodejs_study_05"><i class="fa fa-book fa-fw"></i><span id="nobu_tool_hm_nodejs_study_05">やってはいけないこと</span></a></li>
+                                <li id="menu_separator"></li>
+                                <li><a href="?page=nobu_tool_hm_nodejs_study_09"><i class="fa fa-book fa-fw"></i><span id="nobu_tool_hm_nodejs_study_09">各言語でのHmNodeJS利用の最小サンプル</span></a></li>
+                                <li><a href="?page=nobu_tool_hm_nodejs_study_06"><i class="fa fa-book fa-fw"></i><span id="nobu_tool_hm_nodejs_study_06">node.jsを単にインタプリタとして実行</span></a></li>
+                            </ul>
+                        </li>
+                        <li id="menu_separator"></li>
+                        <li><a href="?page=nobu_tool_hm_net_lang_compare"><i class="fa fa-book fa-fw"></i><span id="nobu_tool_hm_net_lang_compare">.NET系「秀丸マクロ代替言語」比較</span></a></li>
+
+                    </ul>
+                </li>
+                <li>
+                    <a href="./"><i class="fa fa-cube fa-fw"></i>ネイティブ・言語</a>
+                    <h2><i class="fa fa-cube fa-fw"></i>ネイティブ・言語</h2>
+                    <ul>
+                        <li>
+                            <a href="#"><i class="fa fa-perl fa-fw"></i>秀丸マクロ via ActivePerl</a>
+                            <h2><i class="fa fa-perl fa-fw"></i>秀丸マクロ via ActivePerl</h2>
+                            <ul>
+                                <li><a href="?page=nobu_tool_hm_activeperl"><i class="fa fa-perl fa-fw"></i><span id="nobu_tool_hm_activeperl">秀丸マクロ via ActivePerl</span></a></li>
+                                <li><a href="?page=nobu_tool_hm_activeperl_update"><i class="fa fa-history fa-fw"></i><span id="nobu_tool_hm_activeperl_update">更新履歴</span></a></li>
+                                <li id="menu_separator"></li>
+                                <li><a href="?page=nobu_tool_hm_activeperl_debugmonitor"><i class="fa fa-bug fa-fw"></i><span id="nobu_tool_hm_activeperl_debugmonitor">デバッグメッセージ</span></a></li>
+                                <li id="menu_separator"></li>
+                                <li><a href="?page=nobu_tool_hm_activeperl_api_866"><i class="fa fa-book fa-fw"></i><span id="nobu_tool_hm_activeperl_api_866">hmPerl専用の関数群</span></a></li>
+                                <li><a href="?page=nobu_tool_hm_activeperl_api_lv1"><i class="fa fa-book fa-fw"></i><span id="nobu_tool_hm_activeperl_api_lv1">秀丸マクロから利用するhmPerlの関数</span></a></li>
+                                <li><a href="?page=nobu_tool_hm_activeperl_require"><i class="fa fa-book fa-fw"></i><span id="nobu_tool_hm_activeperl_require">自作Perlモジュールなどの読み込み</span></a></li>
+                                <li><a href="?page=nobu_tool_hm_activeperl_src_commentary"><i class="fa fa-book fa-fw"></i><span id="nobu_tool_hm_activeperl_src_commentary">hmPerl.dllのC++ソースの解説</span></a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-lua fa-fw"></i>500倍速マクロ via LuaJIT</a>
+                            <h2><i class="fa fa-lua fa-fw"></i>500倍速マクロ via LuaJIT</h2>
+                            <ul>
+                                <li><a href="?page=nobu_tool_hm_luajit"><i class="fa fa-lua fa-fw"></i><span id="nobu_tool_hm_luajit">hmLJ 500倍速マクロ via LuaJIT</span></a></li>
+                                <li><a href="?page=nobu_tool_hm_luajit_update"><i class="fa fa-history fa-fw"></i><span id="nobu_tool_hm_luajit_update">更新履歴</span></a></li>
+                                <li><a href="?page=nobu_tool_hm_luajit_500x"><i class="fa fa-book fa-fw"></i><span id="nobu_tool_hm_luajit_500x">実は500倍速どころか1000倍速!?</span></a></li>
+                                <li><a href="?page=nobu_tool_hm_luajit_intro"><i class="fa fa-book fa-fw"></i><span id="nobu_tool_hm_luajit_intro">hmLJの基本思想</span></a></li>
+                                <li><a href="?page=nobu_tool_hm_luajit_api_lv1"><i class="fa fa-book fa-fw"></i><span id="nobu_tool_hm_luajit_api_lv1">基本のAPI</span></a></li>
+                                <li><a href="?page=nobu_tool_hm_luajit_var_stos"><i class="fa fa-book fa-fw"></i><span id="nobu_tool_hm_luajit_var_stos">秀丸マクロとLuaの値のやり取り</span></a></li>
+                                <li><a href="?page=nobu_tool_hm_luajit_outprocess"><i class="fa fa-book fa-fw"></i><span id="nobu_tool_hm_luajit_outprocess">外部プロセスの実行</span></a></li>
+                                <li><a href="?page=nobu_tool_hm_luajit_api_lv2"><i class="fa fa-book fa-fw"></i><span id="nobu_tool_hm_luajit_api_lv2">応用のAPI</span></a></li>
+                                <li><a href="?page=nobu_tool_hm_luajit_list_and_dict"><i class="fa fa-book fa-fw"></i><span id="nobu_tool_hm_luajit_list_and_dict">リストや辞書</span></a></li>
+                                <li><a href="?page=nobu_tool_hm_luajit_addition"><i class="fa fa-book fa-fw"></i><span id="nobu_tool_hm_luajit_addition">特別に追加されているlua関数等</span></a></li>
+                                <li><a href="?page=nobu_tool_hm_luajit_win32api"><i class="fa fa-book fa-fw"></i><span id="nobu_tool_hm_luajit_win32api">ネイティブdllのWin32 APIの利用</span></a></li>
+                                <li><a href="?page=nobu_tool_hm_luajit_moduledll"><i class="fa fa-book fa-fw"></i><span id="nobu_tool_hm_luajit_moduledll">luaから使える関数をC/C++で作成</span></a></li>
+                                <li><a href="?page=nobu_tool_hm_luajit_instdir"><i class="fa fa-book fa-fw"></i><span id="nobu_tool_hm_luajit_instdir">インストール場所について</span></a></li>
+                                <li id="menu_separator"></li>
+                                <li><a href="?page=nobu_tool_hm_luajit_cmdtool"><i class="fa fa-cube fa-fw"></i><span id="nobu_tool_hm_luajit_cmdtool">付属のコマンドツール hmLJ.exe</span></a></li>
+                                <li><a href="?page=nobu_tool_hm_luajit_ide"><i class="fa fa-book fa-fw"></i><span id="nobu_tool_hm_luajit_ide">開発環境</span></a></li>
+                                <li><a href="?page=nobu_tool_hm_luajit_ide_hmset"><i class="fa fa-dedent fa-fw"></i><span id="nobu_tool_hm_luajit_ide_hmset">LuaJIT/hmLJ秀丸セット</span></a></li>
+                                <li>
+                                    <a href="?page=nobu_mod_the_lua_reference_chm">
+                                        <i class="fa fa-question fa-fw"></i><span id="nobu_mod_the_lua_reference_chm">
+                                            Lua 5.1～5.3 リファレンス<br>
+                                            日本語版
+                                        </span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-cube fa-fw"></i>uLua</a>
+                            <h2><i class="fa fa-cube fa-fw"></i>uLua</h2>
+                            <ul>
+                                <li><a href="?page=nobu_mod_the_ulua"><i class="fa fa-cube fa-fw"></i><span id="nobu_mod_the_ulua">uLua.exe</span></a></li>
+                                <li><a href="?page=nobu_mod_the_ulua_src"><i class="fa fa-file-text-o fa-fw"></i><span id="nobu_mod_the_ulua_src">uLua Cソース</span></a></li>
+                                <li><a href="?page=nobu_mod_the_ulua_for_hidemaru"><i class="fa fa-dedent fa-fw"></i><span id="nobu_mod_the_ulua_for_hidemaru">uLua 秀丸セット</span></a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-cube fa-fw"></i>jLua</a>
+                            <h2><i class="fa fa-cube fa-fw"></i>jLua</h2>
+                            <ul>
+                                <li><a href="?page=nobu_mod_the_snmod_methodref_lua_jlua"><i class="fa fa-cube fa-fw"></i><span id="nobu_mod_the_snmod_methodref_lua_jlua">jLua.exe</span></a></li>
+                                <li><a href="?page=nobu_mod_the_jlua_for_hidemaru"><i class="fa fa-dedent fa-fw"></i><span id="nobu_mod_the_jlua_for_hidemaru">jLua 秀丸セット</span></a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="./"><i class="fa fa-bug fa-fw"></i>デバッグ</a>
+                    <h2><i class="fa fa-bug fa-fw"></i>デバッグ</h2>
+                    <ul>
+                        <li><a href="?page=nobu_tool_hm_debugmonitor"><i class="fa fa-bug fa-fw"></i><span id="nobu_tool_hm_debugmonitor">秀丸・デバッグ出力モニター</span></a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="./"><i class="fa fa-search fa-fw"></i>プレビュー</a>
+                    <h2><i class="fa fa-search fa-fw"></i>プレビュー</h2>
+                    <ul>
+                        <li>
+                            <a href="#"><i class="fa fa-internet-explorer fa-fw"></i>秀丸・HmHtmlPreview</a>
+                            <h2><i class="fa fa-internet-explorer fa-fw"></i>秀丸・HmHtmlPreview</h2>
+                            <ul>
+                                <li><a href="?page=nobu_tool_hm_htmlpreview"><i class="fa fa-internet-explorer fa-fw"></i><span id="nobu_tool_hm_htmlpreview">秀丸・HmHtmlPreview</span></a></li>
+                                <li><a href="?page=nobu_tool_hm_htmlpreview_update"><i class="fa fa-history fa-fw"></i><span id="nobu_tool_hm_htmlpreview_update">更新履歴</span></a></li>
+                                <li><a href="?page=nobu_tool_hm_htmlpreview_live_or_file"><i class="fa fa-book fa-fw"></i><span id="nobu_tool_hm_htmlpreview_live_or_file">LiveモードとFileモード</span></a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-chrome fa-fw"></i>秀丸・HmHtmlPreviewChrome</a>
+                            <h2><i class="fa fa-chrome fa-fw"></i>秀丸・HmHtmlPreviewChrome</h2>
+                            <ul>
+                                <li><a href="?page=nobu_tool_hm_htmlpreviewchrome"><i class="fa fa-chrome fa-fw"></i><span id="nobu_tool_hm_htmlpreviewchrome">秀丸・HmHtmlPreviewChrome</span></a></li>
+                                <li><a href="?page=nobu_tool_hm_htmlpreviewchrome_update"><i class="fa fa-history fa-fw"></i><span id="nobu_tool_hm_htmlpreviewchrome_update">更新履歴</span></a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-markdown fa-fw"></i>秀丸・HmMarkDownPreview</a>
+                            <h2><i class="fa fa-markdown fa-fw"></i>秀丸・HmMarkDownPreview</h2>
+                            <ul>
+                                <li><a href="?page=nobu_tool_hm_markdownpreview"><i class="fa fa-markdown fa-fw"></i><span id="nobu_tool_hm_markdownpreview">秀丸・HmMarkDownPreview</span></a></li>
+                                <li><a href="?page=nobu_tool_hm_markdownpreview_update"><i class="fa fa-history fa-fw"></i><span id="nobu_tool_hm_markdownpreview_update">更新履歴</span></a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-gears fa-fw"></i>秀丸・HmCustomLivePreview</a>
+                            <h2><i class="fa fa-gears fa-fw"></i>秀丸・HmCustomLivePreview</h2>
+                            <ul>
+                                <li><a href="?page=nobu_tool_hm_customlivepreview"><i class="fa fa-gears fa-fw"></i><span id="nobu_tool_hm_customlivepreveiw">秀丸・HmCustomLivePreview</span></a></li>
+                                <li><a href="?page=nobu_tool_hm_customlivepreview_update"><i class="fa fa-history fa-fw"></i><span id="nobu_tool_hm_customlivepreview_update">更新履歴</span></a></li>
+                                <li><a href="?page=nobu_tool_hm_customlivepreview_custom_js1"><i class="fa fa-book fa-fw"></i><span id="nobu_tool_hm_customlivepreview_custom_js1">カスタム 入門編</span></a></li>
+                                <li><a href="?page=nobu_tool_hm_customlivepreview_custom_js2"><i class="fa fa-book fa-fw"></i><span id="nobu_tool_hm_customlivepreview_custom_js2">カスタム 初級編</span></a></li>
+                                <li><a href="?page=nobu_tool_hm_customlivepreview_custom_js3"><i class="fa fa-book fa-fw"></i><span id="nobu_tool_hm_customlivepreview_custom_js3">カスタム 中級編</span></a></li>
+                                <li><a href="?page=nobu_tool_hm_customlivepreview_custom_cs1"><i class="fa fa-book fa-fw"></i><span id="nobu_tool_hm_customlivepreview_custom_cs1">カスタム 応用編</span></a></li>
+                                <li><a href="?page=nobu_tool_hm_customlivepreview_custom_md"><i class="fa fa-book fa-fw"></i><span id="nobu_tool_hm_customlivepreview_custom_md">カスタム マークダウン編</span></a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-hand-pointer-o fa-fw"></i>秀丸・HmLinkedTextPreview</a>
+                            <h2><i class="fa fa-hand-pointer-o fa-fw"></i>秀丸・HmLinkedTextPreview</h2>
+                            <ul>
+                                <li><a href="?page=nobu_tool_hm_linkedtextpreview"><i class="fa fa-hand-pointer-o fa-fw"></i><span id="nobu_tool_hm_linkedtextpreview">秀丸・LinkedTextPreview</span></a></li>
+                                <li><a href="?page=nobu_tool_hm_linkedtextpreview_update"><i class="fa fa-history fa-fw"></i><span id="nobu_tool_hm_linkedtextpreview_update">更新履歴</span></a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-picture-o fa-fw"></i>秀丸・HmIECapt</a>
+                            <h2><i class="fa fa-picture-o fa-fw"></i>秀丸・HmIECapt</h2>
+                            <ul>
+                                <li><a href="?page=nobu_tool_hm_iecapt"><i class="fa fa-picture-o fa-fw"></i><span id="nobu_tool_hm_iecapt">秀丸・HmIECapt</span></a></li>
+                                <li><a href="?page=nobu_tool_hm_iecapt_update"><i class="fa fa-history fa-fw"></i><span id="nobu_tool_hm_iecapt_update">更新履歴</span></a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="./"><i class="fa fa-bookmark fa-fw"></i>ブックマーク・しおり</a>
+                    <h2><i class="fa fa-bookmark fa-fw"></i>ブックマーク・しおり</h2>
+                    <ul>
+                        <li><a href="?page=nobu_tool_kbd_marker_jump"><i class="fa fa-paw fa-fw"></i><span id="nobu_tool_kbd_marker_jump">秀丸・ぽちっとな～</span></a></li>
+                        <li><a href="?page=nobu_tool_hm_pochi_tto_naa_update"><i class="fa fa-history fa-fw"></i><span id="nobu_tool_hm_pochi_tto_naa_update">更新履歴</span></a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="./"><i class="fa fa-info-circle fa-fw"></i>通知・メッセージ</a>
+                    <h2><i class="fa fa-info-circle fa-fw"></i>通知・メッセージ</h2>
+                    <ul>
+                        <li>
+                            <a href="./"><i class="fa fa-list-alt fa-fw"></i>外部アプリからアウトプット枠への出力</a>
+                            <h2><i class="fa fa-list-alt fa-fw"></i>外部アプリからアウトプット枠への出力</h2>
+                            <ul>
+                                <li><a href="?page=nobu_tool_hm_sharedoutputpane"><i class="fa fa-list-alt fa-fw"></i><span id="nobu_tool_hm_sharedoutputpane">外部アプリからアウトプット枠への出力</span></a></li>
+                                <li><a href="?page=nobu_tool_hm_sharedoutputpane_update"><i class="fa fa-history fa-fw"></i><span id="nobu_tool_hm_sharedoutputpane_update">更新履歴</span></a></li>
+                                <li>
+                                    <a href="?page=nobu_tool_hm_sharedoutputpane_call">
+                                        <i class="fa fa-book fa-fw"></i><span id="nobu_tool_hm_sharedoutputpane_call">
+                                            外部アプリからアウトプット枠への出力<br>
+                                            (各言語での簡易な呼び出し例)
+                                        </span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="?page=nobu_tool_hm_sharedoutputpane_call2">
+                                        <i class="fa fa-book fa-fw"></i><span id="nobu_tool_hm_sharedoutputpane_call2">
+                                            外部アプリからアウトプット枠への出力<br>
+                                            (C#での応用的な呼び出し例)
+                                        </span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li><a href="?page=nobu_tool_hm_timer_msgbox"><i class="fa fa-clock-o fa-fw"></i><span id="nobu_tool_hm_timer_msgbox">秀丸・自動でも終了するメッセージボックス</span></a></li>
+                        <li>
+                            <a href="#"><i class="fa fa-commenting fa-fw"></i>HmBaloonNotice（秀丸用トースト通知）</a>
+                            <h2><i class="fa fa-commenting fa-fw"></i>HmBaloonNotice（秀丸用トースト通知）</h2>
+                            <ul>
+                                <li><a href="?page=nobu_tool_hm_baloonnotice"><i class="fa fa-commenting fa-fw"></i><span id="nobu_tool_hm_baloonnotice">HmBaloonNotice（秀丸用トースト通知 for Vista～Win8.x用）</span></a></li>
+                                <li><a href="?page=nobu_tool_hm_baloontoast"><i class="fa fa-commenting fa-fw"></i><span id="nobu_tool_hm_baloontoast">HmBaloonToast（秀丸用トースト通知 for Win10用）</span></a></li>
+                                <li><a href="?page=nobu_tool_hm_baloonnotice_update"><i class="fa fa-history fa-fw"></i><span id="nobu_tool_hm_baloonnotice_update">更新履歴</span></a></li>
+                                <li><a href="?page=nobu_tool_hm_baloonnotice_win10"><i class="fa fa-gears fa-fw"></i><span id="nobu_tool_hm_baloonnotice_win10">Win10での設定</span></a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="./"><i class="fa fa-list fa-fw"></i>単語補完・強調表示</a>
+                    <h2><i class="fa fa-list fa-fw"></i>単語補完・強調表示</h2>
+                    <ul>
+                        <li>
+                            <a href="#"><i class="fa fa-list fa-fw"></i>単語補完拡張キット</a>
+                            <h2><i class="fa fa-list fa-fw"></i>単語補完拡張キット</h2>
+                            <ul>
+                                <li><a href="?page=nobu_tool_hm_autocompleteex"><i class="fa fa-list fa-fw"></i><span id="nobu_tool_hm_autocompleteex">単語補完拡張キット</span></a></li>
+                                <li><a href="?page=nobu_tool_hm_autocompleteex_exam_01"><i class="fa fa-list fa-fw"></i><span id="nobu_tool_hm_autocompleteex_exam_01">チュートリアル① 開発準備</span></a></li>
+                                <li><a href="?page=nobu_tool_hm_autocompleteex_exam_02"><i class="fa fa-list fa-fw"></i><span id="nobu_tool_hm_autocompleteex_exam_02">チュートリアル② ウィンドウ</span></a></li>
+                                <li><a href="?page=nobu_tool_hm_autocompleteex_exam_03"><i class="fa fa-list fa-fw"></i><span id="nobu_tool_hm_autocompleteex_exam_03">チュートリアル③ 見た目を整える</span></a></li>
+                                <li><a href="?page=nobu_tool_hm_autocompleteex_exam_04"><i class="fa fa-list fa-fw"></i><span id="nobu_tool_hm_autocompleteex_exam_04">チュートリアル④ 辞書やコメント</span></a></li>
+                                <li><a href="?page=nobu_tool_hm_autocompleteex_exam_05"><i class="fa fa-list fa-fw"></i><span id="nobu_tool_hm_autocompleteex_exam_05">チュートリアル⑤ 編集中のテキスト</span></a></li>
+                                <li><a href="?page=nobu_tool_hm_autocompleteex_exam_07"><i class="fa fa-list fa-fw"></i><span id="nobu_tool_hm_autocompleteex_exam_07">その他① キー入力</span></a></li>
+                                <li><a href="?page=nobu_tool_hm_autocompleteex_exam_08"><i class="fa fa-list fa-fw"></i><span id="nobu_tool_hm_autocompleteex_exam_08">その他② リスト候補の操作</span></a></li>
+                                <li><a href="?page=nobu_tool_hm_autocompleteex_exam_09"><i class="fa fa-list fa-fw"></i><span id="nobu_tool_hm_autocompleteex_exam_09">チュートリアル⑥ 候補が１つなら</span></a></li>
+                                <li><a href="?page=nobu_tool_hm_autocompleteex_exam_10"><i class="fa fa-list fa-fw"></i><span id="nobu_tool_hm_autocompleteex_exam_10">チュートリアル⑦ 完成</span></a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="./"><i class="fa fa-exchange fa-fw"></i>文字列変換</a>
+                    <h2><i class="fa fa-exchange fa-fw"></i>文字列変換</h2>
+                    <ul>
+                        <li>
+                            <a href="./"><i class="fa fa-exchange fa-fw"></i>秀丸・変換モジュール</a>
+                            <h2><i class="fa fa-exchange fa-fw"></i>秀丸・変換モジュール</h2>
+                            <ul>
+                                <li><a href="?page=nobu_tool_hm_filter_micro"><i class="fa fa-gear fa-fw"></i><span id="nobu_tool_hm_filter_micro">変換モジュールの最小のラッパーSDK</span></a></li>
+                                <li><a href="?page=nobu_tool_hm_filter_micro_update"><i class="fa fa-history fa-fw"></i><span id="nobu_tool_hm_filter_micro_update">更新履歴</span></a></li>
+                                <li><a href="?page=nobu_tool_hm_filter_regist"><i class="fa fa-book fa-fw"></i><span id="nobu_tool_hm_filter_regist">変換モジュールの登録方法</span></a></li>
+                                <li><a href="?page=nobu_tool_hm_filter_src_commentary"><i class="fa fa-book fa-fw"></i><span id="nobu_tool_hm_filter_src_commentary">ソースや秀丸の機能との結び付き解説</span></a></li>
+                            </ul>
+                        <li>
+                            <a href="#"><i class="fa fa-list fa-fw"></i>単語リストの正規表現圧縮</a>
+                            <h2><i class="fa fa-list fa-fw"></i>単語リストの正規表現圧縮</h2>
+                            <ul>
+                                <li><a href="?page=nobu_mod_the_wordlist_regex_compress"><i class="fa fa-list fa-fw"></i><span id="nobu_mod_the_wordlist_regex_compress">単語リストの正規表現圧縮</span></a></li>
+                                <li><a href="?page=nobu_mod_the_wordlist_regex_compress_hm"><i class="fa fa-list fa-fw"></i><span id="nobu_mod_the_wordlist_regex_compress_hm">単語リストの正規表現圧縮 秀丸セット</span></a></li>
+                            </ul>
+                        </li>
+                        <li><a href="?page=nobu_tool_hm_punyconverter"><i class="fa fa-exchange fa-fw"></i><span id="nobu_tool_hm_punyconverter">日本語ドメイン ⇔ Punycode</span></a></li>
+                    </ul>
+                <li>
+                    <a href="./"><i class="fa fa-gears fa-fw"></i>その他</a>
+                    <h2><i class="fa fa-gears fa-fw"></i>その他</h2>
+                    <ul>
+                        <li><a href="?page=nobu_tool_hm_allkill"><i class="fa fa-window-close-o fa-fw"></i><span id="nobu_tool_hm_allkill">HmAllKill（全ての秀丸エディタ強制終了）</span></a></li>
+                        <li><a href="?page=nobu_tool_hm_macro_observed_encode"><i class="fa fa-check-square-o fa-fw"></i><span id="nobu_tool_hm_macro_observed_encode">秀丸マクロファイルのセーブ時に文字コード＆BOMチェック</span></a></li>
+                        <li><a href="?page=nobu_tool_hm_regexp_com"><i class="fa fa-gears fa-fw"></i><span id="nobu_tool_hm_regexp_com">秀丸・マクロ用 正規表現関数 COM版</span></a></li>
+                        <li><a href="?page=nobu_tool_hm_event_macro_tips"><i class="fa fa-puzzle-piece fa-fw"></i><span id="nobu_tool_hm_event_macro_tips">自動起動マクロのまとめ方</span></a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="./"><i class="fa fa-pencil-square-o fa-fw"></i>dll作成のための知識</a>
+                    <h2><i class="fa fa-pencil-square-o fa-fw"></i>dll作成のための知識</h2>
+                    <ul>
+                        <li>
+                            <a href="./"><i class="fa fa-pencil-square-o fa-fw"></i><span style="display:none">dll作成</span>C++/CLI 編</a>
+                            <h2><i class="fa fa-pencil-square-o fa-fw"></i><span style="display:none">dll作成</span>C++/CLI 編</h2>
+                            <ul>
+                                <li><a href="?page=nobu_cppcli_reference_language_index"><i class="fa fa-list-ol fa-fw"></i>C++/CLI 言語仕様 リンク</a></li>
+                                <li><a href="?page=nobu_cppcli_reference_language_book"><i class="fa fa-book fa-fw"></i>C++/CLI 書籍 紹介</a></li>
+                                <li>
+                                    <a href="#"><i class="fa fa-gears fa-fw"></i>C++/CLI 必須ツール</a>
+                                    <h2><i class="fa fa-list-ol fa-fw"></i>C++/CLI 必須ツール</h2>
+                                    <ul>
+                                        <li><a href="?page=nobu_cppcli_required tool_converter"><i class="fa fa-gears fa-fw"></i>言語コンバータ</a></li>
+                                        <li><a href="?page=nobu_cppcli_required tool_wysiwyg"><i class="fa fa-gears fa-fw"></i>オーサリングツール</a></li>
+                                    </ul>
+                                </li>
+                                <li><a href="?page=nobu_cppcli_reference_dotnet_framework_index"><i class="fa fa-list-ol fa-fw"></i>C++/CLI .NET FrameWork リンク</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="./"><i class="fa fa-pencil-square-o fa-fw"></i><span style="display:none">dll作成</span>C# 編</a>
+                            <h2><i class="fa fa-pencil-square-o fa-fw"></i><span style="display:none">dll作成</span>C# 編</h2>
+                            <ul>
+                                <li><a href="?page=nobu_cs_reference_language_index"><i class="fa fa-list-ol fa-fw"></i>C# 言語仕様 リンク</a></li>
+                                <li><a href="?page=nobu_cs_reference_dotnet_framework_index"><i class="fa fa-list-ol fa-fw"></i>C# .NET FrameWork リンク</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li id="menu_separator"></li>
+                <li><a href="https://twitter.com/hmm_net"><i class="fa fa-twitter fa-fw"></i>Twitter</a></li>
+                </ul>
+</nav>
+    </div>
+
+<script type="text/javascript" src="./jquery/jquery.multilevelpushmenu-2.1.4.min.js"></script>
+<script type="text/javascript">
+function doMenuExpand() {
+%(expand)s;
+}
+</script>
+<script type="text/javascript" src="./jquery/jquery.multilevelpushmenu.custom.min.js?v=%(mlpmcustomdate)s"></script>
+<script type="text/javascript">
+if (jQuery.support.opacity) {
+%(shcore_foot1)s
+}
+</script>
+<script type="text/javascript">
+if (jQuery.support.opacity) {
+%(shcore_foot2)s
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,41 @@
+%(hilight)s
+<h2><i class="fa fa-pencil-square-o fa-fw"></i>ref class</h2>
+
+<ul class="checklist">
+    <li>
+    <h3>概要</h3>
+    <p>ここでは、C++/CLIの着目すべき文法のうち、ref classを中心に解説しています。<br></p>
+    </li>
+    <li>
+    <h3>ref class</h3>
+    <p>ref classで定義されたクラスは、つねにマネージヒープ上に作られます。<br>
+    スタック上に作ったように見えても、実際はマネージヒープ上に作られます。<br></p>
+    <p>.NETの各クラスと同じ仕組みのクラスです。</p>
+
+    <fieldset class="code"><legend>ref class</legend> <pre class="brush:cpp;">
+ref class C {
+    int i;
+    int j;
+public:
+    C() {
+    }
+    ~C() {
+    }
+    !C() {
+    }
+};
+int main()
+{
+    C^ a = gcnew C;
+    C^ b = gcnew C;
+    C c;
+    {
+        C d;
+    }  // d.~C()が呼ばれます。
+
+    delete a;  // a-&gt;~C()が呼ばれます。
+}  // c.~C()が呼ばれます。
+// b.!C()が呼ばれます。
+</pre></fieldset>
+
+</ul>

@@ -1,0 +1,36 @@
+%(hilight)s
+<h2><i class="fa fa-pencil-square-o fa-fw"></i>nullptr</h2>
+
+<ul class="checklist">
+    <li>
+    <h3>概要</h3>
+    <p>ここでは、C++/CLIの着目すべき文法のうち、nullptrを中心に解説しています。<br></p>
+    </li>
+    <li>
+    <h3>nullptr</h3>
+    <p>C++11においてポインタが何もさしていないときnullptrを使うように、<br>
+    マネージドヒープに確保したハンドルが何もさしていないときもnullptrを使います。</p>
+
+    <p>初期化してないハンドルはnullptrに設定されています。</p>
+
+    <p>nullptrは０ではありません。C++11のnullptrが０ではないの同様です。</p>
+
+    <p>ハンドルがbool値のような扱いを受けるときはnullptrとの比較が行われるのとおなじ意味になります。</p>
+<br></p>
+
+    <fieldset class="code"><legend>C++/CLIのnullptr</legend> <pre class="brush:cpp;">
+String^ s;
+if(s)  // if ( s != nullptr )と同じ   ...
+bool isnull = !s;  // bool isnull = s ==nullptr; と同じ
+</pre></fieldset>
+
+    <li><h4>ネイティブC++11のnullptr</h4>
+    <p>ネイティブのnullptrは、いかなるオブジェクトも指さないポインタを表します。<br>
+    あらゆるポインタ型に代入できますが、組み込み型への代入はできません。</p>
+    <fieldset class="code"><legend>C++11のnullptr</legend> <pre class="brush:cpp;">
+    int *pi = nullptr;
+    double* pd = nullptr;
+    int i = nullptr;     // エラー: iはポインタではない
+</pre></fieldset>
+    <p>からポインタは、各ポインタ型ごとに存在するのではなく、ただ１つのnullptrが、あらゆるポインタ型で利用されます。</p>
+</ul>

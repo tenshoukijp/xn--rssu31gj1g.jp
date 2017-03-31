@@ -1,0 +1,71 @@
+%(hilight)s
+<h2><i class="fa fa-book fa-fw"></i>～文法メモ～ メタメソッド</h2>
+
+<ul class="checklist">
+    <li>
+    <h3>メタメソッド</h3>
+    <p>オブジェクトやクラスインスタンスに対して、各種のフックが出来るようになっています。<br>
+    例えば</p>
+    <ul>
+        <li>「( )」を使って呼び出した時
+        <li>プロパティの値を取得/設定しようとした時
+        <li>イタレータオブジェクトとして扱おうとした時、などです。
+    </ul>
+
+    <p>Proxyの第１引数ですが、<br>
+    「関数としての呼び出し」と、「プロパティの取得・設定」の両方を許すためには、第１引数に関数を渡しておく必要があります。<br>
+    「プロパティの取得・設定」だけで良いのであれば、オブジェクトを渡せば大丈夫です。</p>
+    <div class="code"><pre class="brush:js">
+
+var hook_obj = new Proxy( ()=>{}, {
+
+    // 関数としてhook_objを呼び出した時に反応する
+    apply(target, that, args) {
+        hm.debuginfo(args);
+    },
+
+    // プロパティを取得した時に反応する
+    get(target, prop, receiver) {
+        hm.debuginfo(prop)
+        return prop;
+    },
+
+    // プロパティを設定した時に反応する
+    set(target, prop, val, receiver) {
+        hm.debuginfo(prop, val);
+        return true;
+    }
+}
+);
+
+hm.debuginfo(hook_obj["bbb"]);
+hook_obj["aaa"] = 3;
+hook_obj(10,20,30);
+
+hm.debuginfo(hook_obj["bbb"]);
+</pre></div>
+
+
+    <div class="code"><pre class="brush:js">
+class MyClass {
+    constructor() {}
+}
+
+var original_ins = new MyClass();
+
+var hook_ins = new Proxy(original_ins, {
+    get(target, prop, receiver) {
+        hm.debuginfo(prop)
+        return prop;
+    },
+    set(target, prop, val, receiver) {
+        hm.debuginfo(prop, val);
+        return true;
+    }
+}
+</pre></div>
+    <p>この他にもフック出来るハンドラーがいろいろ提供されています。<br>
+    </p>
+    <p>詳細は<a href="https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Global_Objects/Proxy">MDN<i class="fa fa-arrow-right fa-fw"></i>JavaScript リファレンス<i class="fa fa-arrow-right fa-fw"></i>標準ビルトインオブジェクト<i
+        class="fa fa-arrow-right fa-fw"></i>Proxy</a>
+</ul>
