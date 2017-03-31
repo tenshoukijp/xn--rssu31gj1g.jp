@@ -1,0 +1,408 @@
+%(hilight)s
+<h2><i class="fa fa-list fa-fw"></i>チュートリアル④ ～辞書やコメントの情報を表示～</h2>
+
+<ul class="checklist">
+  <li>
+  <h3>概要</h3>
+  <p>前節では、入力補完の説明っぽい見た目のウィンドウを表示しました。<br>
+  今回は、辞書ファイルから読み込んだり、開いている「保存済み」のファイルを解析して表示してみましょう。</p>
+
+  <li>
+  <h3>辞書ファイルの用意</h3>
+  <p>「事前に用意した辞書」を読み込むプログラムとなりますので、<br>
+  辞書ファイルを作成しましょう。<br>
+  「HmAutoCompleteExPlug.dic」といった名前で「HmAutoCompleteExPlug.dll」と同じフォルダに保存することとなります。
+  </p>
+  <p>今回は、辞書ファイルは、cp932だと決め打ちましたのでcp932にて保存しましょう。
+  <br>(もちろん65001と書き換えてutf8にしてもかいまいませんが、その場合にはソースコードの修正も必要です。)</p>
+  <div class="code"><pre class="brush:cpp;">
+print★私のprint解説◆改行しました◆また改行しました。
+pipe★私のpipe解説◆改行しました◆また改行しました。
+</pre></div>
+
+
+  <li><h3>辞書の読み込みや、今開いている(保存済みの)ファイルの解析</h3>
+  <div class="code"><pre class="brush:cpp;">
+#include &lt;windows.h&gt;
+
+#include &quot;OutputDebugStream.h&quot;
+
+using namespace std;
+
+using namespace System;
+using namespace System::IO;
+
+using namespace System::Collections::Generic;
+
+using namespace System::Text;
+using namespace System::Text::RegularExpressions;
+
+using namespace System::Drawing;
+using namespace System::Windows::Forms;
+
+
+public ref class ACHelpForm : public Form
+{
+public:
+  static ACHelpForm^ f; // 自分自身の置き場
+
+private:
+  HWND hWnd;
+  Label^ label;     // 説明文用のラベル
+  int nTickRemainCnt;
+  static Timer^ timer;
+  static String^ filename; // 現在のファイル名
+
+  static String^ dllFullPath;
+  static String^ dicFullPath;
+  static Dictionary&lt;String^, String^&gt;^ dic;
+public:
+  ACHelpForm(String^ filename)
+  {
+    this-&gt;filename = filename;
+
+    this-&gt;Visible = false;
+    this-&gt;BackColor = System::Drawing::Color(::Color::White);
+
+    SetFormAttr();
+
+    label = gcnew Label();
+    label-&gt;Top = 10;
+    label-&gt;Left = 10;
+
+    this-&gt;Controls-&gt;Add(label);
+
+    // ディクショナリオブジェクト生成
+    dic = gcnew Dictionary&lt;String^, String^&gt;();
+    LoadDicFile();
+    LoadCurFile();
+  }
+
+  void LoadDicFile() {
+    dllFullPath = System::Reflection::Assembly::GetExecutingAssembly()-&gt;Location;
+    // 自分自身のディクションナリ
+    dicFullPath = Path::ChangeExtension(dllFullPath, &quot;.dic&quot;);
+
+    IO::StreamReader^ sr;
+    try {
+      sr = gcnew IO::StreamReader(dicFullPath, ::Encoding::GetEncoding(932)); // 説明文のファイルはsjis(cp932)と決め打った
+
+      String^ line = &quot;&quot;;
+      // 読み込みできる文字がなくなるまで繰り返す
+      while ((line = sr-&gt;ReadLine()) != nullptr) {
+        Regex^ re = gcnew Regex(R&quot;(^(.+?)★(.+)$)&quot;); // キーと説明文の境界線は「★」にしておく
+        Match^ m = re-&gt;Match(line);
+        if (m-&gt;Success) {
+          String^ keyword = m-&gt;Groups[1]-&gt;Value;
+          String^ details = m-&gt;Groups[2]-&gt;Value;
+          // キーも値も両方有効
+          if (keyword &amp;&amp; details) {
+            details = details-&gt;Replace(&quot;◆&quot;, &quot;\n&quot;); // 「◆」は改行記号に変えておく
+            dic[keyword] = details;
+          }
+        }
+      }
+
+    }
+    catch (Exception^ e) {
+      Windows::Forms::MessageBox::Show(e-&gt;Message);
+    }
+    finally {
+      if (sr) {
+        sr-&gt;Close();
+      }
+    }
+  }
+
+  void LoadCurFile() {
+
+    if (IO::File::Exists(filename) == false) {
+      return;
+    }
+
+    IO::StreamReader^ sr;
+    try {
+      sr = gcnew IO::StreamReader(filename, ::Encoding::GetEncoding(65001)); //.plはutf8の文字コードと決め打った場合
+
+      String^ line = sr-&gt;ReadToEnd();
+
+      Regex^ re = gcnew Regex(&quot;((^#.+?\n)+)sub\\s+([^\\s]+)&quot;, RegexOptions::Multiline); // 1行としてみなして
+      MatchCollection^ mc = re-&gt;Matches(line);
+
+      for each(Match^ m in mc) {
+        GroupCollection^ groups = m-&gt;Groups;
+        String^ keyword = groups[3]-&gt;Value;
+        String^ details = groups[1]-&gt;Value;
+        // キーも値も両方有効
+        if (keyword &amp;&amp; details) {
+          dic[keyword] = details;
+        }
+      }
+
+    }
+    catch (Exception^) {
+    }
+    finally {
+      if (sr) {
+        sr-&gt;Close();
+      }
+    }
+  }
+
+
+public:
+  void Update(HWND hWnd, int iListBoxSelectedIndex, String^ strListBoxSelectedItem, int iItemHeight)
+  {
+    this-&gt;hWnd = hWnd;
+    this-&gt;SuspendLayout();
+    AdjustToAutoComp();
+    // フォームのサイズや位置を再配置
+
+    // それに応じてラベルのサイズが決まる
+    label-&gt;Width = this-&gt;Width - label-&gt;Left * 2;
+    label-&gt;Height = this-&gt;Height - label-&gt;Top * 2;
+    label-&gt;Font = gcnew System::Drawing::Font(&quot;ＭＳ 明朝&quot;, (float)iItemHeight*0.7f); // 1.5倍ぐらい
+
+    try {
+      label-&gt;Text = dic[strListBoxSelectedItem];
+    }
+    catch (Exception^) {
+      label-&gt;Text = &quot;&quot;;
+    }
+    this-&gt;ResumeLayout();
+
+    CreateDelayTimer();
+  }
+
+protected:
+  // 入力補完ウィンドウの右に、幅約2倍、高さ160pxへと自分自身を移動
+  void AdjustToAutoComp()
+  {
+    RECT rect;
+    GetWindowRect(this-&gt;hWnd, &amp;rect);
+    this-&gt;Left = rect.right + 24;
+    this-&gt;Top = rect.top;
+    this-&gt;Width = (rect.right - rect.left) * 2;
+    this-&gt;Height = 160;
+
+    DrawRectangle();
+  }
+
+  // フォームの外淵に沿って四角を描画
+  void DrawRectangle()
+  {
+    Graphics^ g = this-&gt;CreateGraphics();
+    Pen^ pen = gcnew Pen(::Color::Gray, 1);
+    g-&gt;DrawRectangle(pen, 0, 0, this-&gt;Width - 1, this-&gt;Height - 1);
+    delete pen;
+    delete g;
+  }
+
+  // 入力補完などで状態が切り替わったら、6ミリx100回ぐらいはトライして、状態を追従し続ける。
+  // 状態追従の安定化の一環
+  void CreateDelayTimer()
+  {
+    if (timer) {
+      timer-&gt;Stop();
+    }
+
+    timer = gcnew Timer();
+    timer-&gt;Interval = 6;
+    timer-&gt;Tick += gcnew EventHandler(this, &amp;ACHelpForm::TimerTick);
+    timer-&gt;Start();
+    nTickRemainCnt = 100;
+  }
+
+  void TimerTick(Object^ sender, EventArgs^ e)
+  {
+    AdjustToAutoComp();
+
+    if (label-&gt;Text-&gt;Length &gt; 0) { // 単語が有効であれば
+      this-&gt;Show();
+    }
+    else {
+      this-&gt;Hide();
+    }
+
+    nTickRemainCnt--;
+    if (nTickRemainCnt &lt; 0) {
+      timer-&gt;Stop();
+    }
+  }
+
+public:
+  void StopTimer()
+  {
+    if (timer) {
+      timer-&gt;Stop();
+    }
+  }
+
+protected:
+  void SetFormAttr() {
+    //タイトルバーを消す
+    this-&gt;ControlBox = false;
+    this-&gt;Text = &quot;&quot;;
+    this-&gt;FormBorderStyle = ::FormBorderStyle::None;
+  }
+
+  // フォーム表示時にアクティブにならないようにする
+  property bool ShowWithoutActivation
+  {
+    virtual bool get() override
+    {
+      return true;
+    }
+  }
+
+  // このフォームがクリックなどされた時にアクティブにならないようにする。
+  virtual void WndProc(Message %m) override
+  {
+    if (m.Msg == WM_MOUSEACTIVATE)
+    {
+      m.Result = (IntPtr)MA_NOACTIVATE;
+      return;
+    }
+
+    Form::WndProc(m);
+  }
+
+};
+
+
+
+extern &quot;C&quot; __declspec(dllexport) int OnCreate(HWND hWnd, LPCTSTR szFileName) {
+
+  // ウィンドウの作成
+  if (ACHelpForm::f == nullptr || ACHelpForm::f-&gt;IsDisposed) {
+    ACHelpForm::f = gcnew ACHelpForm(gcnew String(szFileName));
+  }
+
+  return TRUE;
+}
+
+extern &quot;C&quot; __declspec(dllexport) int OnListBoxSelectedIndexChanged(HWND hWnd, int iListBoxSelectedIndex, LPCTSTR szListBoxSelectedItem, int iItemHeight) {
+
+  ACHelpForm::f-&gt;Update(hWnd, iListBoxSelectedIndex, gcnew String(szListBoxSelectedItem), iItemHeight);
+
+  return TRUE;
+}
+
+
+extern &quot;C&quot; __declspec(dllexport) int OnDestroy(HWND hWnd) {
+
+  // ウィンドウの破棄
+  if (ACHelpForm::f) {
+    ACHelpForm::f-&gt;StopTimer();
+    ACHelpForm::f-&gt;Close();
+  }
+
+  // 明示的に解放
+  if (ACHelpForm::f) {
+    delete ACHelpForm::f;
+  }
+
+  return TRUE;
+
+}
+</pre></div>
+  <li>
+  <h3>解説</h3>
+  <ul>
+  <li>「LoadDicFile」では「cp932(sjis)」の辞書であると決め打って読み込んでいます。<br>
+  補完単語と説明文の境界を「★」として、改行マークを「◆」にすることで、パースを容易にしています。<br>
+  <li>「LoadCurFile」では「.pl」ファイルは「utf8」と決め打って読み込んでいます。<br>
+  「#で始まる行が１行以上あり、続けてsub ○○○」といった形であれば、「関数へのコメントである」として分析しています。<br>
+  </ul>
+  <div class="code"><pre class="brush:cpp;">
+  ………
+    // ディクショナリオブジェクト生成
+    dic = gcnew Dictionary&lt;String^, String^&gt;();
+    LoadDicFile();
+    LoadCurFile();
+  }
+
+  void LoadDicFile() {
+    dllFullPath = System::Reflection::Assembly::GetExecutingAssembly()-&gt;Location;
+    // 自分自身のディクションナリ
+    dicFullPath = Path::ChangeExtension(dllFullPath, &quot;.dic&quot;);
+
+    IO::StreamReader^ sr;
+    try {
+      sr = gcnew IO::StreamReader(dicFullPath, ::Encoding::GetEncoding(932)); // 説明文のファイルはsjis(cp932)と決め打った
+
+      String^ line = &quot;&quot;;
+      // 読み込みできる文字がなくなるまで繰り返す
+      while ((line = sr-&gt;ReadLine()) != nullptr) {
+        Regex^ re = gcnew Regex(R&quot;(^(.+?)★(.+)$)&quot;); // キーと説明文の境界線は「★」にしておく
+        Match^ m = re-&gt;Match(line);
+        if (m-&gt;Success) {
+          String^ keyword = m-&gt;Groups[1]-&gt;Value;
+          String^ details = m-&gt;Groups[2]-&gt;Value;
+          // キーも値も両方有効
+          if (keyword &amp;&amp; details) {
+            details = details-&gt;Replace(&quot;◆&quot;, &quot;\n&quot;); // 「◆」は改行記号に変えておく
+            dic[keyword] = details;
+          }
+        }
+      }
+
+    }
+    catch (Exception^ e) {
+      Windows::Forms::MessageBox::Show(e-&gt;Message);
+    }
+    finally {
+      if (sr) {
+        sr-&gt;Close();
+      }
+    }
+  }
+
+  void LoadCurFile() {
+
+    if (IO::File::Exists(filename) == false) {
+      return;
+    }
+
+    IO::StreamReader^ sr;
+    try {
+      sr = gcnew IO::StreamReader(filename, ::Encoding::GetEncoding(65001)); //.plはutf8の文字コードと決め打った場合
+
+      String^ line = sr-&gt;ReadToEnd();
+
+      Regex^ re = gcnew Regex(&quot;((^#.+?\n)+)sub\\s+([^\\s]+)&quot;, RegexOptions::Multiline); // 1行としてみなして
+      MatchCollection^ mc = re-&gt;Matches(line);
+
+      for each(Match^ m in mc) {
+        GroupCollection^ groups = m-&gt;Groups;
+        String^ keyword = groups[3]-&gt;Value;
+        String^ details = groups[1]-&gt;Value;
+        // キーも値も両方有効
+        if (keyword &amp;&amp; details) {
+          dic[keyword] = details;
+        }
+      }
+
+    }
+    catch (Exception^) {
+    }
+    finally {
+      if (sr) {
+        sr-&gt;Close();
+      }
+    }
+  }
+
+
+
+</pre></div>
+
+  <li>
+  <h3>再度コンパイル</h3>
+  <p>再度コンパイルし、「HmAutoCompleteExPlug.dll」を秀丸ディレクトリにコピーしましょう。<br>
+  <p>再び、.plファイルを読み込んで、何か入力補完を出し、単語を選択してみましょう。<br>
+  以下のように、「辞書の説明文」は「編集中」のコメント説明文が表示されたでしょうか。<br>
+  </p>
+  <p><img src="./other_soft/hm_autocompleteex/hm_autocompleteex_exam_09.png"></p>
+  <p><img src="./other_soft/hm_autocompleteex/hm_autocompleteex_exam_10.png"></p>
+</ul>

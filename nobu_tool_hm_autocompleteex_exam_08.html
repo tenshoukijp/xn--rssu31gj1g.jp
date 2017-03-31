@@ -1,0 +1,101 @@
+%(hilight)s
+<h2><i class="fa fa-list fa-fw"></i>その他② リスト候補の取得と強制追加</h2>
+
+<ul class="checklist">
+    <li>
+    <h3>概要</h3>
+    <p>「HmAutoCompleteEx.dll」を利用することで、入力補完が出力時に強制的に候補に新しい項目を追加することが出来ます。<br>
+    また、どんな候補が出ているのかを知ることができます。<br>
+    但し、異常に重たくなってしまわないように、候補の取得や強制挿入は最大でも「1000」個までとなっています。</p>
+    <li>
+    <h3>リスト候補の取得と強制追加</h3>
+    <div class="code"><pre class="brush:cpp;">
+#include &lt;windows.h&gt;
+#include &lt;vector&gt;
+
+#include &quot;OutputDebugStream.h&quot;
+
+using namespace std;
+
+extern void PrintList(vector&lt;string&gt; list);
+
+
+struct AUTOCOMPLETELIST {
+  LPTSTR string_ptr_list[1000]; // やり取りするのは1000個まで
+  size_t list_size;
+};
+extern &quot;C&quot; __declspec(dllexport) AUTOCOMPLETELIST* OnQueryListBoxCustomAdded(HWND hWnd, AUTOCOMPLETELIST *pAutoCompleteOriginalList) {
+
+  //------------------------------ 受け取り部
+  // 今回のリストを受けるにあたって、前回までのをクリア
+  static vector&lt;string&gt; original_list;
+  original_list.clear();
+
+  // 元々のリストを受け取る。（ただし、最初の1000個まで）
+  // char **をvector&lt;string&gt;へ
+  if (pAutoCompleteOriginalList-&gt;string_ptr_list) {
+    for (size_t ix = 0; ix&lt;pAutoCompleteOriginalList-&gt;list_size; ix++) {
+
+      // 配列に文字列をコピーして追加
+      original_list.push_back(string(pAutoCompleteOriginalList-&gt;string_ptr_list[ix]));
+    }
+  }
+  //------------------------------ 受け取り部 ここまで
+
+  OutputDebugStream(&quot;元のリストの先頭の方:\n&quot;);
+  PrintList(original_list);
+
+
+  // 永続する必要があるので、static忘れないこと。
+  static vector&lt;string&gt; addition_list;
+  addition_list.clear(); // staticなので、毎度のクリアは必須である。
+
+  addition_list.push_back(&quot;あああ&quot;);
+  addition_list.push_back(&quot;いいい&quot;);
+
+
+
+  //------------------------------ 引き渡し部
+  // 特別に追加するリストへのポインタを返す
+  // static を忘れないように
+  static AUTOCOMPLETELIST AutoCompleteAddiList{ 0 };
+  ZeroMemory(&amp;AutoCompleteAddiList, sizeof(AutoCompleteAddiList)); // staticなのでクリアを忘れないこと
+
+  // 追加していく。(追加数自体が1000個を超えないように注意)
+  for (size_t i = 0; i &lt; addition_list.size() &amp;&amp; i &lt; 1000; i++) {
+    AutoCompleteAddiList.string_ptr_list[i] = (LPTSTR)addition_list[i].data();
+  }
+  AutoCompleteAddiList.list_size = addition_list.size();
+  return &amp;AutoCompleteAddiList;
+  //------------------------------ 引き渡し部 ここまで
+}
+
+void PrintList(vector&lt;string&gt; list) {
+  // 最初の5個をプリント
+  for (int i = 0; i &lt; list.size() &amp;&amp; i &lt; 5; i++) {
+    OutputDebugStream(&quot;%s&quot;, list[i].data());
+  }
+}
+</pre></div>
+    <li>
+    <h3>解説</h3>
+    <p>HmAutoCompleteEx.dll本体との情報のやり取りは</p>
+    <div class="code"><pre class="brush:cpp;">
+struct AUTOCOMPLETELIST {
+  LPTSTR string_ptr_list[1000]; // やり取りするのは1000個まで
+  size_t list_size;
+};
+</pre></div>
+    <p>にて行います。<br>
+    </p>
+    <p><span class="negative">先頭から挿入するのではなく、２番目のアイテム以降に挿入されます。<br>
+    (先頭の要素と秀丸の入力補完はかなり密接に絡みついているため、<br>
+    秀丸の仕様変更の影響を受けにくいように、２番目以降に追加しています。</span></p>
+    <p>1000個まで、というのは、それ以上の入力候補がある時を対象としても<br>
+    普段のパフォーマンスが低下するだけで、あまり有意ではないだろうという判断です。</p>
+    <p>「データの受け取り」については、少々どのように受け取っても自由ですが、<br>
+    <b>「追加候補の引き渡し」については、各々の文字列を指すポインタを引き渡す形になりますので、<br>
+    肝心の文字列である実態が残っている必要があります。</b><br>
+    (<span class="negative">グローバル変数であったり、staticなりにする必要があるということです。</span>)</p>
+    <p><img src="./other_soft/hm_autocompleteex/hm_autocompleteex_exam_12.png"></p>
+</ul>

@@ -1,0 +1,89 @@
+%(hilight)s
+<h2><i class="fa fa-book fa-fw"></i>秀丸エディタ・HmCustomLivePreviewのカスタム 応用編</h2>
+
+<ul class="checklist">
+    <li>
+    <h3>概要</h3>
+    <p>ここでは、前節「秀丸エディタ・HmCustomLivePreviewのカスタム 中級編」の続きです。</p>
+    <li>
+    <h3>HmCustomLivePreviewCS.macの作成</h3>
+    <p>それでは、HmCustomLivePreviewDefault.macをコピーして、HmCustomLivePreviewCS.macとしましょう。</p>
+    <p>今回は、JScriptではなくC#で関数を組むことになります。<br>
+    (C#の知識が全く無い、今後も学習する予定はない、という人はこの節を読む必要はありません。)</p>
+    <li>
+    <h3>「HmCustomLivePreviewCS.mac」編集</h3>
+    <p><a href="?page=nobu_tool_hm_javascript_loadmngdll">hmJSのC#などで作った外部の「マネージドな.dll」の読み込み</a>と 原則的には同じなのですが、少し工夫が必要です。<br>
+    <div class="code"><pre class="brush:python">
+#dll = loaddll( currentmacrodirectory + @&quot;\HmCustomLivePreview.dll&quot; );
+if (!#dll) {
+  message(&quot;NO&quot;);
+  endmacro;
+}
+
+#_ = dllfuncw( #dll, &quot;DoString&quot;, R&quot;JSCRIPT(
+
+// 秀丸の現在使用しているマクロファイルのディレクトリを取得
+var path = hm.Macro.Var(&quot;currentmacrodirectory&quot;);
+
+// そのモジュールのパス(currentmacrodirectory)を「モジュールを置いても良いパス」として追加する
+AssemblyPath.Add(path);
+
+// モジュールを「clr」へと読み込み
+host.lib(clr, &quot;CustomHtmlTranslater&quot;);
+
+// 変数へと、クラスオブジェクトを生成
+var htmltrans = new clr.MyNameSpace.MyClass();
+
+function OnCustomTranslateHTML(filename, rawtext) {
+
+    // 読み込んだC#で作ったライブラリを利用して、rawtextを変換
+    htmltext = htmltrans.translate(filename, rawtext);
+
+    // このHTMLをブラウザ表示
+    return htmltext;
+}
+
+)JSCRIPT&quot;
+);
+#_ = dllfuncw( #dll, &quot;Show&quot;, hidemaruhandle(0) );</pre></div>
+    </pre>
+    </div>
+    <li>
+    <h3>C#側</h3>
+    <p>C#側はわかりやすいサンプルとしましょう。</p>
+
+    <div class="code"><pre class="brush:csharp">
+using System;
+
+namespace MyNameSpace {
+    public class MyClass
+    {
+        public string translate(string filename, string rawtext)
+        {
+            string htmltext = rawtext;
+
+
+            // 実際には、System.Web.HtmlUtility.HtmlEncodeメソッドなどを利用して正確なものとするだろうが
+            // 今回はjavascript版と同様、簡易な処理とする。
+
+            htmltext = htmltext.Replace(&quot;&lt;&quot;, &quot;&amp;lt;&quot;);
+            htmltext = htmltext.Replace(&quot;&gt;&quot;, &quot;&amp;gt;&quot;);
+            htmltext = htmltext.Replace(&quot;---&quot;, &quot;&lt;hr&gt;&quot;);
+            htmltext = htmltext.Replace(&quot;\n&quot;, &quot;&lt;br&gt;&quot;);
+
+            return htmltext;
+        }
+    }
+}
+</pre></div>
+    <p>プロジェクトの設定状態</p>
+    <p>.NET Frameworkのバージョンは、v4.0～4.62あるいは、4系であれば何でも読み込めます。<br>
+    hmJSは、4系であれば(まだ存在しない v4.8であったとしても)読み込めるようになっています。</p>
+    <p><img src="./other_soft/hm_customlivepreview/hm_customlivepreview_08.png"></p>
+    <p>これをコンパイルすると、「CustomHtmlTranslater.dll」が出来上がりますので、<br>
+    HmCustomLivePreview.dllと同じフォルダにコピーしてください。</p>
+
+    <p>これをHmCustomLivePreviewで見てみると、下図のようになります。</p>
+    <p><img src="./other_soft/hm_customlivepreview/hm_customlivepreview_07.png"></p>
+    <p>JScriptで記述したものと同様になったことを確認できたことでしょう。</p>
+</ul>

@@ -1,0 +1,39 @@
+%(hilight)s
+<h2><i class="fa fa-book fa-fw"></i>自作の.pl(.pm)ファイルをrequire</h2>
+
+<ul class="checklist">
+    <li>
+    <h3>実行マクロのパスとrequire</h3>
+    <p>一般的に、「自作マクロのファイル」と「自作の.pl(.pm)のファイル」のディレクトリは同じにすることが多いでしょう。<br>
+    管理都合上、大抵はその方が良いからです。</p>
+    <p>ここでは、そのようなよくあるパターンの記述を掲載することで、hmPerlでありがちなrequireの記述を紹介します。</p>
+    <li>
+    <h3>currentmacrodirectory</h3>
+    <p>現在実行しているマクロのディレクトリは、「currentmacrodirectory」によって得ることが出来ますので、<br>
+    その文字列値を、秀丸マクロからPerlへと持ってくることで、「マクロファイルと同じ場所にある.pl」などを下記のように読み込めます。</p>
+    <div class="code"><pre class="brush:perl">
+#Perl = loaddll( hidemarudir + @&quot;\hmPerl.dll&quot; );
+
+#_ = dllfuncw( #Perl, &quot;DoString&quot;, R&quot;(
+
+my $currentmacrodirectory = hm-&gt;Macro-&gt;Var('currentmacrodirectory');
+require($currentmacrodirectory . '\test.pl');
+
+
+test_sum();
+
+)&quot;);
+
+freedll(#Perl);
+</pre></div>
+    <li>
+    <h4>test.pl</h4>
+    <p>test.plのソースは以下のようになることでしょう。</p>
+    <div class="code"><pre class="brush:perl">
+sub test_sum {
+  hm-&gt;debuginfo(&quot;test_sum&quot;);
+}
+
+1;
+</pre></div>
+</ul>

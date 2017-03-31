@@ -1,0 +1,290 @@
+%(hilight)s
+<h2><i class="fa fa-list fa-fw"></i>チュートリアル③ ～ウィンドウの見た目を整える～</h2>
+
+<ul class="checklist">
+  <li>
+  <h3>概要</h3>
+  <p>前節では、入力補完ウィンドウに合わせて、自作のウィンドウを表示しました。<br>
+  しかし、それはただのグレーのウィンドウでした。</p>
+  <p>今回は入力補完の説明っぽい見た目のウィンドウへと昇格させませましょう。</p>
+  <li><h3>それっぽいウィンドウ</h3>
+  <div class="code"><pre class="brush:cpp;">
+#include &lt;windows.h&gt;
+
+#include &quot;OutputDebugStream.h&quot;
+
+using namespace System;
+using namespace System::Drawing;
+using namespace System::Windows::Forms;
+
+
+public ref class ACHelpForm : public Form
+{
+public:
+  static ACHelpForm^ f; // 自分自身の置き場
+
+private:
+  static String^ filename; // 現在のファイル名
+  HWND hWnd;               // 入力補完ウィンドウハンドル
+  Label^ label;            // 説明文用のラベル
+
+private:
+  static Timer^ timer;     // 描画調整用のタイマー
+  int nTickRemainCnt;      // 描画調整用のカウンタ
+
+public:
+  ACHelpForm(String^ filename)
+  {
+    this-&gt;filename = filename;
+
+    this-&gt;Visible = false;
+    this-&gt;BackColor = System::Drawing::Color(::Color::White);
+
+    SetFormAttr();
+
+    label = gcnew Label();
+    label-&gt;Top = 10;
+    label-&gt;Left = 10;
+
+    this-&gt;Controls-&gt;Add(label);
+  }
+
+public:
+  void Update(HWND hWnd, int iListBoxSelectedIndex, String^ strListBoxSelectedItem, int iItemHeight)
+  {
+    this-&gt;hWnd = hWnd;
+    this-&gt;SuspendLayout();
+    AdjustToAutoComp();
+    // フォームのサイズや位置を再配置
+
+    // それに応じてラベルのサイズが決まる
+    label-&gt;Width = this-&gt;Width - label-&gt;Left * 2;
+    label-&gt;Height = this-&gt;Height - label-&gt;Top * 2;
+    label-&gt;Font = gcnew System::Drawing::Font(&quot;ＭＳ 明朝&quot;, (float)iItemHeight*0.7f); // 1.5倍ぐらい
+
+    label-&gt;Text = &quot;ファイル名:&quot; + filename + &quot;\n&quot; + strListBoxSelectedItem + &quot;\n(実際にはstrから対応する辞書があれば、説明文を出す。)&quot;; // ストリングを流し込み。
+    this-&gt;ResumeLayout();
+
+    CreateDelayTimer();
+  }
+
+protected:
+  // 入力補完ウィンドウの右に、幅約2倍、高さ160pxへと自分自身を移動
+  void AdjustToAutoComp()
+  {
+    RECT rect;
+    GetWindowRect(this-&gt;hWnd, &amp;rect);
+    this-&gt;Left = rect.right + 24;
+    this-&gt;Top = rect.top;
+    this-&gt;Width = (rect.right - rect.left) * 2;
+    this-&gt;Height = 160;
+
+    DrawRectangle();
+  }
+
+  // フォームの外淵に沿って四角を描画
+  void DrawRectangle()
+  {
+    Graphics^ g = this-&gt;CreateGraphics();
+    Pen^ pen = gcnew Pen(::Color::Gray, 1);
+    g-&gt;DrawRectangle(pen, 0, 0, this-&gt;Width - 1, this-&gt;Height - 1);
+    delete pen;
+    delete g;
+  }
+
+  // 入力補完などで状態が切り替わったら、6ミリx100回ぐらいはトライして、状態を追従し続ける。
+  // 状態追従の安定化の一環
+  void CreateDelayTimer()
+  {
+    if (timer) {
+      timer-&gt;Stop();
+    }
+
+    timer = gcnew Timer();
+    timer-&gt;Interval = 6;
+    timer-&gt;Tick += gcnew EventHandler(this, &amp;ACHelpForm::TimerTick);
+    timer-&gt;Start();
+    nTickRemainCnt = 100;
+  }
+
+  void TimerTick(Object^ sender, EventArgs^ e)
+  {
+    AdjustToAutoComp();
+
+    if (true) { // 単語にが存在するならば…という条件に置き換えると良い
+      this-&gt;Show();
+    }
+    else {
+      this-&gt;Hide();
+    }
+
+    nTickRemainCnt--;
+    if (nTickRemainCnt &lt; 0) {
+      timer-&gt;Stop();
+    }
+  }
+
+public:
+  void StopTimer()
+  {
+    if (timer) {
+      timer-&gt;Stop();
+    }
+  }
+
+
+protected:
+  void SetFormAttr() {
+    //タイトルバーを消す
+    this-&gt;ControlBox = false;
+    this-&gt;Text = &quot;&quot;;
+    this-&gt;FormBorderStyle = ::FormBorderStyle::None;
+  }
+
+  // フォーム表示時にアクティブにならないようにする
+  property bool ShowWithoutActivation
+  {
+    virtual bool get() override
+    {
+      return true;
+    }
+  }
+
+  // このフォームがクリックなどされた時にアクティブにならないようにする。
+  virtual void WndProc(Message %m) override
+  {
+    if (m.Msg == WM_MOUSEACTIVATE)
+    {
+      m.Result = (IntPtr)MA_NOACTIVATE;
+      return;
+    }
+
+    Form::WndProc(m);
+  }
+
+};
+
+
+extern &quot;C&quot; __declspec(dllexport) int OnCreate(HWND hWnd, LPCTSTR szFileName) {
+
+  // ウィンドウの作成
+  if (ACHelpForm::f == nullptr || ACHelpForm::f-&gt;IsDisposed) {
+    ACHelpForm::f = gcnew ACHelpForm(gcnew String(szFileName));
+  }
+
+  return TRUE;
+}
+
+extern &quot;C&quot; __declspec(dllexport) int OnListBoxSelectedIndexChanged(HWND hWnd, int iListBoxSelectedIndex, LPCTSTR szListBoxSelectedItem, int iItemHeight) {
+
+  ACHelpForm::f-&gt;Update(hWnd, iListBoxSelectedIndex, gcnew String(szListBoxSelectedItem), iItemHeight);
+
+  return TRUE;
+}
+
+
+extern &quot;C&quot; __declspec(dllexport) int OnDestroy(HWND hWnd) {
+
+  // ウィンドウの破棄
+  if (ACHelpForm::f) {
+    ACHelpForm::f-&gt;StopTimer(); // タイマーを止める
+    ACHelpForm::f-&gt;Close();
+  }
+  // このOnDestroyの後に、インスタンスが残っているのに任せるのは不安である。明示的に解放
+  if (ACHelpForm::f) {
+    OutputDebugString(&quot;明示解放\n&quot;);
+    delete ACHelpForm::f;
+  }
+
+  return TRUE;
+
+}
+</pre></div>
+  <li>
+  <h3>再度コンパイル</h3>
+  <p>再度コンパイルし、「HmAutoCompleteExPlug.dll」を秀丸ディレクトリにコピーしましょう。<br>
+  <p>再び、.plファイルを読み込んで、何か入力補完を出し、単語を選択してみましょう。<br>
+  以下のように、「それっぽい」ウィンドウが表示されたでしょうか。<br>
+  </p>
+  <p><img src="./other_soft/hm_autocompleteex/hm_autocompleteex_exam_08.png"></p>
+  <li>
+  <h3>解説</h3>
+  <p>今回の要点は見た目を整えたことですが、<br>
+  それ自体は、.NETの基本中の基本内容であり、<br>
+  <ul>
+    <li>Labelを配置して、ファイル名や単語名を表示する。<br>
+    文字の大きさは、単語補完リストの「１項目の高さ」を基準にして割り出す。<br>
+    <li>フォームの外にグレーで四角い矩形を描く
+  </ul>
+  <p>などです。特に解説の必要はないでしょう。</p>
+  <li>
+  <h3>タイマーの導入</h3>
+  <p>今回の注目ポイントはタイマーの導入です。<br>
+  「入力補完の具体的な選択」を得てから「表示の更新」をするまでの間に、<br>
+  「計0.6秒」程度の「更新をし続ける時間」を設けることで、<br>
+  入力補完選択時の「ちょっと後(0.6秒以内」の時間差で「表示位置」や「表示内容」を変更したいといった<br>
+  擬似非同期的な時間差更新を可能とする基盤を整えました。<br>
+  </p>
+  <div class="code"><pre class="brush:cpp;">
+
+  // 入力補完などで状態が切り替わったら、6ミリx100回ぐらいはトライして、状態を追従し続ける。
+  // 状態追従の安定化の一環
+  void CreateDelayTimer()
+  {
+    if (timer) {
+      timer-&gt;Stop();
+    }
+
+    timer = gcnew Timer();
+    timer-&gt;Interval = 6;
+    timer-&gt;Tick += gcnew EventHandler(this, &amp;ACHelpForm::TimerTick);
+    timer-&gt;Start();
+    nTickRemainCnt = 100;
+  }
+
+  void TimerTick(Object^ sender, EventArgs^ e)
+  {
+    AdjustToAutoComp();
+
+    if (true) { // 将来「有効な単語説明文が存在するならば」…という条件に置き換えると良さそうだ
+      this-&gt;Show();
+    }
+    else {
+      this-&gt;Hide();
+    }
+
+    nTickRemainCnt--;
+    if (nTickRemainCnt &lt; 0) {
+      timer-&gt;Stop();
+    }
+  }
+
+public:
+  void StopTimer()
+  {
+    if (timer) {
+      timer-&gt;Stop();
+    }
+  }
+
+</pre></div>
+  <p>Timerが加わったことで、フォームを閉じる前にタイマーを止めるのを忘れないようにしましょう。</p>
+  <div class="code"><pre class="brush:cpp;">
+extern &quot;C&quot; __declspec(dllexport) int OnDestroy(HWND hWnd) {
+
+  // ウィンドウの破棄
+  if (ACHelpForm::f) {
+    ACHelpForm::f-&gt;StopTimer(); // タイマーを止める
+    ACHelpForm::f-&gt;Close();
+  }
+  // このOnDestroyの後に、インスタンスが残っているのに任せるのは不安である。明示的に解放
+  if (ACHelpForm::f) {
+    OutputDebugString(&quot;明示解放\n&quot;);
+    delete ACHelpForm::f;
+  }
+
+  return TRUE;
+
+}
+</pre></div>
+</ul>

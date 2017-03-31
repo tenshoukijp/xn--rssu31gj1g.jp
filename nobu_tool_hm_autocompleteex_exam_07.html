@@ -1,0 +1,32 @@
+%(hilight)s
+<h2><i class="fa fa-list fa-fw"></i>その他① キー入力</h2>
+
+<ul class="checklist">
+    <li>
+    <h3>概要</h3>
+    <p>少し寄り道の話となります。</p>
+
+    <p>HmAutoCompleteEx.dllでは、キーボードの入力についても、コールバックを用意しています。<br>
+    Win32でよく利用する<a href="https://msdn.microsoft.com/ja-jp/library/windows/desktop/dd375731">仮想キー</a>との比較が可能となっています。</p>
+    <li>
+    <h3>キーボード入力と比較</h3>
+    <div class="code"><pre class="brush:cpp;">
+#include &lt;windows.h&gt;
+
+#include &quot;OutputDebugStream.h&quot;
+
+using namespace System;
+
+extern &quot;C&quot; __declspec(dllexport) int OnKeyDown(HWND hWnd, WPARAM wParam) {
+    OutputDebugStream(&quot;%c&quot;, wParam);
+    if (wParam == VK_OEM_PERIOD){
+        OutputDebugStream(&quot;「ピリオド」来ました&quot;);
+    }
+    if (wParam == 'A'){
+        OutputDebugStream(&quot;「A」来ました&quot;);
+    }
+
+    return true;
+}
+</pre></div>
+</ul>

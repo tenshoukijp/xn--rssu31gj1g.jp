@@ -1,0 +1,96 @@
+%(hilight)s
+<h2><i class="fa fa-list fa-fw"></i>単語補完拡張キット（基盤）</h2>
+
+<ul class="checklist">
+  <li>
+  <h3>概要</h3>
+  <p><span class="positive">この「単語補完拡張キット」はプログラムの心得がある人向けに制作された<br>
+  「秀丸本体の入力補完」を拡張するための「基盤システム」です。</span><br>
+  <ul>
+  <li>最初のdll読込以外はマクロを一切介することが無いため、マクロ衝突もなく、高い安定性を確保しています。
+  <li>完全ネイティブC++であり、秀丸の仕組みそのものとして振る舞っているため、秀丸との連動性に優れる上、高速です。
+  <li>UI・表示物・表示方法・解析方法等は、「あなた自身が１から全てプログラムする」ため、自由なカスタム性と創造性を維持しています。
+  </ul>
+  <p>など、既存のものとは一線を画する仕組みとなっています。</p>
+  <li>
+  <h3>ダウンロード</h3>
+  <dl>
+    <dt>
+    <div class="download_file">DOWNLOAD ⇒ <a href="%(file)s">HmAutoCompleteEx.zip</a>ファイル。ver 0.502</div>
+    </dt>
+    <dd>
+    <div class="update_time">└更新日 %(year)04d/%(mon)02d/%(mday)02d</div>
+    </dd>
+    <dt>
+  </dl>
+  <h3>動作環境</h3>
+  <ul>
+    <li>秀丸 32bit版 ver8.22以上
+    <fieldset class="alert"><legend><i class="fa fa-windows fa-fw"></i>Windowsのbit数ではなく、<i class="fa fa-hidemaru fa-fw"></i>秀丸のビット数</legend> Windows
+    OSが64bit版か32bit版かは関係ありません。秀丸エディタが32bit版か64bit版かが問題です。<br>
+    単語補完拡張キットは32bit版でのみ動作します。<br>
+    </fieldset>
+  </ul>
+  <h3>インストール</h3>
+  <ul class="pointlist">
+    <li>このプログラムは「インストールしたから何か起きる」といった類のものではありません。<br>
+    よって、具体的どのように使うのかは、全てチュートリアルを通して順番立てて学ぶことが出来ます。<br>
+  </ul>
+  <li>
+  <h3>200行程度の短いプログラムにて、以下のようなことが簡単に実現できます</h3>
+  <ul class="pointlist">
+    <li>
+    <h4>単語補完時に説明文枠を表示①（用意していた辞書ファイルから表示）</h4>
+    <p>（事前に辞書を用意して、一致する関数の説明文を表示）</p>
+    <p><img src="./other_soft/hm_autocompleteex/cnt_hm_autocompleteex_01.png" attr="noedge"></p>
+    <li>
+    <h4>単語補完時に説明文枠を表示②</h4>
+    <p>（「編集中テキスト」をリアルタイムに分析して、関数のコメントと思われるものを表示）</p>
+    <p><img src="./other_soft/hm_autocompleteex/cnt_hm_autocompleteex_02.png" attr="noedge"></p>
+    <li>
+    <h4>自身で「今必要な候補」を分析し、結果を単語補完リストに強制追加</h4>
+    <p>(辞書にもファイル中にも存在しない「あああ」と「いいい」が追加された。)</p>
+    <p><img src="./other_soft/hm_autocompleteex/hm_autocompleteex_exam_03.png" attr="noedge"></p>
+  </ul>
+  <h3>必要となる知識</h3>
+  <p>Visual Studio を利用した「.NET プログラミング入門程度(日々勉強して一週間程度)」は理解していることが望ましいです。</p>
+  <ul class="pointlist">
+    <li>
+    <h4>C++/CLI or C#など、マイクロソフト基幹プログラミング言語のいずれか(解説は全てC++/CLIが掲載されています)</h4>
+    <p>C++/CLI、もしくは、C#の少なくとも一方の「入門程度は理解できている」ことが望ましいと言えます。<br>
+    </p>
+    <li>
+    <h4>.NET Frameworkの基本</h4>
+    <p>C++/CLIもしくはC#で、たとえ数百行程度の小さなフォームアプリケーションであったとしても、<br>
+    (ソースの自動生成ではなく)自力で記述したことがあれば、かなり理解がスムーズに進みます。<br>
+    </p>
+    <li>
+    <h4>.dllの作成方法や動作原理の概要</h4>
+    <p>汎用的なWindowsの「.dll」を自力で制作したことがある、基本的なところは理解している、といった前提で解説は行われます。<br>
+    </p>
+    <li>
+    <h4>Visual Studioの基本操作</h4>
+    <p>Visual Studioの利用方法は理解している、という前提で解説は行われます。<br>
+    又、開発環境として、Visual Studio 2013 Community以降(Visual Studio 2015 Communityでも同じ)の利用を前提として解説しています。
+    </p>
+  </ul>
+  <h3>提供する機能は以下のように「コールバック」系であり、たった５つだけです。</h3>
+  <ul class="pointlist">
+    <li>
+    <h4>OnCreate</h4>
+    <p>単語補完ウィンドウが表示される際に、呼び出されるコールバックをプログラム定義できます。</p>
+    <li>
+    <h4>OnDestroy</h4>
+    <p>単語補完ウィンドウが消滅する際に、呼び出されるコールバックをプログラム定義できます。</p>
+    <li>
+    <h4>OnListBoxSelectedIndexChanged</h4>
+    <p>単語補完リストの選択項目が変更された際に、呼び出されるコールバックをプログラム定義できます。</p>
+    <li>
+    <h4>OnQueryListBoxCustomAdded</h4>
+    <p>単語補完リストを決定する際に、間に割り込み、リストの先頭に新たな単語補完候補を追加するプログラム内容を定義することが出来ます。</p>
+    <li>
+    <h4>OnKeyDown</h4>
+    <p>秀丸上で、キーボードが押される度に呼び出されるコールバックをプログラム定義できます。</p>
+  </ul>
+</ul>
+
