@@ -1,0 +1,217 @@
+%(hilight)s
+<h2><i class="fa fa-js fa-fw"></i>hmJS <span style="font-size: 0.9em">(秀丸マクロ用 .NET &amp; ActiveXObject ライブラリ via JavaScript)</span></h2>
+<ul class="checklist">
+    <li>
+        <h3>概要</h3>
+        <p>秀丸マクロを可能な限り「JavaScript(JScript 5.8)」で記述可能とするためのライブラリです。</p>
+        <ul class="pointlist">
+            <li>
+                <h4>JavaScriptで秀丸マクロ</h4>
+                <p>JavaScript内で、秀丸マクロの実行が可能です。又、「JavaScript」⇔「秀丸マクロの各種変数やシンボル」が非常に手軽に行えるようになっています。</p>
+            <li>
+                <h4>.NET Framework</h4>
+                <p>.NET Frameworkのライブラリが利用可能であるとともに、独自にC#等で制作した.dllも読み込み＆利用可能です。</p>
+            <li>
+                <h4>ActiveXObject</h4>
+                <p>デスクトップで利用される.jsファイルで良く利用される「ActiveXObject」を読み込む記述を、特別に同様の記述で済むようにサポートされています。
+        </ul>
+    <li>
+        <h3>ダウンロード</h3>
+        <dl>
+            <dt>
+                <div class="download_file"><img src="./other_soft/hm_javascript/cnt_hm_javascript_minizip.png" attr="noedge" align="middle"> ⇒ <a href="%(file)s">hmJS.zip</a>ファイル。ver 1.478</div>
+            </dt>
+            <dd>
+                <div class="update_time">└更新日 %(year)04d/%(mon)02d/%(mday)02d</div>
+            </dd>
+        </dl>
+    <li>
+        <h3>動作環境</h3>
+        <ul class="pointlist">
+            <li>
+                <h4>秀丸</h4>
+                <p>秀丸エディタ ver8.66以上</p>
+            <li>
+                <h4>Microsoft VC++ 再頒布可能パッケージ</h4>
+                <p>
+                    <a href="https://www.microsoft.com/ja-jp/download/details.aspx?id=40784">Visual Studio 2013 C++ ランタイム</a><br>
+                    x86版をインストールしたことが無い方はインストールしてください。<br>
+                    <span class="negative">お手持ちのOSが64bitか32bitかには関わりなく、x86版のインストールが必要です。</span>
+                </p>
+            <li>
+                <h4>Microsoft .NET</h4>
+                <p>
+                    .NET Framework 4.0以上。<br>
+                </p>
+            <li>
+                <h4>秀丸エディタ 64bit版について</h4>
+                <p>
+                    秀丸エディタ64bit版をご利用の方は、<a href="/other_soft/hm_javascript/hmJS_x64.zip">hmJS_x64.zip</a>をダウンロードし、hmJS.dllを差し替えてください。<br>
+                    (又、この場合は、Microsoft VC++ 再頒布可能パッケージは、64bit版をインストールしてください。)
+                </p>
+        </ul>
+    <li>
+        <h3>インストール</h3>
+        <ul>
+            <li>hmJS.zipを解凍する。
+            <li>
+                <span class="negative">「hmJS.dllを秀丸エディタのディレクトリ内(hidemaru.exeと同じ場所)へと コピー</span>する。<br>
+                (<span class="negative">原則的には、hidemaru.exeと同じ場所である必要があります。これは.NET FrameWorkのdllを動作させる仕組みに拠るためです。)</span>
+        </ul>
+    <li>
+        <h3>hmJSの意義</h3>
+        <ul class="pointlist">
+            <li>
+                <h4>古い資産・新しい資産・秀丸マクロを...</h4>
+                <ul>
+                    <li>「WSH」時代の既存のJScript(=拡張子.jsで実行するファイル)古い資産の流用<br>
+                    <li>32bit/64bitを問わない、.NET やマネージアセンブリ による「新しい資産」
+                    <li>そして、秀丸マクロのみが可能な、「秀丸自身の独自の機能」
+                </ul>
+            <li>
+                <h4>JavaScriptで繋げる!</h4>
+                <p>
+                    これらを、スクリプト言語の経験者数としては、圧倒的な母数を誇る「JavaScript」で、<br>
+                    シームレスに取り扱えるようにしたもの、それがhmJSとなります。
+                </p>
+                <img src="./other_soft/hm_javascript/cnt_hm_javascript_logo.png" attr="noedge">
+        </ul>
+    <li>
+        <h3>秀丸マクロファイルや「.js」ファイルの文字コード</h3>
+        <p>
+            hmJS.dllを利用する<b>秀丸マクロファイルや、.jsファイルは、全て「utf8」の「BOM付き」</b>を前提としています。<br>
+            但し、他の文字コードでのファイルも扱うことが可能です。<br>
+        </p>
+        <p>詳細は左メニューより、「秀丸マクロから利用するhmJSの関数」の「DoFile」や「SetCodePage」の項目を参照してください。</p>
+    <li>
+        <h3>ソース例①</h3>
+        <div class="code">
+            <pre class="brush:python">
+#JS = loaddll( hidemarudir + @&quot;\hmJS.dll&quot; );
+
+#_ = dllfuncw( #JS, &quot;DoString&quot;, R&quot;JS(
+
+// 対象のテキストは、アスキーなのか？ 
+function IsTextAscii(text) {
+
+    // sjisエンコードインスタンス
+    var sjis_enc = clr.System.Text.Encoding.GetEncoding(&quot;Shift_JIS&quot;);
+
+    // バイト数
+    var byte_count = sjis_enc.GetByteCount(text);
+
+    // 文字数
+    var char_count = text.length
+
+    // バイト数と文字数が異なる。アウト
+    if (byte_count != char_count) {
+        console.log(&quot;バイト数と文字数が異なる&quot;);
+        return false;
+    }
+
+
+    // 半角カタカナの定義(若干あれだがまぁ常識内で)
+    var rgxHankakuKatakana = /[\uFF66-\uFF9F]/;
+
+    // 半角カタカナが混じってるか
+    if ( rgxHankakuKatakana.test(text) ) {
+        console.log(&quot;半角カタカナが混じってる&quot;);
+        return false;
+    }
+
+    return true;
+}
+
+// 今編集中のテキスト全体は、アスキーなのか？ 
+var b = IsTextAscii(hm.Edit.TotalText);
+console.log( b );
+
+)JS&quot;
+);
+
+freedll(#JS);
+</pre></div>
+    </li>
+    <li>
+        <h3>ソース例②</h3>
+        <div class="code">
+            <pre class="brush:python">
+#JS = loaddll( hidemarudir + @&quot;\hmJS.dll&quot; );
+
+#_ = dllfuncw( #JS, &quot;DoString&quot;, R&quot;(
+
+// .NETアセンブリの読み込みが可能
+// "System.Windows.Forms"だけでも問題はない。
+var addlib = host.lib(&quot;System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;);
+
+var TForms = addlib.System.Windows.Forms;
+var TForm = TForms.Form;
+var frm= new TForm();
+frm.Text = &quot;こんにちわ&quot;;
+var iClicked = 0;
+
+
+var TButton = TForms.Button;
+var btn = new TButton();
+btn.Text = &quot;クリック&quot;;
+btn.Left = 16;
+btn.Top = 16;
+
+// イベントハンドラも作れる
+btn.Click.connect(function (sender, args) {
+    iClicked++;
+
+    // デバッグモニター用の関数
+    hm.debuginfo(&quot;ボタンが押されたよ!!&quot;);
+    TForms.MessageBox.Show(iClicked.toString());
+
+    // 秀丸マクロの「変数」とのやりとりも自由自在
+    var filename2 = hm.Macro.Var('filename2');
+
+    // .jsのWSHではよく利用されるActiveXObjectの記述方法をもそのままに
+    var WSHShell = new ActiveXObject(&quot;WScript.Shell&quot;);
+    WSHShell.Popup(filename2, 0, "今秀丸で開いているファイル", 1);
+
+    // 秀丸マクロの「変数」とのやりとりも自由自在
+    hm.Macro.Var('$count', iClicked.toString());
+
+    // JavaScriptの中から秀丸マクロを一連のコマンドとして実行することも出来る。
+    // ヒアドキュメントに似た仕組みが搭載されている。
+    hm.Macro.Eval( function() { /*
+        // アウトプット枠へ出力
+        #OP = loaddll(&quot;HmOutputPane.dll&quot;);
+        #ret = dllfunc(#OP, &quot;Output&quot;,hidemaruhandle(0), $count);
+        freedll(#OP);
+    */ } );
+});
+
+frm.Controls.Add(btn);
+frm.ShowDialog();
+)&quot;);
+
+// JavaScriptから秀丸マクロへと書き込まれた変数は、当然秀丸マクロからも見える。
+message(&quot;ボタンは&quot; + $count + &quot;回クリックされました&quot;);
+
+freedll(#JS);
+</pre>
+        </div>
+    <li>
+        <h3>ライセンス</h3>
+        <ul class="pointlist">
+            <li>
+                <h4>hmJS</h4>
+                <p>
+                    hmJSは、Apache License 2.0となります。<br>
+                </p>
+                <h4>ソースの場所</h4>
+                <ul>
+                    <li><a href="https://github.com/tenshoukijp/xn--rssu31gj1g.jp/tree/master/other_soft/hm_javascript">Github</a>にソースがあります。<br>
+                </ul>
+            <li>
+                <h4>ClearScript</h4>
+                <p>
+                    hmJSはInternalアセンブリとしてClearScriptが利用されています。<br>
+                    ClearScriptはMicrosoft Public License (MS-PL)ライセンスとなります。
+                <p>詳細は、<a href="https://clearscript.codeplex.com/">https://clearscript.codeplex.com/</a>を見てください。</p>
+        </ul>
+</ul>

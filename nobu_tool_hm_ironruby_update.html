@@ -1,0 +1,82 @@
+%(hilight)s
+<h2><i class="fa fa-history fa-fw"></i>hmRb 更新履歴</h2>
+
+<ul class="checklist">
+    <li>
+    <h3>2017/03/25 ver. 1.4.8.1</h3>
+    <ul>
+        <li>DoStringやDoFileより早い段階で、<br>
+        秀丸マクロ側より、SetNumVarやGetStrVarなどの直接マニュアルによる代入・取得関数を使うとdllの利用形態が取得できないバグの修正。
+    </ul>
+    <li>
+    <h3>2017/03/24 ver. 1.4.7.8</h3>
+    <ul>
+        <li>rubyのbool値を、秀丸の整数型へと代入した際には、真=1, 偽=0 へとマッピングするようにした。
+    </ul>
+    <li>
+    <h3>2016/11/17</h3>
+    <ul>
+        <li>hmRbは 秀丸エディタ v8.66以上専用とした。<br>
+        説明の２重化による余計な混乱を避けるため。<br>
+    </ul>
+    <li>
+    <h3>2016/11/11 ver. 1.4.5.4</h3>
+    <ul>
+        <li>秀丸エディタ v8.66以上の場合には、「dllの呼び出し元のマクロファイルと同じディレクトリにあるマネージdll」は、<br>
+        $LOAD_PATHにpushしなくても、アセンブリをロード出来るようになった。<br>
+        詳細は、<a href="?page=nobu_tool_hm_ironruby_loadmngdll">C#で作った.dllの読み込み</a>へ。
+    </ul>
+    <li>
+    <h3>2016/11/10 ver. 1.4.5.2</h3>
+    <ul>
+        <li>パースエラーや、ランタイムエラーが発生した時に、出来るだけ親切なエラーコード、該当箇所の記述を出すようにした。
+    </ul>
+    <li>
+    <h3>2016/11/06 ver. 1.4.5.1</h3>
+    <ul>
+        <li>x86でもx64でも安定した動作を行うように修正。
+    </ul>
+    <li>
+    <h3>2016/11/03 ver. 1.4.1.1</h3>
+    <ul>
+        <li>IronRubyに元々ある「インスタンスに値が設定されていない」系列のエラーが出来るだけでないように対策
+    </ul>
+    <li>
+    <h3>2016/10/22 ver. 1.4.0.8</h3>
+    <ul>
+        <li><a href="?page=nobu_tool_hm_ironruby_api_866">秀丸エディタ 8.66以降で使える機能</a>を追加。
+    </ul>
+    <li>
+    <h3>2016/09/09 ver. 1.1.0.2</h3>
+    <ul>
+        <li>外部の.rbを読み込む際に、本来utf-16を前提として読み込まねばならないところ、<br>
+        cp932を前提として読み込むというポカミスをしたので、修正。
+    </ul>
+    <li>
+    <h3>2016/09/07 ver. 1.1.0.1</h3>
+    <ul>
+        <li>正式版の最初の版<br>
+        <li><span class="negative"><b>ver 1.0.0.1までと完全に非互換</b>となった。</span><br>
+        <li>utf-16で統一。<br>
+        「秀丸マクロ」と「.rb」の両方とも「utf-16」を前提とすることとした。
+        <li>hmRbにDestroyScopeの追加。<br>
+        秀丸エディタ 8.64までは、freedllの直前に
+        <div class="code"><pre class="brush:ruby">#_ = dllfuncw(#RB, &quot;DestroyScope&quot;);</pre></div>
+        の呼び出しが必要となった。 <br>
+        秀丸エディタ8.66以降は、freedll だけ記述しておけば内部的に自動でDestroyScopeも呼び出される。<br>
+        <li>IronRuby層にもDestroyScopeを定義することが可能となった。<br>
+        IronRuby内に
+        <div class="code"><pre class="brush:ruby">def DestroyScope()
+    ...
+end
+</pre></div>
+        を定義することで、freedll直前に呼び出されるコールバック関数を定義出来る。
+        <li>$hm::debuginfoは、削除された。<br>
+        System::Diagnostics::Trace::WriteLineと機能が被っているため。
+    </ul>
+    <h3>2016/07/21 ver. 1.0.0.1</h3>
+    <ul>
+        <li>初公開。コンセプトモデル。<br>
+        <li>cp932(sjis)のみの取り扱い。
+    </ul>
+</ul>

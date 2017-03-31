@@ -1,0 +1,73 @@
+%(hilight)s
+<h2><i class="fa fa-book fa-fw"></i>「hmRb・IronRuby」のFormやGUIのコンポーネント</h2>
+
+<ul class="checklist">
+    <li>
+    <h3>概要</h3>
+    <p>C#のクラスと同じような形で実装することとなります。<br>
+    <li>
+    <h3>IronRubyと大文字小文字</h3>
+    <span class="negative"><b>IronRubyの場合、.NET Flameworkのメソッドやプロパティについて、やや特殊な処理がなされているようで、</b><br>
+    </span><span class="positive">「最初の１文字目」だけは、「大文字小文字」は問われない作り</span>ようです。<br>
+    (例：Showでもshowでも良い。btn.Widthでもbtn.widthでも良い) <br>
+    <h3>フォームの実装</h3>
+    <p>以下のようなファイルをwinform.rbとして作成してみましょう。<br>
+    文字コードはutf-16(unicode)です。</p>
+
+    <div class="code"><pre class="brush:ruby">
+# coding: utf-16
+
+require 'mscorlib'
+load_assembly &quot;System.Windows.Forms&quot;
+load_assembly &quot;System.Drawing&quot;
+
+include System::Windows::Forms
+include System::Drawing
+
+$result_from_ruby = &quot;ボタンはまだ押していないよ&quot;
+
+class IronRubyForm &lt; Form
+
+  def initialize()
+    self.Text = 'IronRubyからのフォーム'
+    self.TopMost = true
+    self.Size = Size.new(400, 200)
+    @btn = Button.new
+    @btn.Location = Point.new(50, 50)
+    @btn.Width = 200
+    @btn.Text = &quot;このボタンをクリック&quot;
+
+    @btn.Click { |sender, e| self.btn_Click(sender, e) }
+
+    self.Controls.Add(@btn)
+  end
+
+  def btn_Click(sender, e)
+      MessageBox.Show(
+            &quot;ボタンが押されました!\n&quot; +
+            &quot;渡ってきたファイル名は:&quot; + $hm.Macro.Var['filename2']
+      )
+      $result_from_ruby = &quot;ボタンは押されたよ&quot;
+  end
+
+end
+
+IronRubyForm.new.ShowDialog
+</pre></div>
+
+    <h3>呼び出すマクロ</h3>
+    <p>上のファイルを呼び出すマクロを記述し、適当に秀丸に登録して、<br>
+    実行してみましょう。<br>
+    マクロファイルは、utf-16で保存してください。</p>
+
+    <div class="code"><pre class="brush:python">
+#RB = loaddll( hidemarudir + &quot;\\&quot; + &quot;hmRb.dll&quot; );
+
+#_ = dllfuncw(#RB, &quot;DoFile&quot;, currentmacrodirectory + &quot;\\winform.rb&quot; );
+// 解放
+freedll(#RB);
+</pre></div>
+
+    <h3>実行イメージ</h3>
+    <img src="./other_soft/hm_ironruby/cnt_hm_ironruby_24.png" attr="noedge">
+</ul>

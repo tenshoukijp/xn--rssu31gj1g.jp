@@ -1,0 +1,51 @@
+%(hilight)s
+<h2><i class="fa fa-book fa-fw"></i>C#からIronRubyへの変換</h2>
+
+<ul class="checklist">
+    <li>
+    <h3>概要</h3>
+    <p>C#からIronRubyに変換する方法等が記載されています。</p>
+
+    <li>
+    <h3>まず、本当にIronRubyにする必要があるか？</h3>
+    <p>hmRb/IronRubyは、C#で作成された.dllをそのまま実行可能です。<br>
+    もちろんC#で定義されたクラスをIronRubyで継承して利用することも可能です。<br>
+    </p>
+    <p>「C#」は<br>
+    <ul>
+        <li>「Visual Studio」による強力なサポートと開発効率
+        <li>十分に高速な実行速度
+        <li>美しくも柔軟性のある文法
+    </ul>
+    <p>と非常に高バランスで均衡がとれた言語です。<br>
+    IronRubyに変換する前に、C#でそのまま作った方が良いのではないか？<br>
+    ということを検討することをお勧めします</p>
+    <p>当管理人としては、基本的な指針としては、
+    <ul>
+        <li>コンポーネントといえる「部品」
+        <li>コンポーネントを利用した「基本制御」
+    </ul>
+    <p>ぐらいまではC#で作成し、<br>
+    </p>
+    <ul>
+        <li>テキストに出した方が柔軟性が確保出来るところ<br>
+        <li>秀丸マクロと通信する必要がある変数<br>
+    </ul>
+    <p>だけIronRubyにする、というのが理想的ではないかと考えています。</p>
+    <li>
+    <h3>SharpDevelop 4.4でC#からIronRubyに変換できる</h3>
+    <p>C#で制作したソースは、「C#文法」に「対応する文法」が「IronRuby文法」に存在するものに関してなら、<br>
+    SharpDevelop 4.4で機械的にIronRubyへと変換可能です。</p>
+    <p>これはC#での制作経験は豊富だが、IronRubyの経験は乏しいといった人に、<br>
+    向いた変換手法と言えるでしょう。<br>
+    (日本国内でプログラムを記述する人は大半がIronRubyよりC#の方が経験があると思われます)</p>
+    <fieldset class="alert alert-info"><legend>SharpDevelop導入時にファイル拡張子の関連付けをするな!!</legend> C#ユーザーのほとどがVisual Studioにて開発しているでしょうから、<br>
+    <span class="negative">SharpDevelop導入の際、インストール時に「ファイルの関連付け」を設定する項目がありますが、<br>
+    間違ってチェックを入れてしまわないように注意しましょう。</span></fieldset>
+
+    <p><img src="./other_soft/hm_ironruby/cnt_hm_ironruby_31.png"></p>
+    <p><img src="./other_soft/hm_ironruby/cnt_hm_ironruby_32.png"></p>
+    <p><img src="./other_soft/hm_ironruby/cnt_hm_ironruby_33.png"></p>
+    <p>変換すると"System, Version=2.0.0.0 等となりますが、(この記述を利用する場合は)Version=4.0.0.0と修正する必要があります。</p>
+</ul>
+

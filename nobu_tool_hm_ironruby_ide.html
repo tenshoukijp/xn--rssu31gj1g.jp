@@ -1,0 +1,113 @@
+%(hilight)s
+<h2><i class="fa fa-book fa-fw"></i>「hmRb・IronRuby」と「開発環境」</h2>
+
+<ul class="checklist">
+    <li>
+    <h3>概要</h3>
+    <p>開発環境について、候補・パッチ・設定等の情報を提供しています。</p>
+    <li>
+    <h3>IronRubyのREPLとなるir.exeの設定</h3>
+    <p>IronRubyのREPLは<span class="positive">そのままだと日本語が文字化けします。</span><br>
+    ruby同様に、起動コマンドの引数として、「-Ks」を付けてください。</p>
+    <p><img src="./other_soft/hm_ironruby/cnt_hm_ironruby_repl_01.png"></p>
+
+    <li>
+    <h3>irbを利用して、一行ずつ評価する</h3>
+    <p>以下のように、通常のrubyのirbが用意されているので、ir irbという形で利用することが出来ます。<br>
+    以下のようにすると、test.rbを一行ずつ評価して実行されます。</br></p>
+    <li>
+    <div class="code"><pre class="brush:python">
+    ir irb --prompt simple test.rb
+    </pre></div>
+
+    <li>
+    <h3>Visual Studio 2010 Professional</h3>
+    <p>IronRubyの開発環境としてはVisual Studio 2010のProfessional版にIronRubyツールを入れるのがベストです。</p>
+    <p>又、Visual Studioの日本語OS環境では、入力補完こそ効きませんが、ブレイク・ステップ実行・値監視などが利用できるため、<br>
+    非常にポイントが高いと言えます。</p>
+    <p>但し、現在のIronRubyの最新版はエラーを抱えており、そのままでは正しく動作しません。<br>
+    Visual Studio環境も含めコンソールコマンドとしても正しく動作させるためには、以下のものを上書きする必要があります。<br>
+    </p>
+    <p>Visual Studio 2010 Pro が手元に無い場合には、「Sharp Develop 4.4」がお薦めです。<br>
+    (Sharp Develop 5以降ではなく、Sharp Develop 4.4という決め打ちのバージョンがお勧めです)</p>
+    <ul class="pointlist">
+        <li>
+        <h4>ダウンロード</h4>
+        <dl>
+            <dt>
+            <div class="download_file">DOWNLOAD ⇒ <a href="%(file)s">ir_patch.zip</a>ファイル。</div>
+            </dt>
+            <dd>
+            <div class="update_time">└更新日 %(year)04d/%(mon)02d/%(mday)02d</div>
+            </dd>
+            <dt>
+        </dl>
+        <li>
+        <h4>Visual Studio 2010でのIronRubyをデバッグで正しく使えるようになるまで</h4>
+        <ul class="arrowlist">
+            <li>
+            <h5>IronRuby 1.1.3 Installer (includes Tools for Visual Studio 2010)</h5>
+            <p>まずは、レジストリ情報などもあわせて構築するため、IronRuby 1.1.3 Installer (includes Tools for Visual Studio 2010)を使ってインストール<br>
+            通常の利便性を考慮すると、空白が存在しないフォルダにインストールした方が良いと思われます。</p>
+            <li>
+            <h5>上記パッチ版で上書きする</h5>
+            <p>上記ファイルのirw64.exe、irw.exe、ir64.exe、ir.exe で上書きする。</p>
+            <p>hmRbと同じ正しく動くバージョンへと参照を切り替えるため、上書きしてください。</p>
+            <li>
+            <h5>ダメなのは消して、hmRb付属のIronRuby.Libraries１つでカバーする</h5>
+            <ul class="arrowlist">
+                <li>
+                <h5>削除するもの</h5>
+                <p>binフォルダとSilverlight\binフォルダ内にある<br>
+                </p>
+                <ul>
+                    <li>Microsoft.Dynamic.dll<br>
+                    <li>Microsoft.Scripting.dll<br>
+                    <li>Microsoft.Scripting.Manifest.dll<br>
+                    <li>IronRuby.dll<br>
+                    <li>IronRuby.Libraries.dll<br>
+                    <li>IronRuby.Libraries.Yaml.dll<br>
+                    は削除。
+                </ul>
+                <li>
+                <h5>追加するもの</h5>
+                <p>代わりに、 binフォルダとSilverlight\binに<br>
+                </p>
+                <ul>
+                    <li>hmRb付属のIronRuby.Libraries.dll</li>
+                </ul>
+                <p>をコピーしてください。</p>
+                <p>以上で 、他のDLR等のバージョンと干渉しない動作するIronRuby環境が出来上がります。</p>
+            </ul>
+            <li>
+            <h5>上記４つのexeを自分で作りたい場合</h5>
+            <p>特に詳細は記述しませんが、概要だけ。<br>
+            </p>
+            <ul>
+                <li>IronLanguageシリーズとなる「main-ipy-2.7-maint」をダウンロードします。
+                <li>Microsoft.Dynamic、Microsoft.Scripting、Microsoft.Scripting.Manifest、Microsoft.Scripting.Core、Ruby、IronRuby.Libraries、IronRuby.Libraries.Yamlは全てソリューションからプロジェクトごと削除
+                <li>Ruby.Console、Ruby.ConsoleAny、Ruby.WinConsole、Ruby.WinConsoleAnyの４つについて<br>
+                hmRb付属のIronRuby.Librariesを参照するようにします。
+                <li>先述の４つについて、全て「厳密署名」を付けないようにします。<br>
+                <li>上の４つについて１つずつビルド
+            </ul>
+        </ul>
+        <li>
+        <h4>プロジェクト作成シーンなど</h4>
+        <p>.NETのバージョンは 4.0を選択のこと</p>
+        <p><img src="./other_soft/hm_ironruby/cnt_hm_ironruby_13.png"></p>
+
+        <li>
+        <h4>入力補完のシーンなど</h4>
+        <p>IronPythonが素晴らしく入力補完が効くのに対して、<span class="negative">IronRubyは何一つ入力補完が効きません!</span></p>
+
+        <li>
+        <h4>デバッガーシーンなど</h4>
+        <p>デバッグやステップ実行は可能です。</p>
+        <p><img src="./other_soft/hm_ironruby/cnt_hm_ironruby_18.png"></p>
+    </ul>
+    <li>
+    <h3>SharpDevelop 4.4でIronRubyを利用する</h3>
+    <p>こちらもVisual Studio 同様に入力補完は効きませんが、デバッガは利用可能です。</p>
+    <p><img src="./other_soft/hm_ironruby/cnt_hm_ironruby_19.png"></p>
+</ul>
