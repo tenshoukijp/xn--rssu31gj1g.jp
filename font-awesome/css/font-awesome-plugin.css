@@ -1,9 +1,9 @@
 @font-face {
   font-family: 'FontAwesomePlugin';
-  src: url('../fonts/fontawesome-plugin-webfont.eot?v=0.0.3.3');
-  src: url('../fonts/fontawesome-plugin-webfont.eot?#iefix&v=0.0.3.3') format('embedded-opentype'),
-       url('../fonts/fontawesome-plugin-webfont.woff?v=0.0.3.3') format('woff'),
-       url('../fonts/fontawesome-plugin-webfont.ttf?v=0.0.3.3') format('truetype');
+  src: url('../fonts/fontawesome-plugin-webfont.eot?v=0.0.3.9');
+  src: url('../fonts/fontawesome-plugin-webfont.eot?#iefix&v=0.0.3.9') format('embedded-opentype'),
+       url('../fonts/fontawesome-plugin-webfont.woff?v=0.0.3.9') format('woff'),
+       url('../fonts/fontawesome-plugin-webfont.ttf?v=0.0.3.9') format('truetype');
   font-weight: normal;
   font-style: normal;
 }
@@ -14,3 +14,24 @@
   content:"\f001";font:normal normal normal 1em FontAwesomePlugin;}
 .fa-internal-link-95:before{
   content:"\f002";font:normal normal normal 1em FontAwesomePlugin;}
+.fa-python:before{
+  content:"\f003";font:normal normal normal 1em FontAwesomePlugin;}
+.fa-ruby:before{
+  content:"\f004";font:normal normal normal 1em FontAwesomePlugin;}
+.fa-hidemaru:before{
+  content:"\f005";font:normal normal normal 1em FontAwesomePlugin;}
+.fa-lua:before{
+  content:"\f006";font:normal normal normal 1em FontAwesomePlugin;}
+.fa-perl:before{
+  content:"\f007";font:normal normal normal 1em FontAwesomePlugin;}
+.fa-js:before{
+  content:"\f008";font:normal normal normal 1em FontAwesomePlugin;}
+.fa-v8:before{
+  content:"\f009";font:normal normal normal 1em FontAwesomePlugin;}
+.fa-markdown:before{
+  content:"\f00A";font:normal normal normal 1em FontAwesomePlugin;}
+.fa-nodejs:before{
+  content:"\f00B";font:normal normal normal 1em FontAwesomePlugin;}
+.fa-vscode:before {
+  content:"\f00C";font:normal normal normal 1em FontAwesomePlugin;}
+
