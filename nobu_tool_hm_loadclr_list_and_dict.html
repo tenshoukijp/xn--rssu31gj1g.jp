@@ -1,0 +1,63 @@
+%(hilight)s
+<h2><i class="fa fa-book fa-fw"></i>「秀丸マクロ」と「hmLoadCLR」の、リスト(テーブル)との値のやり取り</h2>
+
+<ul class="checklist">
+    <li>
+    <h3>概要</h3>
+    <p>「秀丸マクロ」と「hmLoadCLR」とで、リストやタプルの情報へとアクセスする関数を確かめてみましょう。<br>
+    </p>
+
+    <div class="code"><pre class="brush:python">
+#MNG = loaddll( hidemarudir + &quot;\\hmLoadCLR.dll&quot; );
+
+#_ = dllfuncw(#MNG, &quot;DoString&quot;, R&quot;MNG(
+ary = {1, 2, 3}
+ary2 = { table.unpack(ary) }    -- aryと全く同じものの複製
+array_len = #ary2
+)MNG&quot;
+);
+
+#target = dllfuncw(#MNG, &quot;GetNumItemOfList&quot;, &quot;ary2&quot;, 2);  // ary2[2]を数値として取得ということ
+
+message(str(#target));
+
+#_ = dllfuncw(#MNG, &quot;SetStrItemOfList&quot;, &quot;ary2&quot;, 2, &quot;abc&quot;);  // ary2[2] = &quot;abc&quot;ということ
+
+#_ = dllfuncw(#MNG, &quot;DoString&quot;, &quot;array_len = #ary2&quot;); // ary2の配列の長さをarray_len変数に代入
+#ary2len = dllfuncw(#MNG, &quot;GetNumVar&quot;, &quot;array_len&quot;);  // それを秀丸マクロ空間へと取得
+
+message(&quot;以下配列の中身を順々に表示&quot;);
+##i = 1; // Luaの配列は1からスタート
+while(##i &lt;= #ary2len ) {
+  $$elem = dllfuncstrw(#MNG, &quot;GetStrItemOfList&quot;, &quot;ary2&quot;, ##i);
+  message($$elem);
+  ##i = ##i + 1;
+}
+
+freedll( #MNG );
+</pre></div>
+    <p><img src="./other_soft/hm_ironpython/cnt_hm_ironpython_21.png" attr="noedge"></p>
+
+    <h3>整数での添え字が可能なことの意味</h3>
+    <p>テーブル本体ではなく、<span class="positive">テーブルにくっ付けてあるメタテーブルにも対象となります。</span><br>
+
+    <p>次のようなマクロや関数の使い方も問題なく成立します。</p>
+    <div class="code"><pre class="brush:python">
+#MNG = loaddll( hidemarudir + &quot;\\&quot; + &quot;hmLoadCLR.dll&quot; );
+
+#_ = dllfuncw(#MNG, &quot;DoString&quot;, R&quot;MNG(
+
+aaa = {a = 3, b = 5, c = 8}
+setmetatable(aaa, { __index = { d = 1000, e = 3000 } } )
+
+)MNG&quot;
+);
+
+##elem = dllfuncw(#MNG, &quot;GetNumItemOfDict&quot;, &quot;aaa&quot;, &quot;e&quot;); // aaa.e を数値として取得
+
+message(str(##elem));
+
+freedll( #MNG );
+</pre></div>
+    <p><img src="./other_soft/hm_ironpython/cnt_hm_ironpython_22.png" attr="noedge"></p>
+</ul>

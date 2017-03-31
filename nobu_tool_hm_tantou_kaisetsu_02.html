@@ -1,0 +1,103 @@
+%(hilight)s
+<h2><i class="fa fa-lua fa-fw"></i>秀丸掲示板での捕捉用ページ (20160825)</h2>
+
+<ul class="checklist">
+    <li>
+    <h3>概要</h3>
+    <p><b>秀丸エディタ 8.6.6.1( 8.6.6 β1)のx86版</b>にて、<br>
+    秀丸エディタ終了時に不正エラーが出てしまうプログラムがある。</p>
+    <li>
+    <h3>ダウンロード</h3>
+    <dl>
+        <dt>
+        <div class="download_file">DOWNLOAD ⇒ <a href="%(file)s">dlltest.zip</a>ファイル。</div>
+        </dt>
+        <dd>
+        <div class="update_time">└更新日 %(year)04d/%(mon)02d/%(mday)02d</div>
+        </dd>
+    </dl>
+    <ul>
+        <li>dlltest.zipには「dlltest.dll」と「dlltest.mac」が同封されています。
+        <li>dlltest.dllを構成するためのソースコード・プロジェクト・ソリューションファイルもセットで入っています。
+    </ul>
+
+    <li>
+    <h3>dlltest.dllのコンパイル環境</h3>
+    <p>Visual Studio 2013 Community</p>
+    <p>x86コンパイル(添付ファイルにはソリューションやプロジェクトファイルが含まれているため、細かいところはそれらで確認してください。)</p>
+    <li>
+    <h3>このプログラムの概要</h3>
+    <p>これは典型的な「dllinjection」のプログラムとなります。<br>
+    即ち、hidemaru.exeと同じプロセス空間にある「user32.dllのDestroyWindow」への関数呼び出し参照を、<br>
+    全て「dlltest.dllのHook_DestroyWindow」へと入れ替えるプログラムとなります。</p>
+    <p>ちなみに、全く同じdllinijectionであっても、<br>
+    CreateWindowsExA, CreateWindowsExWや、SendMessageA, SendMessageWなどの際には秀丸終了時にエラーになりません。</p>
+    <li>
+    <h3>不正エラーが出る・不正エラーが出ないの差</h3>
+    <p>ソース中の、dlltest.cppの</p>
+    <div class="code"><pre class="brush:cpp">
+pfnPrevDestroyWindow = hook_win32api("user32.dll", "DestroyWindow", Hook_DestroyWindow);
+    </pre></div>
+    <p>を実行するかしないかで「不正エラーが出る・不正エラーが出ない」が決定的に変わります。<br>
+    (というかまぁこのプログラムはそれ以外はやってること何もないので…)</p>
+
+    <li>
+    <h3>エラーログ</h3>
+    <p>家のPCでも再現すると思ったのですが、OSが異なる(家のOSはWin10)ためか再現しませんでした。<br>
+    (OSのイベントビューワで閲覧可能なエラーログの「エラー」はおろか、「警告」や「情報」にすら出ない…)<br>
+    明日会社のマシンでは再現率100％ですので、ログを再確認して、正確なエラーメッセージやログを掲載します。<br>
+    秀丸のエラーダンプを出力してそうならそれも。</p>
+    <li>
+    <h3>その他の確認環境</h3>
+    <ul class="pointlist">
+        <li>
+        <h4>「Windows7 64bit」での確認時(OSは最新正式パッチ状態)</h4>
+        <ul class="arrowlist">
+            <li>
+            <h5>秀丸エディタ 8.2.2.正式版</h5>
+            <p>dlltest.dllは実行したとしても、秀丸終了時に不正エラーが出ない。</p>
+            <li>
+            <h5>秀丸エディタ 8.5.4.β15</h5>
+            <p>dlltest.dllは実行したとしても、秀丸終了時に不正エラーが出ない。</p>
+            <li>
+            <h5>秀丸エディタ 8.6.4 正式版</h5>
+            <p>dlltest.dllは実行したとしても、秀丸終了時に不正エラーが出ない。</p>
+            <li>
+            <h5>秀丸エディタ 8.6.6 β1</h5>
+            <p><span class="negative">dlltest.dllは実行した際、秀丸終了時に不正エラーが出る。</span></p>
+        </ul>
+        <li>
+        <h4>「Windows10 64bit」での確認時(OSは最新正式パッチ状態)</h4>
+        <ul class="arrowlist">
+            <li>
+            <h5>秀丸エディタ 8.6.4 正式版</h5>
+            <p>dlltest.dllは実行したとしても、秀丸終了時に不正エラーが出ない。</p>
+            <li>
+            <h5>秀丸エディタ 8.6.6 β1</h5>
+            <p><span class="positive">dlltest.dllは実行したとしても、秀丸終了時に不正エラーが出ない。</span></p>
+        </ul>
+    </ul>
+    <li>
+    <h3>状況から考える天翔記.jpの推測</h3>
+    <p>秀丸エディタの実装者ではないため、完全な的外れの可能性もありますが、<br>
+    状況から考えられる原因を私なりにピックアップしてみました。</p>
+    <ul class="pointlist">
+        <li>
+        <h4>setdlldetachfunc追加に関連した修正で、.dllに対してFreeLibraryをするタイミングが、既存の秀丸バーションより少し早くなった可能性</h4>
+        <p>DestoryWindowsをDllInjectionして、dlltest.dll内への関数へと置き換えるというとは、<br>
+        <span class="negative">このdlltest.dllが秀丸終了時よりも明らかに早いすぎるタイミングで解放されると極めて危険です。</span><br>
+        dllの解放が行われた後、秀丸がDestroyWindowを呼び出すようなことがあれば、<br>
+        関数のポインタの実態の保持者たるdlltest.dllがメモリ上に存在しないため、不正エラーとなることでしょう。</p>
+        <li>
+        <h4>何か別の修正要件等により、.dllのFreeLibraryより後に、DestoryWindowsを直接(もしくは関節)的に呼び出すような記述が加えられた可能性</h4>
+        <p>結果としては、上の記述と同じこととなります。</p>
+    </ul>
+    <li>
+    <h3>先述のことが原因であった場合の対策</h3>
+    <ul class="pointlist">
+    <li><h4>秀丸側が対策する場合</h4>
+    <p>これまでと同じタイミングで解放するか、.dll解放のタイミングを hidemaru.exeが他にはもう関数を呼び出さないぐらいまでの「プログラム終了直前」まで遅らせる。</p>
+    <li><h4>個々の.dll側で対策する場合</h4>
+    <p>dlltest.dllの内部で、dlltest.dll自身のリファレンスカウンタを１つ増やしておき、秀丸がFreeLibraryしても、<br>
+    １つリファレンスカウンタが残るようにする。(最終的にはどの道Hidemaru.exe終了時にOSが解放するため)</p>
+</ul>

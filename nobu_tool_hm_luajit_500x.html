@@ -1,0 +1,77 @@
+%(hilight)s
+<h2><i class="fa fa-book fa-fw"></i>実は500倍速どころか1000倍速すら超える!</h2>
+
+<ul class="checklist">
+    <li>
+    <h3>概要</h3>
+    <p>秀丸マクロとのベンチマークとなります。<br>
+    秀丸マクロと秀丸マクロ内に記述したLuaJITでは、状況的にLuaJITに計測上のハンデがあるにもかかわらず、<br>
+    その速度は、<span class="positive">LuaJITの方が秀丸マクロの1000倍以上高速です。</span></p>
+
+    <h3>ベンチマークの例</h3>
+    <p>以下のベンチマークを実行してみましょう。<br>
+    おそらくはLuaと秀丸マクロで同じようなタイムが表示されるかと思います。<br></p>
+    <p>しかし実行しているループ数は、秀丸マクロの「100*10000回ループ」に対して<br>
+    LuaJITは実に「100000*10000回ループ」という驚異的数値です!!
+    </p>
+
+    <div class="code"><pre class="brush:python">
+#L = loaddll( hidemarudir + &quot;\\hmLJ.dll&quot;);
+
+//--------------------------------------------------------
+// Lua編
+//--------------------------------------------------------
+// 計測前のシステム時刻
+#dtime1 = tickcount;
+
+// hmLJ(LuaJIT)実行
+#_ = dllfunc(#L, &quot;DoString&quot;, &quot;&quot;+
+  &quot;local x = 0\n&quot; +
+  &quot;b = {}\n&quot; +
+  &quot;while x &lt; 100000 do\n&quot; +
+  &quot;    local y = 0\n&quot; +
+  &quot;    while y &lt; 10000 do\n&quot; +
+  &quot;        b[(x+y)%10] = x+y\n&quot; +
+  &quot;        y = y + 1\n&quot; +
+  &quot;    end\n&quot; +
+  &quot;    x = x + 1\n&quot; +
+  &quot;end&quot;
+);
+
+// 計測後のシステム時刻
+#dtime2 = tickcount;
+message(str(#dtime2-#dtime1));
+
+
+//--------------------------------------------------------
+// 秀丸マクロ編
+//--------------------------------------------------------
+// 計測前のシステム時刻
+#dtime3 = tickcount;
+
+// 秀丸マクロの実行
+##x = 0;
+while(##x &lt; 100) {
+
+  ##y = 0;
+  while(##y &lt; 10000) {
+    #b[(##x+##y)%10] = ##x+##y;
+    ##y = ##y + 1;
+  }
+
+  ##x = ##x + 1;
+}
+
+// 計測後のシステム時刻
+#dtime4 = tickcount;
+message(str(#dtime4-#dtime3));
+
+
+
+freedll(#L);
+
+</pre></div>
+    <fieldset class="alert alert-info"><legend>秀丸マクロはものすごく速度が遅い言語</legend>平均的には、LuaJITは秀丸マクロの500倍ほど高速です。<br>
+    (ちなみにLuaJITはスクリプトにも関わらず、全体的にはC言語の1/3ほどの速度が出ます)<br><br>
+    又、IronPythonのような(DLRといった)非常にリッチな作りの言語すら、秀丸マクロの5倍ほどは高速です。</fieldset>
+</ul>

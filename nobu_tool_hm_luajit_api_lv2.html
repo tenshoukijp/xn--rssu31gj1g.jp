@@ -1,0 +1,137 @@
+%(hilight)s
+<h2><i class="fa fa-book fa-fw"></i>hmLJの応用のAPI</h2>
+<ul class="checklist">
+    <li>
+    <h3>概要</h3>
+    <p>hmLJ自体が備えている残りのAPIは９つです。</p>
+    <p>全ては「リスト」と「ディクショナリ」の値の取得・設定に関するものとなります。<br>
+    </p>
+    <p>似たような関数ですが、概念としてはたった１しかありません。</p>
+
+    <div class="code"><pre class="brush:python">
+変数名 [ キー名 ]
+</pre></div>
+    <p>このような<span class="positive">添え字でアクセスできるオブジェクト</span>の値を「取得」「設定」する関数です。</p>
+    <p>これらは無理に覚える必要はありませんが、</p>
+
+    <div class="code"><pre class="brush:python">
+#_ = dllfunc( #L, &quot;DoString&quot;, &quot;aaa = {1,2,3,4,5,6}&quot; );  // 配列を定義
+#_ = dllfunc( #L, &quot;SetNumVar&quot;, &quot;tmpnum&quot;, 100 ); // 一旦tmpnumというグローバル変数に値を設定
+#_ = dllfunc( #L, &quot;DoString&quot;, &quot;aaa[3] = tmpstr&quot; ); // aaa[3]に値を設定
+</pre></div>
+
+    <p>と記述するところを</p>
+    <div class="code"><pre class="brush:python">
+#_ = dllfunc( #L, &quot;DoString&quot;, &quot;aaa = {1,2,3,4,5,6}&quot; );  // 配列を定義
+
+// aaaの添え字[3]に100を代入
+#_ = dllfunc( #L, &quot;SetNumItemOfList&quot;, &quot;aaa&quot;, 3, 100 );
+</pre></div>
+
+    <p>と記述できるということになります。<br>
+    知っておくと記述が少し楽になるでしょう。</p>
+    <p>以下のListやDict系の関数はhmPyと同じ名前の関数となります。</p>
+    <li>
+    <h3>リストにアクセスする４つの関数(***OfList)</h3>
+    <p>厳密には「リスト」だけではなく、「タプル」や「独自に自分で定義したオブジェクト」も含め、<br>
+    <span class="positive">「整数の添え字」でアクセス可能なモノ</span>」全てが含まれます。<br>
+    </p>
+    <ul class="pointlist">
+        <li>
+        <h4>「添え字は整数タイプ」・「アイテムは数値の値」を得る:<br>
+        &nbsp;└ GetNumItemOfList(list_name, index)</h4>
+        <p><span class="positive">aaa[3] の値を得るといった場合です。aaa[3]の中身が数値タイプだとわかっている場合に利用します。</span><br>
+        <br>
+        <br>
+        </p>
+        <li>
+        <h4>「添え字は整数タイプ」・「アイテムは数値の値」を設定:<br>
+        &nbsp;└ SetNumItemOfList(list_name, index, value)</h4>
+        <p><span class="positive">aaa[3] = 10 のように値を設定したいといった場合です。</span><br>
+        <br>
+        <br>
+        </p>
+        <li>
+        <h4>「添え字は整数タイプ」・「アイテムは文字列」として得る:<br>
+        &nbsp;└ GetStrItemOfList(list_name, index)</h4>
+        <p><span class="positive">aaa[3] の値を得るといった場合です。aaa[3]の中身を「文字列」に変換して取得する場合に利用します。</span><br>
+        <br>
+        <br>
+        </p>
+        <li>
+        <h4>「添え字は整数タイプ」・「アイテムは文字列の値」を設定:<br>
+        &nbsp;└ SetStrItemOfList(list_name, index, value)</h4>
+        <p><span class="positive">aaa[3] = "aaa" のように文字列の値を設定したいといった場合です。</span><br>
+        <br>
+        <br>
+        </p>
+    </ul>
+
+    <li>
+    <h3>ディクショナリにアクセスする４つの関数(***OfDict)</h3>
+    <p>厳密には「ディクショナリ」だけではなく、「独自に自分で定義したオブジェクト」も含め、<br>
+    <span class="positive">「文字列の添え字」でアクセス可能なモノ</span>」全てが含まれます。<br>
+    </p>
+    <ul class="pointlist">
+        <li>
+        <h4>「添え字は文字列タイプ」・「アイテムは数値の値」を得る:<br>
+        &nbsp;└ GetNumItemOfDict(list_name, key)</h4>
+        <p><span class="positive">aaa["prop"] の値を得るといった場合です。aaa["prop"]の中身が数値タイプだとわかっている場合に利用します。</span><br>
+        <br>
+        <br>
+        </p>
+        <li>
+        <h4>「添え字は文字列タイプ」・「アイテムは数値の値」を設定:<br>
+        &nbsp;└ SetNumItemOfDict(list_name, key, value)</h4>
+        <p><span class="positive">aaa["prop"] = 10 のように値を設定したいといった場合です。</span><br>
+        <br>
+        <br>
+        </p>
+        <li>
+        <h4>「添え字は文字列タイプ」・「アイテムは文字列」として得る:<br>
+        &nbsp;└ GetStrItemOfDict(list_name, key)</h4>
+        <p><span class="positive">aaa["prop"] の値を得るといった場合です。aaa["prop"]の中身を「文字列」に変換して取得する場合に利用します。</span><br>
+        <br>
+        <br>
+        </p>
+        <li>
+        <h4>「添え字は文字列タイプ」・「アイテムは文字列の値」を設定:<br>
+        &nbsp;└ SetStrItemOfDict(list_name, key, value)</h4>
+        <p><span class="positive">aaa["prop"] = "aaa" のように文字列の値を設定したいといった場合です。</span><br>
+        <br>
+        <br>
+        </p>
+    </ul>
+    <li>
+    <h3>hmLJに特別に用意されている関数</h3>
+
+    <ul class="pointlist">
+        <li>
+        <h4>「配列タイプのテーブルの長さ」を得る:<br>
+        &nbsp;└ GetLenOfList(list_name)</h4>
+        <p><span class="positive">luaの #list に相当する値を取得します。</span><br>
+        </p>
+        <p>Luaの場合、「テーブル」機能に様々な実装を集約する傾向が高くなる言語ですので、<br>
+        必然的にテーブルの配列数を秀丸マクロとやり取りする機会が増えます。<br>
+        そこで、GetLenOfList というテーブルの長さ「#list」に相当する関数が追加されています。<br>
+        </p>
+        <li>
+        <h4>Dll解放時に呼びされる関数:<br>
+        &nbsp;└ DestroyScope()</h4>
+        <p>Luaでは、並列処理やwin32apiを経由したウィンドウ表示も可能となっていますので、<br>
+        Luaで処理中に秀丸を不意に閉じるといったことが可能です。<br>
+        そこで、Dllの解放時に逆に呼び出される関数として、「DestroyScope」を用意しています。<br>
+        DestroyScopeが関数が定義されていると、呼び出されます。</p>
+        <div class="code"><pre class="brush:python">
+#L = loaddll( hidemarudir + &quot;\\hmLJ.dll&quot;);
+
+#_ = dllfunc(#L, &quot;DoString&quot;, &quot;&quot; +
+&quot;function DestroyScope()\n&quot; +
+&quot;    hm.debuginfo('DLLが解放される直前')\n&quot; +
+&quot;end\n&quot;
+);
+
+freedll(#L);
+</pre></div>
+    </ul>
+</ul>

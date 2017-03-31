@@ -1,0 +1,57 @@
+%(hilight)s
+<h2><i class="fa fa-book fa-fw"></i>「秀丸マクロ」のスコープと「hmLoadCLR」のスコープとの値のやり取り</h2>
+
+<ul class="checklist">
+    <li>
+    <h3>概要</h3>
+    <p>秀丸マクロでは直接は「マネージdll」を取り扱うことが出来ません、<br>
+	「秀丸マクロ」⇔「hmLoadCLR」で値のやりとりをし、<br>
+	hmLoadCLRがマネージdllを処理し、結果を秀丸マクロで受け取るといった手順が多くなります。
+    </p>
+
+    <h3>スコープ間の値のやりとり</h3>
+    <p>「秀丸マクロ」のスコープと「hmLoadCLR」のスコープとの値のやり取りをみてみましょう。</p>
+
+    <p>hmLoadCLRの内部スクリプトとして用意されているLuaの配列はindexが「１」から始まる点にも注意してください。</p>
+    <div class="code"><pre class="brush:python">
+#MNG = loaddll( hidemarudir + &quot;\\&quot; + &quot;hmLoadCLR.dll&quot; );
+
+// テーブル{1,2,3}をbbbに代入
+#_ = dllfuncw(#MNG, &quot;DoString&quot;, &quot;bbb = {1,2,3}\n&quot;);
+
+#_ = dllfuncw(#MNG, &quot;SetNumVar&quot;, &quot;var1&quot;, 100);
+#num = dllfuncw(#MNG, &quot;GetNumVar&quot;, &quot;var1&quot;);
+message(str(#num));
+
+#_ = dllfuncw(#MNG, &quot;DoString&quot;, &quot;bbb[2] = var1\n&quot; );
+
+// テーブルbbbの[2]をresult_numという変数に代入
+#_ = dllfuncw(#MNG, &quot;DoString&quot;, &quot;result_num = bbb[2]&quot; );
+
+// result_numの値を秀丸マクロ側に得る
+#result_num = dllfuncw(#MNG, &quot;GetNumVar&quot;, &quot;result_num&quot;);
+
+// 表示
+message(str(#result_num));
+
+// hmLoadCLRのスコープにグローバル変数nameとして「武田信玄」という文字列を代入
+#_ = dllfuncw(#MNG, &quot;SetStrVar&quot;, &quot;name&quot;, &quot;武田信玄&quot;);
+
+// 今設定した値を秀丸マクロ側に取得
+$name = dllfuncstrw(#MNG, &quot;GetStrVar&quot;, &quot;name&quot;);
+message($name);
+
+// bbb[1]の値と-200の絶対値を足しこんで、result_numという変数に代入
+#_ = dllfuncw(#MNG, &quot;DoString&quot;, &quot;result_num = bbb[1] + clr.System.Math.Abs(-200)&quot; );
+
+// それを秀丸マクロ側に得る
+#result_num = dllfuncw(#MNG, &quot;GetNumVar&quot;, &quot;result_num&quot;);
+
+// 文字列として表示
+message(str(#result_num));
+
+freedll(#MNG);
+
+</pre></div>
+    <p><img src="./other_soft/hm_ironpython/cnt_hm_ironpython_10.png"></p>
+</ul>

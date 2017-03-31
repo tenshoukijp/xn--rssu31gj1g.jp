@@ -1,0 +1,110 @@
+%(hilight)s
+<h2><i class="fa fa-clock-o fa-fw"></i>秀丸エディタ・自動でも終了するメッセージボックス</h2>
+
+<ul class="checklist">
+    <li>
+    <h3>概要</h3>
+    <p><span class="positive">秀丸のマクロを作っていると、「メッセージボックス」を出すことがよくあります。</span><br>
+    </p>
+    <p>情報の告示や、マクロのデバッグ時など、メッセージボックスは最も頻繁に利用される機能のひとつでしょう。</p>
+
+    <p>さて、<br>
+    メッセージボックスは、一度表示すると、ボタンを押すまでは閉じないモノだと思われているかもしれませんが、<br>
+    そんなことはありません。</p>
+    <p><img src="./other_soft/hm_timer_msgbox/cnt_timer_messagebox_01.png" attr="noedge"></p>
+    <p><span class="positive">この自動終了式のメッセージボックスは、</span><span class="negative">ボタンを押さなかったとしても、指定した時間で終了する</span>、<br>
+    そんな特殊なメッセージボックスです。</p>
+    <li>
+    <h3>ダウンロード</h3>
+    <dl>
+        <dt>
+        <div class="download_file">DOWNLOAD ⇒ <a href="%(file)s">TimerMessageBox.zip</a>ファイル。ver 1.00</div>
+        </dt>
+        <dd>
+        <div class="update_time">└更新日 %(year)04d/%(mon)02d/%(mday)02d</div>
+        </dd>
+    </dl>
+    <h3>動作環境</h3>
+    <ul>
+        <li>秀丸 ver7.00以上
+    </ul>
+    <h3>インストール</h3>
+    <ul>
+        <li>TimerMessageBox.zipを解凍する。
+        <li>TimerMessageBox.exeとTimerMessageBox.macを適当な場所にコピー。<br>
+        <li>秀丸に適当に登録して、マクロを実行してみる。
+    </ul>
+    <h3>TimerMessageBox.exeの単独での使い方</h3>
+    <p>秀丸のマクロを見れば、わかることなのですが、秀丸マクロ経由に限らず<br>
+    このTimerMessageBox.exeは単独でも使えます。<br>
+    </p>
+    <h3>TimerMessageBox.exeのコマンド例</h3>
+    <ul>
+        <div class="code"><pre class="brush:ps;highlight:[1,4,7,14]">
+① TimerMessageBox.exe "本文だけあれば最低限は表示される"
+
+
+② TimerMessageBox.exe "本文はこれこれこれ" "次はタイトルだ!!"
+
+
+③ TimerMessageBox.exe "本文はこれこれこれ" "次はタイトルだ!!" 34
+   // 34 というのは、ボタンのパターンやアイコンの種類、などなど。
+   // TimerMessageBoxを見ればわかりますが、
+   // #MB_ICONQUESTION(=0x20=32)と、#MB_ABORTRETRYIGNORE(=0x2=2)で、合計34です。
+   // マクロ内では16進数で表記されており、ビットOR演算子を使って複数の状態を表現しています。
+   // (win32のC/C++プログラムでよくみられる手法です)
+
+④ TimerMessageBox.exe "本文はこれこれこれ" "次はタイトルだ!!" 54 5000
+   // 最後の5000というのは、5000ミリ秒(すなわち５秒)のこと。
+
+</pre></div>
+    </ul>
+    <li>
+    <h3>マクロ上でのソース例</h3>
+    <ul>
+        <div class="code"><pre class="brush:hmmacro;highlight:[1,2,3,5,9,13]">
+call DclreMessagePrm;
+call TimerMessageBox &quot;数秒で自動で閉じるダイアログ&quot;, &quot;自動で閉じるダイアログ&quot;,
+                     (#MB_ABORTRETRYIGNORE|#MB_ICONINFORMATION|#MB_DEFBUTTON2), 4000;
+
+if (##return == #IDTIMEOUT) {
+  message(&quot;未選択のまま時間ぎれ&quot;);
+}
+
+if (##return == #IDRETRY) {
+  message(&quot;再トライを選択しました&quot;);
+}
+
+if (##return == #IDCANCEL) { // 実際には「#MB_ABORTRETRYIGNORE」では、このようなボタンがくることはない。
+  message(&quot;キャンセルボタンを選択しました&quot;);
+}
+
+
+endmacro;
+</pre></div>
+    </ul>
+    <h3>TimerMessageBox.macとは</h3>
+    <ul class="pointlist">
+        <li>
+        <h4>DclreMessagePrm関数</h4>
+
+        <p>グローバル定数的なものを定義して、ダイアログボックスのオプションを使いやすくしてます。</p>
+        <li>
+        <h4>TimerMessageBox関数</h4>
+        <p>実際にダイアログを表示するための関数です。<br>
+        </p>
+    </ul>
+    <h3>ライセンス等</h3>
+
+    <ul class="pointlist">
+        <li>
+        <h4>TimerMessageBox.mac</h4>
+        <p>添付されている、TimerMessageBox.macファイルは自由に使用してください。<br>
+        完全に使用フリーです。<br>
+        </p>
+        <li>
+        <h4>TimerMessageBox.exe</h4>
+        <p>TimerMessageBox.exeについては、MITライセンスです。<br>
+        TimerMessageBoxのソースは<a href="https://github.com/tenshoukijp/xn--rssu31gj1g.jp/tree/master/other_soft/hm_timer_msgbox">Github</a>に上がっています。</p>
+    </ul>
+</ul>

@@ -1,0 +1,155 @@
+%(hilight)s
+<h2><i class="fa fa-book fa-fw"></i>C#などで作った外部の「マネージドな.dll」の読み込み</h2>
+
+<ul class="checklist">
+    <li>
+    <h3>概要</h3>
+    <p>hmLoadCLRは、好きなフォルダに置いた自作のマネージドな.dllを(特に署名などもなく)突如自由に読みだして利用することが可能です。</p>
+    <p>「C#」はもちろんのこと「VB.net」「C++/CLI」「F#」「JScript.net」などで作成したdllを読み込むことが出来ます。</p>
+
+    <h3>C#のソースから.dllを作成。</h3>
+    <p>最小限のサンプルとするため、わかりやすい構成としましょう。<br>
+    </p>
+    <p>hmLoadCLR自体は、.NET Framework 4.0で構成されていますが、<br>
+    あなたが利用する.dllは、<span class="negative">.NET Framework 4.6など、hmLoadCLRより新しいバージョンのアセンブリでも大丈夫</span>です!!<br>
+    ここは普通の.NETの制限より非常に緩く出来ています。<br>
+    <span class="negative">あなたのPCに入っている.NET Frameworkの一番新しいバージョンで作成しても問題ありません。</span></p>
+    <ul>
+        <li>ファイル名は「TestSample.dll」
+        <li>名前空間は「TestNameSpace」
+        <li>クラス名は「TestClass」
+        <li>メソッドは「TestFuncNum」と「TestFuncStr」と「TestFuncMax」
+    </ul>
+    <p>とします。</p>
+    <p>コンパイルし、<span class="positive">TestSample.dll</span>といった名前にしたとしましょう。</p>
+    <div class="code"><pre class="brush:csharp">
+using System;
+
+namespace TestNameSpace
+{
+    public class TestClass
+    {
+        public TestClass() { }
+        public int TestFuncNum(int x)
+        {
+            return x + 3;
+        }
+
+        public String TestFuncStr(String s)
+        {
+            return s + s;
+        }
+
+        // 可変長引数
+        public int TestFuncMax(params int[] a)
+        {
+            int max = a[0];
+            for(int i=1; i&lt;a.Length; ++i)
+            {
+              if(max &lt; a[i])
+                max = a[i];
+            }
+            return max;
+        }
+    }
+}
+
+</pre></div>
+
+    <h3>loadするhmLoadCLRの例</h3>
+    <p>clr.System.Reflection.Assembly:LoadFromを利用することでアセンブリを読み込むことが出来ます。<br>
+    (clr.System.Reflection.Assembly.LoadFromでも同じです。)<br>
+    </p>
+    <p>読み込めたマネージdllの内容は、clr以下に取り込まれます</p>
+    <p>以下の内容をファイル名「loaddlltest.mac」とでもして保存してみましょう。<br>
+    <span class="negative">文字コードはutf8</span>で保存してください。</p>
+
+    <div class="code"><pre class="brush:python">
+#MNG = loaddll( hidemarudir + @&quot;\hmLoadCLR.dll&quot; );
+
+#_ = dllfuncw(#MNG, &quot;DoString&quot;, R&quot;MNG(
+
+-- 読み込めたら clr内にアセンブリとして読み込まれる
+clr.System.Reflection.Assembly:LoadFrom( hm.Macro.Var['currentmacrodirectory'] .. &quot;/TestSample.dll&quot; )
+
+local obj = clr.TestNameSpace.TestClass() -- clrに…
+result_num = obj.TestFuncNum(10)
+result_str = obj.TestFuncStr(&quot;あいう&quot;)
+
+hm.debuginfo(result_num)
+hm.debuginfo(result_str)
+
+result_max = obj.TestFuncMax(1, 100, -5, 101, 10)
+hm.debuginfo(result_max)
+
+result_max = obj.TestFuncMax(1, 10)
+hm.debuginfo(result_max)
+
+hm.Macro.Var['#rnum'] = result_max
+
+)MNG&quot;
+);
+
+message(str(#rnum));
+
+freedll( #MNG );
+</pre></div>
+    <p><img src="./other_soft/hm_ironpython/cnt_hm_ironpython_20.png"></p>
+
+    <h3>好きなフォルダに置く</h3>
+    <p>dllと.macつのファイルを好きなフォルダ(秀丸と一切関係ないフォルダでもよい)に置いて、<br>
+    「loaddlltest.mac」を適当に秀丸に登録して実行してみてください。<br>
+    .dllが読みだされ計算結果がダイアログに表示されるハズです。<br>
+    </p>
+
+    <h3>自作の個人的なディレクトリを、「.dll(アセンブリ)の置き場所」として認識させる</h3>
+    <p>アセンブリの.dllは本来配置場所が自由ではありません。<br>
+    これを特別に追加するため、「IronPythonなら、sys.path.append」、「IronRubyなら、$LOAD_PATH.push」があります。<br>
+
+    </p>
+    <ul class="pointlist">
+        <li>
+        <h4>package.path = "..." .. package.path</h4>
+        <p>これらと同様の機能を提供するため、hmLoadCLRのpackage.pathにパスを追加することで、<br>
+        該当のフォルダにあるアセンブリを自然な形で読み込むことが出来ます。<br>
+        <span class="negative">パスは「;」で繋げていってください。</span>
+        </p>
+        <p><span class="red">特にC#など自作の.dllの中から、他の.dllを読み込んでおり、その両方を該当のディレクトリに入れている場合は、この設定が必須です。</span></p>
+        <li>
+        <h4>load_assembly( "文字列" )</h4>
+        <p>最もよく利用する、「clr.System.Reflection.Assembly:Load( "文字列" )」のショートカット関数です。
+        </p>
+    </ul>
+    <div class="code"><pre class="brush:python">
+#MNG = loaddll( hidemarudir + @&quot;\hmLoadCLR.dll&quot; );
+
+#_ = dllfuncw(#MNG, &quot;DoString&quot;, R&quot;MNG(
+
+-- C:\aaaというフォルダを追加。セパレータとなる「;」を忘れないこと!!
+package.path = &quot;C:/aaa;&quot; .. package.path
+
+-- 読み込めたら clr内にアセンブリとして読み込まれる
+-- clr.System.Reflection.Assembly:Load( &quot;TestSample&quot; ) を短く書いたもの。
+load_assembly( &quot;TestSample&quot; )
+
+local obj = clr.TestNameSpace.TestClass() -- clrに…
+result_num = obj.TestFuncNum(10)
+result_str = obj.TestFuncStr(&quot;あいう&quot;)
+
+hm.debuginfo(result_num)
+hm.debuginfo(result_str)
+
+result_max = obj.TestFuncMax(1, 100, -5, 101, 10)
+hm.debuginfo(result_max)
+
+result_max = obj.TestFuncMax(1, 10)
+hm.debuginfo(result_max)
+
+hm.Macro.Var['#rnum'] = result_max
+
+)MNG&quot;
+);
+
+freedll( #MNG );
+</pre></div>
+</ul>

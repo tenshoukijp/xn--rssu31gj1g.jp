@@ -1,0 +1,60 @@
+%(hilight)s
+<h2><i class="fa fa-book fa-fw"></i>「hmLoadCLR」で既存の.NETのクラスを込みこむ</h2>
+
+<ul class="checklist">
+    <li>
+    <h3>概要</h3>
+    <p>ここでは、.NET Frameworkに最初から搭載されているdllを読み込む方法を記載しています。<br></p>
+    <li>
+    <h3>スクリプト層</h3>
+    <p>hmLoadCLRの設計方針を考慮すると、スクリプト層でゴリゴリと記述することは避けるべきです。<br></p>
+    <p>C#等で作成した.dll内で処理を済ませる方向性の方が、大抵は見通しが良くなるでしょう。<br>
+    hmLoadCLRでは、「.dllへと値を渡す」こと・「.dllから値をもらうこと」に特化した方が上手くいきます。</p>
+    </p>
+    <p>しかし、このページでは、<b><span class="negative">あえて「hmLoadCLR」の「スクリプト層」でゴリゴリと記述する例</span></b>として紹介しています。</p>
+
+    <li>
+        <h3>フォームの実装</h3>
+        <p>秀丸 v8.66ですので、マクロとwinform.luaを１つにするのが有力な選択肢となるでしょう。<br>
+    <p>PublicKeyTokenの調べ方はネットで検索してください。</p>
+    <div class="code"><pre class="brush:python">
+#MNG = loaddll( hidemarudir + @&quot;\hmLoadCLR.dll&quot; );
+
+if ( !#MNG ) {
+    message(&quot;hmLoadCLR.dllが導入されていません&quot;);
+    endmacro;
+}
+
+#_ = dllfuncw(#MNG, &quot;DoString&quot;, R&quot;MNG(
+-- Load Forms
+clr.System.Reflection.Assembly:Load(&quot;System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;);
+
+local Forms = clr.System.Windows.Forms; -- create a local variable with a namespace
+local iClicked : int = 0;
+
+Forms.Application:EnableVisualStyles(); -- call a static method
+
+do (frm, cmd = Forms.Form(), Forms.Button()) -- create a from and button in a using block
+    frm.Text = 'こんにちわ♬';
+    cmd.Text = 'クリック';
+    cmd.Left = 16;
+    cmd.Top = 16;
+    cmd.Click:add( -- 「add」はイベントハンドラ追加。「remove」だとイベントハンドラ削除
+        function (sender, e) : void
+          iClicked = iClicked + 1;
+          Forms.MessageBox:Show(frm, clr.System.String:Format('Clicked {0:N0} times!', iClicked), 'Lua',
+                                     Forms.MessageBoxButtons.OK, Forms.MessageBoxIcon.Information);
+        end);
+    frm.Controls:Add(cmd);
+    Forms.Application:Run(frm);
+end;
+)MNG&quot;
+);
+
+freedll( #MNG );
+</pre></div>
+
+        <h3>実行イメージ</h3>
+        <img src="./other_soft/hm_loadclr/cnt_hm_loadclr_03.png" attr="noedge">
+
+</ul>

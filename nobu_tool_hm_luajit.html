@@ -1,0 +1,201 @@
+%(hilight)s
+<h2><i class="fa fa-lua fa-fw"></i>hmLJ 秀丸マクロ用 500倍速スクリプト via LuaJIT with FFI</h2>
+
+<ul class="checklist">
+    <li>
+    <h3>概要</h3>
+    <p>秀丸マクロに「<span class="positive">超高速スクリプトLuaJIT</span>」を組み込むためのdllとなります。</p>
+    <p><img src="./other_soft/hm_luajit/cnt_hm_luajit_00.png" attr="noedge" align="middle"></p>
+    <li>
+    <h3>ダウンロード</h3>
+    <dl>
+        <dt>
+        <div class="download_file"><img src="./other_soft/hm_luajit/cnt_hm_luajit_minizip.png" attr="noedge" align="middle"> ⇒ <a href="%(file)s">hmLJ.zip</a>ファイル。ver 2.042</div>
+        </dt>
+        <dd>
+        <div class="update_time">└更新日 %(year)04d/%(mon)02d/%(mday)02d</div>
+        </dd>
+    </dl>
+    <h3>動作環境</h3>
+    <ul class="pointlist">
+        <li>
+        <h4>秀丸</h4>
+        <p>秀丸エディタ ver7.00以上</p>
+    </ul>
+    <h3>インストール</h3>
+    <ul>
+        <li>hmLJ.zipを解凍する。
+        <li><span class="negative">「hmLJ.dll」を秀丸エディタのディレクトリ内(hidemaru.exeと同じ場所)へと コピー</span>する。<br>
+        (実際には置き場所場所はどこでも良いですが、loaddll時にdllの場所をご自身で指定してください。<br>
+        当サイトの説明は全てhidemaru.exeと同じ場所へとコピーしたものとして解説しています。)
+    </ul>
+    <li>
+    <h3>特徴</h3>
+    <ul class="pointlist">
+        <li>
+        <h4>基本言語はLua</h4>
+        <p>アプリケーション等への「組み込み言語」としては最も実績のある言語となります。</p>
+        <li>
+        <h4>非常にポータブル。たった1つのdllで全て完結!!</h4>
+        <p>たった１つのhmLJ.dllのファイルだけで、<br>
+        <ul>
+            <li>コンパクトにしてエレガントな文法
+            <li>簡易的な正規表現
+            <li>基本的なライブラリ
+        </ul>
+        <p>が使えるようになります。<br>
+        他のランタイムへの依存などもないため、配布物マクロに含めてしまうのにも向いています。</p>
+        <li>
+        <li><h4>秀丸エディタ 8.66 以降では、Luaをそのままマクロ内に記述出来る!!</h4>
+        <p>秀丸エディタ 8.66にて、「ヒアドキュメント」が実装されたため、<br>
+        Luaをそのままマクロ内に記述出来るようになりました。(エスケープ等の必要性がなくなりました!)<br>
+        詳細は後述されています。</p>
+        <h4>超高速</h4>
+        <p>スクリプト言語中、１・２位の高速さを誇るLuaJITを採用。<br>
+        特に小さな範囲で回転数が多いシチュエーションでは「<span class="positive">秀丸マクロの1000倍以上のスピード</span>」であり、<br>
+        この場合の実行速度はC言語すら凌ぎます。</p>
+        <li>
+        <h4>win32 apiの呼び出し</h4>
+        <p>秀丸マクロでは、その仕様上、win32apiがまともに呼び出せないといった問題がありますが、<br>
+        このhmJTでは、LuaJITのFFIがそのまま組み込まれています。<br>
+        よって、Windowsのwin32apiをはじめ、C/C++等で作成したネイティブなdllを呼び出すことが可能です。<br>
+        </p>
+        <p>LuaJITでは、luapowerといったサイト等で、このFFIを利用した有力なライブラリが多数配布されています。</p>
+        <li>
+        <h4>cp932(sjis)にフォーカスした特別なカスタム</h4>
+        <p>秀丸マクロは基本的にはcp932(sjis)で記述するのが通例となっていますので、hmLJもcp932で記述されたスクリプトが良好に動作するよう特別にカスタムされています。</p>
+        <li>
+        <h4>秀丸用の組み込み言語を自作する際のミニマムな例</h4>
+        <p>hmLJは非常にスケールが小さいですので、「秀丸用マクロへの組み込み言語を作成する」際の良い例となるでしょう。</p>
+    </ul>
+
+    <h3>秀丸マクロとLuaの連携</h3>
+    <ul class="pointlist">
+        <li>HTMLにJavaScriptを埋め込むような感覚で、秀丸マクロにLuaを文字列として埋め込むことが出来ます。<br>
+        複数個所に埋め込んでも、記述の内容は持続性を持っています。<br>
+        又、HTMLに対するJavaScript同様に、中に埋め込むのではなく、ファイルの外に記述してもかまいません。<br>
+    </ul>
+
+    <h3>一番簡単なソース例</h3>
+    <p>「a」に「3」、「b」に「10」を定義し、足しこんで表示。</p>
+    <ul>
+        <div class="code"><pre class="brush:python">
+#L = loaddll( hidemarudir + &quot;\\&quot; + &quot;hmLJ.dll&quot; );
+
+// 以下の文字列を「luajitの環境スコープへと追加書き込みし、追加分だけ実行する」
+#_ = dllfunc(#L, &quot;DoString&quot;, &quot;                  \n&quot;+
+    &quot;a = 3                                       \n&quot;+
+    &quot;b = 10                                      \n&quot;
+);
+
+#a = dllfunc(#L, &quot;GetNumVar&quot;, &quot;a&quot;); // luajit側のグローバル変数「a」を秀丸マクロ側へと得る
+#b = dllfunc(#L, &quot;GetNumVar&quot;, &quot;b&quot;); // …〃…「b」を…〃…
+
+message(str(#a));
+message(str(#b));
+
+// 以下の文字列を「luajitの環境スコープへと追加書き込みし、追加分だけ実行する」
+#_ = dllfunc(#L, &quot;DoString&quot;, &quot;                  \n&quot;+
+    &quot;c = a + b                                   \n&quot;+ // 上で書き込んだaやbの変数は持続されている。
+    &quot;hm.debuginfo(c)                             \n&quot;  // DebugMonitorに表示。
+);
+
+#c = dllfunc(#L, &quot;GetNumVar&quot;, &quot;c&quot;); // …〃…「c」を…〃…
+message(str(#c));
+
+freedll(#L);
+</pre></div>
+        <img src="./other_soft/hm_luajit/cnt_hm_luajit_06.png">
+    </ul>
+    <h3>Win32 API を使った簡単なソース例</h3>
+    <p>Win32 APIを使って、実行中のモジュール(通常秀丸本体)のフルパスを得る</p>
+    <ul>
+        <div class="code"><pre class="brush:python">
+
+
+#L = loaddll( hidemarudir + &quot;\\hmLJ.dll&quot;);
+
+// ffiを利用することで、typedefで基本型名にwin32の名前に沿ったエイリアスを付ける
+// win32で良くあるパターンのように受け口のパッファーを確保する必要がある。
+// win32の文字列⇒luaの文字列への変換としては、ffi.stringが用いられる。
+#_ = dllfunc(#L, &quot;DoString&quot;, &quot;&quot;+
+&quot;ffi.cdef[[                                                                \n&quot; +
+&quot;typedef void *			HMODULE;                                \n&quot; +
+&quot;typedef char *			LPTSTR;                                 \n&quot; +
+&quot;typedef unsigned short	DWORD;	                                        \n&quot; +
+&quot;DWORD GetModuleFileNameA(HMODULE hModule, LPTSTR lpFilename, DWORD nSize);\n&quot; +
+&quot;]]                                                                        \n&quot; +
+&quot;kernel32 = ffi.load('kernel32');                                          \n&quot; +
+&quot;szPathBuf = ffi.new('char[?]', 256);                                      \n&quot; +
+&quot;ret = kernel32.GetModuleFileNameA( nil, szPathBuf, 256 );\n&quot; +
+&quot;szPathBuf = ffi.string(szPathBuf)&quot;
+);
+
+// luajitのffi経由のwin32api で得た情報を、秀丸マクロへと持ってくる
+$strBufFileName = dllfuncstr(#L, &quot;GetStrVar&quot;, &quot;szPathBuf&quot;);
+
+message($strBufFileName);
+
+
+freedll(#L)
+</pre></div>
+        <img src="./other_soft/hm_luajit/cnt_hm_luajit_04.png">
+    </ul>
+
+    <h3>秀丸エディタ 8.66以降</h3>
+    <p>秀丸エディタ8.66以降では、ヒアドキュメントのようなものを利用することが出来ますので、<br>
+    以下のようにもマクロ内にLuaをそのまま記述できます。</p>
+    <ul>
+        <div class="code"><pre class="brush:lua">
+#L = loaddll( hidemarudir + &quot;\\hmLJ.dll&quot;);
+
+// ffiを利用することで、typedefで基本型名にwin32の名前に沿ったエイリアスを付ける
+// win32で良くあるパターンのように受け口のパッファーを確保する必要がある。
+// win32の文字列⇒luaの文字列への変換としては、ffi.stringが用いられる。
+#_ = dllfunc(#L, &quot;DoString&quot;, R&quot;LUA(
+ffi.cdef[[
+typedef void *  HMODULE;
+typedef char *  LPTSTR;
+typedef unsigned short DWORD;
+DWORD GetModuleFileNameA(HMODULE hModule, LPTSTR lpFilename, DWORD nSize);
+]]
+kernel32 = ffi.load(&quot;kernel32&quot;)
+szPathBuf = ffi.new(&quot;char[?]&quot;, 256)
+ret = kernel32.GetModuleFileNameA( nil, szPathBuf, 256 )
+szPathBuf = ffi.string(szPathBuf)
+)LUA&quot;
+);
+
+// luajitのffi経由のwin32api で得た情報を、秀丸マクロへと持ってくる
+$strBufFileName = dllfuncstr(#L, &quot;GetStrVar&quot;, &quot;szPathBuf&quot;);
+
+message($strBufFileName);
+
+freedll(#L)
+</pre></div>
+    </ul>
+    <h3>その他解説</h3>
+    <ul class="pointlist">
+        <li>左メニューに各解説を用意しました。
+    </ul>
+    <h3>ライセンス</h3>
+    <ul class="pointlist">
+        <li>
+        <h4>hmLJ</h4>
+        <p>hmLJは、MITライセンスとなります。<br>
+
+        ソースは<a href="https://github.com/tenshoukijp/xn--rssu31gj1g.jp/blob/master/other_soft/hm_luajit/hmLJ.src.zip">github</a>にあります。</p>
+        <li>
+        <h4>LuaJIT</h4>
+        <p>LuaJITについても、MITライセンスです。<br>
+        詳細は、<a href="http://luajit.org/">http://luajit.org/</a>を見てください。</p>
+        <li>
+        <h4>Lua</h4>
+        <p>Luaについても、MITライセンスです。<br>
+        詳細は、<a href="http://www.lua.org/">http://www.lua.org/</a>を見てください。</p>
+        <li>
+        <h4>その他</h4>
+        <p>その他の追加修正ソースファイル等も、全てMITライセンスです。<br>
+        詳細は、<a href="http://www.lua.org/">http://www.lua.org/</a>を見てください。</p>
+    </ul>
+</ul>

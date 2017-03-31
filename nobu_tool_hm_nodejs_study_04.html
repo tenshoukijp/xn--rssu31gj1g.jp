@@ -1,0 +1,201 @@
+%(hilight)s
+<h2><i class="fa fa-book fa-fw"></i>HmNodeJS チャンネル単位で状態が継続されている</h2>
+
+<ul class="checklist">
+    <li>
+    <h3>概要</h3>
+    <p>ここでは、HmNodeJSの利用において、チャンネル単位でデータが継続されている、<br>
+    ということを体感するための、サンプルとなります。</p>
+
+    <li>
+        <h3>概念を理解するためのサンプル</h3>
+        <ul class="pointlist">
+            <li>
+                <h4>１回目の実行</h4>
+                <div class="code">
+                    <pre class="brush:python;highlight:[16,19]">
+#V8 = loaddll( hidemarudir + @&quot;\hmV8.dll&quot; );
+
+#_ = dllfuncw( #V8, &quot;DoString&quot;, R&quot;ES6(
+
+host.lib(clr, &quot;HmNodeClient&quot; );
+
+var currentmacrodirectory = hm.Macro.Var[&quot;currentmacrodirectory&quot;];
+
+var client = new clr.HmNodeClient(50001, currentmacrodirectory + &quot;/HmNodeSample.js&quot;);
+client.Start();
+
+var NameValueCollection = clr.System.Collections.Specialized.NameValueCollection;
+var param = new NameValueCollection();
+param.Add(&quot;word1&quot;, &quot;C:/abc/♬e.mac&quot;);
+param.Add(&quot;myppp&quot;, &quot;そそそそそ&quot;);
+var res = client.GetResponse(param);
+
+console.log(res.Data);
+console.log(res.CallCount);
+
+hm.Macro.Var[&quot;$data&quot;] = res.Data + res.CallCount;
+
+)ES6&quot;
+);
+
+message $data;
+
+freedll( #V8 );
+
+</pre>
+                </div>
+
+            <li>
+                <h4>２回目の実行。別の秀丸プロセスで実行してみる。</h4>
+                <p>
+                    「１回目の実行」とは別の秀丸のプロセス（秀丸の別のタブなど）から、以下のようなマクロを実行してみましょう。<br>
+                    同じ50001番チャンネルに対して処理をしていますので、状態が継続されています。<br>
+                </p>
+                <div class="code">
+                    <pre class="brush:python;highlight:[16,19]">
+#V8 = loaddll( hidemarudir + @&quot;\hmV8.dll&quot; );
+
+#_ = dllfuncw( #V8, &quot;DoString&quot;, R&quot;ES6(
+
+host.lib(clr, &quot;HmNodeClient&quot; );
+
+var currentmacrodirectory = hm.Macro.Var[&quot;currentmacrodirectory&quot;];
+
+var client = new clr.HmNodeClient(50001, currentmacrodirectory + &quot;/HmNodeSample.js&quot;);
+client.Start();
+
+var NameValueCollection = clr.System.Collections.Specialized.NameValueCollection;
+var param = new NameValueCollection();
+param.Add(&quot;word1&quot;, &quot;C:/abc/♬e.mac&quot;);
+param.Add(&quot;myppp&quot;, &quot;おおおおおおお&quot;);
+var res = client.GetResponse(param);
+
+console.log(res.Data);
+console.log(res.CallCount);
+
+hm.Macro.Var[&quot;$data&quot;] = res.Data + res.CallCount;
+
+)ES6&quot;
+);
+
+message $data;
+
+freedll( #V8 );
+
+</pre>
+                </div>
+
+            <li>
+                <h4>３回目の実行。さらに別の秀丸プロセスで実行してみる。</h4>
+                <p>
+                    「２回目の実行」とは、<span class="positive">さらに別の秀丸のプロセス（別の秀丸のタブなど）</span>から、以下のようなマクロを実行してみましょう。<br>
+                    同じ50001番チャンネルに対して処理をしていますので、状態が継続されています。<br>
+                </p>
+                <p>GetLastResponse()を使うことで、該当チャンネルの最後のレスポンスデータを取得することが出来ます。</p>
+                <div class="code">
+                    <pre class="brush:python;highlight:[10,13]">
+#V8 = loaddll( hidemarudir + @&quot;\hmV8.dll&quot; );
+
+#_ = dllfuncw( #V8, &quot;DoString&quot;, R&quot;ES6(
+
+host.lib(clr, &quot;HmNodeClient&quot; );
+
+var currentmacrodirectory = hm.Macro.Var[&quot;currentmacrodirectory&quot;];
+
+var client = new clr.HmNodeClient(50001, currentmacrodirectory + &quot;/HmNodeSample.js&quot;);
+var res = client.GetLastResponse();
+
+console.log(res.Data);
+console.log(res.CallCount);
+
+hm.Macro.Var[&quot;$data&quot;] = res.Data + res.CallCount;
+
+)ES6&quot;
+);
+
+message $data;
+
+freedll( #V8 );
+</pre>
+                </div>
+        </ul>
+
+    <li>
+        <h3>永続性とnode側のサンプル</h3>
+        <p>
+            チャンネルごとに「処理が維持」されているわけですから、<br>
+            以下のような「カウンタ」や「ジェネレータ」は、マクロ側から該当チャンネルにリクエストする度に、
+            カウンタが増えていく、といったことが理解できることでしょう。
+        </p>
+        <p>
+            このように、チャンネル単位で、どのような複雑で不定形なデータでも（データどころか、関数の途中までの実行状態なども含め）<br>
+            維持しておくことが簡単なのも、node.js/HmNodeJSの利点の１つと言えるでしょう。
+        </p>
+        <fieldset class="code">
+            <legend>リクエストする度に、カウンタが増えていく(グローバル変数編)</legend><pre class="brush:python;highlight:[13,19]">
+var http = require('http');
+var fs = require('fs');
+url = require('url');
+
+var port = process.argv[2]
+
+var server = http.createServer();
+server.on('request', doRequest);
+server.listen(port);
+
+console.log('Server running!');
+
+global.count = 0;
+
+// リクエストの処理
+function doRequest(req, res) {
+
+    res.writeHead(200, { 'Content-Type': 'text/html' });
+	global.count++;
+    res.write(global.count + &quot;&quot;);
+    res.end();
+    console.log(&quot;ノード側:OK&quot;);
+}
+
+console.log('Readline running!');
+</pre>
+            </fieldset>
+
+        <fieldset class="code">
+            <legend>リクエストする度に、カウンタが増えていく(ジェネレータ編)</legend><pre class="brush:python;highlight:[11,12,13,14,15,16,18,24]">
+var http = require('http');
+var fs = require('fs');
+url = require('url');
+
+var port = process.argv[2]
+
+var server = http.createServer();
+server.on('request', doRequest);
+server.listen(port);
+
+function* idMaker(){
+    var index = 0;
+    while(true) {
+        yield index++;
+    }
+}
+ 
+global.gen = idMaker();
+
+// リクエストの処理
+function doRequest(req, res) {
+
+    res.writeHead(200, { 'Content-Type': 'text/html' });
+	var count = global.gen.next().value;
+    res.write(count + &quot;&quot;);
+    res.end();
+    console.log(&quot;ノード側:OK&quot;);
+}
+
+console.log('Readline running!');
+</pre>
+        </fieldset>
+
+
+</ul>

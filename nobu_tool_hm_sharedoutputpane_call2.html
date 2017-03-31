@@ -1,0 +1,140 @@
+%(hilight)s
+<h2><i class="fa fa-book fa-fw"></i>外部アプリケーションから秀丸のアウトプット枠への出力<br>
+(C#での応用的な呼び出し例)</h2>
+
+<ul class="checklist">
+    <li>
+    <h3>概要</h3>
+    <p><span class="positive">HmSharedOutputPane.dllを利用した、C#による呼び出し例の応用編となります。</span><br>
+    <li>
+    <h3>フォームでの例</h3>
+    <p>C#ではあっという間にForm系アプリに仕立てることが出来るのが魅力でしょう。<br></p>
+    <p><span class="negative">もしもプログラムの実行時にエラーが出るようであれば、C#の「ビルド」オプションを「x86と明示」しましょう。</span></p>
+    <p><img src="./other_soft/hm_sharedoutputpane/cnt_hm_sharedoutputpane_05.png"></p>
+    <div class="code"><pre class="brush:csharp">
+using System;
+
+using System.Windows.Forms;
+using System.Runtime.InteropServices;
+
+class MyForm : Form
+{
+    TextBox tb;
+    Button btn;
+    public MyForm()
+    {
+        this.Width = 260;
+        this.Height = 200;
+
+        tb = new TextBox
+        {
+            Top = 50,
+            Left = 30,
+            Width = 160,
+            Height = 50,
+        };
+
+        btn = new Button
+        {
+            Top = 100,
+            Left = 50,
+            Width = 100,
+            Height = 30,
+            Text = &quot;送信&quot;
+        };
+
+        btn.Click += btn_Click;
+        this.Controls.Add(tb);
+        this.Controls.Add(btn);
+    }
+
+    [DllImport(@&quot;C:\usr\hidemaru\hmSharedOutputPane.dll&quot;)]
+    private extern static void SetSharedMessage(String msg);
+
+    void btn_Click(Object sender, EventArgs e)
+    {
+        SetSharedMessage(tb.Text);
+    }
+
+}
+
+class Program
+{
+    [STAThread]
+    static void Main(string[] args)
+    {
+        Form f = new MyForm();
+        Application.Run(f);
+    }
+}
+</pre></div>
+
+    <h3>コンソールコマンド内容の秀丸アウトプット枠へのリダイレクト</h3>
+    <p>C#のリダイレクトは非常に使いやすく簡単です。<br>
+    例えば、「Python」のREPL自体を、リダイレクトし続けることで、<br>
+    REPLが出した「結果」を全て秀丸のアウトプット枠へと転送してみましょう。</p>
+    <p><span class="negative">もしもプログラムの実行時にエラーが出るようであれば、C#の「ビルド」オプションを「x86と明示」しましょう。</span></p>
+    <p><img src="./other_soft/hm_sharedoutputpane/cnt_hm_sharedoutputpane_07.png"></p>
+    <p>ActivePython等、「python」というコマンドが実行可能なものとします。</p>
+    <div class="code"><pre class="brush:cpp">
+using System;
+using System.Runtime.InteropServices;
+
+class Program
+{
+    //エントリポイント
+    static void Main(string[] args)
+    {
+        //Processオブジェクトを作成
+        System.Diagnostics.Process p = new System.Diagnostics.Process();
+
+        //出力とエラーをストリームに書き込むようにする
+        p.StartInfo.FileName = &quot;python&quot;;
+        p.StartInfo.UseShellExecute = false;
+        p.StartInfo.RedirectStandardOutput = true;
+        p.StartInfo.RedirectStandardError = true;
+        p.StartInfo.RedirectStandardInput = false;
+        //OutputDataReceivedとErrorDataReceivedイベントハンドラを追加
+        p.OutputDataReceived += p_OutputDataReceived;
+        p.ErrorDataReceived += p_ErrorDataReceived;
+
+        p.StartInfo.CreateNoWindow = false;
+
+        //起動
+        p.Start();
+
+        //非同期で出力とエラーの読み取りを開始
+        p.BeginOutputReadLine();
+        p.BeginErrorReadLine();
+
+        p.WaitForExit();
+        p.Close();
+
+        Console.ReadLine();
+    }
+
+    [DllImport(@&quot;C:\usr\hidemaru\hmSharedOutputPane.dll&quot;)]
+    private extern static void SetSharedMessage(String msg);
+
+    //OutputDataReceivedイベントハンドラ
+    //行が出力されるたびに呼び出される
+    static void p_OutputDataReceived(object sender,
+        System.Diagnostics.DataReceivedEventArgs e)
+    {
+        //出力された文字列を表示する
+        Console.WriteLine(e.Data);
+        SetSharedMessage(e.Data);
+    }
+
+    //ErrorDataReceivedイベントハンドラ
+    static void p_ErrorDataReceived(object sender,
+        System.Diagnostics.DataReceivedEventArgs e)
+    {
+        //エラー出力された文字列を表示する
+        Console.WriteLine(e.Data);
+        SetSharedMessage(e.Data);
+    }
+}
+
+</pre></div>
+</ul>
