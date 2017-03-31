@@ -1,0 +1,34 @@
+%(hilight)s
+<h2><i class="fa fa-book fa-fw"></i>IronPythonの.pyなどの標準モジュールの読み込み</h2>
+<ul class="checklist">
+    <li>
+        <h3>概要</h3>
+        <p>ここでは、IronPythonの標準ライブラリを読み込む方法が記載されています。</p>
+    <li>
+        <h3>sys.path.append(...)で、IronPythonのlibフォルダの場所を足す</h3>
+        <p>
+            IronPythonのモジュールをロードする場合には、<br>
+            秀丸とIronPythonは「離れた場所にある」ため、<br>
+            そのライブラリフォルダをpathへと足しこむという手順が必要となります。<br>
+        </p>
+    <div class="code">
+        <pre class="brush:python;highlight:[4,5]">
+#PY = loaddll( hidemarudir + @&quot;\hmPy.dll&quot; );
+
+#_ = dllfuncw( #PY, &quot;DoString&quot;, R&quot;PY(
+import sys
+sys.path.append(r&quot;C:\usr\ironpython\lib&quot;);
+
+import random
+
+ret = random.random();
+hm.debuginfo(ret);
+
+
+)PY&quot;
+);
+
+freedll( #PY );
+</pre>
+    </div>
+</ul>

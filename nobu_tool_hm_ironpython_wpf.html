@@ -1,0 +1,195 @@
+%(hilight)s
+<h2><i class="fa fa-book fa-fw"></i>「hmPy・IronPython」のその他の例題 WPFの利用</h2>
+
+<ul class="checklist">
+    <li>
+    <h3>概要</h3>
+    <p>.NETのプログラミングにあまり触れていない方は、</p>
+    <blockquote>WPFの利用にはXMLが必須</blockquote>
+    <p>と思っているかもしれませんが、<span class="negative">そのようなことはありません。</span><br>
+    </p>
+    <p>WPFはFormと同様の感覚で、普通に利用することが可能です。</p>
+    <p>Win32 APIをラップしたに過ぎないFormとは異なり、<br>
+    WPFのGUI要素は、原則的にはFrameworkElementというクラスの派生です。</p>
+    <p>この特性により通常のWindowsアプリでは有りえないような、<br>
+    GUIの「組み合わせ」「入れ子」「変形」「修飾」を統一的手段で簡単に実現可能です。<br>
+    (例えば、ボタンの中にメニューを配置し、そのメニューの中にムービーを配置、<br>
+    といったGUIの常識とかけ離れた入れ子構造でも、何一つ問題ありません)</br>
+    </p>
+    <img src="./other_soft/hm_ironpython/cnt_hm_ironpython_25.png" attr="noedge">
+
+    <h3>WPFの使用</h3>
+    <p>以下のようなファイルをwpf.pyとして作成してみましょう。<br>
+    文字コードはcp932(sjis)です。</p>
+
+    <div class="code"><pre class="brush:python">
+# coding: cp932
+
+import clr
+clr.AddReferenceByPartialName(&quot;System.Windows&quot;)
+clr.AddReferenceByPartialName(&quot;WindowsBase&quot;)
+clr.AddReferenceByPartialName(&quot;PresentationCore&quot;)
+clr.AddReferenceByPartialName(&quot;PresentationFrameWork&quot;)
+
+import System
+import System.Windows
+import System.Windows.Media
+import System.Windows.Media.Imaging
+import System.Windows.Controls
+import System.Windows.Shapes
+import System.Windows.Documents
+from System import *
+from System.Windows import *
+from System.Windows.Media import *
+from System.Windows.Media.Imaging import *
+from System.Windows.Controls import *
+from System.Windows.Shapes import *
+from System.Windows.Documents import *
+
+class MyWindow(System.Windows.Window):
+  def SetForm(self):
+    self.Title = r&quot;秀丸マクロ hmPyによるWPF&quot;
+    self.Width = 96 * 10
+    self.Height = 96 * 5
+    self.FontSize = 22
+
+  def SetFont(self):
+    self.FontFamily = FontFamily(&quot;ＭＳ明朝&quot;)
+
+  def SetButton(self):
+    ef = System.Windows.Media.Effects.DropShadowEffect()
+    ef.BlurRadius = 5
+    ef.ShadowDepth = 1
+    self.btnTest = Button()
+    self.btnTest.Content = &quot;秀丸&quot;
+    self.btnTest.Padding = System.Windows.Thickness(2)
+    self.btnTest.Foreground = System.Windows.Media.Brushes.White
+    self.btnTest.Background = System.Windows.Media.Brushes.Black
+    self.btnTest.Effect = ef
+    self.btnTest2 = Button()
+    self.btnTest2.Content = &quot;WPF&quot;
+    self.btnTest2.Padding = System.Windows.Thickness(2)
+    self.btnTest2.Foreground = System.Windows.Media.Brushes.White
+    self.btnTest2.Background = System.Windows.Media.Brushes.Black
+    self.btnTest2.Effect = ef
+
+  def SetFormCanvas(self):
+    c = Canvas()
+    c.Children.Add(self.btnTest)
+    Canvas.SetLeft(self.btnTest, 30.0)
+    Canvas.SetTop(self.btnTest, 30.0)
+    c.Children.Add(self.btnTest2)
+    Canvas.SetLeft(self.btnTest2, 30.0)
+    Canvas.SetTop(self.btnTest2, 80.0)
+    c.Children.Add(self.tbArea)
+    Canvas.SetLeft(self.tbArea, 30)
+    Canvas.SetTop(self.tbArea, 120)
+    c.Children.Add(self.bzpath)
+    Canvas.SetLeft(self.tbEdit1, 550)
+    Canvas.SetTop(self.tbEdit1, 80)
+    c.Children.Add(self.tbEdit1)
+    Canvas.SetLeft(self.tbEdit2, 600)
+    Canvas.SetTop(self.tbEdit2, 80)
+    c.Children.Add(self.tbEdit2)
+    Canvas.SetLeft(self.tbEdit3, 550)
+    Canvas.SetTop(self.tbEdit3, 150)
+    c.Children.Add(self.tbEdit3)
+    self.Content = c
+
+  def SetBackGround(self):
+    myLinearGradientBrush = LinearGradientBrush()
+    myLinearGradientBrush.GradientStops.Add(GradientStop(Color.FromArgb(222, 212, 255, 204), 0.0))
+    myLinearGradientBrush.GradientStops.Add(GradientStop(Color.FromArgb(232, 212 - 100, 247 - 100, 255 - 100), 1.0))
+    myRectangle = System.Windows.Shapes.Rectangle()
+    myRectangle.Width = 100
+    myRectangle.Height = 100
+    self.Background = myLinearGradientBrush
+
+  def SetTextBlock(self):
+    self.tbArea = TextBlock()
+    self.tbArea.TextWrapping = TextWrapping.Wrap
+    text = r&quot;WPF in 秀丸マクロ&quot;
+
+    hl = Hyperlink(Run(text))
+    hl.Click += self.hl_Click
+    self.tbArea.Inlines.Add(hl)
+
+
+  def SetBackgroundImage(self):
+    # パターンの繰り返し
+    uri = Uri(&quot;test.bmp&quot;, UriKind.RelativeOrAbsolute)
+    brush = ImageBrush(BitmapImage(uri))
+    brush.TileMode = TileMode.Tile
+    brush.Viewport = Rect(0, 0, 0.2, 0.2)
+
+  # ベジェ曲線
+  def SetBezierSegment(self):
+    bezier = BezierSegment()
+    bezier.Point1 = Point(160, 210)
+    bezier.Point2 = Point(260, 410)
+    bezier.Point3 = Point(410, 310)
+    figure = PathFigure()
+    figure.StartPoint = Point(30, 310)
+    figure.Segments.Add(bezier)
+    geometry = PathGeometry()
+    geometry.Figures.Add(figure)
+    self.bzpath = Path()
+    self.bzpath.Data = geometry
+    self.bzpath.Stroke = Brushes.Black
+
+  def SetRotateInputBox(self):
+    transform = RotateTransform(-30)
+    self.tbEdit1 = TextBox()
+    self.tbEdit1.Text = &quot;入力エディット１&quot;
+    self.tbEdit1.RenderTransform = transform
+    self.tbEdit2 = TextBox()
+    self.tbEdit2.Text = &quot;入力エディット２&quot;
+    self.tbEdit2.RenderTransform = transform
+
+  def SetSkewInputBox(self):
+    transform = SkewTransform(40, 10) # 基点を軸に、水平方向に 40 度、垂直方向に 10 度、長方形が曲がっていることを確認してください。
+    self.tbEdit3 = TextBox()
+    self.tbEdit3.Text = &quot;３次元入力域。複数行ＯＫ&quot;
+    self.tbEdit3.AcceptsReturn = True
+    self.tbEdit3.RenderTransform = transform
+
+  def __init__(self):
+    self.SetForm()
+    self.SetFont()
+    self.SetButton()
+    self.SetTextBlock()
+    self.SetBezierSegment()
+    self.SetRotateInputBox()
+    self.SetSkewInputBox()
+    self.SetBackGround()
+    self.SetFormCanvas()
+
+  def OnSourceInitialized(self, e):
+    pass
+
+  def hl_Click(self, o, e):
+    System.Diagnostics.Process.Start(r&quot;http://秀丸.net/?page=nobu_tool_hm_ironpython_wpf&quot;)
+
+
+# ウィンドウを開いている間に、秀丸の方を先に閉じられると、不正終了してしまう。
+try:
+    win = MyWindow()
+    win.ShowDialog()
+except Exception as e:
+    if win:
+        win.Close()
+finally:
+    if win:
+        win.Close()
+</pre></div>
+
+
+    <h3>呼び出しマクロ</h3>
+    <div class="code"><pre class="brush:python">
+#PY = loaddll( hidemarudir + &quot;\\hmPy.dll&quot;);
+
+#_ = dllfuncw( #PY, &quot;DoFile&quot;, currentmacrodirectory + &quot;\\wpf.py&quot; );
+
+freedll( #PY );
+</pre></div>
+</ul>

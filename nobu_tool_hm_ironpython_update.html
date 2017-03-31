@@ -1,0 +1,84 @@
+%(hilight)s
+<h2><i class="fa fa-history fa-fw"></i>hmPy 更新履歴</h2>
+<ul class="checklist">
+    <li>
+    <h3>2017/03/25 ver. 1.5.1.1</h3>
+    <ul>
+        <li>DoStringやDoFileより早い段階で、<br>
+        秀丸マクロ側より、SetNumVarやGetStrVarなどの直接マニュアルによる代入・取得関数を使うとdllの利用形態が取得できないバグの修正。
+    </ul>
+    <li>
+        <h3>2017/03/24 ver. 1.5.0.1</h3>
+        <ul>
+            <li>
+                これまでは、IronPython.dllを添付していたが、IronPython.dllは添付せず、<br>
+                「IronPython 2.7.5のインストールを必要とする」といった方向に切り替えた。<br>
+                IronPythonは、DLR 言語の中では、最も支持されている言語なので、<br>
+                バッテリーを伴ったインストールタイプで運用した方がpythonであるという真価が発揮しやすいため。
+        </ul>
+    <li>
+        <h3>2017/03/23 ver. 1.4.7.8</h3>
+        <ul>
+            <li>pythonのbool値を、秀丸の整数型へと代入した際には、真=1, 偽=0 へとマッピングするようにした。
+        </ul>
+    <li>
+        <h3>2016/11/12 ver. 1.4.5.4</h3>
+        <ul>
+            <li>
+                秀丸エディタ v8.66以上の場合には、「dllの呼び出し元のマクロファイルと同じディレクトリにあるマネージdll」は、<br>
+                sys.append.path(currentmacrodirectory)しなくても、アセンブリをロード出来るようになった。<br>
+                詳細は、<a href="?page=nobu_tool_hm_ironpython_loadmngdll">C#で作った.dllの読み込み</a>へ。
+        </ul>
+    <li>
+        <h3>2016/11/06 ver. 1.4.5.1</h3>
+        <ul>
+            <li>x86でもx64でも安定した動作を行うように修正。
+        </ul>
+    <li>
+        <h3>2016/10/22 ver. 1.4.0.8</h3>
+        <ul>
+            <li><a href="?page=nobu_tool_hm_ironpython_api_866">秀丸エディタ 8.66以降で使える機能</a>のうち、関数名の多くをプロパティのような形へと変更。
+            <li>パースエラーや、ランタイムエラーが発生した時に、出来るだけ親切なエラーコード、該当箇所の記述を出すようにした。
+        </ul>
+    <li>
+        <h3>2016/10/12 IronPython.dll v2.7.6.3</h3>
+        <ul>
+            <li>IronPython.dllを最新のIronPythonで構築し、バージョンを2.7.6.3とした。
+        </ul>
+    <li>
+        <h3>2016/10/01 ver. 1.3.0.0</h3>
+        <ul>
+            <li>
+                <a href="?page=nobu_tool_hm_ironpython_api_866">秀丸エディタ 8.66以降で使える機能</a>のうち、下記のものを追加。
+                <ul>
+                    <li>hm.GetSelectedText()
+                    <li>hm.EvalMacro(...)
+                </ul>
+            <li>SetNumVar関数の実行速度が速くなった。
+        </ul>
+    <li>
+        <h3>2016/09/09 ver. 1.2.0.0</h3>
+        <ul>
+            <li>正式版の最初の版。
+            <li><span class="negative"><b>ver 1.1.5.0までと完全に非互換</b>となった。</span><br>
+            <li>dllfunc/dllfuncstr ではなく、全てdllfuncw/dllfuncstrw でやりとりするように変更した。<br>
+            <li>全面的にUnicodeが扱えるようになった。
+            <li><a href="?page=nobu_tool_hm_ironpython_utf16">SetCodePage</a>を追加。<br>
+        </ul>
+        <h3>2016/09/06 ver. 1.1.5.0</h3>
+        <ul>
+            <li>
+                <a href="?page=nobu_tool_hm_ironpython_api_lv2">DestroyScope</a>を追加。<br>
+                秀丸エディタ 8.64までは、freedllの直前に
+                <div class="code"><pre class="brush:ruby">#_ = dllfuncw(#PY, &quot;DestroyScope&quot;);</pre></div>
+                の呼び出しが必要となった。 <br>
+                秀丸エディタ8.66以降は、freedll だけ記述しておけば内部的に自動でDestroyScopeも呼び出される。<br>
+            <li><a href="?page=nobu_tool_hm_ironpython_api_866">秀丸エディタ 8.66系の機能</a>を追加。<br>
+        </ul>
+    <li>
+        <h3>2016/07/19 ver. 1.0.0.2</h3>
+        <ul>
+            <li>初公開。コンセプトモデル。<br>
+            <li>cp932(sjis)のみの取り扱い。
+        </ul>
+</ul>

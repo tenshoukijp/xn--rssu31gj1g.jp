@@ -1,0 +1,91 @@
+%(hilight)s
+<h2><i class="fa fa-book fa-fw"></i>「hmPy・IronPython」のその他の例題 クリップボード内のファイルリストのペースト</h2>
+
+<ul class="checklist">
+    <li>
+    <h3>概要</h3>
+    <p>秀丸マクロとhmPyの例題のひとつとなります。<br>
+    </p>
+    <p>エキスプローラーなどで、「１つ」または「複数」のファイルをコピーした後<br>
+    秀丸に張り付けると、「ファイル名のフルパス名(一覧)がペーストされる」といったものを作ってみましょう。
+    </p>
+    <li>
+    <h3>ダウンロード</h3>
+    <dl>
+        <dt>
+        <div class="download_file">DOWNLOAD ⇒ <a href="%(file)s">pastefilelist.zip v1.30</a>ファイル。</div>
+        </dt>
+        <dd>
+        <div class="update_time">└更新日 %(year)04d/%(mon)02d/%(mday)02d</div>
+        </dd>
+    </dl>
+    <p><img src="./other_soft/hm_ironpython/cnt_hm_ironpython_pastefilelist_01.png"></p>
+    <h3>秀丸マクロ</h3>
+    <p>この程度のことであれば、強力な.NETであれば、数行で情報を獲得できます。</p>
+    <p>秀丸マクロではその情報を引き出すだけでＯＫでしょう。</p>
+    <div class="code"><pre class="brush:python">
+// 0 とはクリップボードがテキスト(純粋テキストでなくともテキストとして扱えるものも含む)
+if (getclipboardinfo( 0 )) {
+  paste;
+  endmacro;
+}
+
+
+// 以下クリップボードはテキストではない時の処理となる
+
+#PY = loaddll( hidemarudir + &quot;\\&quot; + &quot;hmPy.dll&quot; );
+
+if (!#PY) {
+  message( &quot;hmPyが導入されていないようです。&quot; );
+  endmacro;
+}
+
+disabledraw;
+
+// クリップボードにファイル(のリスト)をコピーしてるものと想定し、countにファイル数を入れる。
+// ファイルリストのコピーでなければ、カウントは0
+#_ = dllfuncw( #PY, &quot;DoString&quot;, R&quot;IPY(
+
+import clr
+clr.AddReference('System.Windows.Forms')
+from System.Windows.Forms import Clipboard
+files = Clipboard.GetFileDropList()
+count = files.Count
+if count == 0:
+  # 秀丸の本来のペースト機能にゆだねる。
+  # (どうせテキストではないので秀丸は何もしなだろう…。)
+  hm.Macro.Eval(r&quot;&quot;&quot;
+    paste;
+  &quot;&quot;&quot;);
+
+# ファイル(のリスト)がクリップボードに入っているならば
+else:
+  hm.Macro.Eval(&quot;begingroupundo;&quot;);
+
+  # 順次リストからファイル名を取得して、秀丸へと挿入
+  for f in files:
+    hm.Macro.Var[&quot;$filename&quot;] = f
+    hm.Macro.Eval(r&quot;&quot;&quot;
+      insert $filename + &quot;\n&quot;;
+    &quot;&quot;&quot;);
+
+  hm.Macro.Eval(&quot;endgroupundo;&quot;)
+
+)IPY&quot;
+);
+
+enabledraw;
+
+freedll( #PY );
+    </pre></div>
+
+    <li>
+    <h3>他の応用</h3>
+    <p>例えば、特定の拡張子なら、<br>ファイルをコピーして秀丸上でペーストすると、その中身の文字列をペーストする、<br>
+    などというのもいとも簡単に実装できるでしょう。<br>
+    上記のプログラムが４、５行増えるだけです。</p>
+
+    <li>
+    <h3>ライセンス</h3>
+    <p>パブリックドメインです。自由にお使いください。</p>
+</ul>

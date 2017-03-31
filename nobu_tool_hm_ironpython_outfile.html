@@ -1,0 +1,63 @@
+%(hilight)s
+<h2><i class="fa fa-book fa-fw"></i>「hmPy・IronPython」の例題④ .pyファイルの利用</h2>
+
+<ul class="checklist">
+    <li>
+    <h3>概要</h3>
+    <p>IronPythonの例題のひとつとなります。<br></p>
+    <p>hmPyでは、秀丸マクロ内に直接IronPythonを埋め込むのではなく、<br>
+    外部に別途「.py」としてファイルを用意しても利用可能です(拡張子はなんでもOKです)<br></p>
+    <p><span class="negative">ファイルの文字コードはcp932(sjis)</span>としてください。</p>
+
+    <h3>外部のファイルの使用例</h3>
+    <div class="code"><pre class="brush:python">
+#PY = loaddll( hidemarudir + @&quot;\hmPy.dll&quot; );
+
+#_ = dllfuncw(#PY, &quot;DoFile&quot;, currentmacrodirectory + @&quot;\form1.py&quot;); // 外部ファイルの実行
+
+$f_title = dllfuncstrw(#PY, &quot;GetStrVar&quot;, &quot;f_title&quot; );
+message(&quot;秀丸マクロに戻ってきました:&quot; + $f_title);
+
+#_ = dllfuncw(#PY, &quot;DoString&quot;, R&quot;IPY(
+import System
+f_title = f_title.Replace('①', '②') # ①を②に置き換え。
+)IPY&quot;
+);
+$f_title = dllfuncstrw(#PY, &quot;GetStrVar&quot;, &quot;f_title&quot; );
+message(&quot;再び秀丸マクロに戻ってきました:&quot; + $f_title);
+
+freedll( #PY );
+endmacro;
+
+</pre></div>
+
+    <h3>外部の「.py」ファイルを用意</h3>
+    <p>上記マクロと同じディレクトリに、form1.pyというファイルを用意しましょう。<br>
+    ファイルの文字コードはcp932(sjis)なので、気をつけてください。
+    </p>
+
+    <div class="code"><pre class="brush:python">
+# coding: cp932
+import clr
+clr.AddReference('System.Drawing')
+clr.AddReference('System.Windows.Forms')
+
+from System.Drawing import *
+from System.Windows.Forms import *
+
+class MyForm(Form):
+    def __init__(self):
+        # Pythonのコンストラクタは__init__です。
+        pass
+
+
+Application.EnableVisualStyles()
+
+form = MyForm()
+form.Text = '表示①'
+f_title = form.Text # 受け渡し用途
+
+Application.Run(form)
+</pre></div>
+    <p><img src="./other_soft/hm_ironpython/cnt_hm_ironpython_08.png"></p>
+</ul>

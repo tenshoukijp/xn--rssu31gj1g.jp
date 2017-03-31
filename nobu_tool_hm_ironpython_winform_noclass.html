@@ -1,0 +1,57 @@
+%(hilight)s
+<h2><i class="fa fa-book fa-fw"></i>「hmPy・IronPython」の例題⑤ FormやGUIのコンポーネント</h2>
+
+<ul class="checklist">
+    <li>
+    <h3>概要</h3>
+    <p>普段C#を利用している方は、.NET Frameworkが非クラスで利用できることを失念しているかもしれません。<br>
+    C#では大抵の場合は、Formクラスを継承した独自のクラスを実装することが多いためです。<br>
+    <br>
+    Pythonでももちろんそれは可能ですが、Pythonではクラス自体が必須要件ではありませんので、<br>
+    規模が小さいのであれば、柔らかな後述のような形でコンパクトに済ませる場合も多いでしょう。
+    </p>
+
+    <h3>非クラスでのフォームの実装</h3>
+    <p>以下のようなファイルをwinform.pyとして作成してみましょう。<br>
+    文字コードはcp932(sjis)です。</p>
+
+    <div class="code"><pre class="brush:python">
+# coding:cp932
+
+import clr
+clr.AddReferenceByPartialName(&quot;System.Windows.Forms&quot;)
+clr.AddReferenceByPartialName(&quot;System.Drawing&quot;)
+from System.Windows.Forms import *
+from System.Drawing import *
+
+form = Form()
+font = Font(&quot;MS Gothic&quot;, 15)
+form.Text = &quot;非クラスでのフォーム&quot;
+
+def form_OnClick(sender, event):
+    l = Label(Text = &quot;Hello&quot;)
+    l.AutoSize = True
+    l.Location = event.Location
+    l.Font = font
+    sender.Controls.Add(l)
+
+form.Click += form_OnClick
+
+Application.Run(form)
+</pre></div>
+
+    <h3>呼び出すマクロ</h3>
+    <p>上のファイルを呼び出すマクロを記述し、適当に秀丸に登録して、<br>
+    実行してみましょう。</p>
+
+    <div class="code"><pre class="brush:python">
+#PY = loaddll( hidemarudir + &quot;\\&quot; + &quot;hmPy.dll&quot; );
+
+#_ = dllfuncw(#PY, &quot;DoFile&quot;, currentmacrodirectory + &quot;\\winform.py&quot; );
+
+freedll(#PY);
+
+</pre></div>
+
+    <img src="./other_soft/hm_ironpython/cnt_hm_ironpython_24.png" attr="noedge">
+</ul>

@@ -1,0 +1,88 @@
+%(hilight)s
+<h2><i class="fa fa-book fa-fw"></i>「hmPy・IronPython」から「ネイティブdll」のWin32 APIを利用する。</h2>
+
+<ul class="checklist">
+    <li>
+    <h3>概要</h3>
+    <p>こちらは王道となる「C#でラップする例」となります。</p>
+    <p>これは<a href="?page=nobu_tool_hm_ironpython_loadmngdll">「C#」で作ったdllの読み込み</a>と同じこととなります。</p>
+    <li>
+    <h3>「C#」でのラップ例</h3>
+    <p>C#を使ってラップする例としては、以下のように、dll名自体をclassとするのが良いでしょう。</p>
+    <div class="code"><pre class="brush:csharp">
+#using System;
+using System.Collections.Generic;
+using System.Text;
+using System.Runtime.InteropServices;
+
+namespace UnmanagedCode
+{
+    public class GDI32
+    {
+        [DllImport(&quot;GDI32.dll&quot;)]
+        public static extern IntPtr CreateCompatibleDC(IntPtr hdc);
+
+        [DllImport(&quot;GDI32.dll&quot;)]
+        public static extern IntPtr CreateCompatibleBitmap(IntPtr hdc, int nWidth,
+            int nHeight);
+
+        [DllImport(&quot;GDI32.dll&quot;)]
+        public static extern IntPtr SelectObject(IntPtr hdc, IntPtr hgdiobj);
+
+        [DllImport(&quot;GDI32.dll&quot;)]
+        public static extern bool BitBlt(IntPtr hdcDest, int nXDest, int nYDest,
+                                         int nWidth, int nHeight, IntPtr hdcSrc,
+                                         int nXSrc, int nYSrc, int dwRop);
+
+        [DllImport(&quot;GDI32.dll&quot;)]
+        public static extern bool DeleteDC(IntPtr hdc);
+
+        [DllImport(&quot;GDI32.dll&quot;)]
+        public static extern bool DeleteObject(IntPtr hObject);
+    }
+
+    public class User32
+    {
+        [DllImport(&quot;user32.dll&quot;)]
+        public static extern IntPtr GetDesktopWindow();
+
+        [DllImport(&quot;user32.dll&quot;)]
+        public static extern IntPtr GetTopWindow(IntPtr hWnd);
+
+        [DllImport(&quot;user32.dll&quot;)]
+        public static extern IntPtr GetWindow(IntPtr hWnd, uint wCmd);
+
+        [DllImport(&quot;User32.dll&quot;)]
+        public static extern IntPtr GetWindowDC(IntPtr hWnd);
+
+        [DllImport(&quot;User32.dll&quot;)]
+        public static extern IntPtr ReleaseDC(IntPtr hWnd, IntPtr hDC);
+
+    }
+}
+</pre></div>
+
+    <p>C#で作ったdllを利用するIronPythonは以下のようなパターンとなることでしょう。<br>
+    「currentmacrodirectory」がなぜ必要かなどは、<a href="?page=nobu_tool_hm_ironpython_loadmngdll">「C#」で作ったdllの読み込み</a>を参照してください。</p>
+    <div class="code"><pre class="brush:python">
+import clr
+
+import sys
+# currentmacrodirectoryは秀丸マクロ側から伝達されているものとする
+sys.path.append(currentmacrodirectory)
+# dllの名前を拡張子など抜きで
+clr.AddReferenceByPartialName(&quot;UnmanagedCode&quot;)
+clr.AddReference('System.Drawing')
+
+from System.Drawing import Bitmap, Image
+from UnmanagedCode import User32, GDI32
+
+def ScreenCapture(x, y, width, height):
+     hdcSrc = User32.GetWindowDC(User32.GetDesktopWindow())
+     hdcDest = GDI32.CreateCompatibleDC(hdcSrc)
+     hBitmap = GDI32.CreateCompatibleBitmap(hdcSrc, width, height)
+     GDI32.SelectObject(hdcDest, hBitmap)
+
+     #・・・・
+     </pre></div>
+</ul>

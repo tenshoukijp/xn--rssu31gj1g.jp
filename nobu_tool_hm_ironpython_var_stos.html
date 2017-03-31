@@ -1,0 +1,65 @@
+%(hilight)s
+<h2><i class="fa fa-book fa-fw"></i>「秀丸マクロ」のスコープと「hmPy/IronPython」のスコープとの値のやり取り</h2>
+
+<ul class="checklist">
+    <li>
+    <h3>概要</h3>
+    <p>IronPythonの例題のひとつとなります。<br>
+    </p>
+
+    <h3>スコープ間の値のやりとる</h3>
+    <p>hmPyのIronPythonと、秀丸マクロの変数とのやりとりは、本来「hm.Macro.Var["xxxx"] = yyyy などで、取得や代入が出来ます。<br></p>
+    <p>よって、以下のソースのような例を実際に記述する、ということは、ほとんど考えられません。<br>
+        しかし、IronPythonではなく、秀丸マクロ側から直接値を渡したり取得したりする方法も一応提供されている、<br>
+        ということを頭の片隅に覚えておいてもよいでしょう。</p>
+
+    <div class="code"><pre class="brush:python">
+#PY = loaddll( hidemarudir + @&quot;\hmPy.dll&quot; );
+
+#_ = dllfuncw(#PY, &quot;DoString&quot;, R&quot;IPY(
+import clr         # .NET フレームワーク系を取り扱えるようにするための大元のリファレンス
+import System     # .NET のSystemネームスペースをインポート
+)IPY&quot;
+);
+
+
+#_ = dllfuncw(#PY, &quot;DoString&quot;, &quot;bbb = [1,2,3]&quot;);          // Listをbbbに代入
+
+#_ = dllfuncw(#PY, &quot;SetNumVar&quot;, &quot;var1&quot;, 100);
+#num = dllfuncw(#PY, &quot;GetNumVar&quot;, &quot;var1&quot;);
+message(str(#num));
+
+#_ = dllfuncw(#PY, &quot;DoString&quot;, &quot;bbb[1] = var1&quot; );
+
+// Listの[1]をresultという変数に代入
+#_ = dllfuncw(#PY, &quot;DoString&quot;, &quot;result_num = bbb[1]&quot; );
+
+// resultの値を「文字列に変換して」秀丸マクロ側に得る
+#result_num = dllfuncw(#PY, &quot;GetNumVar&quot;, &quot;result_num&quot;);
+
+// 表示
+message(str(#result_num));
+
+// IronPythonのスコープにグローバル変数nameとして「武田信玄」という文字列を代入
+#_ = dllfuncw(#PY, &quot;SetStrVar&quot;, &quot;name&quot;, &quot;武田信玄&quot;);
+
+// 今設定した値を秀丸マクロ側に取得
+$name = dllfuncstrw(#PY, &quot;GetStrVar&quot;, &quot;name&quot;);
+message($name);
+
+// bbb[0]の値と-200の絶対値を足しこんで、result_numという変数に代入
+#_ = dllfuncw(#PY, &quot;DoString&quot;, R&quot;IPY(
+result_num = bbb[0] + System.Math.Abs(-200)
+)IPY&quot;
+);
+
+// それを秀丸マクロ側に得る
+#result_num = dllfuncw(#PY, &quot;GetNumVar&quot;, &quot;result_num&quot;);
+
+// 文字列として表示
+message(str(#result_num));
+
+freedll(#PY);
+</pre></div>
+    <p><img src="./other_soft/hm_ironpython/cnt_hm_ironpython_10.png"></p>
+</ul>

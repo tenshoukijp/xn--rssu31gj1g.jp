@@ -1,0 +1,110 @@
+%(hilight)s
+<h2><i class="fa fa-book fa-fw"></i>C#などで作った外部の「マネージドな.dll」の読み込み</h2>
+
+<ul class="checklist">
+    <li>
+    <h3>概要</h3>
+    <p>一般論の話をしますと、「C#」「VB.net」「C++/CLI」「F#」「JScript.net」などで作成したdllを「マネージドなアセンブリdll」として読み込む場合、<br>
+    普通なら「<span class="negative">読み込み対象となるdllファイル置き場の位置に大きな制約</span>」があるのです。(ネットなどで調べてみてください)<br>
+    特殊な設定でもしない限り、「exeと同じ場所か、dll名と同じ名前のサブフォルダに入れる」必要があります。<br>
+    <br>
+    <span class="positive">しかし、hmPy・IronPythonには</span><span class="negative"><b>そのような制限は一切ありません。<br>
+    好きなフォルダに置いた自作のマネージドな.dllを(特に署名などもなく)突如自由に読みだして利用可能です。</b></span><br>
+    </p>
+
+    <h3>C#のソースから.dllを作成。</h3>
+    <p>最小限のサンプルとするため、わかりやすい構成としましょう。<br>
+    </p>
+    <p>hmPy/IronPython自体は、.NET Framework 4.0で構成されていますが、<br>
+    あなたが利用する.dllは、</span><span class="negative">.NET Framework 4.6など、hmPyより新しいバージョンのアセンブリでも大丈夫</span>です!!<br>
+    ここも普通の.NETの考え方の制限とは大きく異なるとここです。<br>
+    <span class="negative">あなたのPCに入っている.NET Frameworkの一番新しいバージョンで作成しても問題ありません。</span></p>
+    <ul>
+        <li>ファイル名は「TestSample.dll」
+        <li>名前空間は「TestNameSpace」
+        <li>クラス名は「TestClass」
+        <li>メソッドは「TestFunc」
+    </ul>
+    <p>とします。</p>
+    <p>コンパイルし、<span class="positive">TestSample.dll</span>といった名前にしたとしましょう。</p>
+    <div class="code"><pre class="brush:csharp">
+using System;
+
+namespace TestNameSpace
+{
+    public class TestClass
+    {
+        public TestClass() { }
+        public int TestFunc(int x)
+        {
+            return x + 3;
+        }
+    }
+}
+</pre></div>
+
+    <p>マクロファイルの置き場所(currentmacrodirectory)も「.dllの置き場」とみなしますので、<br>
+    <span class="positive">実行するマクロファイルと同じ場所に、読み込み対象の.dllがあるならば、<br>
+    sys.path.append(currentmacrodirectory)といったことをする必要はありません。</span><br>
+    </p>
+    <p>もしも、対象の.dllがマクロファイルや秀丸ディレクトリとは異なる場所にあるのであれば、<br>
+    sys.path.appendを利用して、対象のディレクトリを追加してください。</p>
+    <p>以下のように書けます</p>
+    <div class="code"><pre class="brush:python">
+#PY = loaddll( hidemarudir + @&quot;\hmPy.dll&quot; );
+
+#_ = dllfuncw(#PY, &quot;DoString&quot;, R&quot;IRONPYTHON(
+import clr
+clr.AddReferenceByPartialName(&quot;TestSample&quot;) # dllの名前を拡張子など抜きで
+
+from TestNameSpace import *
+obj = TestClass()         # オブジェクトの作成
+result = obj.TestFunc(10) # dll内で3を足した値を返すので、結果は13
+hm.debuginfo(result)
+
+hm.Macro.Var['#num'] = result
+hm.Macro.Eval(r&quot;&quot;&quot;
+    message(str(#num));
+&quot;&quot;&quot;);
+
+)IRONPYTHON&quot;
+);
+
+freedll( #PY );
+</pre></div>
+
+<p><img src="./other_soft/hm_ironpython/cnt_hm_ironpython_20.png"></p>
+
+        <p>
+            もしも、対象の.dllがマクロファイルや秀丸ディレクトリとは異なる場所にあるのであれば、<br>
+            sys.path.appendを利用して、対象のディレクトリを追加してください。
+        </p>
+        <p>以下のように書けます</p>
+        <div class="code">
+            <pre class="brush:python;highlight:[6]">
+#PY = loaddll( hidemarudir + @&quot;\hmPy.dll&quot; );
+
+#_ = dllfuncw(#PY, &quot;DoString&quot;, R&quot;IRONPYTHON(
+import clr
+
+sys.path.append(r&quot;C:/abc/mydir&quot;) # 独自の.dll置き場など
+
+clr.AddReferenceByPartialName(&quot;TestSample&quot;) # dllの名前を拡張子など抜きで
+
+from TestNameSpace import *
+obj = TestClass()         # オブジェクトの作成
+result = obj.TestFunc(10) # dll内で3を足した値を返すので、結果は13
+hm.debuginfo(result)
+
+hm.Macro.Var['#num'] = result
+hm.Macro.Eval(r&quot;&quot;&quot;
+    message(str(#num));
+&quot;&quot;&quot;);
+
+)IRONPYTHON&quot;
+);
+
+freedll( #PY );
+</pre>
+        </div>
+</ul>
