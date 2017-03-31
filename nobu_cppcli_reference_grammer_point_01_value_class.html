@@ -1,0 +1,49 @@
+%(hilight)s
+<h2><i class="fa fa-pencil-square-o fa-fw"></i>value class</h2>
+
+<ul class="checklist">
+    <li>
+    <h3>概要</h3>
+    <p>ここでは、C++/CLIの着目すべき文法のうち、value classを中心に解説しています。<br>
+    </p>
+    </li>
+    <li>
+    <h3>value class</h3>
+    <p>C++のクラスは、= や実体による引数の受け渡しによってコピーできます。<br>
+    ref classで定義されたクラスはoperator= や コピーコンストラクタをもたない場合勝手にコピーされることはありません。</p>
+
+
+
+    <fieldset class="code"><legend>value class</legend> <pre class="brush:cpp;">
+ref class C {
+    int i;
+};
+void func(C c) {}
+int main()
+{
+    C c;
+    C d;
+    func(c);   // エラー
+    d = c;     // エラー
+}
+</pre></fieldset>
+
+    <p>キーワード value classで定義されたクラスは、コピーすることができ、そのコピーはビットワイズ、すなわちmemcpyのようなコピーです。</br>
+    よって、value classにはこのようなコピーが可能な型しか含むことができません。<br>
+    <span class="positive">すなわちref classで定義されたクラスのインスタンスを含むことはできません。</span></p>
+    <p>またvalue classはスタック上に作成することができます。<br>
+    ref classの場合はスタック上に作成したように見えても、実際はマネージヒープ上に作成されましたが、<br>
+    value classは本当にスタック上に作られます。</p>
+    <p>このような理由からも、value classにはref classのインスタンスを含むことができません。<br>
+    また、value classは以下のものを持つことはできません。</p>
+
+    <p>また、value classは以下のものを持つことはできません。</p>
+    <ul>
+        <li><span class="keyword">デフォルトコンストラクタ</span>
+        <li><span class="keyword">コピーコンストラクタ</span>
+        <li><span class="keyword">operator=</span>
+        <li><span class="keyword">デストラクタ</span>
+        <li><span class="keyword">ファイナライザー</span>
+        <li>その他、<span class="keyword">継承</span>もできません。(interfaceを除く)
+    </ul>
+</ul>

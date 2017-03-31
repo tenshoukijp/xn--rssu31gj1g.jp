@@ -1,0 +1,90 @@
+%(hilight)s
+<h2><i class="fa fa-pencil-square-o fa-fw"></i>for each</h2>
+
+<ul class="checklist">
+    <li>
+    <h3>概要</h3>
+    <p>ここでは、C++/CLIの着目すべき文法のうち、for eachを中心に解説しています。<br>
+    </p>
+    <li>
+    <h3>for each</h3>
+    <p>for each構文は</p>
+    <ul>
+        <li>CLI配列型
+        <li>STLのiterator<b>のようなものをもっている</b>クラス
+        <li>IEnumerableインターフェースを実装するクラス
+    </ul>
+    <p>対して動作します。</p>
+    <p>ネイティブ、マネージドの両方に対して、</p>
+    <blockquote>これは多分 for each 出来るんじゃないか？</blockquote>
+    <p>と思しきものであれば、概ね for each の動作対象です。</p>
+    <fieldset class="code"><legend>for each</legend> <pre class="brush:cpp;">
+cli::array&lt;int&gt;^ c = gcnew cli::array&lt;int&gt;{1, 2, 3, 4};
+for each(int i in c) {
+  System::Console::WriteLine(i);
+}
+</pre></fieldset>
+    <p>これは以下と同じです。</p>
+    <fieldset class="code"><legend>forで置きかえると</legend> <pre class="brush:cpp;">
+cli::array&lt;int&gt;^ c = gcnew cli::array&lt;int&gt;{1, 2, 3, 4};
+for (int i = 0; i&lt; c-&gt;Length; ++i) {
+  System::Console::WriteLine(c[i]);
+}
+</pre></fieldset>
+    <p>以下のように、
+    <ul>
+        <li>STLのiterator<b>のようなものをもっている</b>クラス
+        <li>IEnumerableインターフェースを実装するクラス
+    </ul>
+    <p>に対しても同様に動作します。
+    </p>
+    <fieldset class="code"><legend>様々なものをfor each</legend><pre class="brush:cpp;">
+#include &lt;vector&gt;
+#include &lt;map&gt;
+using namespace std;
+
+using namespace System;
+using namespace System::Collections;
+
+int main(array&lt;System::String ^&gt; ^args)
+{
+  ArrayList^ al = gcnew ArrayList();
+  al-&gt;Add(1);
+  al-&gt;Add(2);
+
+  for each(int a in al)
+  {
+    Console::WriteLine(a);
+  }
+
+  Hashtable^ ht = gcnew Hashtable();
+  ht[&quot;aaa&quot;] = &quot;111&quot;;
+  ht[&quot;bbb&quot;] = &quot;222&quot;;
+  for each(DictionaryEntry^ dic in ht)
+  {
+    Console::WriteLine(dic-&gt;Key-&gt;ToString() + dic-&gt;Value-&gt;ToString());
+  }
+
+
+  std::vector&lt;int&gt; vi;
+  vi.push_back(3);
+  vi.push_back(4);
+  for each(int i in vi)
+  {
+    Console::WriteLine(i);
+  }
+
+
+  std::map&lt;string, int&gt; num;
+
+  num[&quot;ten&quot;] = 10;
+  num[&quot;hundred&quot;] = 100;
+
+  for each(pair&lt;string, int&gt; c in num)
+  {
+    Console::WriteLine(gcnew String(c.first) + c.second.ToString());
+  }
+
+}
+</pre></fieldset>
+</ul>

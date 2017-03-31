@@ -1,0 +1,122 @@
+%(hilight)s
+<h2><i class="fa fa-pencil-square-o fa-fw"></i>CLI 配列型</h2>
+
+<ul class="checklist">
+    <li>
+    <h3>概要</h3>
+    <p>ここでは、C++/CLIの着目すべき文法のうち、CLI 配列型を中心に解説しています。<br>
+    </p>
+    </li>
+    <li>
+    <h3>CLI 配列型</h3>
+    <p>CLI 配列型は、ネイティブな配列と異なり、CLI ヒープ上に領域確保され、一つ以上の位階（ランク）を持つことができます。<br>
+    位階はそれぞれの配列要素ごとに関連する指示数によって決定されます。<br>
+    </p>
+    <p>CLI 配列の位階はまた配列の次元とも呼びます。</p>
+
+    <p>int型のcli::arrayを要素数4で作る場合は以下のようにします。</p>
+    <fieldset class="code"><legend>int型のcli::arrayを要素数4</legend><pre class="brush:cpp;">
+cli::array&lt;int&gt;^ a = gcnew cli::array&lt;int&gt;(4);
+cli::array&lt;int&gt;^ b = gcnew cli::array&lt;int&gt;(4) {1,2,3,4};
+cli::array&lt;int&gt;^ c = gcnew cli::array&lt;int&gt;{1,2,3,4};
+
+</pre></fieldset>
+    <p>arrayは常にハンドルを用いて利用しなければなりません。<br>
+    まarrayの型にref classを用いることはできず、ref classのハンドルを用いなければなりません。</p>
+    <fieldset class="code"><legend>cli::arrayにはハンドル</legend><pre class="brush:cpp;">
+cli::array&lt;int&gt; oa ; // エラー
+cli::array&lt;int&gt;^ oa ; // OK
+</pre></fieldset>
+    <p>cli::arrayの要素数を知るには、Lengthを使います。</p>
+    <fieldset class="code"><legend>配列の要素数</legend><pre class="brush:cpp;">
+cli::array&lt;int&gt;^ c = gcnew cli::array&lt;int&gt;{1,2,3,4};
+int len = c->Length;
+</pre></fieldset>
+    <p>2次元arrayは以下のように作ります。</p>
+    <fieldset class="code"><legend>2次元のcli::array</legend><pre class="brush:cpp;">
+cli::array&lt;int, 2&gt;^ a2 = gcnew cli::array&lt;int, 2&gt;(4,4);
+cli::array&lt;int, 2&gt;^ b2 = gcnew cli::array&lt;int, 2&gt;{ {1,2,3,4},{1,2,3,4},{1,2,3,4},{1,2,3,4} };
+</pre></fieldset>
+    <p>１の位階を持つ配列は１次元配列とも呼ばれ、１より多い位階を持つ CLI 配列のことを多次元 CLI 配列と呼びます。</p>
+    <fieldset class="code"><legend>CLI 配列型を使用した例</legend><pre class="brush:cpp;">
+int main() {
+    cli::array&lt;int&gt;^ arr1D = gcnew cli::array&lt;int&gt;(4) { 10, 42, 30, 12};
+    Console::Write(&quot;{0} 個の要素があります : &quot;, arr1D-&gt;Length);
+    for each (int i in arr1D) {
+        Console::Write(&quot;{0,3}&quot;, i);
+    }
+    Console::WriteLine();
+    cli::array&lt;int, 3&gt;^ arr3D = gcnew cli::array&lt;int, 3&gt;(10, 20, 30);
+}
+</pre></fieldset>
+    <fieldset class="code"><legend>生成される出力</legend><pre class="brush:ps;">
+4 個の要素があります : 10 42 30 12
+</pre></fieldset>
+    <p>ハンドル arr1D は int の任意長の一次元配列として作成されます。<br>
+    それは現在、四つの int 要素を含む、一つの配列を参照します。</p>
+    <p>読み込みのみプロパティ Array::Length は要素数を含んでいます。<br>
+    ハンドル arr3D は int の任意の 3 次元配列を参照することができます。<br>
+    それは現在、10×20×30のサイズの、int のデフォルト値、つまり 0、を要素全てに詰め込んだ配列一つを参照します。</p>
+    <li>
+    <h3>可変長配列引数</h3>
+    <p>System::Object^ 型の CLI 配列型を配列パラメータとして宣言することで、パラメータは雑多な型の引数を取ることができます。<br>
+    </p>
+    <p>例としては、</p>
+    <fieldset class="code"><legend>可変長配列引数</legend> <pre class="brush:cpp;">
+void G(... cli::array&lt;Object^&gt;^args) {
+... // 何かの処理
+}
+
+// 呼び出し
+G(10, &quot;Hello&quot;, 1.23, 'X');      // 引数 1, 3, 4 はボックス化される
+
+</pre></fieldset>
+    <p>このようなarray引数をparameter arrayといいます。<br>
+    parameter array引数は、１つの関数で１つしか宣言できません。<br>
+    </p>
+    <p>しかし他の引数とともに使うことができます。</p>
+    <p>この場合、parameter arrayは最後の引数にしなければなりません。</p>
+
+    <fieldset class="code"><legend>可変長配列引数</legend> <pre class="brush:cpp;">
+using namespace System;
+
+void func(int i, ... cli::array&lt;Object^&gt;^ a) {
+  for each(Object^ o in a) {
+    System::Console::WriteLine(o);
+  }
+}
+
+int main(array&lt;System::String^&gt;^ args)
+{
+  func(1); // paramter arrayには要素数０のarrayが渡される。
+  func(2);
+  func(1, 2, &quot;AAA&quot;);
+  return 0;
+}
+</pre></fieldset>
+    <p>C++11の読みにくいテンプレートを利用したものと比べれると、<br>
+    格段に理解しやすく取り扱いがしやすいと言えます。</p>
+
+
+    <li>
+    <h3>C++11の可変個引数テンプレート</h3>
+    <p>対比の意味で、C++11の可変個引数テンプレートの処理を記載する</p>
+    <fieldset class="code"><legend>可変個引数テンプレート</legend> <pre class="brush:cpp;">
+#include &lt;iostream&gt;
+
+// 各引数でやる処理
+template&lt;typename T&gt;
+void func_head(T x) {
+    std::cout &lt;&lt; x &lt;&lt; endl;
+}
+
+void func() {} // もう引数が残ってない時のために必要
+
+// 可変個引数、先頭の一つを処理し、残りを自分自身に渡す
+template&lt;typename T, typename... Tail&gt;
+void func(T head, Tail... tail) {
+    func_head(head);
+    func(tail...);
+}
+</pre></fieldset>
+</ul>

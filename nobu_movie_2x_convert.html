@@ -1,0 +1,255 @@
+%(hilight)s
+<h2><i class="fa fa-film fa-fw"></i>天翔記のムービーを綺麗に２倍にする</h2>
+
+<ul class="checklist">
+    <li>
+    <h3>概要</h3>
+    <ul class="pointlist">
+        <li>
+        <h4>解像度が少なく、画質も悪い天翔記のムービー</h4>
+        <p>天翔記では、ゲームの機能で「ムービーを２倍のサイズで再生」の設定を有効にしたとしても、<br>
+        アンチエイリアスも効かない上、元のムービーも画質が悪いため、結構ひどい状態で再生されてしまいます。</p>
+        <li>
+        <h4>特殊なアルゴリズムでムービーの解像度を２倍にして、状況を打開する</h4>
+        <p>このページでは、画像を拡大するツールとして非常に有名な、「waifu2x-caffe」を使い、<br>
+        解像度をアップコンバートすることで、 ある程度、この問題への解決を狙います。</p>
+        <p>通常の「Adore PremiereやAdobe AfterEffectsなど映像ツールで解像度を２倍にする」といった一般的手法とは違い、<br>
+        「高度で多計算による解像度の２倍化」となりますので、変換には相当時間がかかります。</p>
+        <li>
+        <h4>天翔記に限定されない内容</h4>
+        <p>なお、ここに記載されている内容やツールは、天翔記に限定されるものではなく、<br>
+        「動画の解像度を綺麗な形で２倍にする」という汎用的な目的にもかなうモノとなっています。</p>
+        <p>
+    </ul>
+    <li>
+    <h3>TsMovie2xConverter によって ２倍化されたサンプル</h3>
+    <p><img src="./cnt_movie/cnt_nobu_movie_2x_convert_01.jpg"><br>
+    </p>
+    <p><img src="./cnt_movie/cnt_nobu_movie_2x_convert_02.jpg"><br>
+    </p>
+    <p><img src="./cnt_movie/cnt_nobu_movie_2x_convert_03.jpg"><br>
+    </p>
+    <p><img src="./cnt_movie/cnt_nobu_movie_2x_convert_04.jpg"><br>
+    </p>
+    <li>
+    <h3>動作環境</h3>
+    <ul class="pointlist">
+        <li>
+        <h4>Windows OS</h4>
+        <p>Windows 7 64bit 以降が必要です。(32bitだと無理です)</p>
+        <li>
+        <h4>天翔記のMod</h4>
+        <p>これらのムービーを天翔記で有効に機能させるためには、TSModが必要です。<br>
+        (素の天翔記や神パッチの天翔記では、ムービーの解像度を大きくしたとしても、表示は大きくなりません)</p>
+    </ul>
+    <li>
+    <h3>準備その① (ムービー ⇔ 連番画像の相互変換のため)</h3>
+    <ul class="pointlist">
+        <li>
+        <h4>ツール</h4>
+        <p><b>FFmpeg/FFprobe</b> をインストールしてください。</p>
+        <li>
+        <h4>FFmpeg (ソフト)</h4>
+        <dl>
+            <dt>
+            <div class="download_file">DOWNLOAD ⇒ <a href="http://ffmpeg.zeranoe.com/builds/">ダウンロード場所</a></div>
+            </dt>
+        </dl>
+        <p>まずは、該当ページからffmpegをダウンロードします。<br>
+        複数存在しますが、</p>
+        <p>「Download FFmpeg」からダウンロードして下さい。<br>
+        <li>
+        <h4>必要なファイル</h4>
+        <p>「Download FFmpeg ******* **-bit Static」 <br>
+        を解凍すると、実はファイルやディレクトリが沢山あります。<br>
+        しかし、必要なのファイルは「bin」フォルダの中にある<span class="positive">「ffmpeg.exe と ffprobe.exe」の２つだけ</span>です。<br>
+        </p>
+        <p>この２つを適当なフォルダにコピーしてください。<br>
+        有名なコマンドアプリケーションですので、それなりのディレクトリにコピーしておくことをお勧めします。</p>
+    </ul>
+    <li>
+    <h3>準備その② (連番画像を２倍に拡大するため)</h3>
+    <ul class="pointlist">
+        <li>
+        <h4>ツール</h4>
+        <p><b>waifu2x-caffe</b></p>
+        <p>をインストールしてください。</p>
+        <p>インストールの詳細は、<a href="?page=nobu_image_expand_and_reduce">画像の縮小・拡大</a>に掲載しています。</p>
+        <p><span class="positive">全体で100メガを超えるファイルサイズのツールですが、サブディレクトリも含め、ディレクトリ一式必要です。</span></p>
+        <p>2015年以降、急速に有名になったアプリケーションですので、<br>
+        それなりのディレクトリにコピーしておくことをお勧めします。</p>
+    </ul>
+
+    <li>
+    <h3>TsMovie2xConverter (準備①と準備②のツールを使い、動画を２倍化するため)</h3>
+    <p>天翔記95(等)の動画を２倍に拡大コンバートするツールとなります。<br>
+    (実際には天翔記に限らず汎用目的で利用可能です)</p>
+    <p>映像については、<span class="positive">waifu2x-cafeeを通して解像度を２倍化し、lib264のロスレス</span>で、<br>
+    音声については、元の動画の音声そのままのデータをコピーするようなツールです。</p>
+    <ul class="pointlist">
+        <h4>ダウンロード</h4>
+        <dl>
+            <dt>
+            <div class="download_file">DOWNLOAD ⇒ <a href="%(file)s">TsMovie2xConverter.zip</a>ファイル。</div>
+            </dt>
+            <dd>
+            <div class="update_time">└更新日 %(year)04d/%(mon)02d/%(mday)02d</div>
+            </dd>
+        </dl>
+        (「TsMovie2xConverter.pl」はソースファイルとなります、
+        <br>
+        「TsMovie2xConverter.exe」でも「TsMovie2xConverter.pl」でも動作は同じです)
+    </ul>
+    <li>
+    <h3>TsMovie2xConverterの置き場所</h3>
+    <p>TsMovie2xConverterの置き場所は好きなディレクトリに配置してもらって良いのですが、<br>
+    今回は説明のために、「C:\MOVIE」フォルダに置いたものとします。</p>
+    <p><img src="./cnt_movie/cnt_nobu_movie_2x_convert_11.png"><br>
+    </p>
+    <li>
+    <h3>「TsMovie2xConverter.ini」の設定</h3>
+    <p>TsMovie2xConverter.iniをテキストエディタで編集してください。</p>
+    <p><span class="negative">この.iniファイルが正しく編集されていないと全く動作しません!!</span><br>
+    </p>
+    <ul>
+        <li>導入しているffmpeg.exe / ffprobe.exeへのフルパス
+        <li>導入しているwaifu2x-cafee-cui.exeへのフルパス
+        <li>NVIDIA製のグラボなら"gpu"、NVIDIA以外のグラボ(あるいは不明)なら"cpu"へと書き換えてください。<br>
+        (cpuの場合は、変換には３倍ほど時間がかかります)
+        <li><span class="negative">シングルクォーテーション「'」をダブルクォーテーション「"」に書き換えたりしないで</span>ください。<br>
+        解釈が変わってエラーになります。<br>
+        ディレクトリ内に空白が含まれていたとしても、ダブルクォーテーションは不要です。</li>
+    </ul>
+    <div class="code"><pre class="brush:perl;">
+# ffmpegのフルパスを設定してください。
+$ffmpeg  = 'C:\usr\ffmpeg\ffmpeg.exe';
+$ffprobe = 'C:\usr\ffmpeg\ffprobe.exe';
+
+# waifu2x-cafee-cuiのフルパスを設定してください。
+$waifu2x = 'C:\usr\waifu2x-caffe\waifu2x-caffe-cui.exe';
+
+# gpuが使えるのは、NVIDIA製GPUのみです。IntelやRadeonの人は &quot;cpu&quot; と書き換えてください。
+$process = &quot;gpu&quot;;
+
+# コンバートする拡張子
+$extension = &quot;.avi&quot;;
+    </pre></div>
+    <li>
+    <h3>天翔記のムービーをコピーしてくる。</h3>
+    <p>天翔記のCDから動画ファイルをコピーしてきてください。<br>
+    (ゲーム側にすでにMOVIEディレクトリがあるなら、そちらからコピーしてきてもかまいません)</p>
+    <p><img src="./cnt_movie/cnt_nobu_movie_2x_convert_20.png"><br>
+    </p>
+    <p>↓(動画ファイルをコピー)</p>
+    <p><img src="./cnt_movie/cnt_nobu_movie_2x_convert_12.png"><br>
+    </p>
+    <li>
+    <h3>ムービーを変換</h3>
+    <p>「TsMovie2xConverter.exe」を実行してください。<br>
+    ツールの導入や、iniの設定が正しければ、以下のように変換が始まります。</p>
+    <p><img src="./cnt_movie/cnt_nobu_movie_2x_convert_21.png"><br>
+    <li>
+    <h3>数時間後…</h3>
+    <p>「C:\MOVIE\dst」のフォルダに変換後のムービーが出来上がります。<br>
+    </p>
+    <p>この出来上がったムービーはヘッダ情報が健全ではないため、「GOM Player」や「VLC Player」では再生できますが、<br>
+    マイクロソフトの標準のプレイヤでは再生できません。</p>
+    <p><img src="./cnt_movie/cnt_nobu_movie_2x_convert_10.png"><br>
+    </p>
+    <p>これを健全な状態にするために、次ステップへと進んでください。</p>
+    <li>
+    <h3>最後に、天翔記で再生可能なように正規化する</h3>
+    <p>TsMovie2xConverterを使って、ffmpegで変換したファイルだと、ヘッダ情報が健全ではないため、<br>
+    天翔記では再生できません。<br>
+    </p>
+    <p>天翔記で再生できるようにするため、TMPGEncで動画を再変換します。<br>
+    (TMPGEncに限らず、ある程度Windowsに特化した動画変換ツールであれば概ねどれでも利用できます。)</p>
+
+    <li>
+    <h3>準備①(他形式のムービー ⇒ 天翔記で利用可能な.AVIに変換出来るように)</h3>
+    <ul class="pointlist">
+        <li>
+        <h4>ツール</h4>
+        <p><b>TMPGEnc</b></p>
+        <li>
+        <h4>映像のcodec</h4>
+        <p><b>Xvid</b></p>
+        <li>
+        <h4>音楽のcodec</h4>
+        <p><b>mp3</b></p>
+        <li>
+    </ul>
+    <p>をインストールしてください。</p>
+    <p>インストールの詳細は、<a href="?page=nobu_movie_convert">天翔記で利用可能な.AVIフォーマットへの変換方法</a>に掲載しています。</p>
+
+    <li>
+    <h3>準備②(h264のAVI形式をTMPegEncで読み込みできるように)</h3>
+    <ul class="pointlist">
+        <h4>x264vfw</h4>
+        <p>をインストールしてください。</p>
+        <p>ダウンロード先は、<a href="https://ja.osdn.net/projects/sfnet_x264vfw/">https://ja.osdn.net/projects/sfnet_x264vfw/</a>です。</p>
+    </ul>
+    <li>
+    <h3>TMPegEncを利用して、好きなエンコードへと最終変換する。</h3>
+    <ul>
+        <li>TMPGEnc を利用して、正規化をする流れとなります。<br>
+
+        <li>まず、最初に出る画面は、キャンセルしてください。<br>
+        <p><img src="./cnt_movie/cnt_nobu_movie_convert_02.png"></p>
+        <br>
+        <li>さて、TsMovie2xConverter.exeにて出来上がった<span class="positive">dst内の「BAJUTSU.AVI」ムービーを選び</span><br>
+        <span class="positive">TMPGEnc へとドラッグ＆ドロップします。</span><br>
+        <p><img src="./cnt_movie/cnt_nobu_movie_2x_convert_10.png"></p>
+        <p>↓ (BAJUTSU.AVIをTMPGENCの画面にドラッグ＆ドロップ)</p>
+        <p><img src="./cnt_movie/cnt_nobu_movie_2x_convert_13.png"></p>
+        <br>
+        <li>このファイルを、天翔記で見れる形へと出力しなおします。<br>
+        <br>
+        上部メニューより、「ファイル」⇒「ファイルに出力」⇒「AVIファイル」と進めます。<br>
+        <p><img src="./cnt_movie/cnt_nobu_movie_2x_convert_14.png"></p>
+        <p><img src="./cnt_movie/cnt_nobu_movie_2x_convert_15.png"></p>
+        <li>適当な場所に保存用のディレクトリを選んでおきましょう。<br>
+        <p><img src="./cnt_movie/cnt_nobu_movie_2x_convert_16.png"></p>
+        <li>まずは、映像のcodecを選びましょう。<br>
+        下部にある「映像を出力」の右法にある「設定」を押します。<br>
+        <li>Xdiv MPEG-4 Codec を選択し、「設定」を押しましょう。<br>
+        <p><img src="./cnt_movie/cnt_nobu_movie_2x_convert_18.png"></p>
+        <br>
+        <li>下図のような設定にしましょう。<br>
+        ファイルサイズが大きいことが気になる人は、1.00を5.00にぐらいにすると、ファイルサイズがかなり小さくなります。<br>
+        <p><img src="./cnt_movie/cnt_nobu_movie_convert_10.png"></p>
+        <br>
+        <li>「OK」、「OK」と押して、映像のcodecの設定を終えます。<br>
+        <br>
+        <br>
+        <li>次に、音声のcodecを選びましょう。<br>
+        下部にある「音声を出力」の右法にある「設定」を押します。<br>
+        <br>
+        そして、MPEG Layer-3、48000(元のPCMと同じ周波数)、320kbps CBR, Stereo を選択します。<br>
+        <p><img src="./cnt_movie/cnt_nobu_movie_2x_convert_19.png"></p>
+        <br>
+        <li>さて、映像codecとしてXVID、音声codecとしてmp3へと設定が完了しました。<br>
+        「保存」ボタンを押しましょう。<br>
+        <p><img src="./cnt_movie/cnt_nobu_movie_2x_convert_17.png"></p>
+        <br>
+        <br>
+        <li>すぐに変換は完了します。<br>
+        <br>
+        <li>その他のムービーも順次変換してください。<br>
+        ２つめ以降は、映像・音声の両方のcodecがすでに設定が残っていますので、<br>
+        設定のわずらわしさがなく、素早く変換できます。<br>
+        <br>
+        <li>以上で天翔記で使用可能な.aviファイルが出来上がりました。<br>
+        <br>
+        <li>「天翔記フォルダ」のサブフォルダ「movieフォルダ」に、これらのムービーを入れておけば、<br>
+        TSModはこれらを再生します。<br>
+        <p><img src="./cnt_mod/cnt_mod_graphics_movie.png"> <br>
+        </p>
+    </ul>
+    <li>
+    <h3>ロゴの差し替え</h3>
+    <p>今回の動画の拡大処理では、コーエーロゴについては、あまり良い感じに変換されないことが分かっています。<br>
+    (文字がゆがんだような感じに見える)<br>
+    オープニングロゴや、エンディングロゴは、以下のものへと差し替えた方が良いでしょう。<br>
+    <a href="./cnt_mod/mod_graphic/koeilogo_endlogo.zip">オープニングのロゴとエンディングのロゴ</a></p>
+</ul>

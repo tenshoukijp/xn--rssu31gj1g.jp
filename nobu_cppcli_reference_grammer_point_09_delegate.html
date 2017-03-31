@@ -1,0 +1,144 @@
+%(hilight)s
+<h2><i class="fa fa-pencil-square-o fa-fw"></i>デリゲート</h2>
+
+<ul class="checklist">
+    <li>
+    <h3>概要</h3>
+    <p>ここでは、C++/CLIの着目すべき文法のうち、デリゲートを中心に解説しています。<br>
+    </p>
+    <li>
+    <h3>デリゲート</h3>
+    <p>delegateはC++の関数ポインタ配列のような機能です。ここではまずC++の関数ポインタ配列の例を示します。</p>
+    <fieldset class="code"><legend>関数ポインタの例</legend><pre class="brush:cpp;">
+typedef void (*MYFUNC)(int);
+void func1(int i){ }
+void func2(int j){ }
+struct C {
+    static void func3(int k){}
+};
+void callall(MYFUNC f[])
+{
+    for ( int i=0 ; i &lt; 3 ; ++i )
+    {
+        (*f[i])(1);
+    }
+}
+int main()
+{
+    MYFUNC funcs[3];
+    funcs[0] = &amp;func1;
+    funcs[1] = &amp;func2;
+    funcs[2] = &amp;C::func3;
+    callall(funcs);
+    return 0;
+}
+</pre></fieldset>
+    <p>次に、上記の例をdelegateを使って書くと以下のようになります。</p>
+    <fieldset class="code"><legend>デリゲートで書き直した例</legend><pre class="brush:cpp;">
+using namespace System;
+delegate void MyDele(int);
+void func1(int i){}
+void func2(int j){}
+ref struct C {
+    static void func3(int k) {}
+};
+ref struct D {
+    void func4(int l) {}
+};
+ref struct F {
+    void operator()(int m) {}
+};
+int main()
+{
+    MyDele^ dele;
+    dele = gcnew MyDele(&amp;func1);
+    dele += gcnew MyDele(&amp;func2);
+    dele += gcnew MyDele(&amp;C::func3);
+    D^ d = gcnew D;
+    dele += gcnew MyDele(d, &amp;D::func4);
+    F^ f = gcnew F;
+    dele += gcnew MyDele(f, &amp;F::operator());
+    dele(1);
+    return 0;
+}
+</pre></fieldset>
+    <p>==でdelegateの比較が行われる場合はハンドルの比較が行われるのではなく、<br>
+    delegateが持っている関数によって比較されます。また-=によってdelegateから削除される場合も関数の比較が行われます。</p>
+    <fieldset class="code"><legend>デリゲートで書き直した例</legend><pre class="brush:cpp;">
+using namespace System;
+delegate void MyDele(int);
+void func1(int i)
+{
+    Console::WriteLine(&quot;func1&quot;);
+}
+void func2(int j)
+{
+    Console::WriteLine(&quot;func2&quot;);
+}
+int main()
+{
+    MyDele^ dele;
+
+    dele += gcnew MyDele(&amp;func1);
+    dele += gcnew MyDele(&amp;func2);
+    MyDele^ dele2 = gcnew MyDele(func1);
+    dele2 += gcnew MyDele(&amp;func2);
+    if ( dele == dele2 )  // 真になる
+        Console::WriteLine(&quot;TRUE&quot;);
+    else
+        Console::WriteLine(&quot;FALSE&quot;);
+    dele -= gcnew MyDele(&amp;func1);  // 削除される
+    dele(1);  // func2のみ呼ばれる
+    return 0;
+}
+</pre></fieldset>
+    <p>デリゲートとは、ようするに関数オブジェクト用のクラスです。<br>
+    用途としては、「関数オブジェクト」を特定のデリゲートに「+」や「-」でどんどん足したり引いたりすることで、<br>
+    同型の関数に対して、一気に処理が出来るという特徴があります。<br>
+    <br>
+    通常は「イベント駆動」やそれに類似した仕組みで使われることで多いでしょう。</p>
+    <fieldset class="code"><legend>デリゲートの例</legend><pre class="brush:cpp;">
+delegate void MyFunction(int value);    // デリゲート型の定義
+public ref struct A {
+    static void F(int i) ( Console::WriteLine(&quot;F:{0}&quot;, i); }
+};
+public ref struct B {
+    void G(int i) { Console::WriteLine(&quot;G:{0}&quot;, i); }
+};
+
+int main() {
+    MyFunction^ d;                    // デリゲート型の参照を作成
+    d = gcnew MyFunction(&A::F);      // 呼び出しリストは A::F
+    d(10);
+
+    B^ b = gcnew B;
+    d += gcnew MyFunction(b, &B::G);  // 呼び出しリストは A::F, B::G
+    d(20);
+
+    d += gcnew MyFunction(&A::F);     // 呼び出しリストは A::F, B::G, A::F
+    d(30);
+
+    d -= gcnew MyFunction(b, &B::G);  // 呼び出しリストは A::F, A::F
+    d(40);
+}
+</pre></fieldset>
+    <p>静的関数 A::F と インスタンス関数 B::G は、ともに MyFunction と同じパラメータ型とリターン型を持っているので、<br>
+    これらは MyFunction デリゲート型にカプセル化することができます。</p>
+    <p>双方ともに public であることを注視してください。<br>
+    </p>
+    <p>これらのアクセス可能性は MyFunction との相互関係には無関係です。<br>
+    これらの関数はまた、プログラマから見て適切であれば、 クラスが同一であろうとなかろうと関係なく定義することができます。<br>
+    </p>
+
+
+    <fieldset class="code"><legend>出力結果</legend><pre class="brush:ps;">
+F:10
+F:20
+G:20
+F:30
+G:30
+F:30
+F:40
+F:40
+</pre></fieldset>
+</ul>

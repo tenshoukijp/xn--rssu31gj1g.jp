@@ -1,0 +1,62 @@
+%(hilight)s
+<h2><i class="fa fa-pencil-square-o fa-fw"></i>インターフェイス</h2>
+
+<ul class="checklist">
+    <li>
+    <h3>概要</h3>
+    <p>ここでは、C++/CLIの着目すべき文法のうち、インターフェイスを中心に解説しています。<br>
+    </p>
+    <li>
+    <h3>インターフェイス</h3>
+    <p>インターフェイスはC++でいえば、純粋仮想関数のみを含むクラス、のようなものです。<br>
+    キーワード<span class="keyword">interface class</span>を用いて定義し、その型は以下の宣言を含むことができます。<br>
+    </p>
+    <p>もちろん含めることができるのは宣言だけであり、定義することはできません。</p>
+    <p>C++/CLIのref classはref classに対して単一継承しかできませんが、インターフェースはいくつも多重継承できます。<br>
+    このへんはJavaと同じです。<br>
+    クラスAから派生したクラス Bがあるとし、BはインターフェースIA,IB,ICからも派生しているとするとき、クラスBは以下のように書きます。</p>
+    <fieldset class="code"><legend>インターフェイスの例</legend><pre class="brush:cpp;">
+interface class IA {
+public:
+  void funcIA();
+};
+
+interface class IB {
+public:
+  void funcIB();
+};
+
+interface class IC {
+public:
+  void funcIC();
+};
+
+ref class A {
+  int i;
+};
+
+ref class B : A, IA, IB, IC {
+public:
+  virtual void funcIA() { }
+  virtual void funcIB() { }
+  virtual void funcIC() { }
+};
+
+int main() {
+  B^ b = gcnew B;
+
+  IA^ ia = b;
+  IB^ ib = b;
+  IC^ ic = b;
+
+  b-&gt;funcIA();
+
+  ia-&gt;funcIA();
+  ib-&gt;funcIB();
+  ic-&gt;funcIC();
+
+  return 0;
+}
+
+</pre></fieldset>
+</ul>

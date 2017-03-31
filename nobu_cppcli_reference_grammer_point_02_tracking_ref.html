@@ -1,0 +1,33 @@
+%(hilight)s
+<h2><i class="fa fa-pencil-square-o fa-fw"></i>トラッキング参照(追跡参照)</h2>
+
+<ul class="checklist">
+    <li>
+    <h3>概要</h3>
+    <p>ここでは、C++/CLIの着目すべき文法のうち、トラッキング参照(追跡参照)を中心に解説しています。<br>
+    </p>
+    </li>
+    <li>
+    <h3>トラッキング参照</h3>
+    <p>C++/CLIの追跡参照（トラッキング参照）は値ではなく参照で渡されるハンドルである。<br>
+    これらはC#の“ref”やVisual Basic .NETの“ByRef”に相当する。<br>
+    </p>
+    <p>C++/CLIはハンドルへの追跡参照を示すのに“<span class="keyword">^%</span>”という構文を使用する。<br>
+    これは標準C++で“*&”（ポインタへの参照）を用いた構文に似ている。</p>
+    <p>下記のコードは追跡参照の使用例である。<br>
+    仮に、下のコードでString^ sと変えてしまうと、参照ではなく値を渡すことになるため、<br>
+    sは配列にセットされた文字列ハンドルをコピーするだけとなる。<br>
+    そのため、arrの各要素は初期化されないままになってしまう。</p>
+    </p>
+
+    <fieldset class="code"><legend>トラッキング参照(^%)</legend> <pre class="brush:cpp;">
+int main()
+{
+    array&lt;String^&gt;^ arr = gcnew array&lt;String^&gt;(10);
+    int i = 0;
+
+    for each (String^% s in arr)
+        s = gcnew String(i++.ToString());
+}
+</pre></fieldset>
+</ul>

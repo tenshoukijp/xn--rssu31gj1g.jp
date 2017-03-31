@@ -1,0 +1,95 @@
+%(hilight)s
+<h2><i class="fa fa-pencil-square-o fa-fw"></i>リテラル</h2>
+
+<ul class="checklist">
+    <li>
+    <h3>概要</h3>
+    <p>ここでは、C++/CLIの着目すべき文法のうち、リテラルを中心に解説しています。<br>
+    </p>
+    <li>
+    <h3>リテラル</h3>
+    <p>リテラル・フィールドはコンパイル時定数右辺値を示します。<br>
+    リテラル・フィールドの値は、それらが前もって定義されている範囲に置いて、<br>
+    同じプログラム中の他のリテラル・フィールドの値に依存することが許されます。<br>
+    例えば、<br>
+    </p>
+    <fieldset class="code"><legend>literalの例</legend><pre class="brush:cpp;">
+ref class X {
+    literal int A = 1;
+public:
+    literan int B = A + 1;
+};
+
+ref class Y {
+public:
+    literal double C = X::B * 5.6;
+};
+</pre></fieldset>
+    <p>これらは、二つのクラスを示しており、その間に、三つのリテラル・フィールドが定義されていて、<br>
+    そのうち二つは public であり、もう一つは private です。</p>
+    <p>リテラル・フィールドは静的メンバのようにアクセスしますが、リテラル・フィールドは静的ではなく、<br>
+    その定義は static キーワードを受け入れたり必要だったりしません。<br>
+    リテラル・フィールドはクラスを通してアクセスすることができます。このように。</p>
+    <fieldset class="code"><legend>literalの使用例</legend><pre class="brush:cpp;">
+int main() {
+    cout &lt;&lt; &quot;B = &quot; &lt;&lt; X::B &lt;&lt; &quot;\n&quot;;
+    cout &lt;&lt; &quot;C = &quot; &lt;&lt; Y::C &lt;&lt; &quot;\n&quot;;
+}
+
+</pre></fieldset>
+    <p>これらは次の出力を生成します。</p>
+    <fieldset class="code"><legend>表示結果</legend> <pre class="brush:cpp;">
+B = 2
+C = 11.2
+</pre></fieldset>
+    <p>リテラル・フィールドはref、値、そして、インターフェイス・クラスに置いてのみ、許されています。</p>
+    <li>
+    <h3>constとliteralの違い</h3>
+    <ul class="pointlist">
+        <li>
+        <h4>const(int)</h4>
+        <p>C++のコンパイラのみで通用する。つまり、MSILに変換されたときに消えてしまう。<br>
+        <span class="negative">つまり、dllになった段階で、constを書いたこと自体消えてる。</span>
+        他言語から容易に書き換えられてしまう事を意味する。</p>
+        <li>
+        <h4>literal(int)</h4>
+        <p>上記の問題を解決したC++/CLI用語。C#から見た時も固定したいならばこちらを使う。</p>
+    </ul>
+    <li>
+    <h3>initonlyフィールド</h3>
+    <p>initonly 識別子は、<br></p>
+    <ul>
+    <li>インスタンス・コンストラクタの本文中と
+    <li>静的コンストラクタと、
+    <li>ctor-initilizer の中でのみ左辺値のフィールド
+    </ul>
+    <p>
+    として宣言され、それ以降は右辺値です。<br>
+    その様なフィールドを initonly フィールド と呼びます。</p>
+    <p>例としては、</p>
+    <fieldset class="code"><legend>initonlyの例</legend><pre class="brush:cpp;">
+public ref class Data {
+    initonly static double coefficient1;
+    initonly static double coefficient2;
+
+    static Data() {
+        // いくつかのソースから coefficient の値を読み込む
+        coefficient1 = ...;    // ok
+        coefficient2 = ...;    // ok
+    }
+
+public:
+    static void F() {
+        coefficient1 = ...;    // error
+        coefficient2 = ...;    // error
+    }
+};
+
+</pre></fieldset>
+    <p>initonly フィールドは ref クラス、値クラスでのみ許されています。</p>
+    <p>initonly フィールドの代入はその定義の部分として、もしくは、<br>
+    その同じクラスのコンストラクタや静的コンストラクタでのみ発生します。<br>
+    </p>
+    <p><span class="positive">静的 initonly フィールドは静的コンストラクタ内でのみ代入することができます。<br>
+    そして、非静的 initonly フィールドはインスタンスのコンストラクタ中でのみ代入することができます。</span></p>
+</ul>

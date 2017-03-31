@@ -1,0 +1,31 @@
+%(hilight)s
+<h2><i class="fa fa-bug fa-fw"></i>「hmPerl」と「秀丸・デバッグ出力モニター」</h2>
+
+<ul class="checklist">
+    <li>
+    <h3>概要</h3>
+    <p>hmPerlでのエラーを知るにはどうするのか、が掲載されています。</p>
+    <h3>秀丸エディタ・デバッグ出力モニター</h3>
+    <p>秀丸マクロのエラーは「ダイアログ」で表示されますが、<br>
+    「hmPerl」については、秀丸が落ちるほどの致命的なエラーを除けば、ダイアログではエラーを表示しません。<br>
+    (あえて出していません)</p>
+    <p>hmPerlでは、エラーは「<a href="?page=nobu_tool_hm_debugmonitor">秀丸・デバッグ出力モニター</a>」に表示されます。</p>
+
+    <h3>意図的に、秀丸エディタ・デバッグ出力モニターに出す場合</h3>
+    <p>hmPerl.pmにて、「hm->debuginfo」関数というのを特別に追加しています。</p>
+    <ul>
+        <div class="code"><pre class="brush:perl">
+#Perl = loaddll( hidemarudir + @&quot;\hmPerl.dll&quot; );
+
+#_ = dllfuncw( #Perl, &quot;DoString&quot;, R&quot;PERL(
+hm-&gt;debuginfo(&quot;テストテスト&quot;);
+
+hm-&gt;debuginfo( hm-&gt;Edit-&gt;TotalText );
+)PERL&quot;);
+
+freedll( #Perl );
+</pre></div>
+
+    </ul>
+    <p><img src="./other_soft/hm_activeperl/cnt_hm_activeperl_07.png"></p>
+</ul>
