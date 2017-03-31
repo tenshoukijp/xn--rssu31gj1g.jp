@@ -1,0 +1,27 @@
+%(hilight)s
+<h2><i class="fa fa-book fa-fw"></i>hmPyの基本思想</h2>
+
+<ul class="checklist">
+    <li>
+    <h3>概要</h3>
+    <p>hmPy・IronPythonの方針は単純明快であり、下記の３点に集約されます。</p>
+    <ul class="pointlist">
+        <li>
+        <h4>命令の実行</h4>
+        <p><span class="positive">秀丸マクロは、IronPythonの命令コードを「文字列ベースで」実行することが出来る。</span></p>
+        <li>
+        <h4>値の設定</h4>
+        <p><span class="positive">秀丸マクロからIronPythonの「値を設定」することが出来る。</span></p>
+        <li>
+        <h4>値の取得</h4>
+        <p><span class="positive">IronPythonの値を秀丸マクロは「引き出す」ことが出来る。</span></p>
+    </ul>
+
+    <h3>hmPyの実装思想</h3>
+    <p>以下はhmPyの実装思想となります。<br>
+    </p>
+    <p>全て「インプロセス」となりますので、原則は逐次順次実行となります。<br>
+    (もちろん、.NETですので並列スレッドも簡単に記述可能です)</p>
+    <fieldset class="alert alert-info"><legend>インプロセス</legend><br>
+    <img src="./other_soft/hm_ironpython/cnt_hm_ironpython_12.png" attr="noedge"></fieldset>
+</ul>

@@ -1,0 +1,72 @@
+%(hilight)s
+<h2><i class="fa fa-book fa-fw"></i>「秀丸マクロ」のスコープと「hmPy/IronPython」のスコープとのリストやタプル関係のやり取り </h2>
+
+<ul class="checklist">
+    <li>
+    <h3>概要</h3>
+    <p>IronPythonの例題のひとつとなります。<br>
+    </p>
+
+    <h3>リストやタプルと添え字アクセス</h3>
+    <p>リストやタプルへののアクセス関数を確かめてみましょう。<br>
+    </p>
+
+    <div class="code"><pre class="brush:python">
+#PY = loaddll( hidemarudir + @&quot;\hmPy.dll&quot; );
+
+#_ = dllfuncw(#PY, &quot;DoString&quot;, R&quot;IPY(
+
+ary = [1, 2, 3]
+ary2 = [x*2 for x in ary] # ary2 = [2,4,6]となる
+
+)IPY&quot;
+);
+
+#target = dllfuncw(#PY, &quot;GetNumItemOfList&quot;, &quot;ary2&quot;, 2);  // ary2[2]を数値として取得ということ
+
+message(str(#target));
+
+#_ = dllfuncw(#PY, &quot;SetStrItemOfList&quot;, &quot;ary2&quot;, 2, &quot;abc&quot;);  // ary2[2] = &quot;abc&quot;ということ
+
+$ary2 = dllfuncstrw(#PY, &quot;GetStrVar&quot;, &quot;ary2&quot;); // ary2全体を文字列として取得。
+
+message($ary2);
+
+#_ = dllfuncw(#PY, &quot;DoString&quot;, &quot;ary2 = tuple(ary2)&quot;); // リストを読み取り専用となるタプルに変更
+
+$ary2 = dllfuncstrw(#PY, &quot;GetStrVar&quot;, &quot;ary2&quot;); // 再度、タプルにしたary2全体を文字列として取得。
+
+message($ary2);
+
+freedll( #PY );
+
+</pre></div>
+    <p><img src="./other_soft/hm_ironpython/cnt_hm_ironpython_21.png" attr="noedge"></p>
+
+    <h3>整数での添え字が可能なことの意味</h3>
+    <p>何もリストやタプルだけではありません。<br>
+    <span class="positive">とにもかくにも <b>obj[index]でindexは整数</b>ということが前提の形を満たしてれば良いのです。<br>
+    </p>
+    <p>以下のような myindex.pyを作成し・・・・</p>
+    <div class="code"><pre class="brush:python">
+class MyIndexClass:
+    def __getitem__(self, index):
+        return index * 100
+
+my_index_obj = MyIndexClass()
+</pre></div>
+
+    <p>次のようなマクロや関数の使い方も問題なく成立します。</p>
+    <div class="code"><pre class="brush:python">
+#PY = loaddll( hidemarudir + &quot;\\&quot; + &quot;hmPy.dll&quot; );
+
+#_ = dllfuncw(#PY, &quot;DoFile&quot;, currentmacrodirectory + &quot;\\myindex.py&quot;);
+
+#num = dllfuncw(#PY, &quot;GetNumItemOfList&quot;, &quot;my_index_obj&quot;, 30); // my_index_obj[30] を得る
+
+message(str(#num));
+
+freedll( #PY );
+</pre></div>
+    <p><img src="./other_soft/hm_ironpython/cnt_hm_ironpython_22.png" attr="noedge"></p>
+</ul>

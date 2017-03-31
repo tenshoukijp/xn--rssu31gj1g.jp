@@ -1,0 +1,77 @@
+%(hilight)s
+<h2><i class="fa fa-book fa-fw"></i>hmPyの基礎中の基礎のAPI</h2>
+
+<ul class="checklist">
+    <li>
+    <h3>概要</h3>
+    <p>hmPy自体が備えているAPIは数は多くありません。</p>
+    <p>ここではその中でも、「これだけは知っておくべき」というAPIだけを列挙しました。<br>
+    </p>
+    <li>
+    <h3>基本となる６つの関数</h3>
+    <p>以下の６つのAPIを知るだけで、秀丸マクロとIronPythonの値のやりとりは十分できます。<br>
+    </p>
+    <ul class="pointlist">
+        <li>
+        <h4>命令の実行:<br>
+        &nbsp;└ DoString(szexpression)</h4>
+        <p><span class="positive">文字列「szexpression」をIronPythonの命令として実行します。</span><br>
+        </p>
+        <p>何らかの明確な内部エラーがあった場合は0が、とりあえず実行できた場合は1が返ってきます。 <br>
+        <br>
+        <br>
+        </p>
+        <li>
+        <h4>命令の実行:<br>
+        &nbsp;└ DoFile(filename)</h4>
+        <p><span class="positive">ファイル名「filename」内の記述内容をIronPythonの命令として実行します。</span><br>
+        </p>
+        <p>何らかの明確な内部エラーがあった場合は0が、とりあえず実行できた場合は1が返ってきます。 <br>
+        <br>
+        <br>
+        </p>
+        <li>
+        <h4>値の取得(整数):<br>
+        &nbsp;└ GetNumVar(sz_var_name)</h4>
+        <p><span class="positive">IronPython内のグローバル変数「sz_var_name」を「整数」として取得します。</span><br>
+
+        </p>
+        <p>元々が数値でなくとも、数値に変換可能なものであれば、整数として返ってきます。<br>
+        該当の変数が存在しなかったり、エラーが発生した場合は、0が返ってきます。<br>
+        対象の値が元々0の場合と区別がつかないですが、運用でカバーしてください。<br>
+        <br>
+        <br>
+
+        </p>
+        <li>
+        <h4>値の設定(整数):<br>
+        &nbsp;└ SetNumVar(sz_var_name, value)</h4>
+        <p><span class="positive">IronPython内のグローバル変数「sz_var_name」に整数「value」を設定(代入)します。</span></p>
+        <p>該当の変数が存在しなかったり、エラーが発生した場合は、0が返ってきます。<br>
+        代入に成功した場合は、1が返ってきます。<br>
+        <br>
+        <br>
+        </p>
+        <li>
+        <h4>値の取得(文字列):<br>
+        &nbsp;└ GetStrVar(sz_var_name)</h4>
+        <p><span class="positive">IronPython内のグローバル変数「sz_var_name」を「文字列」として取得します。</span><br>
+        </p>
+        <p>元々が文字列でなくとも、文字列に変換可能なものであれば(原則文字列に変換可能です)、文字列として返ってきます。<br>
+        該当の変数が存在しなかったり、エラーが発生した場合は、「""」が返ってきます。<br>
+        対象の文字列が元々「""」の場合と区別がつかないですが、運用でカバーしてください。<br>
+        <br>
+        <br>
+        </p>
+        <li>
+        <h4>値の設定(文字列):<br>
+        &nbsp;└ SetStrVar(sz_var_name, value)</h4>
+        <p><span class="positive">IronPython内のグローバル変数「sz_var_name」に文字列「value」を設定(代入)します。</span></p>
+        <p>該当の変数が存在しなかったり、エラーが発生した場合は、0が返ってきます。<br>
+        代入に成功した場合は、1が返ってきます。<br>
+        <br>
+        <br>
+        </p>
+    </ul>
+</ul>
+

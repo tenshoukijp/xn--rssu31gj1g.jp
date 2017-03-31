@@ -1,0 +1,104 @@
+%(hilight)s
+<h2><i class="fa fa-book fa-fw"></i>フォントリストやフォントプレビュー</h2>
+
+<ul class="checklist">
+    <li>
+    <h3>概要</h3>
+    <p>フォント選択ダイアログといったものは、.NETであれば、非常に簡単に呼び出せるため、<br>
+    特に例は不要でしょう。<br>
+    ここでは既定のフォントダイアログではなく、「お手製のフォント選択画面」のようなものを作る例となります。</p>
+
+    <p><img src="./other_soft/hm_ironpython/cnt_hm_ironpython_fontlist.png"></p>
+    <h3>フォントのリストとフォントプレビュー</h3>
+    <p>以下のファイルをfontlist.pyとして保存します。</p>
+    <div class="code"><pre class="brush:python">
+# coding: cp932
+
+import clr
+clr.AddReference(&quot;System.Drawing&quot;)
+clr.AddReference('System.Windows.Forms')
+from System.Drawing import Font, FontStyle
+from System.Drawing.Text import InstalledFontCollection
+from System.Windows.Forms import (Form, Button, BorderStyle, DockStyle,
+                                  ListBox, ComboBox, TextBox, StatusBar)
+
+fontCollection = InstalledFontCollection()
+fonts = [f for f in fontCollection.Families]
+
+f = Form()
+f.Text = 'フォントプレビューワー'
+f.Width = 800
+f.Height = 600
+
+lb = ListBox()
+lb.Width = 230
+for font in fonts:
+    lb.Items.Add(font.Name)
+lb.SelectedIndex = 0
+
+cbSizes = ComboBox()
+for i in range(9, 49):
+    cbSizes.Items.Add(str(i))
+cbSizes.Text = '30'
+
+cbStyles = ComboBox()
+for s in ['Regular', 'Bold', 'Italic']:
+    cbStyles.Items.Add(s)
+cbStyles.Text = 'Regular'
+
+tb = TextBox()
+tb.Font = Font(fonts[0], 30)
+tb.Multiline = True
+tb.Text = u&quot;Hello World!\r\nこんにちわ!&quot;
+
+sb = StatusBar()
+sb.Text = 'Found %d installed fonts' % len(fonts)
+
+# Layout:
+lb.Dock = DockStyle.Left
+tb.Dock = DockStyle.Fill
+cbSizes.Dock = DockStyle.Top
+cbStyles.Dock = DockStyle.Top
+sb.Dock = DockStyle.Bottom
+f.Controls.Add(tb)
+f.Controls.Add(cbStyles)
+f.Controls.Add(cbSizes)
+f.Controls.Add(lb)
+f.Controls.Add(sb)
+f.ActiveControl = lb
+
+# Event handling
+def ChangeFont():
+    try:
+        tb.Font = Font(fonts[lb.SelectedIndex],
+                       int(cbSizes.Text),
+                       getattr(FontStyle, cbStyles.Text))
+        sb.Text = ''
+    except Exception, e:
+        sb.Text = unicode(e)
+
+lb.SelectedIndexChanged += lambda sender, args: ChangeFont()
+cbSizes.TextChanged     += lambda sender, args: ChangeFont()
+cbStyles.TextChanged    += lambda sender, args: ChangeFont()
+
+try:
+    f.ShowDialog()
+finally:
+    hm.Macro.Var["$SelectFontName"] = tb.Font.Name
+    hm.Macro.Var["$SelectFontSize"] = tb.Font.Size.ToString()
+    hm.Macro.Var["$SelectFontStyle"] = tb.Font.Style.ToString()
+    f.Close()
+</pre></div>
+    <h3>.macからの呼び出し</h3>
+    <p>フォントのプレビューフォームのウィンドウを閉じると、フォント名を取得するという単純なものとなります。<br>
+    実際の制作では、プレビューフォームのウィンドウには「ＯＫ」ボタンなどを付けた方がよいでしょう。</p>
+    <div class="code"><pre class="brush:python">
+#PY = loaddll( hidemarudir + &quot;\\&quot; + &quot;hmPy.dll&quot; );
+
+#_ = dllfuncw(#PY, &quot;DoFile&quot;, currentmacrodirectory + &quot;\\fontlist.py&quot; );
+
+message($SelectFontName + " | " + $SelectFontSize + " | " + $SelectFontStyle);
+
+freedll(#PY);
+</pre></div>
+</ul>

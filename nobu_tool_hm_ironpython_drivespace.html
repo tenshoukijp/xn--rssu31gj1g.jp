@@ -1,0 +1,42 @@
+%(hilight)s
+<h2><i class="fa fa-book fa-fw"></i>「hmPy・IronPython」の例題② ドライブの空き容量</h2>
+
+<ul class="checklist">
+    <li>
+    <h3>概要</h3>
+    <p>IronPythonの例題のひとつとなります。<br>
+    ドライブの空き容量といった分かりやすい例となります。</p>
+
+    <h3>Cドライブの空き容量</h3>
+    <p>GetStrVarは、元がどのような「型」であったとしても、文字列化してくれるので<br>
+    秀丸マクロにとっては融通が利きやすい関数と言えるでしょう。</p>
+
+    <div class="code"><pre class="brush:python">
+#PY = loaddll( hidemarudir + @&quot;\hmPy.dll&quot; );
+ 
+#_ = dllfuncw( #PY, &quot;DoString&quot;, R&quot;IPY(
+
+import clr
+import System
+
+drive = System.IO.DriveInfo('C') 
+GBT = 1024*1024*1024                                  # 見やすい単位であるギガバイトに直すため。
+TotalSize          = drive.TotalSize/GBT
+TotalFreeSpace     = drive.TotalFreeSpace/GBT
+AvailableFreeSpace = drive.AvailableFreeSpace/GBT
+
+# それぞれの値を秀丸マクロに文字列として伝搬
+hm.Macro.Var[&quot;$TotalSize&quot;] = TotalSize
+hm.Macro.Var[&quot;$TotalFreeSpace&quot;] = TotalFreeSpace
+hm.Macro.Var[&quot;$AvailableFreeSpace&quot;] = AvailableFreeSpace
+
+)IPY&quot;
+);
+
+message(&quot;Cドライブの総量:&quot;+$TotalSize+&quot;GB&quot;);
+message(&quot;Cドライブの空き容量:&quot;+$TotalFreeSpace+&quot;GB&quot;);
+message(&quot;Cドライブの利用可能空き容量:&quot;+$AvailableFreeSpace+&quot;GB&quot;);
+
+freedll( #PY );
+</pre></div>
+</ul>

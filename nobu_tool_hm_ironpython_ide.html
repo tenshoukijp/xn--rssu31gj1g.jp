@@ -1,0 +1,35 @@
+%(hilight)s
+<h2><i class="fa fa-book fa-fw"></i>「hmPy・IronPython」と「開発環境」</h2>
+
+<ul class="checklist">
+    <li>
+    <h3>概要</h3>
+    <p>IronPythonの開発環境としてはVisual Studio 2015(もしくは2013)がベストです。</p>
+    <p>他の選択肢としてはSharpDevelopmentなども存在しますが、Visual Studioの方が完成度も安定性もはるかに優れています。<br>
+    </p>
+    <p><span class="positive">数年前までは「７～10万円相当」だったものが、2013年以降、<br>
+    「個人使用・個人開発では事実上無料になった」というのも大きなポイントでしょう。<br>
+    </span></p>
+    <p>又、Visual Studioの日本語OS環境では、pyファイルの文字コードがCP932がデフォルトとなっているため、<br>
+    秀丸マクロ用途の組み込み用途(hmPyの要求要件)とも一致しているのもポイントが非常に高いと言えます。</p>
+
+    <h3>プロジェクト作成シーンなど</h3>
+    <p>.NETのバージョンは 4.0を選択のこと</p>
+    <p><img src="./other_soft/hm_ironpython/cnt_hm_ironpython_13.png"></p>
+
+    <h3>この段階でVisual Studio がエラーを吐いた場合</h3 >
+    <p>Visual Studio 2013 や Visual Studio 2015 を利用している状態で、<br>
+    <a href="http://ironpython.net">IronPython</a> v 2.7.6など、2.7.5以外のバージョンを(msi経由で)インストールしてしまうと、<br>
+    IronPythonのバージョンが新しすぎて、エラーが発生します。(2017/03/24現在)<br>
+    (Visual Studio だけではなく、SharpDevelopという開発環境もエラーが発生します。)<br>
+    <a href="http://ironpython.codeplex.com/releases/view/169382">IronPython v2.7.5</a>を利用してください。</p>
+
+    <h3>入力補完のシーンなど</h3>
+    <p>入力補完がされるものは、される。<br>
+    されないものは、dynamic型で実装されており、通常遅延バインド(スクリプトの実行時に決まる)される。</p>
+    <p><img src="./other_soft/hm_ironpython/cnt_hm_ironpython_17.png"></p>
+
+    <h3>デバッガーシーンなど</h3>
+    <p>デバッグやステップ実行も可能です。</p>
+    <p><img src="./other_soft/hm_ironpython/cnt_hm_ironpython_18.png"></p>
+</ul>

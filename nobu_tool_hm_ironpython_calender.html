@@ -1,0 +1,85 @@
+%(hilight)s
+<h2><i class="fa fa-book fa-fw"></i>「hmPy・IronPython」のその他の例題 WPFの利用</h2>
+
+<ul class="checklist">
+    <li>
+    <h3>概要</h3>
+    <p>カレンダーの使用例となります。</p>
+    <p><img src="./other_soft/hm_ironpython/cnt_hm_ironpython_41.png"></p>
+
+    <h3>カレンダーの使用</h3>
+    <p>以下のようなファイルをcalender.pyとして作成してみましょう。<br>
+    文字コードはcp932(sjis)です。</p>
+
+    <div class="code"><pre class="brush:python">
+# coding : cp932
+
+import clr
+clr.AddReference(&quot;System.Windows.Forms&quot;)
+clr.AddReference(&quot;System.Drawing&quot;)
+from System.Windows.Forms import (Form, MonthCalendar, Label,
+                                  Button, Application)
+from System.Drawing import Point
+
+
+class calendarform(Form):
+    def __init__(self):
+        self.Height= 300
+        self.Width = 260
+
+        self.Text = 'カレンダーのデモ'
+
+        self.cal = MonthCalendar()
+        self.cal.MaxSelectionCount = 1
+        self.cal.DateChanged += self.dateselect
+        self.Controls.Add(self.cal)
+
+        self.label = Label()
+        self.label.Width = 200
+        self.label.Height = 20
+        self.label.Location = Point(5, 200)
+        self.setdatehash()
+        self.Controls.Add(self.label)
+
+        self.button = Button()
+        self.button.Text = 'OK'
+        self.button.Width = 50
+        self.button.Location = Point(self.ClientSize.Width/2-self.button.Width/2, 225)
+        self.button.Click+=self.button_click
+        self.Controls.Add(self.button)
+
+    def dateselect(self, sender, args):
+        self.setdatehash()
+
+    def setdatehash(self):
+        selectcalender = self.cal.SelectionRange.Start
+        self.label.Text = ('選択されている日付:' + selectcalender.ToString('o')[:10]) # 手抜き
+        selectcalender = self.cal.SelectionRange.Start
+        # ユーザーが選択する度にマクロに渡す用途のハッシュに入れておく
+        hm.Macro.Var['$year']  = selectcalender.Year
+        hm.Macro.Var['$month'] = selectcalender.Month
+        hm.Macro.Var['$day']   = selectcalender.Day
+
+    def button_click(self, sender, args):
+        self.Close()
+
+try:
+    form = calendarform()
+    Application.Run(form)
+finally:
+    form.Close()
+
+</pre></div>
+
+
+    <h3>呼び出しマクロ</h3>
+    <div class="code"><pre class="brush:python">
+#PY = loaddll( hidemarudir + &quot;\\hmPy.dll&quot; );
+
+#_ = dllfuncw( #PY, &quot;DoFile&quot;, currentmacrodirectory + &quot;\\calender.py&quot; );
+
+message( $year + &quot;/&quot; + $month + &quot;/&quot; + $day );
+
+freedll( #PY );
+</pre></div>
+</ul>

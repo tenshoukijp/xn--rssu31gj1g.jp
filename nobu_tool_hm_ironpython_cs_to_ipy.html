@@ -1,0 +1,65 @@
+%(hilight)s
+<h2><i class="fa fa-book fa-fw"></i>C#からIronPythonへの変換</h2>
+
+<ul class="checklist">
+    <li>
+    <h3>概要</h3>
+    <p>C#からIronPythonに変換する方法等が記載されています。</p>
+
+    <li>
+    <h3>まず、本当にIronPythonにする必要があるか？</h3>
+    <p>hmPy/IronPythonは、C#で作成された.dllをそのまま実行可能です。<br>
+    もちろんC#で定義されたクラスをIronPythonで継承して利用することも可能です。<br>
+    </p>
+    <p>「C#」は<br>
+    <ul>
+        <li>「Visual Studio」による強力なサポートと開発効率
+        <li>十分に高速な実行速度
+        <li>美しくも柔軟性のある文法
+    </ul>
+    <p>と非常に高バランスで均衡がとれた言語です。<br>
+    IronPythonに変換する前に、C#でそのまま作った方が良いのではないか？<br>
+    ということを検討することをお勧めします</p>
+    <p>当管理人としては、基本的な指針としては、
+    <ul>
+        <li>コンポーネントといえる「部品」
+        <li>コンポーネントを利用した「基本制御」
+    </ul>
+    <p>ぐらいまではC#で作成し、<br>
+    </p>
+    <ul>
+        <li>テキストに出した方が柔軟性が確保出来るところ<br>
+        <li>秀丸マクロと通信する必要がある変数<br>
+    </ul>
+    <p>だけIronPythonにする、というのが理想的ではないかと考えています。</p>
+    <li>
+    <h3>SharpDevelop 4.4でC#からIronPythonに変換できる</h3>
+    <p>C#で制作したソースは、「C#文法」に「対応する文法」が「IronPython文法」に存在するものに関してなら、<br>
+    SharpDevelop 4.4で機械的にIronPythonへと変換可能です。</p>
+    <p>これはC#での制作経験は豊富だが、IronPythonの経験は乏しいといった人に、<br>
+    向いた変換手法と言えるでしょう。<br>
+    (日本国内でプログラムを記述する人は大半がIronPythonよりC#の方が経験があると思われます)</p>
+    <fieldset class="alert alert-info"><legend>SharpDevelop導入時にファイル拡張子の関連付けをするな!!</legend> C#ユーザーのほとどがVisual Studioにて開発しているでしょうから、<br>
+    <span class="negative">SharpDevelop導入の際、インストール時に「ファイルの関連付け」を設定する項目がありますが、<br>
+    間違ってチェックを入れてしまわないように注意しましょう。</span></fieldset>
+
+    <p><img src="./other_soft/hm_ironpython/cnt_hm_ironpython_31.png"></p>
+    <p><img src="./other_soft/hm_ironpython/cnt_hm_ironpython_32.png"></p>
+    <p><img src="./other_soft/hm_ironpython/cnt_hm_ironpython_33.png"></p>
+
+    <li>
+    <h3>変換時に、「IronPython.Modules.dll v 2.7.5が無い」旨の英語のエラーが出る</h3>
+    <p>IronPython 2.7.6.3以降をインストールしている場合は、SharpDevelop v4.4が正しく認識できないため、<br>
+    エラーが発生します。</p>
+    <p>以下の手順で修正することが出来ます。</p>
+    <ul>
+        <li>sharpdevelopのフォルダの「AddIns\BackendBindings\PythonBinding」の中にある、<br>
+        「IronPython.dll」と「IronPython.Modules.dll」を、<a href="http://ironpython.codeplex.com/releases/view/169382">IronPythonのver2.7.5</a>のものへと差し替える。<br>
+        (IronPython 2.7.5 Binaries などを解凍し、その中にある「IronPython.dllとIronPython.Modules.dll」で上書きしてしまうということです。
+
+        <li>差し替えるのは上記２つのファイルだけですので注意してください。<br>
+        <li>SharpDevelop v4.4の変換機能は、IronPython 2.7.4と2.7.5までに対応しており、<br>
+        v2.7.6には対応していないため、このような措置が必要となります。
+    </ul>
+</ul>
+
