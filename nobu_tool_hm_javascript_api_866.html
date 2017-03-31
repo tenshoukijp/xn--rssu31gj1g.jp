@@ -1,0 +1,231 @@
+%(hilight)s
+<h2><i class="fa fa-book fa-fw"></i>hmJSが持つ特別な関数一覧</h2>
+
+<ul class="checklist">
+    <li>
+    <h3>デバッグ用途関数</h3>
+    <p>デバッグ用途として以下の関数を利用し、「秀丸デバッグモニター」などに値や文字列を表示されることが出来ます。</p>
+    <ul class="pointlist">
+        <li>
+        <h4>hm.debuginfo( オブジェクト, ... )</h4>
+        <p>対象のオブジェクトを文字列化し、システムデバッガへと文字列を転送します。<br>
+        「秀丸デバッグモニター」などに値や文字列を確認することが可能です。</p>
+        <li>
+        <h4>console.log( オブジェクト, ... )</h4>
+        <p>hm.debuginfo( ... ) とほぼ同じですが、第１引数がsprintf系の「書式化指定子」を解釈できます。</p>
+        <div class="code"><pre class="brush:js">
+console.log("これは%dです", 10);
+</pre></div>
+        <li>
+        <h4>console.assert( 真偽値, オブジェクト, ... )</h4>
+        <p>第１引数が「偽」の時だけ、全ての引数をhm.debuginfo(...)へと渡します。<br></p>
+    </ul>
+    <li>
+    <h3>編集中エディタに対する関数</h3>
+    <p>現在秀丸エディタで開いているテキストに対して、以下の関数を利用することが出来ます。</p>
+    <ul class="pointlist">
+        <li>
+        <h4>テキスト全体</h4>
+        <ul class="arrowlist">
+            <li>
+            <h5>hm.Edit.TotalText</h5>
+            <p>現在編集中の秀丸エディタのテキスト全体を得る</p>
+            <li>
+            <h5>hm.Edit.TotalText = "文字列"</h5>
+            <p>現在編集中の秀丸エディタのテキスト全体を、文字列へと変更する</p>
+        </ul>
+        <div class="code"><pre class="brush:js">
+#JS = loaddll( hidemarudir + @&quot;\hmJS.dll&quot; );
+
+#_ = dllfuncw( #JS, &quot;DoString&quot;, R&quot;JS(
+var totaltext = hm.Edit.TotalText;
+hm.debuginfo(totaltext);
+
+hm.Edit.TotalText = &quot;あいうえお&quot;;
+)JS&quot;);
+
+freedll( #JS );
+</pre></div>
+        <li>
+        <h4>選択中のテキスト</h4>
+        <p>(単純選択のみが対象となります。ボックス選択や複数選択は対象にはなりません)</p>
+        <ul class="arrowlist">
+            <li>
+            <h5>hm.Edit.SelectedText</h5>
+            <p>現在編集中の秀丸エディタの「選択している」テキストを得る。</p>
+            <li>
+            <h5>hm.Edit.SelectedText = "文字列"</h5>
+            <p>現在編集中の秀丸エディタの「選択している」テキストを、"文字列"へと置き換える。</p>
+        </ul>
+        <div class="code"><pre class="brush:js">
+#JS = loaddll( hidemarudir + @&quot;\hmJS.dll&quot; );
+
+#_ = dllfuncw( #JS, &quot;DoString&quot;, R&quot;JS(
+// 何かを単純選択していたら、テキストが得られる
+var selectedtext = hm.Edit.SelectedText;
+hm.debuginfo(selectedtext);
+
+hm.Edit.SelectedText = &quot;選択しているテキストをこの文字列に置き換えた&quot;;
+
+)JS&quot;);
+
+freedll( #JS );
+</pre></div>
+        <li>
+        <h4>カーソルがある行のテキスト</h4>
+        <ul class="arrowlist">
+            <li>
+            <h5>hm.Edit.LineText</h5>
+            <p>現在編集中の秀丸エディタの「カーソルがある行」のテキストを得る。</p>
+            <li>
+            <h5>hm.Edit.LineText = "文字列"</h5>
+            <p>現在編集中の秀丸エディタの「カーソルがある行」のテキストを、文字列へと置き換える。<br>
+        </ul>
+        <div class="code"><pre class="brush:js">
+#JS = loaddll( hidemarudir + @&quot;\hmJS.dll&quot; );
+
+#_ = dllfuncw( #JS, &quot;DoString&quot;, R&quot;JS(
+var linetext = hm.Edit.LineText;
+hm.debuginfo(linetext);
+
+// 行のテキストを入れ替える感じにするなら、最後に「\n」を付けること。
+hm.Edit.LineText = &quot;カーソル行のテキストをこれに変更\n&quot;;
+)JS&quot;);
+
+freedll( #JS );
+</pre></div>
+        <li>
+        <h4>カーソルの位置</h4>
+        <ul class="arrowlist">
+            <li>
+            <h5>hm.Edit.CursorPos.lineno</h5>
+            <p>現在選択中の秀丸エディタのカーソル位置の行番号を得る。<br>
+            秀丸マクロのlinenoと同じ値。</p>
+            <li>
+            <h5>hm.Edit.CursorPos.column</h5>
+            <p>現在選択中の秀丸エディタのカーソル位置のカラム値を得る。<br>
+            秀丸マクロのcolumnと同じ値。</p>
+        </ul>
+        <div class="code"><pre class="brush:js">
+#JS = loaddll( hidemarudir + @&quot;\hmJS.dll&quot; );
+
+#_ = dllfuncw( #JS, &quot;DoString&quot;, R&quot;JS(
+var lineno = hm.Edit.CursorPos.lineno;
+var column = hm.Edit.CursorPos.column;
+hm.debuginfo( lineno + &quot;,&quot; + column );
+)JS&quot;);
+
+freedll( #JS );
+</pre></div>
+    </ul>
+    <li>
+    <h3>ヒアドキュメント用の関数「R」</h3>
+    <p>「R」という関数に、「以下のように、コメントを内側に書いた関数そのものを渡す」ことで、<br>
+    ヒアドキュメント化された文字列が返るようになっています。<br>
+    JavaScriptそのものには、ヒアドキュメントが存在しないため、このように「R」という関数を設けています。</p>
+        <div class="code"><pre class="brush:js">
+#JS = loaddll( hidemarudir + @&quot;\hmJS.dll&quot; );
+
+#_ = dllfuncw( #JS, &quot;DoString&quot;, R&quot;JS(
+
+var str = R( function() { /*
+    あいうえお
+    かきくけこ
+    \n\n
+*/ } ); // /*～*/が「書いたままの文字列である」ヒアドキュメント化される。
+
+
+hm.debuginfo(str)
+hm.Macro.Var('$str', str); // 秀丸マクロの方に伝達
+
+)JS&quot;
+);
+
+message($str);
+
+freedll( #JS );
+    </pre></div>
+    <li>
+    <h3>JSから秀丸マクロへアクセスする関数</h3>
+    <p>JavaScriptの機能をフルに生かしつつ、秀丸マクロの機能や各種値もほぼ全て使えるところが、<br>
+    hmJSが優れている所以です。</p>
+    <ul>
+        <li>秀丸マクロをそのまま実行
+        <li>「秀丸マクロの変数」⇔「JSの変数」を相互にやり取り。
+    </ul>
+    <p>の２つの手段で秀丸マクロを取り扱うことが出来ます。</p>
+    <ul class="pointlist">
+        <li>
+        <h4>JSから秀丸マクロを実行</h4>
+        <ul class="arrowlist">
+            <li>
+            <h5>hm.Macro.Eval( ヒアドキュメント or 文字列)</h5>
+            <p>引数の文字列を、「秀丸マクロ」として実行する。</p>
+            <p>「Eval関数」には「R関数」の機能が内包されています。</p>
+        </ul>
+        <li>
+        <h4>JSから秀丸マクロの変数の読み書き</h4>
+        <ul class="arrowlist">
+            <li>
+            <h5>hm.Macro.Var( 変数名 )</h5>
+            <p>対象の「秀丸マクロ」としてのシンボル名に対応する値を取得する。</p>
+            <li>
+            <h5>hm.Macro.Var( 変数名 , 新たな値 )</h5>
+            <p>対象の「秀丸マクロ」としてのシンボル名に、新たな値を設定する。<br>
+            (読み取り専用の値には設定出来ません）</p>
+        </ul>
+        <div class="code"><pre class="brush:python">
+#JS = loaddll( hidemarudir + @&quot;\hmJS.dll&quot; );
+
+#_ = dllfuncw( #JS, &quot;DoString&quot;, R&quot;JS(
+
+    // 秀丸マクロの「#aaa」という変数に3を設定。
+    hm.Macro.Var('#aaa', 3 );
+
+    // 秀丸マクロの「$bbb」という変数に「あいうえお」を設定。
+    hm.Macro.Var('$bbb', &quot;あいうえお。&quot; );
+
+    // 秀丸マクロとして一連の文字列を実行
+    hm.Macro.Eval( function() { /*
+        message($bbb);
+        $$message = $bbb + $bbb;
+        message($$message);
+
+        // アウトプット枠へ出力
+        #OP = loaddll(&quot;HmOutputPane.dll&quot;);
+        #ret = dllfunc(#OP, &quot;Output&quot;,hidemaruhandle(0), $$message);
+        freedll(#OP);
+    */ }
+    );
+
+    hm.debuginfo( hm.Macro.Var('$bbb') );
+    hm.debuginfo( hm.Macro.Var('filename') );
+
+    var hmdate = hm.Macro.Var('date');
+    hm.debuginfo( hmdate );
+
+)JS&quot;
+);
+
+
+freedll( #JS );
+        </pre></div>
+    </ul>
+    <li>
+    <h3>DestroyScope関数</h3>
+    <p>JavaScript内に「DestroyScope」という名前の関数を用意しておくと、<br>
+    マクロ終了時に自動的にその関数が実行されます。</p>
+    <div class="code"><pre class="brush:js">
+#JS = loaddll( hidemarudir + @&quot;\hmJS.dll&quot; );
+
+#_ = dllfuncw( #JS, &quot;DoString&quot;, R&quot;JS(
+
+function DestroyScope() {
+  hm.debuginfo(&quot;マクロ終了する直前に自動的にこの関数が呼び出される。&quot;);
+}
+
+)JS&quot;
+);
+
+freedll( #JS );
+</pre></div></ul>

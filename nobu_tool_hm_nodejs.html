@@ -1,0 +1,127 @@
+%(hilight)s
+<h2><i class="fa fa-nodejs fa-fw"></i>HmNodeJS ～node.jsとの通信ライブラリ～</h2>
+<ul class="checklist">
+    <li>
+        <h3>概要</h3>
+        <p><span class="positive">秀丸マクロからNodeJSをhttp経由で利用するためのモジュールとなります。</span></p>
+        <p>近年著しい勢いで増えてきている「NodeJS」用のライブラリなどを介した処理を、<br>「秀丸マクロ」等から利用することが目的となるでしょう。</p>
+        <p>
+    <li>
+        <h3>単純なインタプリタではなく、httpサーバーとなる</h3><p>
+        <p><span class="positve">HmNodeJSは、node.jsを<span class="positive">サーバとして利用</span>します。</span><br></p>
+        <p>
+            もしも、あなたが、node.jsを単純なJavaScriptインタープリタとして利用することを望むのであれば、HmNodeJSは必要ありません。<br>
+        </p>
+        <p>
+            その場合は、<a href="?page=nobu_tool_hm_nodejs_study_06">こちら</a>を参照してください。
+        </p>
+    <li>
+        <h3>ダウンロード</h3>
+        <dl>
+            <dt>
+                <div class="download_file">DOWNLOAD ⇒ <a href="%(file)s">HmNodeJS.zip</a>ファイル。ver 1.011</div>
+            </dt>
+            <dd>
+                <div class="update_time">└更新日 %(year)04d/%(mon)02d/%(mday)02d</div>
+            </dd>
+        </dl>
+    <li>
+        <h3>動作環境</h3>
+        <ul class="pointlist">
+            <li>
+                <h4>秀丸</h4>
+                <p>秀丸エディタ ver8.66以上</p>
+            <li>
+                <h4>Microsoft .NET</h4>
+                <p>
+                    .NET Framework 4.0以上。<br>
+                </p>
+            <li>
+                <h4>Node.js</h4>
+                <p>Node.jsがインストールされており、該当の<span class="positive">Node.jsにパスが通っている</span>こと。</p>
+            <li>
+                <h4>hmV8 / hmJS / hmPy / hmRb / hmLoadCLR のうちどれか１つ</h4>
+                <p>
+                    「hmV8 / hmJS / hmPy / hmRb / hmLoadCLR」のうち少なくとも１つを導入していることを想定しています。<br>
+                    推奨する環境ですが、node.jsと同一の言語エンジンを内包しているという点で、<br><span class="positive"><a href="?page=nobu_tool_hm_ecmascript">hmV8</a>から利用するのが良い</span>でしょう。<br>
+                    (特に何も断りがない場合、hmV8からの利用サンプルを掲載しています)
+                </p>
+                <p>もちろん、これらのいずれにも依存せず、「C++/CLI」等から、直接呼び出すのも簡単です。</p>
+        </ul>
+    <li>
+        <h3>インストール</h3>
+        <ul class="pointlist">
+            <li>
+                <h4>
+                    HmNodeJS.zipをダウンロード時
+                </h4>
+                <p>
+                    <b>.zipファイルをブロック解除する</b><br>
+                    (本ソフトには.exeが含まれていますので、原則的にはブロック解除をする必要があります)
+                </p>
+                <p><img src="./other_soft/hm_nodejs/cnt_hm_nodejs_04.png"></p>
+            <li>
+                <h4>「HmNodeClient.dll」と「HmNodeProxy.exe」は秀丸本体と同じディレクトリ</h4>
+                <p>
+                    「HmNodeClient.dll」と「HmNodeProxy.exe」を<span class="negative">秀丸エディタ本体のディレクトリ内(hidemaru.exeと同じ場所)へと コピー</span>する。<br>
+                    (原則的には、hidemaru.exeと同じ場所である必要があります。これは.NET FrameWorkのdllを動作させる仕組みに拠るためです。)
+                </p>
+            <li>
+                <h4>「HmNodeSample.js」と「HmNodeSample**.mac」の２つはセット</h4>
+                <p>
+                    「HmNodeSample.js」と「HmNodeSample**.mac」は両方ともHmNodeJSを理解する上での最小サンプルとなっています。<br>
+                    ２つファイルの置き場所はどこでも構いませんが、「２つのファイルを同じフォルダ」に置いてください。
+                </p>
+        </ul>
+
+    <li>
+        <h3>HmNodeJSの特質</h3>
+        <ul class="pointlist">
+            <li>
+                <h4>秀丸のプロセス単位で処理されるのではない</h4>
+                <p>
+                    通常秀丸マクロは、秀丸のプロセス単位で処理されます。<br>
+                    しかし、HmNodeJSは「nodeのサーバー的な特質」を考慮して、プロセス単位ではなくチャンネル単位で処理されます。
+                </p>
+                <p>
+                    よって、秀丸のとあるプロセスが閉じたとしても、HmNodeJSのチャンネルが生きていれば、<br>
+                    処理を続きから継続したり、最後のレスポンス(実行結果)を取り出したりといったことが可能となっています。
+                </p>
+            <li>
+                <h4>15000以上ものチャンネルが利用可能</h4>
+                <p>
+                    HmNodeJSでは、「<span class="positive">Node.exeがチャンネルごとに１つずつ割り当てられます</span>」。<br>
+                    <span class="negative">チャンネルには、50000以上65535以下の15000以上ものチャンネルを割り当てることが出来ます</span>。<br>
+                </p>
+                <p>
+                    このチャンネルは、ノード側が受信するPort番号を兼ねます。<br>
+                </p>
+            <li>
+                <h4>終了条件</h4>
+                <p>
+                    とある秀丸プロセスが終了しただけでは、HmNodeJSは終了しません。<br>
+                    (それで終了するようでは、nodejsのサーバーとしてのメリットが全くないからです)<br>
+                </p>
+                <p>
+                    <span class="positive">秀丸を全て終了</span>することによって、はじめてHmNodeJSは全て終了します。<br>
+                    (常駐秀丸はカウントしていませんので、常駐秀丸に関しては起動しっぱなしでもかまいません)
+                </p>
+        </ul>
+    <li>
+        <h3>チュートリアルや学習</h3>
+        <p>左メニューより選択し、理解を進めてください。</p>
+    <li>
+        <h3>ライセンス</h3>
+        <ul class="pointlist">
+            <li>
+                <h4>HmNodeJS</h4>
+                <p>
+                    HmNodeJSは、Apache License 2.0となります。<br>
+                </p>
+            <li>
+                <h4>ソースの場所</h4>
+                <p>
+                    <a href="https://github.com/tenshoukijp/xn--rssu31gj1g.jp/blob/master/other_soft/hm_nodejs/">Github</a>にソースがあります。<br>
+                </p>
+        </ul>
+</ul>

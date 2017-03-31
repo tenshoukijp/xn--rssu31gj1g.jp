@@ -1,0 +1,328 @@
+<h2><i class="fa fa-windows fa-fw"></i>秀丸マクロ用 .NET 系 プログラミング言語 対比表</h2>
+
+<ul class="checklist">
+    <li>
+    <h3>hmPy, hmRb, hmV8, hmJS, hmLoadCLR対比表</h3>
+    <p>似たようなものが複数存在するため、対比表が必要かと思います。<br>
+    ここでは「言語記述性能」「将来性」「.NETとの相性」「可搬性」「読み込み速度」で、<br>
+    対比しています。</p>
+    <li>
+    <h3>hmV8/ECMAScript6</h3>
+    <table style="border-collapse: collapse;" border="1px" style="width:1100">
+        <tr>
+            <td style="width: 150">トピック</td>
+            <td style="width: 150">評価点<br>
+            インデックス</td>
+            <td style="width: 800">捕捉</td>
+        </tr>
+        <tr>
+            <td>言語</td>
+            <td>7</td>
+            <td>ECMAScript6 (Google V8 Engine) + α<br>
+            言語そのものは、「強力」とまでは言えませんが、<br>
+            ECMAScript6(ES2015)で、「現代的な言語としてはこの文法があった方がベター」<br>
+            といった中核文法が一通り入ったため、 かなり書きやすくなりました。<br>
+            組み込み言語としては、「必要な文法や機能は十分揃っている」という状態です。</td>
+        </tr>
+        <tr>
+            <td>将来性</td>
+            <td>10</td>
+            <td>「Perl, Ruby, Python, PHP」といった現行スクリプト言語にて記述されている多くの分野は、<br>
+            長い目で見れば、将来はこのECMAScript6(2015～)へと差し替えられていくことは、疑いようもありません。<br>
+            <br>
+            スクリプトだけではなく、C#、JAVAなどが担っている領域の一部も、<br>
+            ECMAScript6(以降)で代替されていくことでしょう。 <br>
+            <br>
+            「基本文法とコアライブラリはECMAScript6系」、<br>
+            各アプリは「拡張APIを提供」、<br>
+            といった形が主流となっていくことが予想されます。<br>
+            <br>
+            策定やエンジン実装の中心を担っているのは、Google, Microsoft, Apple, Mozillaですから、<br>
+            年単位どころか、月単位で、主要プラットフォームの全てで全方位的にこの方向へと進んでいっています。</td>
+        </tr>
+        <tr>
+            <td>.NET相性</td>
+            <td>5</td>
+            <td>.NETのクラス等は利用できますが、<br>
+            ECMAScript6のクラスと、.NETライブラリのクラスは別のものなので、<br>
+            それほど相性が良いわけではありません。<br>
+            <br>
+            継承「is-a」には出来ないため、.NETのライブラリは静的に利用するか、<br>
+            もしくは、「has-a」にして組んでいくこととなります。<br>
+            ちょうど、<a href="?page=nobu_tool_hm_ecmascript">hmV8のトップページ</a>のサンプルがそのような形です。</td>
+        </tr>
+        <tr>
+            <td>可搬性</td>
+            <td>8</td>
+            <td>hmV8, ClearScript.dll, ClearScriptV8-32.dll, v8-ia32.dll<br>
+            といった４つの構成で、
+            <ul>
+                <li>ECMAScript6の文法全て
+                <li>ECMAScript6のライブラリ全て
+                <li>.NETの多くのライブラリ
+            </ul>
+            が使えるというのは、素晴らしい可搬性です。<br>
+            <br>
+            ４つファイルが必要というのが、「少しファイルが多めかな」といった程度でしょう。</td>
+        </tr>
+        <tr>
+            <td>読み込み速度</td>
+            <td>4</td>
+            <td>ClearScript.dllとClearScriptV8-32.dllの２点をNGenすることにより、<br>
+            なんとか及第点の読み込み速度となります。<br>
+            何もNGenしない場合は、かなり読み込み速度が遅いと言えます。</td>
+        </tr>
+    </table>
+    <li>
+    <h3>hmJS/JScript(=ECMAScript3)</h3>
+    <table style="border-collapse: collapse;" border="1px" style="width:1100">
+        <tr>
+            <td style="width: 150">トピック</td>
+            <td style="width: 150">評価点<br>
+            インデックス</td>
+            <td style="width: 800">捕捉</td>
+        </tr>
+        <tr>
+            <td>言語</td>
+            <td>3</td>
+            <td>JScript 5.8 / ECMAScript3 + α<br>
+            秀丸マクロの文法等に比べれば、かなりマシですが、<br>
+            現代のスクリプト言語としては、 力不足感は否めません。<br>
+            (より正確にはJavaScript3系のテクニックを使うと、バッドノウハウ的な記述になりやすい) <br>
+            但し、組み込み言語として考えると、この程度の文法があれば十分である、という考え方もあります。</td>
+        </tr>
+        <tr>
+            <td>将来性</td>
+            <td>3</td>
+            <td>このhmJSは将来性を期待して採用するものではなく、<br>
+            過去のJavaScriptやJScriptの記述を、出来るだけ利用しようといったものです。</td>
+        </tr>
+        <tr>
+            <td>.NET相性</td>
+            <td>4</td>
+            <td>.NETのクラス等は利用できますが、<br>
+            ECMAScript3のプロトタイプでは、上手くクラスとしてまとめるのも難しいかと思います。<br>
+            あまり相性が良いわけではありません。<br>
+            <br>
+            継承「is-a」には出来ないため、.NETのライブラリは静的に利用することになるかと思います。<br>
+            ちょうど、<a href="?page=nobu_tool_hm_javascript">hmJSのトップページ</a>のサンプルがそのような形です。</td>
+        </tr>
+        <tr>
+            <td>可搬性</td>
+            <td>10</td>
+            <td>hmJS.dll<br>
+            というたった１つのファイルだけで
+            <ul>
+                <li>ECMAScript3の文法ほぼ全て
+                <li>ECMAScript3のライブラリ全て
+                <li>.NETの多くのライブラリ
+            </ul>
+            が使えるというのは、可搬性としては完璧です。<br>
+        </tr>
+        <tr>
+            <td>読み込み速度</td>
+            <td>9</td>
+            <td>hmJS.dll単体なので、かなり読み込み速度が速いです。<br>
+            hmJS.dllをNGenすると、さらに速くなります。</td>
+        </tr>
+    </table>
+
+    <li>
+    <h3>hmPy/IronPython</h3>
+    <table style="border-collapse: collapse;" border="1px" style="width:1100">
+        <tr>
+            <td style="width: 150">トピック</td>
+            <td style="width: 150">評価点<br>
+            インデックス</td>
+            <td style="width: 800">捕捉</td>
+        </tr>
+        <tr>
+            <td>言語</td>
+            <td>9</td>
+            <td>Python2.7 + α<br>
+            リスト機構を重視しつつ、バランスが取れた言語です。<br>
+            変数に「記号」も極力付きませんし、「.」で区切りは統一しており、<br>
+            「new」といった記述も不要であり、
+            記述に迷いが生じないため、とても優れています。<br>
+            <!-- br>
+            <但し、Python標準ライブラリが、ほぼ使えない状態となると、<br>
+            正規表現やオブジェクトのDeppCopyなどが少々手間取るため、<br>
+            エディタ用途の組み込み言語としては減点対象となるでしょう。< --></td>
+        </tr>
+        <tr>
+            <td>将来性</td>
+            <td>7</td>
+            <td>IronPythonは2016/11/21現在も更新され続けているため、期待が持てます。<br>
+            又、すでにIronPython 3.x系開発も以前より進んでいるため、やがてリリースされることでしょう。<br>
+            <br>
+            IronPythonは、.NET Frameworkが利用可能なスクリプト言語としては、<br>
+            唯一 Visual Studioで正式にサポートされている言語です。</td>
+        </tr>
+        <tr>
+            <td>.NET相性</td>
+            <td>9</td>
+            <td>IronPythonは、Dynamic Language Runtimeを利用して作られた言語として<br>
+            最も力と人員が割かれた言語であり、DLRを最も活かした言語はIronPython<br>
+            だと断言して良いでしょう。<br>
+            <br>
+            既存のスクリプト言語の中で、.NETと非常に高いレベルで融合に成功した言語はPythonのみある。<br>
+            と断言できるほどです。<br>
+            <br>
+            <a href="?page=nobu_tool_hm_ironpython">hmPyのトップページ</a>の秀丸8.66以上の場合サンプルで、<br>
+            その.NET Frameworkとの融合性の高さ、記述の自然さがみて取れます。 <br>
+            IronPythonに匹敵するのは、F#スクリプト、それらを超えるのは、C#スクリプトのみでしょう。</td>
+        </tr>
+        <tr>
+            <td>可搬性</td>
+            <td>4</td>
+            <td>IronPython本体のインストールが必要となるため、低めの得点となります。<br>
+            しかし、その甲斐あって
+            <ul>
+                <li>Python2.7系の文法全て
+                <li>.NETの多くのライブラリ
+                <li>IronPythonに移植されたPython標準ライブラリの多くのもの
+            </ul>
+            という非常に有利な構成を利用可能となります。
+            <br>
+            </td>
+        </tr>
+        <tr>
+            <td>読み込み速度</td>
+            <td>6</td>
+            <td>IronPython本体の各種dllをNGenすることにより、<br>
+            それなりの読み込み速度が確保できます。<br>
+            </td>
+        </tr>
+    </table>
+    <li>
+    <h3>hmRb/IronRuby</h3>
+    <table style="border-collapse: collapse;" border="1px" style="width:1100">
+        <tr>
+            <td style="width: 150">トピック</td>
+            <td style="width: 150">評価点<br>
+            インデックス</td>
+            <td style="width: 800">捕捉</td>
+        </tr>
+        <tr>
+            <td>言語</td>
+            <td>9</td>
+            <td>Ruby1.9 + α<br>
+            全てがオブジェクト、正規表現、クラス機構、各種文法、関数型要素など<br>
+            言語として非常に強力な要素が満載です。<br>
+            </td>
+        </tr>
+        <tr>
+            <td>将来性</td>
+            <td>4</td>
+            <td>IronRubyがすでに更新されていないため、<br>
+            将来性は乏しいと言えるでしょう。<br>
+            <br>
+            本家Rubyとの文法のかい離も年々大きくなっていくことは疑いの余地がありません。 <br>
+            Rubyそのものとして捉えるよりも、<br>
+            「概ねRubyとそっくりな文法が使え、文法がFinalFixされた秀丸マクロの代替言語」<br>
+            として捉えることをお勧めします。<br>
+            <br>
+            但し、.NET Frameworkライブラリに目を向けると、より新しいバージョンの.NETライブラリであっても<br>
+            クラス継承のレベルで利用可能であるため、<br>
+            「文法こそ変化しないが、ライブラリは更新され、クラス継承といった深いレベルでも利用可能」と言えますので、<br>
+            最低限の将来性は確保できています。</td>
+        </tr>
+        <tr>
+            <td>.NET相性</td>
+            <td>7</td>
+            <td>.NETのクラス等は利用できるだけではなく、継承なども可能です。<br>
+            .NETのクラスとRubyのクラスは本来は異質なものなのですが、<br>
+            ある程度は上手くカバリングされています。<br>
+            <br>
+            Ruby表記の文字列と、.NETのString型が自動で上手く変換されないシーンや、<br>
+            .NETのオブジェクトとRubyオブジェクトのBINDが上手く機能しない等、<br>
+            IronPythonに比べると、「.NETとの融合の度合い」では劣ります。<br>
+            <a href="?page=nobu_tool_hm_ironruby">hmRbのトップページ</a>のサンプルでも、そのことがみて取れます。
+        </tr>
+        <tr>
+            <td>可搬性</td>
+            <td>8</td>
+            <td>hmRb, IronRuby.Libraries.dll<br>
+            の２つのファイルで、
+            <ul>
+                <li>Ruby1.9系の文法全て
+                <li>.NETの多くのライブラリ
+            </ul>
+            が使えるというのは、素晴らしい可搬性です。<br>
+            <br>
+            それに加えて、IronRuby 1.1.3をインストールしておけば、<br>
+            IronRubyに添付されている標準ライブラリも利用可能ですので、<br>
+            かなり良い感じでバランスが取れています。</td>
+        </tr>
+        <tr>
+            <td>読み込み速度</td>
+            <td>8</td>
+            <td>IronRuby.Libraries.dllだけをNGenすることにより、<br>
+            十分速い読み込み速度となります。<br>
+            (IronRuby.Libraries.dllは、原則、変更することがないでしょうから、NGenとの相性も良いです)</td>
+        </tr>
+    </table>
+
+    <li>
+    <h3>hmLoadCLR/NeoLua</h3>
+    <table style="border-collapse: collapse;" border="1px" style="width:1100">
+        <tr>
+            <td style="width: 150">トピック</td>
+            <td style="width: 150">評価点<br>
+            インデックス</td>
+            <td style="width: 800">捕捉</td>
+        </tr>
+        <tr>
+            <td>言語</td>
+            <td>4</td>
+            <td>Lua 5.3 + α<br>
+            Lua自体はシンプルな言語であり、多くの機能を「テーブル」で代替します。<br>
+            直接クラス機構を持たないため、JavaScript3系、5系と似たようなテクニックで<br>
+            疑似的にクラス的なものを構築していくこととなりますが、<br>
+            .NETのクラス群を正面から受け止めるには、文法が不足しています。</td>
+        </tr>
+        <tr>
+            <td>将来性</td>
+            <td>5</td>
+            <td>Luaという言語は現在進行形でよく利用されている言語です。<br>
+            言語自体がシンプルであるため、ソースさえ手元にあれば、異なる.NET系列への移植も容易です。<br>
+        </tr>
+        <tr>
+            <td>.NET相性</td>
+            <td>4</td>
+            <td>.NETのクラス等は利用できますが、<br>
+            Lua自体はクラスを持たないため、上手くクラスとしてまとめるのも難しいかと思います。 <br>
+            本来はあまり相性が良いわけではありません。<br>
+            継承「is-a」には出来ないため、.NETのライブラリは静的に利用することになるかと思います。 <br>
+            ちょうど、<a href="?page=nobu_tool_hm_loadclr_loadmngdll">C#で作ったdllの読み込み</a>の「8.66以降の場合」のサンプルが<br>
+            利用形態の中心となることでしょう。<br>
+            <br>
+            又、.NET FrameworkのICollection等、配列などは０から始まることを想定しているのに対して、<br>
+            Luaの配列は1から始まるため、ここも少々ネックです。<br>
+            <br>
+            一方、NeoLuaでは、それ以外の部分で相性をなんとかカバーするための工夫が施されているため、<br>
+            「複雑なアルゴリズムを組まなければそれほど問題は露見しない」というところです。 <br>
+            </td>
+        </tr>
+        <tr>
+            <td>可搬性</td>
+            <td>10</td>
+            <td>hmLoadCLR.dll<br>
+            というたった１つのファイルだけで
+            <ul>
+                <li>Lua5.3系のほぼ全て
+                <li>Lua5.3系のうち、極めて頻繁に良く利用されるライブラリ(コルーチン等は除去されている)
+                <li>.NETの多くのライブラリ
+            </ul>
+            が使えるというのは、可搬性としては完璧です。<br>
+        </tr>
+        <tr>
+            <td>読み込み速度</td>
+            <td>10</td>
+            <td>他のC#等で作成したライブラリを読み込むで、値を出し入れする、<br>
+            という点に特化して制作したものであるので、<br>
+            ファイルは単体である上、かなり読み込み速度が速いです。<br>
+            hmLoadCLR.dllをNGenすると、さらに速くなります。</td>
+        </tr>
+    </table>
+</ul>
