@@ -65,6 +65,7 @@ if ( strpos($strPageTemplate, "(hilight)s") != false ) {
 
     $strShCoreFooter1 = "document.write(\"<script type='text/javascript' src='./hilight/scripts/shcore-3.0.83.min.js'><\/script>\");";
     $strShCoreFooter2 = "SyntaxHighlighter.defaults['toolbar'] = false;\n" .
+	                    "SyntaxHighlighter.defaults['auto-links'] = false;\n" .
                         "SyntaxHighlighter.all();";
 }
 

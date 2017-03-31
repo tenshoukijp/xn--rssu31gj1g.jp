@@ -6,11 +6,9 @@ AddType application/x-httpd-php56cgi .ver
 
 DirectoryIndex index.php index.py index.cgi index.html index.htm
 
-<Files ~ "\.(zip|xls|gz)$">
-	Header add Pragma "no-cache"
-	Header set Cache-Control no-cache
+<Files ~ "\.(zip|xls)$">
+	Header set Cache-Control "max-age=86400, public"
 </Files>
-
 
 <IfModule mod_mime.c>
 	AddType font/opentype         .otf
@@ -36,6 +34,4 @@ ExpiresByType image/png "access plus 30 days"
 ExpiresByType image/jpg "access plus 30 days"
 ExpiresByType image/jpeg "access plus 30 days"
 </IfModule>
-
-
 

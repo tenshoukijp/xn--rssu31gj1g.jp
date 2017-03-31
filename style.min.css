@@ -10,7 +10,9 @@ div.imglvl{border-color:#333;border-style:solid;border-width:0;}
 .update_time{text-align:right;}
 a.face_anim{font-size:12px;}
 span.level{padding-left:20px;color:#090;}
-div.code{font-family:"MS Gothic";background-color:#dfe;}
+div.code{font-family:"MS Gothic";min-width:600px;max-width:1300px;background-color:#fdfdfd;border:1px solid #bbb;-webkit-border-radius:5px;-moz-border-radius:5px;border-radius:5px;box-shadow:0 1px 0 rgba(255, 255, 255, 0.3) inset, 0 0 2px rgba(255, 255, 255, 0.3) inset, 0 0 10px rgba(0, 0, 0, 0.1) inset, 0 1px 20px rgba(0, 0, 0, 0.1);margin:10px 40px 10px 10px;padding:1px;}
+fieldset.code{display:block;min-width:600px;max-width:1300px;background-color:#fdfdfd;border:1px solid #bbb;-webkit-border-radius:5px;-moz-border-radius:5px;border-radius:5px;box-shadow:0 1px 0 rgba(255, 255, 255, 0.3) inset, 0 0 2px rgba(255, 255, 255, 0.3) inset, 0 0 10px rgba(0, 0, 0, 0.1) inset, 0 1px 20px rgba(0, 0, 0, 0.1);margin:10px 40px 10px 10px;padding:1px;}
+fieldset.code legend{margin-left:15px;}
 pre{font-family:"MS Gothic";}
 .download_file{text-align:left;margin-right:60px;-webkit-border-radius:7px;-moz-border-radius:7px;border-radius:7px;border-color:red;border-style:solid;border-width:3px;padding:2px;}
 img{border:1px solid #666;box-shadow:0 2px 3px 1px rgba(0,0,0,.5);-webkit-box-shadow:0 2px 3px 1px rgba(0,0,0,.5);-moz-box-shadow:0 2px 3px 1px rgba(0,0,0,.5);}
