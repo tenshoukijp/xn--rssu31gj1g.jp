@@ -37,7 +37,7 @@
     hm.Macro.Var['$bbb'] =&quot;あいうえお。&quot;;
 
     // 秀丸マクロとして一連の文字列を実行
-    hm.Macro.Eval( qq =&gt; { /*
+    hm.Macro.Eval( f =&gt; { /*
         message($bbb);
         $$message = $bbb + $bbb;
         message($$message);

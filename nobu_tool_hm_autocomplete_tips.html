@@ -1,0 +1,58 @@
+%(hilight)s
+<h2><i class="fa fa-list fa-fw"></i>単語補完の隠されたTips</h2>
+<ul class="checklist">
+    <li>
+        <h3>単語補完の辞書を、マクロから切り替える方法</h3>
+        <div class="code">
+            <pre class="brush:hmmacro;">
+config @&quot;xAutocompDic:C:\Folder\MyDic.txt&quot;;
+        </pre>
+        </div>
+
+    <li>
+        <h3>複数のファイルを辞書に使う方法(ヘルプに記載はない)</h3>
+        <p>
+            [その他]→[ファイルタイプ別の設定]→[その他]→[単語補完]の「辞書ファイル」を<br>
+            「c:\usr\hidemaru\Dictionary\Lua\*.txt」といった感じで<span class="positive">ワイルドカードで指定</span>することで、<br>
+            結果として<span class="positive">複数の辞書を１度に使う方法</span>がある。
+        </p>
+        <p><img src="./other_soft/hm_autocomplete_tips/cnt_hm_autocomplete_tips_02.png"></p>
+
+        <h3>強調定義ファイルを状況に応じて、マクロから切り替える方法</h3>
+        <p>以下のようなのを、自動起動マクロの「アクティブ切り替え後」のタイミングなどに記載すれば良い。</p>
+        <div class="code">
+            <pre class="brush:hmmacro;">
+
+if (filetype == &quot;.lua&quot;) {
+    // 特定のファイルの時は違う強調を採用
+    if (basename == &quot;stage_common.lua&quot; || basename == &quot;regionsetting.lua&quot; ) {
+        loadhilight &quot;lua.pattern1.hilight&quot;,1, 0x00000001;
+    }
+    // その他の汎用的な強調定義
+    else {
+        loadhilight &quot;lua.pattern2.hilight&quot;,1, 0x00000001;
+    }
+}
+    </pre>
+    <li>
+        <h3>単語補完は「ツールチップ」より「リスト」表示の方が使いやすい人が多い</h3>
+        <p>
+            単語補完は秀丸標準では「ツールチップ」となっているのですが、<br>
+            同様機能の他のアプリとのキー操作との類似性を考慮すると、<br>
+            「リスト」表示の方が使いやすいと感じる人の方が多いと思います。
+        </p>
+        <ul class="pointlist">
+            <li>
+                <h4>「数字キー選択」の「Alt+1～9（キー割り当て無効）必須</h4>
+                <p>
+                    下記の設定をする際の要注意点としては、<br>
+                    <span class="negative">必ず「特殊なキー操作」の項目で「数字キー選択」の「Alt+1～9（キー割り当て無効）」を選んでおきましょう。</span><br>
+                    この設定をし損ねると、「abc1」「abc3」の次に「abc2」などと単語の最後の数値だけが違うものを入力しようとした際に、<br>
+                    「文字の入力」と「リストからの選択」が適切に切り替えられず、ドツボにハマります。
+                </p>
+
+        </ul>
+        <p><img src="./other_soft/hm_autocomplete_tips/cnt_hm_autocomplete_tips_01.png" attr="noedge"></p>
+        <p><img src="./other_soft/hm_autocomplete_tips/cnt_hm_autocomplete_tips_02.png"></p>
+
+</ul>

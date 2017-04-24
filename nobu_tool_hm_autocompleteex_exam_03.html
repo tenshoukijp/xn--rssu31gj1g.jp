@@ -1,5 +1,5 @@
 %(hilight)s
-<h2><i class="fa fa-list fa-fw"></i>チュートリアル③ ～ウィンドウの見た目を整える～</h2>
+<h2><i class="fa fa-book fa-fw"></i>チュートリアル③ ～ウィンドウの見た目を整える～</h2>
 
 <ul class="checklist">
   <li>
@@ -192,7 +192,7 @@ extern &quot;C&quot; __declspec(dllexport) int OnDestroy(HWND hWnd) {
   }
   // このOnDestroyの後に、インスタンスが残っているのに任せるのは不安である。明示的に解放
   if (ACHelpForm::f) {
-    OutputDebugString(&quot;明示解放\n&quot;);
+    OutputDebugString(L&quot;明示解放\n&quot;);
     delete ACHelpForm::f;
   }
 
@@ -279,7 +279,7 @@ extern &quot;C&quot; __declspec(dllexport) int OnDestroy(HWND hWnd) {
   }
   // このOnDestroyの後に、インスタンスが残っているのに任せるのは不安である。明示的に解放
   if (ACHelpForm::f) {
-    OutputDebugString(&quot;明示解放\n&quot;);
+    OutputDebugString(L&quot;明示解放\n&quot;);
     delete ACHelpForm::f;
   }
 

@@ -130,6 +130,8 @@ $content_hash = [
         [ 'html'=>'nobu_mod_the_snmod_newervs2012.html', 'title'=>'' , 'dir'=>'ScenarioModのラーニング'],
     'nobu_mod_the_snmod_build' =>
         [ 'html'=>'nobu_mod_the_snmod_build.html', 'title'=>'' , 'dir'=>'ScenarioModのラーニング'],
+    'nobu_mod_the_snmod_build_vsinstall' =>
+        [ 'html'=>'nobu_mod_the_snmod_build_vsinstall.html', 'title'=>'' , 'dir'=>'ScenarioModのラーニング'],
     'nobu_mod_the_snmod_understand' =>
         [ 'html'=>'nobu_mod_the_snmod_understand.html', 'title'=>'' , 'dir'=>'理解すべきもの･しないもの'],
     'nobu_mod_the_snmod_understand_practice' =>
@@ -283,9 +285,14 @@ $content_hash = [
     'nobu_mod_the_snmod_methodref_lua_jlua' =>
         [ '301' => '秀丸マクロ', 'html'=>'nobu_mod_the_snmod_methodref_lua_jlua.html', 'title'=>'jLua.exe' , 'dir'=>'jLua'],
 
+	// 天翔記用
+    'nobu_mod_the_snmod_methodref_lua_jlua2' =>
+        [ 'html'=>'nobu_mod_the_snmod_methodref_lua_jlua.html', 'title'=>'jLua.exe' , 'dir'=>'Luaの確認ツール'],
 
     'nobu_mod_the_jlua_for_hidemaru' =>
         [ '301' => '秀丸マクロ', 'html'=>'nobu_mod_the_jlua_for_hidemaru.html', 'title'=>'jLua 秀丸セット' , 'dir'=>'jLua'],
+    'nobu_mod_the_jlua_update' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_mod_the_snmod_methodref_lua_jlua_update.html', 'title'=>'jLua 秀丸セット' , 'dir'=>'jLua'],
 
     'nobu_mod_the_snmod_methodref_ironpython_init' =>
         [ 'html'=>'nobu_mod_the_snmod_methodref_ironpython_init.html', 'title'=>'IronPython' , 'dir'=>'外部IronPythonテキストデータ'],
@@ -396,6 +403,15 @@ $content_hash = [
 
     'nobu_mod_the_san5pk_installer' =>
         [ 'html'=>'nobu_mod_the_san5pk_installer.html', 'title'=>'三国志 V with PK インストーラ' , 'dir'=>'三国志 V with PK'],
+    'nobu_face_kaoswap_importer_san5' =>
+        [ 'html'=>'nobu_face_kaoswap_importer_san5.html', 'title'=>'三国志 V with PK インストーラ' , 'dir'=>'三国志 V with PK'],
+    'nobu_face_subcolor_san5' =>
+        [ 'html'=>'nobu_face_subcolor_san5.html', 'title'=>'減色版の顔の作成法' , 'dir'=>'三国志 V with PK'],
+    'nobu_mod_the_san5pk_kaodatapviewer' =>
+        [ 'html'=>'nobu_mod_the_san5pk_kaodatapviewer.html', 'title'=>'顔グラビューワー' , 'dir'=>'三国志 V with PK'],
+
+
+
     'nobu_mod_the_tr5_pluginmod' =>
         [ 'html'=>'nobu_mod_the_tr5_pluginmod.html', 'title'=>'太閤立志伝V 修正Mod' , 'dir'=>'太閤立志伝V'],
     'nobu_mod_the_digital_sign_index_tr5' =>
@@ -558,6 +574,32 @@ $content_hash = [
     'nobu_tool_hm_ironruby_referece' =>
         [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_ironruby_referece.html', 'title'=>'リファレンス' , 'dir'=>'.NET Framework via IronRuby'],
 
+    'nobu_tool_hm_powershell' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_powershell.html', 'title'=>'hmPS' , 'dir'=>'.NET Framework via PowerShell'],
+    'nobu_tool_hm_powershell_update' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_powershell_update.html', 'title'=>'hmPS 更新履歴' , 'dir'=>'.NET Framework via PowerShell'],
+    'nobu_tool_hm_powershell_debugmonitor' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_powershell_debugmonitor.html', 'title'=>'hmPS デバッグモニター' , 'dir'=>'.NET Framework via PowerShell'],
+    'nobu_tool_hm_powershell_winform' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_powershell_winform.html', 'title'=>'hmPS 例題①' , 'dir'=>'.NET Framework via PowerShell'],
+    'nobu_tool_hm_powershell_api_lv0' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_powershell_api_lv0.html', 'title'=>'秀丸マクロから利用するhmPSの関数' , 'dir'=>'.NET Framework via PowerShell'],
+    'nobu_tool_hm_powershell_api_lv1' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_powershell_api_lv1.html', 'title'=>'基本のAPI' , 'dir'=>'.NET Framework via PowerShell'],
+    'nobu_tool_hm_powershell_api_lv2' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_powershell_api_lv2.html', 'title'=>'応用のAPI' , 'dir'=>'.NET Framework via PowerShell'],
+    'nobu_tool_hm_powershell_loadmngdll' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_powershell_loadmngdll.html', 'title'=>'外部マネージドdll読み込み' , 'dir'=>'.NET Framework via PowerShell'],
+    'nobu_tool_hm_powershell_ide' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_powershell_ide.html', 'title'=>'PowerShellでide' , 'dir'=>'.NET Framework via PowerShell'],
+    'nobu_tool_hm_powershell_ngen' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_powershell_ngen.html', 'title'=>'NGenのススメ' , 'dir'=>'.NET Framework via PowerShell'],
+    'nobu_tool_hm_powershell_api_866' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_powershell_api_866.html', 'title'=>'hmPS 8.66以降で使える機能' , 'dir'=>'.NET Framework via PowerShell'],
+    'nobu_tool_hm_powershell_charcode' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_powershell_charcode.html', 'title'=>'hmPS デフォルトの文字コード' , 'dir'=>'.NET Framework via PowerShell'],
+
+
 
     'nobu_tool_hm_javascript' =>
         [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_javascript.html', 'title'=>'hmJS' , 'dir'=>'.NET & ActiveX via JavaScript'],
@@ -636,6 +678,10 @@ $content_hash = [
         [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_ecmascript_md.html', 'title'=>'Markdown' , 'dir'=>'既存のES6ライブラリの使用例'],
     'nobu_tool_hm_ecmascript_beautify' =>
         [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_ecmascript_beautify.html', 'title'=>'JsBeautify' , 'dir'=>'既存のES6ライブラリの使用例'],
+	'nobu_tool_hm_japanesephonetic_analyzer' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_japanesephonetic_analyzer.html', 'title'=>'HmJapanesePhoneticAnalyzer' , 'dir'=>'分かち書き・ルビ振り'],
+	'nobu_tool_hm_japanesephonetic_analyzer_update' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_japanesephonetic_analyzer_update.html', 'title'=>'HmJapanesePhoneticAnalyzer' , 'dir'=>'分かち書き・ルビ振り'],
 
     'nobu_tool_hm_nodejs' =>
         [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_nodejs.html', 'title'=>'HmNodeJS' , 'dir'=>'Node.jsとの通信ライブラリ'],
@@ -736,9 +782,14 @@ $content_hash = [
         [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_luajit_ide_hmset.html', 'title'=>'LuaJIT秀丸セット' , 'dir'=>'500倍速マクロ via LuaJIT'],
     'nobu_mod_the_lua_reference_chm' =>
         [ '301' => '秀丸マクロ', 'html'=>'nobu_mod_the_lua_reference_chm.html', 'title'=>'Lua リファレンスマニュアル' , 'dir'=>'500倍速マクロ via LuaJIT'],
+	// 天翔記用
+    'nobu_mod_the_lua_reference_chm2' =>
+        [ 'html'=>'nobu_mod_the_lua_reference_chm.html', 'title'=>'Lua リファレンスマニュアル' , 'dir'=>'外部Luaテキストデータ'],
 
     'nobu_mod_the_ulua' =>
         [ '301' => '秀丸マクロ', 'html'=>'nobu_mod_the_ulua.html', 'title'=>'uLua' , 'dir'=>'uLua'],
+    'nobu_mod_the_ulua_update' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_mod_the_ulua_update.html', 'title'=>'uLua' , 'dir'=>'uLua'],
     'nobu_mod_the_ulua_src' =>
         [ '301' => '秀丸マクロ', 'html'=>'nobu_mod_the_ulua_src.html', 'title'=>'uLua Cソース' , 'dir'=>'uLua'],
     'nobu_mod_the_ulua_for_hidemaru' =>
@@ -747,6 +798,8 @@ $content_hash = [
         [ '301' => '秀丸マクロ', 'html'=>'nobu_mod_the_wordlist_regex_compress.html', 'title'=>'単語のリストを１つの正規表現にする' , 'dir'=>'単語リストの正規表現圧縮'],
     'nobu_mod_the_wordlist_regex_compress_hm' =>
         [ '301' => '秀丸マクロ', 'html'=>'nobu_mod_the_wordlist_regex_compress_hm.html', 'title'=>'単語のリストを１つの正規表現にする ～秀丸セット～' , 'dir'=>'単語リストの正規表現圧縮'],
+    'nobu_mod_the_wordlist_regex_compress_hm_update' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_mod_the_wordlist_regex_compress_hm_update.html', 'title'=>'更新情報' , 'dir'=>'単語リストの正規表現圧縮'],
     'nobu_tool_kbd_marker_jump' =>
         [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_pochi_tto_naa.html', 'title'=>'秀丸エディタ・キーボードマーカージャンプ' , 'dir'=>'ブックマーク・しおり'],
     'nobu_tool_hm_pochi_tto_naa_update' =>
@@ -777,8 +830,14 @@ $content_hash = [
     'nobu_tool_hm_sharedoutputpane_update' =>
         [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_sharedoutputpane_update.html', 'title'=>'外部アプリケーションからのアウトプット 更新履歴' , 'dir'=>'外部アプリからアウトプット枠への出力'],
 
+
+    'nobu_tool_hm_autocomplete_tips' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_autocomplete_tips.html', 'title'=>'入力補完EX' , 'dir'=>'単語補完・強調表示'],
+
     'nobu_tool_hm_autocompleteex' =>
         [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_autocompleteex.html', 'title'=>'入力補完EX' , 'dir'=>'単語補完拡張キット'],
+    'nobu_tool_hm_autocompleteex_update' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_autocompleteex_update.html', 'title'=>'入力補完EX' , 'dir'=>'単語補完拡張キット'],
     'nobu_tool_hm_autocompleteex_exam_01' =>
         [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_autocompleteex_exam_01.html', 'title'=>'入力補完EX' , 'dir'=>'単語補完拡張キット'],
     'nobu_tool_hm_autocompleteex_exam_02' =>
@@ -867,6 +926,11 @@ $content_hash = [
     'nobu_tool_hm_macro_observed_encode' =>
         [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_macro_observed_encode.html', 'title'=>'秀丸強制終了' , 'dir'=>'その他'],
 
+    'nobu_tool_hm_ver_perforce_checkinout' =>
+        [ '301' => '秀丸マクロ', 'html'=>'nobu_tool_hm_ver_perforce_checkinout.html', 'title'=>'パーフォースチェックイン・アウト' , 'dir'=>'バージョン管理システム'],
+
+
+
 
 
     'nobu_cs_reference_language_index' =>
@@ -904,10 +968,18 @@ $content_hash = [
     'nobu_cppcli_reference_grammer_point_09_delegate' =>
         [ 'html'=>'nobu_cppcli_reference_grammer_point_09_delegate.html', 'title'=>'デリゲート' , 'dir'=>'C++/CLI 仕様要点'],
 
-    'nobu_cppcli_required tool_converter' =>
-        [ 'html'=>'nobu_cppcli_required tool_converter.html', 'title'=>'言語間変換ツール' , 'dir'=>'C++/CLI 必須ツール'],
-    'nobu_cppcli_required tool_wysiwyg' =>
-        [ 'html'=>'nobu_cppcli_required tool_wysiwyg.html', 'title'=>'オーサリングツール' , 'dir'=>'C++/CLI 必須ツール'],
+		
+		
+    'nobu_cppcli_reference_hm_dll_assmblyresolve' =>
+        [ 'html'=>'nobu_cppcli_reference_hm_dll_assmblyresolve.html', 'title'=>'C++/CLI.dllのマネージ参照' , 'dir'=>'dll作成C++/CLI 編'],
+    'nobu_cppcli_reference_hm_cs_dll_staticlink' =>
+        [ 'html'=>'nobu_cppcli_reference_hm_cs_dll_staticlink.html', 'title'=>'C#のソースをC++/CLI.dllに静的リンク' , 'dir'=>'dll作成C++/CLI 編'],
+
+
+    'nobu_cppcli_required_tool_converter' =>
+        [ 'html'=>'nobu_cppcli_required_tool_converter.html', 'title'=>'言語間変換ツール' , 'dir'=>'C++/CLI 必須ツール'],
+    'nobu_cppcli_required_tool_wysiwyg' =>
+        [ 'html'=>'nobu_cppcli_required_tool_wysiwyg.html', 'title'=>'オーサリングツール' , 'dir'=>'C++/CLI 必須ツール'],
 
     'nobu_cppcli_reference_dotnet_framework_index' =>
         [ 'html'=>'nobu_cppcli_reference_dotnet_framework_index.html', 'title'=>'.NET FrameWork' , 'dir'=>'dll作成C++/CLI 編'],
@@ -925,6 +997,10 @@ $content_hash = [
     'nobu_cppcli_reference_game_design_pattern_06' =>
         [ 'html'=>'nobu_cppcli_reference_game_design_pattern_06.html', 'title'=>'デザインパターン' , 'dir'=>'C++ ゲームデザインパターン'],
 
+	'nobu_tool_hm_cool_body_icon' =>
+        [ 'html'=>'nobu_tool_hm_cool_body_icon.html', 'title'=>'アイコン' , 'dir'=>'画像やアイコン'],
+	'nobu_tool_hm_cool_font_rdd' =>
+        [ 'html'=>'nobu_tool_hm_cool_font_rdd.html', 'title'=>'フォント' , 'dir'=>'フォント'],
 
     'nobu_mod_the_digital_sign_index' =>
         [ 'html'=>'nobu_mod_the_digital_sign_index.html', 'title'=>'Windows 10以降で、「管理者権限のある正しいログインでもう一度試してください」' , 'dir'=>'デジタル署名関係'],
@@ -1041,14 +1117,21 @@ $filetime_hash = [
     'nobu_mod_the_loilo_game_recorder' =>
         './cnt_mod/mod_loilo/LoiloGameRecorderMod.zip',
 
+
     'nobu_mod_the_san5pk_installer' =>
         './other_title/san05/San5PK_Installer.zip',
+    'nobu_mod_the_san5pk_kaodatapviewer' =>
+        './other_title/san05/KaoDataPFaceViewer.zip',
+
+	'nobu_face_kaoswap_importer_san5' =>
+        './other_title/san05/KaoDataPFaceImporter.zip',
     'nobu_mod_the_tr5_pluginmod' =>
         './other_title/taikou5/TR5PluginMod.zip',
     'nobu_movie_convert_wmv' =>
         './cnt_movie/ToConvertWMV.zip',
     'nobu_mod_the_nobu14_browse' =>
         './other_title/nobu14/N14PK_Browse_0540.zip',
+
     'nobu_movie_2x_convert' =>
         './cnt_movie/TsMovie2xConverter.zip',
 
@@ -1057,17 +1140,24 @@ $filetime_hash = [
 
     'nobu_mod_the_ulua' =>
         './other_soft/ulua/uLua.zip',
-    'nobu_mod_the_ulua_src' =>
-        './other_soft/ulua/uLua.src.zip',
     'nobu_mod_the_ulua_for_hidemaru' =>
         './other_soft/ulua/uLuaHM.zip',
 
     'nobu_mod_the_snmod_methodref_lua_jlua' =>
+        './other_soft/hm_jlua/jLua.zip',
+	// 天翔記用
+    'nobu_mod_the_snmod_methodref_lua_jlua2' =>
         './other_soft/jlua/jLua.zip',
+
     'nobu_mod_the_jlua_for_hidemaru' =>
-        './other_soft/jlua/jLuaHM.zip',
+        './other_soft/hm_jlua/jLuaHM.zip',
+
     'nobu_mod_the_lua_reference_chm' =>
         './other_soft/jlua/Lua.chm',
+	// 天翔記用
+    'nobu_mod_the_lua_reference_chm2' =>
+        './other_soft/jlua/Lua.chm',
+
     'nobu_mod_the_wordlist_regex_compress' =>
         './other_soft/wordlistregexcompress/WordListRegexCompress.zip',
     'nobu_mod_the_wordlist_regex_compress_hm' =>
@@ -1082,7 +1172,7 @@ $filetime_hash = [
     'nobu_tool_hm_debugmonitor' =>
         './other_soft/hm_debugmonitor/HmDebugMonitor.zip',
     'nobu_tool_hm_timer_msgbox' =>
-        './other_soft/hm_timer_msgbox/TimerMessageBox.zip',
+        './other_soft/hm_timer_msgbox/HmTimerMessageBox.zip',
     'nobu_tool_hm_baloonnotice' =>
         './other_soft/hm_baloonnotice/HmBaloonNotice.zip',
     'nobu_tool_hm_baloontoast' =>
@@ -1093,13 +1183,13 @@ $filetime_hash = [
     'nobu_tool_hm_ironpython_win32api' =>
         './other_soft/hm_ironpython/clrtype.zip',
     'nobu_tool_hm_ironpython_csvhelper' =>
-        './other_soft/hm_ironpython/CsvHelper.zip',
+        './other_soft/hm_ironpython/HmCsvHelper.zip',
     'nobu_tool_hm_ironpython_htmlagility' =>
-        './other_soft/hm_ironpython/hmHtmlAgility.zip',
+        './other_soft/hm_ironpython/HmHtmlAgility.zip',
     'nobu_tool_hm_ironpython_pastefilelist' =>
-        './other_soft/hm_ironpython/pastefilelist.zip',
+        './other_soft/hm_ironpython/HmPasteFileList.zip',
     'nobu_tool_hm_ironpython_handpen' =>
-        './other_soft/hm_ironpython/handpen.zip',
+        './other_soft/hm_ironpython/HmHandPen.zip',
 
 	'nobu_tool_hm_nodejs' =>
         './other_soft/hm_nodejs/HmNodeJS.zip',
@@ -1116,6 +1206,9 @@ $filetime_hash = [
         './other_soft/hm_ironruby/hmRb.zip',
     'nobu_tool_hm_ironruby_ide' =>
         './other_soft/hm_ironruby/ir_patch.zip',
+
+    'nobu_tool_hm_powershell' =>
+        './other_soft/hm_powershell/hmPS.zip',
 
     'nobu_tool_hm_javascript' =>
         './other_soft/hm_javascript/hmJS.zip',
@@ -1170,6 +1263,9 @@ $filetime_hash = [
     'nobu_tool_hm_iecapt' =>
         './other_soft/hm_iecapt/HmIECapt.zip',
 
+	'nobu_tool_hm_japanesephonetic_analyzer' =>
+        './other_soft/hm_japanesephonetic_analyzer/HmJapanesePhoneticAnalyzer.zip',
+
 
     'nobu_tool_hm_allkill' =>
         './other_soft/hm_allkill/HmAllKill.zip',
@@ -1177,6 +1273,11 @@ $filetime_hash = [
 	'nobu_tool_hm_macro_observed_encode' =>
         './other_soft/hm_macro_observed_enc/HmOnSaveObserbedEncode.zip',
 
+    'nobu_tool_hm_ver_perforce_checkinout' =>
+        './other_soft/hm_perforce_checkinout/HmPerforceCheckInOut.zip',
+
+	'nobu_tool_hm_cool_body_icon' =>
+        './other_soft/hm_body_icon/HmICON_01.ico',
 
     'nobu_mod_the_secdrvmagicalpig' =>
         './other_soft/secdrvmagicalpig/SecDrvMagicalPig.zip',

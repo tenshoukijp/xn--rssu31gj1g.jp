@@ -1,5 +1,5 @@
 %(hilight)s
-<h2><i class="fa fa-list fa-fw"></i>チュートリアル⑤ ～編集中のテキスト～</h2>
+<h2><i class="fa fa-book fa-fw"></i>チュートリアル⑤ ～編集中のテキスト～</h2>
 
 <ul class="checklist">
     <li>
@@ -134,7 +134,7 @@ public:
       return;
     }
     Point^ p = GetCursorPos();
-    OutputDebugStream(&quot;カーソル位置 x:%d, y:%d\n&quot;, p-&gt;X, p-&gt;Y);
+    OutputDebugStream(L&quot;カーソル位置 x:%d, y:%d\n&quot;, p-&gt;X, p-&gt;Y);
 
     String^ all = &quot;&quot;;
 
@@ -362,7 +362,7 @@ extern &quot;C&quot; __declspec(dllexport) int OnDestroy(HWND hWnd) {
       return;
     }
     Point^ p = GetCursorPos();
-    OutputDebugStream(&quot;カーソル位置 x:%d, y:%d\n&quot;, p-&gt;X, p-&gt;Y);
+    OutputDebugStream(L&quot;カーソル位置 x:%d, y:%d\n&quot;, p-&gt;X, p-&gt;Y);
 
     String^ all = &quot;&quot;;
 

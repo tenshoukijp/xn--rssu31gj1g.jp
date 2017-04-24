@@ -1,5 +1,5 @@
 %(hilight)s
-<h2><i class="fa fa-list fa-fw"></i>その他② リスト候補の取得と強制追加</h2>
+<h2><i class="fa fa-book fa-fw"></i>その他② リスト候補の取得と強制追加</h2>
 
 <ul class="checklist">
     <li>
@@ -17,64 +17,64 @@
 
 using namespace std;
 
-extern void PrintList(vector&lt;string&gt; list);
+extern void PrintList(vector&lt;wstring&gt; list);
 
 
 struct AUTOCOMPLETELIST {
-  LPTSTR string_ptr_list[1000]; // やり取りするのは1000個まで
-  size_t list_size;
+	LPTSTR wstring_ptr_list[1000]; // やり取りするのは1000個まで
+	size_t list_size;
 };
 extern &quot;C&quot; __declspec(dllexport) AUTOCOMPLETELIST* OnQueryListBoxCustomAdded(HWND hWnd, AUTOCOMPLETELIST *pAutoCompleteOriginalList) {
 
-  //------------------------------ 受け取り部
-  // 今回のリストを受けるにあたって、前回までのをクリア
-  static vector&lt;string&gt; original_list;
-  original_list.clear();
+	//------------------------------ 受け取り部
+	// 今回のリストを受けるにあたって、前回までのをクリア
+	static vector&lt;wstring&gt; original_list;
+	original_list.clear();
 
-  // 元々のリストを受け取る。（ただし、最初の1000個まで）
-  // char **をvector&lt;string&gt;へ
-  if (pAutoCompleteOriginalList-&gt;string_ptr_list) {
-    for (size_t ix = 0; ix&lt;pAutoCompleteOriginalList-&gt;list_size; ix++) {
+	// 元々のリストを受け取る。（ただし、最初の1000個まで）
+	// char **をvector&lt;wstring&gt;へ
+	if (pAutoCompleteOriginalList-&gt;wstring_ptr_list) {
+		for (size_t ix = 0; ix&lt;pAutoCompleteOriginalList-&gt;list_size; ix++) {
 
-      // 配列に文字列をコピーして追加
-      original_list.push_back(string(pAutoCompleteOriginalList-&gt;string_ptr_list[ix]));
-    }
-  }
-  //------------------------------ 受け取り部 ここまで
+			// 配列に文字列をコピーして追加
+			original_list.push_back(wstring(pAutoCompleteOriginalList-&gt;wstring_ptr_list[ix]));
+		}
+	}
+	//------------------------------ 受け取り部 ここまで
 
-  OutputDebugStream(&quot;元のリストの先頭の方:\n&quot;);
-  PrintList(original_list);
-
-
-  // 永続する必要があるので、static忘れないこと。
-  static vector&lt;string&gt; addition_list;
-  addition_list.clear(); // staticなので、毎度のクリアは必須である。
-
-  addition_list.push_back(&quot;あああ&quot;);
-  addition_list.push_back(&quot;いいい&quot;);
+	OutputDebugStream(&quot;元のリストの先頭の方:\n&quot;);
+	PrintList(original_list);
 
 
+	// 永続する必要があるので、static忘れないこと。
+	static vector&lt;wstring&gt; addition_list;
+	addition_list.clear(); // staticなので、毎度のクリアは必須である。
 
-  //------------------------------ 引き渡し部
-  // 特別に追加するリストへのポインタを返す
-  // static を忘れないように
-  static AUTOCOMPLETELIST AutoCompleteAddiList{ 0 };
-  ZeroMemory(&amp;AutoCompleteAddiList, sizeof(AutoCompleteAddiList)); // staticなのでクリアを忘れないこと
+	addition_list.push_back(L&quot;あああ&quot;);
+	addition_list.push_back(L&quot;いいい&quot;);
 
-  // 追加していく。(追加数自体が1000個を超えないように注意)
-  for (size_t i = 0; i &lt; addition_list.size() &amp;&amp; i &lt; 1000; i++) {
-    AutoCompleteAddiList.string_ptr_list[i] = (LPTSTR)addition_list[i].data();
-  }
-  AutoCompleteAddiList.list_size = addition_list.size();
-  return &amp;AutoCompleteAddiList;
-  //------------------------------ 引き渡し部 ここまで
+
+
+	//------------------------------ 引き渡し部
+	// 特別に追加するリストへのポインタを返す
+	// static を忘れないように
+	static AUTOCOMPLETELIST AutoCompleteAddiList{ 0 };
+	ZeroMemory(&amp;AutoCompleteAddiList, sizeof(AutoCompleteAddiList)); // staticなのでクリアを忘れないこと
+
+	// 追加していく。(追加数自体が1000個を超えないように注意)
+	for (size_t i = 0; i &lt; addition_list.size() &amp;&amp; i &lt; 1000; i++) {
+		AutoCompleteAddiList.wstring_ptr_list[i] = (LPTSTR)addition_list[i].data();
+	}
+	AutoCompleteAddiList.list_size = addition_list.size();
+	return &amp;AutoCompleteAddiList;
+	//------------------------------ 引き渡し部 ここまで
 }
 
-void PrintList(vector&lt;string&gt; list) {
-  // 最初の5個をプリント
-  for (int i = 0; i &lt; list.size() &amp;&amp; i &lt; 5; i++) {
-    OutputDebugStream(&quot;%s&quot;, list[i].data());
-  }
+void PrintList(vector&lt;wstring&gt; list) {
+	// 最初の5個をプリント
+	for (int i = 0; i &lt; list.size() &amp;&amp; i &lt; 5; i++) {
+		OutputDebugStream(L&quot;%s&quot;, list[i].data());
+	}
 }
 </pre></div>
     <li>
@@ -82,7 +82,7 @@ void PrintList(vector&lt;string&gt; list) {
     <p>HmAutoCompleteEx.dll本体との情報のやり取りは</p>
     <div class="code"><pre class="brush:cpp;">
 struct AUTOCOMPLETELIST {
-  LPTSTR string_ptr_list[1000]; // やり取りするのは1000個まで
+  LPTSTR wstring_ptr_list[1000]; // やり取りするのは1000個まで
   size_t list_size;
 };
 </pre></div>

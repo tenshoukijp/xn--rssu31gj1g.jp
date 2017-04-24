@@ -1,0 +1,100 @@
+<h2><i class="fa fa-file-image-o fa-fw"></i>三国志V with PK用、多数の減色済みの顔グラを一括でkaodatap.s5へと取り込む</h2>
+<ul class="checklist">
+    <li>
+        <h3>概要</h3>
+        <p>
+            多数の減色済みの顔グラフィックを一括でkaodatap.s5へと取り込めるツールの提供、<br>
+            及び、使用方法の解説となります。
+        </p>
+    <li>
+        <h3>ダウンロード</h3>
+        <dl>
+            <dt>
+                <div class="download_file">DOWNLOAD ⇒ <a href="%(file)s">KaoDataPFaceImporter</a>ファイル。</div>
+            </dt>
+            <dd>
+                <div class="update_time">└更新日 %(year)04d/%(mon)02d/%(mday)02d</div>
+            </dd>
+            <dt>
+                <div class="download_file">DOWNLOAD ⇒ <a href="./other_title/san05/KaoDataPFaceImporter.src.zip">ソース</a>ファイル。(プログラム書ける人用)</div>
+            </dt>
+            <dd>
+                <div class="update_time">└更新日 %(year)04d/%(mon)02d/%(mday)02d</div>
+            </dd>
+        </dl>
+
+    <li>
+        <h3>説明</h3>
+
+        <p>
+            このツールは、0001.bmp～783.bmpなど連番となっている８色の顔グラを、kaodatap.s5へと取り込むツールです。<br>
+            このツールの<b>｢KaoDataPFaceImporter.exe｣自体は、三国志５のフォルダ(San5WPK.exeもしくはSan5W95.exeがあるフォルダ)</b>に置き、<br>
+            <b>ご自分で用意した、kaodatap.s5へと取り込みたい顔画像(８色の連番画像)は｢kao_3bit｣というディレクトリに起きます</b>。<br>
+            <br>
+            <img src="./other_title/san05/cnt_face_kaodatapfaceimport.png"> <br>
+        </p>
+    <li>
+        <h3>使い方</h3>
+        <p>
+            ・kaodatap.s5へと取り込みたい顔画像は｢kao_3bit｣ディレクトリに置く。<br>
+            ・KaoDataPFaceImporterを実行する<br>
+            (※顔画像は0001.bmp～1332.bmp)<br>
+            <br>
+        </p>
+    <li>
+        <h3>主なエラー</h3>
+        <p>主に起きるのは２つのエラーです。エラーが起きるとエラーを表示した状態で止まります。</p>
+        <ul>
+            <li>
+                <b>ErrUsedColorPaletteOutOfRange</b><br>
+                └画像内容の<b>パレット</b>の使用が９色目以上を指定している。<br>
+                極めて高確率で256色やフルカラーになっている。もしくは8色ではなく、16色を使って画像を描いている。
+            <li>
+                <b>ErrWrongWidthHeightPixel</b><br>
+                └<b>64x80</b>の画像になっていない。<br>
+        </ul>
+    <li>
+        <h3>動作説明</h3>
+        <ul class="pointlist">
+            <li>
+                <h4>このツールが実行すること。</h4>
+                <p>
+                    このツールをちゃんと使うには、このツールが行うことを正しく理解する必要があります。<br>
+                    <br>
+                    (※このツールの実行速度はとても速く、一瞬黒い窓が出るだけで全ての処理が終わります。<br>
+                    ある程度のPCであれば、0.5～1秒ほどの間に1000個程度の顔画像の取り込みを完了してしまいますので、途中経過は目視して判断することは出来ません。)<br>
+                </p>
+            <li>
+                <h4>KaoDataPFaceImporter.exeが実行されると自動処理する内容</h4>
+                <ul>
+                    <li>
+                        kaodatap.s5から情報を取り込む。<br>
+                        └kaodatap.s5が存在しないという場合、事前情報は無いものと考える。<br>
+                        (└即ち全ての顔は真っ白だ、という前提となる)
+                    <li>
+                        kao_3bitディレクトリ内にある、｢xxxx.bmp｣(xxxxは4桁の数字で0001以上～783以下) に該当する.bmpファイルがあれば、<br>
+                        これをkaodatap.s5へと取り込む。<br>
+                    <li>逆に言えば、欠番となっている｢xxxx.bmp｣は、存在しないのであるから、該当の武将の顔画像は｢更新しない=現状維持｣とされる。
+                    <li>最後に元のkaodatap.s5を書き換える。
+                </ul>
+                <p>以上です。 <br></p>
+        </ul>
+    <li>
+        <h3>備考</h3>
+        <ul class="pointlist">
+            <li>
+                <h4>１個だけの顔グラでも、783全部の顔グラでも、どちらでも大丈夫</h4>
+                <p>
+                    全ての連番ファイルがそろっている必要は<b>ありません。</b> <br>
+                    番号が歯抜けになっていても大丈夫ですし、<br>
+                    たった１つだけの顔画像(例:0003.bmpだけ)などがあってもＯＫです。
+                </p>
+                <p>
+                    kao_3bitフォルダ内にある｢xxxx.bmp｣という命名規則に沿った画像は全てKaoswapへの取り込み対象となります。
+                </p>
+
+            <li>
+                <h4>連番画像の何番が誰なのか？ 一覧する。</h4>
+                <p>実は｢<a href="http://hima.que.ne.jp/sangokushi/sangokushi05.shtml">三国志Ｖ 武将総覧</a>｣などで調べてください。<br>
+        </ul>
+</ul>

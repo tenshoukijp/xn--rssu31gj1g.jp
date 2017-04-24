@@ -1,96 +1,157 @@
 %(hilight)s
 <h2><i class="fa fa-history fa-fw"></i>hmV8 更新履歴</h2>
-
 <ul class="checklist">
-     <li>
-    <h3>2017/03/25 ver. 1.5.1.1</h3>
-    <ul>
-        <li>DoStringやDoFileより早い段階で、<br>
-        秀丸マクロ側より、SetNumVarやGetStrVarなどの直接マニュアルによる代入・取得関数を使うとdllの利用形態が取得できないバグの修正。
-    </ul>
-   <li>
-    <h3>2017/03/24 ver. 1.4.9.8</h3>
-    <ul>
-        <li>ECMAScriptのbool値を、秀丸の整数型へと代入した際には、真=1, 偽=0 へとマッピングするようにした。
-    </ul>
     <li>
-    <h3>2017/03/07 ver. 1.4.9.1</h3>
-    <ul>
-        <li>ClearScript 5.4.9.0ベースとした。
-        <li>V8エンジンの更新。5.4.500.43 → 5.5.372.40
-    </ul>
+        <h3>2017/04/17 ver. 1.5.2.1</h3>
+        <ul>
+            <li>
+                <p>
+                    hm.Macro.Eval(...) や R(...)といった関数に対して、<br>
+                    これまで引数を関数にした場合、「コメントの改行状況」まで厳しく縛っていたが、コメントの改行状況については自由とした。<br>
+                    単純に「/*」と「*/」の間にある文字列であることだけが条件となった。<br>
+                </p>
+                <p>具体的には、これまでであれば</p>
+                <fieldset>
+                    <legend>これまでの縛り</legend>
+                    <pre class="brush:js">
+    // 秀丸マクロとして一連の文字列を実行
+    hm.Macro.Eval( f =&gt; { /*
+        message($bbb);
+        $$message = $bbb + $bbb;
+    */ }
+    );
+</pre></fieldset>
+                <p>といった形である必要があったば、これからは</p>
+                <fieldset>
+                    <legend>自由な形の例 その①</legend>
+                    <pre class="brush:js">
+    // 秀丸マクロとして一連の文字列を実行
+    hm.Macro.Eval( f =&gt; {
+    /*
+        message($bbb);
+        $$message = $bbb + $bbb;
+    */
+    }
+    );
+</pre></fieldset>
+                <p> や、</p>
+                <fieldset>
+                    <legend>自由な形の例 その②</legend>
+                    <pre class="brush:js">
+    // 秀丸マクロとして一連の文字列を実行
+    hm.Macro.Eval( f =&gt; { /* message($bbb);  $$message = $bbb + $bbb;  */ } );
+</pre>
+                </fieldset>
+                <p>といった形でも良くなった。</p>
+
+        </ul>
     <li>
-    <h3>2016/12/15 ver. 1.4.7.5</h3>
-    <p>秀丸変数となる「currentmacrodirectory」に存在するマネージ.dllは、<br>
-    .NET Frameworkのライブラリと同様に、「登録済みのdll」であるかのように、<br>
-    アセンブリ名だけで、ロード出来るようになった。<br>
-    又、AssemblyPathオブジェクトにパスを追加していくことで、独自のディレクトリを.dllのロード場所とみなすことが可能となった。<br>
-    詳細は、<a href="?page=nobu_tool_hm_javascript_loadmngdll">こちら</a></p>
+        <h3>2017/04/06</h3>
+        <ul>
+            <li>著作者名の変更
+            <li>秀丸エディタ 64bit版用のファイルがいつの間にか、ちゃんとアップされていなかったためアップ。
+        </ul>
     <li>
-    <h3>2016/12/13 ver. 1.4.7.2</h3>
-    <ul>
-        <li>V8エンジンの更新。5.4.500.40 → 5.4.500.43<br>
-    </ul>
+        <h3>2017/03/25 ver. 1.5.1.1</h3>
+        <ul>
+            <li>
+                DoStringやDoFileより早い段階で、<br>
+                秀丸マクロ側より、SetNumVarやGetStrVarなどの直接マニュアルによる代入・取得関数を使うとdllの利用形態が取得できないバグの修正。
+        </ul>
     <li>
-    <h3>2016/12/02 ver. 1.4.7.2</h3>
-    <p>hm.Macro.Varについては、「関数形式」ではなく、「プロパティへのアクセス形式」も可能とした。<br>
-    詳細は<a href="?page=nobu_tool_hm_ecmascript_api_866">こちら</a></p>
-    <p>console.logやconsole.assertなどについて、より各ブラウザに実装されているものに近づけた。<br>
-    詳細は<a href="?page=nobu_tool_hm_javascript_api_866">こちら</a></p>
+        <h3>2017/03/24 ver. 1.4.9.8</h3>
+        <ul>
+            <li>ECMAScriptのbool値を、秀丸の整数型へと代入した際には、真=1, 偽=0 へとマッピングするようにした。
+        </ul>
     <li>
-    <h3>2016/11/22 ver. 1.4.5.7</h3>
-    <p>console.logやconsole.assertなど、よく利用されているものは、やはりスタブ関数だけでもあった方が便利そうなので、<br>
-    エラーにはならない程度のものを用意。<br>
-    詳細は<a href="?page=nobu_tool_hm_javascript_api_866">こちら</a></p>
-    </p>
+        <h3>2017/03/07 ver. 1.4.9.1</h3>
+        <ul>
+            <li>ClearScript 5.4.9.0ベースとした。
+            <li>V8エンジンの更新。5.4.500.43 → 5.5.372.40
+        </ul>
     <li>
-    <h3>2016/11/22 ver. 1.4.5.5</h3>
-    <p>hm.debuginfo(...)の性能アップ。より妥当な表示を実現した。</p>
-    <li>
-    <h3>2016/11/18 ver. 1.4.5.4</h3>
-    <ul>
-        <li>
-        <p>下記のように、</p>
-        <div class="code"><pre class="brush:js">hm.debuginfo([1,2,3])</pre></div>
-        <p>などデバッグモニター表示した場合に、「V8ScriptItem」といった内部管理的な型情報が出力されていたが、<br>
-        あまり意味が無いため、「JavaScript系の型であれば、.toString()したものを、」「.NET系の型であれば、.ToString()したものを」出力するようにした。</p>
-        <li>
-        <p>又、ECMAScriptには、</p>
-        <div class="code"><pre class="brush:js">hm.debuginfo(...[1,2,3])</pre></div>
-        <p>といった手軽な配列展開が存在することを考慮し、<br>
+        <h3>2016/12/15 ver. 1.4.7.5</h3>
+        <p>
+            秀丸変数となる「currentmacrodirectory」に存在するマネージ.dllは、<br>
+            .NET Frameworkのライブラリと同様に、「登録済みのdll」であるかのように、<br>
+            アセンブリ名だけで、ロード出来るようになった。<br>
+            又、AssemblyPathオブジェクトにパスを追加していくことで、独自のディレクトリを.dllのロード場所とみなすことが可能となった。<br>
+            詳細は、<a href="?page=nobu_tool_hm_javascript_loadmngdll">こちら</a>
         </p>
-        <div class="code"><pre class="brush:js">hm.debuginfo(1, "abc", [100,200])</pre></div>
-        <p>といった複数の引数にも対応した。</p>
-    </ul>
     <li>
-    <h3>2016/11/08 ver. 1.4.5.2</h3>
-    <ul>
-        <li>ClearScript 5.4.8.0ベースとした。
-        <li>V8エンジンの更新。5.4.500.36 → 5.4.500.40
-    </ul>
+        <h3>2016/12/13 ver. 1.4.7.2</h3>
+        <ul>
+            <li>V8エンジンの更新。5.4.500.40 → 5.4.500.43<br>
+        </ul>
     <li>
-    <h3>2016/11/06 ver. 1.4.5.1</h3>
-    <ul>
-        <li>x86でもx64でも安定した動作を行うように修正。
-    </ul>
+        <h3>2016/12/02 ver. 1.4.7.2</h3>
+        <p>
+            hm.Macro.Varについては、「関数形式」ではなく、「プロパティへのアクセス形式」も可能とした。<br>
+            詳細は<a href="?page=nobu_tool_hm_ecmascript_api_866">こちら</a>
+        </p>
+        <p>
+            console.logやconsole.assertなどについて、より各ブラウザに実装されているものに近づけた。<br>
+            詳細は<a href="?page=nobu_tool_hm_javascript_api_866">こちら</a>
+        </p>
     <li>
-    <h3>2016/10/29 ver. 1.4.0.3</h3>
-    <ul>
-        <li>V8エンジンの更新。5.4.500.24 → 5.4.500.36
-    </ul>
+        <h3>2016/11/22 ver. 1.4.5.7</h3>
+        <p>
+            console.logやconsole.assertなど、よく利用されているものは、やはりスタブ関数だけでもあった方が便利そうなので、<br>
+            エラーにはならない程度のものを用意。<br>
+            詳細は<a href="?page=nobu_tool_hm_javascript_api_866">こちら</a>
+        </p>
+        </p>
     <li>
-    <h3>2016/10/25 ver. 1.4.0.2</h3>
-    <ul>
-        <li>ClearScriptのうち、利用していないクラスを削除して軽量化。
-    </ul>
+        <h3>2016/11/22 ver. 1.4.5.5</h3>
+        <p>hm.debuginfo(...)の性能アップ。より妥当な表示を実現した。</p>
     <li>
-    <h3>2016/10/24 ver. 1.4.0.1</h3>
-    <ul>
-        <li>パースエラーや、ランタイムエラーが発生した時に、出来るだけ親切なエラーコード、該当箇所の記述を出すようにした。
-    </ul>
+        <h3>2016/11/18 ver. 1.4.5.4</h3>
+        <ul>
+            <li>
+                <p>下記のように、</p>
+                <div class="code"><pre class="brush:js">hm.debuginfo([1,2,3])</pre></div>
+                <p>
+                    などデバッグモニター表示した場合に、「V8ScriptItem」といった内部管理的な型情報が出力されていたが、<br>
+                    あまり意味が無いため、「JavaScript系の型であれば、.toString()したものを、」「.NET系の型であれば、.ToString()したものを」出力するようにした。
+                </p>
+            <li>
+                <p>又、ECMAScriptには、</p>
+                <div class="code"><pre class="brush:js">hm.debuginfo(...[1,2,3])</pre></div>
+                <p>
+                    といった手軽な配列展開が存在することを考慮し、<br>
+                </p>
+                <div class="code"><pre class="brush:js">hm.debuginfo(1, "abc", [100,200])</pre></div>
+                <p>といった複数の引数にも対応した。</p>
+        </ul>
     <li>
-    <h3>2016/10/23 ver. 1.1.0.1</h3>
-    <ul>
-        <li>初公開。コンセプトモデル。<br>
-    </ul>
+        <h3>2016/11/08 ver. 1.4.5.2</h3>
+        <ul>
+            <li>ClearScript 5.4.8.0ベースとした。
+            <li>V8エンジンの更新。5.4.500.36 → 5.4.500.40
+        </ul>
+    <li>
+        <h3>2016/11/06 ver. 1.4.5.1</h3>
+        <ul>
+            <li>x86でもx64でも安定した動作を行うように修正。
+        </ul>
+    <li>
+        <h3>2016/10/29 ver. 1.4.0.3</h3>
+        <ul>
+            <li>V8エンジンの更新。5.4.500.24 → 5.4.500.36
+        </ul>
+    <li>
+        <h3>2016/10/25 ver. 1.4.0.2</h3>
+        <ul>
+            <li>ClearScriptのうち、利用していないクラスを削除して軽量化。
+        </ul>
+    <li>
+        <h3>2016/10/24 ver. 1.4.0.1</h3>
+        <ul>
+            <li>パースエラーや、ランタイムエラーが発生した時に、出来るだけ親切なエラーコード、該当箇所の記述を出すようにした。
+        </ul>
+    <li>
+        <h3>2016/10/23 ver. 1.1.0.1</h3>
+        <ul>
+            <li>初公開。コンセプトモデル。<br>
+        </ul>
 </ul>

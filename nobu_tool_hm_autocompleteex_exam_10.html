@@ -1,5 +1,5 @@
 %(hilight)s
-<h2><i class="fa fa-list fa-fw"></i>チュートリアル⑦ 完成</h2>
+<h2><i class="fa fa-book fa-fw"></i>チュートリアル⑦ 完成</h2>
 
 <ul class="checklist">
     <li>
@@ -10,12 +10,12 @@
     <li>「HmAutoCompleteExPlug.dic」ではなく、「HmAutoCompleteExPerl.dic」などといったファイル名へと変更し</p>
     <p>マクロ内容も</p>
     <div class="code"><pre class="brush:cpp;">
-#hmace = loaddll( hidemarudir + &quot;\\hmAutoCompleteEx.dll&quot; );
-if (#hmace) {
-  #_ = dllfunc( #hmace, &quot;SetHidemaruHandle&quot;, hidemaruhandle(0), filename2 );
-  #_ = dllfunc( #hmace, &quot;BindAutoCompleter&quot;, hidemarudir + &quot;\\HmAutoCompleteExPerl.dll&quot;, &quot;\\.(pm|pl)$&quot; );
+#HMACE = loaddll( hidemarudir + @&quot;\HmAutoCompleteEx.dll&quot; );
+if (#HMACE) {
+    #_ = dllfuncw( #HMACE, &quot;SetHidemaruHandle&quot;, hidemaruhandle(0), filename2 );
+    #_ = dllfuncw( #HMACE, &quot;BindAutoCompleter&quot;, hidemarudir + &quot;\\HmAutoCompleteExPerl.dll&quot;, &quot;\\.pl$&quot; );
 } else {
-  message(&quot;dllが無い&quot;);
+    message(&quot;dllが無い&quot;);
 }
 </pre></div>
     <p>などとしておくのが良いかと思います。</p>

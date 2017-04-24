@@ -1,0 +1,37 @@
+%(hilight)s
+<h2><i class="fa fa-book fa-fw"></i>utf8/utf16以外のPowerShellファイルを取り扱う</h2>
+
+<ul class="checklist">
+    <li>
+    <h3>概要</h3>
+    <p>hmPS/PowerShellは、「utf8(BOM有り)」「utf16(BOM有り)」<br>
+    は、「DoFile」で自動的に判別して読み込むことが可能です。<br>
+    </p>
+    <p>又、BOMが無いファイルをDoFileしようとした際には、デフォルトではutf8(BOM無し)とみなします。</p>
+    <p>それ以外の特別な文字コードの「.ps」を「DoFile」で読み込ませたい場合には、自動判別が出来ないため、<br>
+    SetCodePage関数でコード番号を指定してください。<br>
+    <li>
+    <h3>cp932(ShiftJIS)の.psファイル</h3>
+    <p>BOMが無いファイルをDoFileしようとした際には、デフォルトではutf8(BOM無し)とみなしますが、<br>
+    SetCodePage関数によって、これを変更することが出来ます。</p>
+    <ul>
+        <div class="code"><pre class="brush:python;highlight:[3]">
+#dll = loaddll( hidemarudir + @&quot;\hmPS.dll&quot; );
+
+#r = dllfuncw( #dll, &quot;SetCodePage&quot;, 932 ); // BOMが無いファイルをDoFileしたら、cp932(sjis)とみなす。BOMがあるファイルはBOM情報に従う。
+
+#r = dllfuncw( #dll, &quot;DoFile&quot;, currentmacrodirectory + "\\test.ps" )
+
+freedll(#dll);
+</pre></div>
+    </ul>
+    <p>注意点としては以下の２つとなります。</p>
+    <ul class="pointlist">
+        <li>
+        <h4>文字コードの明示的な指定</h4>
+        <p>#r = dllfuncw( #dll, &quot;SetCodePage&quot;, 932 ); // cp932(sjis)</p>
+        <p>BOMが無いファイルをDoFileしたら、cp932(sjis)とみなして読み込むことを明示します。<br>
+        BOMがあるファイルであれば、932と指定していたとしても、ちゃんとBOM情報に従って読み込みます。</p>
+    </ul>
+</ul>
+

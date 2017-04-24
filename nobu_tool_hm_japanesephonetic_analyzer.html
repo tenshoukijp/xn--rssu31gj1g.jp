@@ -1,0 +1,121 @@
+%(hilight)s
+<h2><i class="fa fa-language fa-fw"></i>HmJapanesePhoneticAnalyzer (日本語単語分割＆ルビ振り処理)</h2>
+<ul class="checklist">
+    <li>
+        <h3>概要</h3>
+        <p>このプログラムは、漢字とひらがなの組み合わせである日本語の文字列を読み取り、<br>「分かち書き分割」や「ルビ振り」を「自動的に行う」ための秀丸マクロ・プラグインプログラムです。<br>
+        <p><img src="./other_soft/hm_japanesephonetic_analyzer/cnt_hm_japanesephonetic_analyzer_01.png"></p>
+        <p><img src="./other_soft/hm_japanesephonetic_analyzer/cnt_hm_japanesephonetic_analyzer_02.png"></p>
+        <p><img src="./other_soft/hm_japanesephonetic_analyzer/cnt_hm_japanesephonetic_analyzer_03.png"></p>
+        <p><img src="./other_soft/hm_japanesephonetic_analyzer/cnt_hm_japanesephonetic_analyzer_04.png"></p>
+    <li>
+        <h3>ダウンロード</h3>
+        <dl>
+            <dt>
+                <div class="download_file">DOWNLOAD ⇒ <a href="%(file)s">HmJapanesePhoneticAnalyzer.zip</a>ファイル。ver 1.001</div>
+            </dt>
+            <dd>
+                <div class="update_time">└更新日 %(year)04d/%(mon)02d/%(mday)02d</div>
+            </dd>
+        </dl>
+    <li>
+        <h3>動作環境</h3>
+        <ul>
+            <li>
+                <h4>秀丸</h4>
+                <p>秀丸エディタ ver8.66以上</p>
+            <li>
+                <h4>Windows 8.1以上</h4>
+                <p>
+                    Windows8.1やWindows10といった新しめのOSが必要です。<br>
+                    <span class="negative">Windows8.0も含めて、それ未満のバージョンのOSでは動作しません。</span>
+                </p>
+            <li>
+                <h4>hmV8</h4>
+                <p><a href="?page=nobu_tool_hm_ecmascript">hmV8</a> 1.4.7.5以上</p>
+        </ul>
+    <li>
+        <h3>インストール</h3>
+        <ul>
+            <li>HmJapanesePhoneticAnalyzer.zipをダウンロードする。
+            <li>
+                普段秀丸のマクロを置いているような適当なディレクトリに、<br>
+                ・HmJapanesePhoneticAnalyzer.dll<br>
+                ・Windows.winmd<br>
+                ・HmJapanesePhoneticAnalyzer.mac<br>
+                の３つをコピー。
+            <li>適当にHmJapanesePhoneticAnalyzer.macのマクロを登録。
+        </ul>
+    <li>
+        <h3>利用の手引き</h3>
+        <ul class="pointlist">
+            <li>
+                <h4>文字列を選択して実行</h4><p>ルビを振りたいテキスト文字列を選択して、マクロ(HmJapanesePhoneticAnalyzer.mac)を実行します。</p>
+                <p><img src="./other_soft/hm_japanesephonetic_analyzer/cnt_hm_japanesephonetic_analyzer_01.png"></p>
+            <li>
+                <h4>自動で新規に「無題のタブ」が２つ出来上がる!</h4>
+            <li>
+            <li>
+                <ul class="arrowlist">
+                    <li>
+                        <h5>横に(...)でルビ振り</h5>
+                        <p>１つは「漢字の横に(...)でルビを振ったもの」<br></p>
+                        <p><img src="./other_soft/hm_japanesephonetic_analyzer/cnt_hm_japanesephonetic_analyzer_02.png"></p>
+                    <li>
+                        <h5>HTMLを使ってルビ振り</h5>
+                        <p>
+                            もう一つは「HTMLのrubyタグ等を使って、ルビを振ったものです。
+                        </p>
+                        <p><img src="./other_soft/hm_japanesephonetic_analyzer/cnt_hm_japanesephonetic_analyzer_03.png"></p>
+                </ul>
+            <li>
+                <h4>管理されたデータ型でオブジェクトがやりとりされており、プログラム修正が容易</h4>
+                <p>
+                    刹那的にあてもなく解析し、処理が理解不能で「プログラミングデザインとしてグダグダ」な、<br>
+                    よくある秀丸マクロとは異なります。<br>
+                    データ分解やオブジェクト、インターフェイス・多態、などが最低限は整った状態での提供となるため、<br>
+                    理解や改変が容易です。
+                </p>
+        </ul>
+    <li>
+        <h3>備考</h3>
+        <ul class="pointlist">
+            <li>
+                <h4>HTMLのルビ振りの目視で確認はHmHtmlPreviewがお勧め</h4>
+                HTMLのルビ振りを目視でするのは、<a href="?page=nobu_tool_hm_htmlpreview">HmHtmlPreview</a>を利用すると便利です。</h4>
+                <p><img src="./other_soft/hm_japanesephonetic_analyzer/cnt_hm_japanesephonetic_analyzer_04.png"></p>
+            <li>
+                <h4>HTMLのルビ振りの「HTMLエンコードをしない」場合</h4>
+                <p>HmJapanesePhoneticAnalyzer.macの一部を下記のように、追記すれば、HtmlEncodeするのを避けることが出来ます。</p>
+                <fieldset class="code">
+                    <legend>HmJapanesePhoneticAnalyzer.mac</legend><pre class="brush:js;highlight:[3]">
+HtmlEncode(src) {
+
+    return src;
+
+    let html = this._htmlencoder(src);
+    html = html.replace(/\r\n/g, &quot;\r&quot;)
+        </pre>
+                </fieldset>
+            <li>
+                <h4>「区切れが無い長い文字列」の問題</h4>
+                <p>
+                    句読点や括弧や記号や改行などが一切存在しない、「区切れが無い長い文字列」を選択した状態だと変換出来ないことがあります。<br>
+                    この場合は、文字列の選択文字数を減らしてください。<br>
+                    (動作実験以外の目的で、そのような文字列のルビ振りが必要なシーンがほとんど考えられないハズです)</p>
+                <p><img src="./other_soft/hm_japanesephonetic_analyzer/cnt_hm_japanesephonetic_analyzer_05.png"></p>
+        </ul>
+    <li>
+        <h3>ライセンス</h3>
+        <ul class="pointlist">
+            <li>
+                <h4>HmJapanesePhoneticAnalyzer</h4>
+                <p>
+                    HmJapanesePhoneticAnalyzerは、Apache License 2.0となります。<br>
+                </p>
+                <h4>ソースの場所</h4>
+                <ul>
+                    <li><a href="https://github.com/vscode-life/hidemaru-net/tree/master/win-hidemaru-app/hm_japanesephonetic_analyzer">Github</a>にソースがあります。<br>
+                </ul>
+        </ul>
+</ul>

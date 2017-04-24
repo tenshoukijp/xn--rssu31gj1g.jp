@@ -1,0 +1,112 @@
+﻿%(hilight)s
+<h2><i class="fa fa-book fa-fw"></i>秀丸用の「C++/CLIによるdll」における「他のマネージ.dll」の参照</h2>
+
+<ul class="checklist">
+    <li>
+        <h3>概要</h3>
+        <p>
+            秀丸用の.dllを作成したは良いものの、通常は秀丸本体のhidemaru.exeと自分で作成した.dllとは、<br>
+            「異なるディレクトリ」へと配置するのが普通です。<br>
+            こういった場合に困るのが、<span class="negative">秀丸本体と異なるディレクトリへと配置してしまうと、</span><br>
+            C#やC++/CLIやVB.netなどで作成したマネージ.dllの制約上を読めなくなってしまうことです。
+        </p>
+        <p>
+            こういった事態に対処するため、通常は以下のような「AssemblyResolve」とも呼べるプログラムを、<br>
+            自作の秀丸用の.dllへと組み込む必要があります。
+        </p>
+        <p>
+            こうすることで、「自作した.dllと同じディレクトリにある、<span class="positive">他のマネージドな.dll</span>」も、<br>
+            参照可能となります。<br>
+        </p>
+        <p>このような工程を経ることで、秀丸本体と異なるディレクトリに配置可能な、<br>C++/CLIによる混成アセンブリな.dllを作成出来ます。</p>
+        <fieldset class="code">
+            <legend>マネージドなdllを参照する場合に、AssemblyResolveをソースに書いておく</legend><pre class="brush:cpp;">
+#include &lt;windows.h&gt;
+#include &lt;tchar.h&gt;
+
+
+using namespace System;
+using namespace System::Reflection;
+static Assembly^ CurrentDomain_AssemblyResolve(Object^ sender, ResolveEventArgs^ args) {
+    try
+    {
+        auto requestingAssembly = args-&gt;RequestingAssembly;
+        auto requestedAssembly = gcnew AssemblyName(args-&gt;Name);
+
+        // このdll自体を置いているフォルダに読み込み対象のアセンブリがあるかもしれない。
+        String^ self_full_path = System::Reflection::Assembly::GetExecutingAssembly()-&gt;Location;
+        String^ self_dir = System::IO::Path::GetDirectoryName(self_full_path);
+
+        auto targetfullpath = self_dir + R&quot;(\)&quot; + requestedAssembly-&gt;Name + &quot;.dll&quot;;
+
+        if (System::IO::File::Exists(targetfullpath))
+        {
+            return Assembly::LoadFile(targetfullpath);
+        }
+
+        // そのようなフルパスが指定されている場合(フルパスを指定した書き方)
+        targetfullpath = requestedAssembly-&gt;Name;
+        if (System::IO::File::Exists(targetfullpath))
+        {
+            return Assembly::LoadFile(targetfullpath);
+        }
+    }
+    catch (...)
+    {
+        return nullptr;
+    }
+    return nullptr;
+}
+
+
+struct __declspec(dllexport) DllAssemblyResolver {
+    DllAssemblyResolver() {
+        AppDomain::CurrentDomain-&gt;AssemblyResolve += gcnew System::ResolveEventHandler(&amp;CurrentDomain_AssemblyResolve);
+    }
+
+    ~DllAssemblyResolver() {
+        AppDomain::CurrentDomain-&gt;AssemblyResolve -= gcnew System::ResolveEventHandler(&amp;CurrentDomain_AssemblyResolve);
+    }
+};
+
+// ここより上は全部マネージド
+
+//----------ここだけネイティブ
+#pragma unmanaged 
+// ほかのマネージドコードより先に実行させるため。
+// 先にここを定義して実行。アンマネージド
+DllAssemblyResolver asmresolver;
+#pragma managed
+//----------ここだけネイティブ
+
+// ここより後は全部マネージド
+
+// リゾルバーの後に、フォームの定義行のコードが走るようにしなければならない。リゾルバーが何よりも先
+
+//------------------------------------------------------------------------------------
+#define MACRO_DLL extern &quot;C&quot; __declspec(dllexport)
+
+
+// 秀丸の該当プロセスを閉じたとき
+MACRO_DLL intptr_t Dispose() {
+
+    try {
+        // 秀丸が閉じる前までに可能な限りマネージドのインスタンスを解放して不正エラーが出にくい状態へと持っていく。
+        GC::Collect();
+        GC::WaitForPendingFinalizers();
+    }
+    catch (Exception^) {}
+
+    return TRUE;
+}
+
+// 秀丸の該当プロセスを閉じたとき、あるいはfreedllが呼ばれた時
+MACRO_DLL intptr_t DllDetachFunc_After_Hm866() {
+    return Dispose();
+}        </pre>
+        </fieldset>
+
+    <li>
+        <h3>このテクニックが使われているソースコードの代表例</h3>
+        <p><a href="https://github.com/vscode-life/hidemaru-net/tree/master/win-hidemaru-app/hm_htmlpreviewchrome">HmHtmlPreviewChrome</a>のソースコードが代表例となるでしょう。</p>
+</ul>

@@ -9,7 +9,7 @@
     <p>秀丸マクロのエラーは「ダイアログ」で表示されますが、<br>
     「hmRb・IronRuby」については、ダイアログではエラーを表示しません。<br>
     (あえて出していません)</p>
-    <p>hmRb・JavaScriptでは、エラーは「<a href="?page=nobu_tool_hm_debugmonitor">秀丸・デバッグ出力モニター</a>」に表示されます。</p>
+    <p>hmRb・IronRubyでは、エラーは「<a href="?page=nobu_tool_hm_debugmonitor">秀丸・デバッグ出力モニター</a>」に表示されます。</p>
     <p><img src="./other_soft/hm_ironruby/cnt_hm_ironruby_07.png"></p>
 
     <h3>意図的に、秀丸エディタ・デバッグ出力モニターに出す場合</h3>
@@ -23,7 +23,6 @@
 )IronRuby&quot;
 );
 
-#_ = dllfuncw(#RB, &quot;DestroyScope&quot;); // スコープを解放 秀丸エディタ8.66以降は不要。freedllを記述しておけば自動でスコープが解放される。
 freedll(#RB);
 </pre></div>
 

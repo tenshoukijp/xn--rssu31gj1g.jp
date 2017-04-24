@@ -3,6 +3,59 @@
 
 <ul class="checklist">
     <li>
+        <h3>2017/04/17 ver. 1.5.2.1</h3>
+        <ul>
+            <li>
+                <p>
+                    hm.Macro.Eval(...) や R(...)といった関数に対して、<br>
+                    これまで引数を関数にした場合、「コメントの改行状況」まで厳しく縛っていたが、コメントの改行状況については自由とした。<br>
+                    単純に「/*」と「*/」の間にある文字列であることだけが条件となった。<br>
+                </p>
+                <p>具体的には、これまでであれば</p>
+                <fieldset>
+                    <legend>これまでの縛り</legend>
+                    <pre class="brush:js">
+    // 秀丸マクロとして一連の文字列を実行
+    hm.Macro.Eval( function() { /*
+        message($bbb);
+        $$message = $bbb + $bbb;
+    */ }
+    );
+</pre>
+                </fieldset>
+                <p>といった形である必要があったば、これからは</p>
+                <fieldset>
+                    <legend>自由な形の例 その①</legend>
+                    <pre class="brush:js">
+    // 秀丸マクロとして一連の文字列を実行
+    hm.Macro.Eval( function() {
+    /*
+        message($bbb);
+        $$message = $bbb + $bbb;
+    */
+    }
+    );
+</pre>
+                </fieldset>
+                <p> や、</p>
+                <fieldset>
+                    <legend>自由な形の例 その②</legend>
+                    <pre class="brush:js">
+    // 秀丸マクロとして一連の文字列を実行
+    hm.Macro.Eval( function(){ /* message($bbb);  $$message = $bbb + $bbb;  */ } );
+</pre>
+                </fieldset>
+                <p>といった形でも良くなった。</p>
+
+        </ul>
+<li>
+    <h3>2017/04/04 ver. 1.4.8.1</h3>
+    <ul>
+        <li>著作者の変更。
+        <li>DoStringやDoFileより早い段階で、<br>
+            秀丸マクロ側より、SetNumVarやGetStrVarなどの直接マニュアルによる代入・取得関数を使うとdllの利用形態が取得できないバグの修正。
+    </ul>
+    <li>
     <h3>2017/03/24 ver. 1.4.7.8</h3>
     <ul>
         <li>JavaScriptのbool値を、秀丸の整数型へと代入した際には、真=1, 偽=0 へとマッピングするようにした。

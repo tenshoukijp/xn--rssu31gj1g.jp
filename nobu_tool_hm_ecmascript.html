@@ -1,109 +1,133 @@
 %(hilight)s
 <h2><i class="fa fa-v8 fa-fw"></i>hmV8 <span style="font-size: 0.85em">(秀丸マクロ用 .NET Framework ライブラリ via V8 ECMAScript6)</span></h2>
-
 <ul class="checklist">
     <li>
-    <h3>概要</h3>
-    <p>秀丸マクロを可能な限り、「ECMAScript6 V8エンジン」で記述可能とするためのライブラリです。</p>
-    <ul class="pointlist">
-        <li>
-        <h4>ECMAScript6で秀丸マクロ</h4>
-        <p>V8 エンジンによるECMAScript6内で、秀丸マクロの実行が可能です。<br>又、「V8」⇔「秀丸マクロの各種変数やシンボル」が非常に手軽に行えるようになっています。</p>
-        <li>
-        <h4>.NET Framework</h4>
-        <p>.NET Frameworkのライブラリが利用可能であるとともに、独自にC#等で制作した.dllも読み込み＆利用可能です。<br>
-        ECMAScript標準ライブラリについては、V8本体に搭載しているもののみ利用可能です。注意してください。<br>
-        (各ブラウザが独自に提供しているものが利用できるわけではないということです)
-        <li>
-        <h4>基本的にはhmJSの上位互換</h4>
-        <p>秀丸用に独自に設定されている関数などは、全て「<a href="?page=nobu_tool_hm_javascript">秀丸マクロ用 .NET & ActiveXObject ライブラリ via JavaScript</a>」と同じとなるため、<br>
-        解説は割愛しています。</p>
-        <li>
-        <h4>hmJSにあるActiveXObjectの特別な対応機能は無い</h4>
-        <p>ECMAScript6で記述していく、ということは、「古いJScriptではなく、新しいECMAScript6を優先した記述にしていこう」といったことですので、<br>
-        レガシー資産利用となるActiveXObjectの特別な対応はありません。<br>
+        <h3>概要</h3>
+        <p>秀丸マクロを可能な限り、「ECMAScript6 V8エンジン」で記述可能とするためのライブラリです。</p>
+        <ul class="pointlist">
+            <li>
+                <h4>ECMAScript6で秀丸マクロ</h4>
+                <p>V8 エンジンによるECMAScript6内で、秀丸マクロの実行が可能です。<br>又、「V8」⇔「秀丸マクロの各種変数やシンボル」が非常に手軽に行えるようになっています。</p>
+            <li>
+                <h4>.NET Framework</h4>
+                <p>
+                    .NET Frameworkのライブラリが利用可能であるとともに、独自にC#等で制作した.dllも読み込み＆利用可能です。<br>
+                    ECMAScript標準ライブラリについては、V8本体に搭載しているもののみ利用可能です。注意してください。<br>
+                    (各ブラウザが独自に提供しているものが利用できるわけではないということです)
+            <li>
+                <h4>基本的にはhmJSの上位互換</h4>
+                <p>
+                    秀丸用に独自に設定されている関数などは、全て「<a href="?page=nobu_tool_hm_javascript">秀丸マクロ用 .NET & ActiveXObject ライブラリ via JavaScript</a>」と同じとなるため、<br>
+                    解説は割愛しています。
+                </p>
+            <li>
+                <h4>hmJSにあるActiveXObjectの特別な対応機能は無い</h4>
+                <p>
+                    ECMAScript6で記述していく、ということは、「古いJScriptではなく、新しいECMAScript6を優先した記述にしていこう」といったことですので、<br>
+                    レガシー資産利用となるActiveXObjectの特別な対応はありません。<br>
+                </p>
+        </ul>
+    <li>
+        <h3>ダウンロード</h3>
+        <dl>
+            <dt>
+                <div class="download_file"><img src="./other_soft/hm_ecmascript/cnt_hm_ecmascript_minizip.png" attr="noedge" align="middle"> ⇒ <a href="%(file)s">hmV8.zip</a>ファイル。ver 1.521</div>
+            </dt>
+            <dd>
+                <div class="update_time">└更新日 %(year)04d/%(mon)02d/%(mday)02d</div>
+            </dd>
+        </dl>
+        <ul class="pointlist">
+            <li>
+                <h4>ダウンロードした後、zipを「ブロック解除」必須</h4>
+                <p>
+                    当プログラムには「強い厳密な署名」が施してありますので、zipを解凍する際には、「ブロック解除」してください。<br>
+                    もしくは、zipを解凍した後に、各々のdllに対して「ブロック解除」してください。<br>
+                    ブロック解除しないまま、当プログラムを利用することは出来ません。<br>
+                </p>
+                <img src="./other_soft/hm_ecmascript/cnt_hm_ecmascript_02.png">
+        </ul>
+    <li>
+        <h3>動作環境</h3>
+        <ul class="pointlist">
+            <li>
+                <h4>秀丸</h4>
+                <p>秀丸エディタ ver8.66以上</p>
+            <li>
+                <h4>Microsoft VC++ 再頒布可能パッケージ</h4>
+                <p>
+                    <a href="https://www.microsoft.com/ja-JP/download/details.aspx?id=48145">Visual Studio 2015 C++ ランタイム</a><br>
+                    x86版をインストールしたことが無い方はインストールしてください。<br>
+                    <span class="negative">お手持ちのOSが64bitか32bitかには関わりなく、x86版のインストールが必要です。</span>
+                </p>
+            <li>
+                <h4>Microsoft .NET</h4>
+                <p>
+                    .NET Framework 4.0以上。<br>
+                </p>
+            <li>
+                <h4>秀丸エディタ 64bit版について</h4>
+                <p>
+                    秀丸エディタ64bit版をご利用の方は、<a href="/other_soft/hm_ecmascript/hmV8_x64.zip">hmV8_x64.zip</a>をダウンロードし、ファイルを差し替えてください。<br>
+                    (又、この場合は、Microsoft VC++ 再頒布可能パッケージは、64bit版をインストールしてください。)
+                </p>
+        </ul>
+    <li>
+        <h3>インストール</h3>
+        <ul class="pointlist">
+            <li>
+                <h4>秀丸エディタが32bit版の場合</h4>
+                <p>
+                    「hmV8.dll、ClearScript.dll、ClearScriptV8-32.dll、v8-ia32.dll」を秀丸エディタのディレクトリ内(hidemaru.exeと同じ場所)へと コピー</span>する。<br>
+                </p>
+            <li>
+                <h4>秀丸エディタが64bit版の場合</h4>
+                <p>
+                    「hmV8.dll、ClearScript.dll、ClearScriptV8-64.dll、v8-x64.dll」を秀丸エディタのディレクトリ内(hidemaru.exeと同じ場所)へと コピー</span>する。<br>
+                </p>
+            <li>(<span class="negative">原則的には、hidemaru.exeと同じ場所である必要があります。これは.NET FrameWorkのdllを動作させる仕組みに拠るためです。)</span>
+        </ul>
+    <li>
+        <h3>各種説明は、hmJSとの差分のみ</h3>
+        <p>
+            hmJSとhmV8は、ECMAScriptの「旧」と「新」という関係ですので、基本的にはhmV8はhmJSの上位の互換となります。<br>
+            このため、このhmV8では、<span class="negative">hmJSに対する差分のみの情報を掲載</span>しています。<br>
+            基本的な機能の説明等は、<a href="?page=nobu_tool_hm_javascript">秀丸マクロ用 .NET & ActiveXObject ライブラリ via JavaScript</a>を参照してください。<br>
+            (繰り返しとなりますが、hmV8ではhmJSには存在するActiveXObjectに対する特別なサポート構文はありません。)
         </p>
-    </ul>
     <li>
-    <h3>ダウンロード</h3>
-    <dl>
-        <dt>
-        <div class="download_file"><img src="./other_soft/hm_ecmascript/cnt_hm_ecmascript_minizip.png" attr="noedge" align="middle"> ⇒ <a href="%(file)s">hmV8.zip</a>ファイル。ver 1.511</div>
-        </dt>
-        <dd>
-        <div class="update_time">└更新日 %(year)04d/%(mon)02d/%(mday)02d</div>
-        </dd>
-    </dl>
-    <ul class="pointlist">
-        <li>
-        <h4>ダウンロードした後、zipを「ブロック解除」必須</h4>
-        <p>当プログラムには「強い厳密な署名」が施してありますので、zipを解凍する際には、「ブロック解除」してください。<br>
-        もしくは、zipを解凍した後に、各々のdllに対して「ブロック解除」してください。<br>
-        ブロック解除しないまま、当プログラムを利用することは出来ません。<br>
+        <h3>hmV8の意義</h3>
+        <ul class="pointlist">
+            <li>
+                <h4>新JavaScriptの基軸・ECMAScript6</h4>
+                <p>
+                    ECMAScript6によって、JavaScriptは、「古い設計思想の言語をむりくりこねくり回す」形から、<br>
+                    「現代的な機能の多くを搭載した優れたプログラムが組みやすい言語」へと昇格し、<br>
+                    オブジェクト指向、関数型、手続き型の、どれもを十分にサポートする言語へと成長しました。<br>
+                    <h4>誰もが触れる機会が多くなっていくECMAScript6</h4>
+                <p>
+                    Web系のみならず、アプリやデスクトップ系にもECMAScriptはどんどん進出していっています。<br>
+                    2020年ごろから各所で本格的に使われ初め、2024年頃には、「新規のJavaScriptはECMAScript6系で書くのが常識」といった流れになるのは間違いないところです。<br>
+                    これまで以上に、ますます多くの人が「それほど深くは知らないが、ある程度なら書ける広く馴染みのある言語」としての地位を確立していくことでしょう。
+                </p>
+                <h4>巨大なライブラリ</h4>
+                <p>
+                    ECMAScript6そのものは、ライブラリが極めて貧弱であるため、今やWindowsの共通ライブラリとも言える「.NET Framework」ライブラリを使用可能としました。<br>
+                    このメリットはECMAScript6の唯一の大きな弱点を完全にカバーして余りあるため、とても大きいと言えるでしょう。<br>
+                    <h4>秀丸独自の機能をECMAScript6の中で</h4>
+                <p>秀丸マクロの変数とECMAScript6の変数の値を自由にやりとり出来るとともに、ECMAScript6の中からも秀丸マクロを実行可能です。<br>
+        </ul>
+    <li>
+        <h3>秀丸マクロファイルや「.js」ファイルの文字コード</h3>
+        <p>
+            hmV8を利用する<b>秀丸マクロファイルや、.jsファイルは、全て「utf8」の「BOM付き」</b>を前提としています。<br>
+            但し、他の文字コードでのファイルも扱うことが可能です。<br>
         </p>
-        <img src="./other_soft/hm_ecmascript/cnt_hm_ecmascript_02.png">
-    </ul>
+        <p>詳細は、「<a href="?page=nobu_tool_hm_javascript_api_lv0">hmJSの基礎中の基礎のAPI</a>」の「SetCodePage」の項目を参照してください。</p>
     <li>
-    <h3>動作環境</h3>
-    <ul class="pointlist">
-        <li>
-        <h4>秀丸</h4>
-        <p>秀丸エディタ ver8.66以上</p>
-        <li>
-        <h4>Microsoft VC++ 再頒布可能パッケージ</h4>
-        <p><a href="https://www.microsoft.com/ja-JP/download/details.aspx?id=48145">Visual Studio 2015 C++ ランタイム</a><br>
-        x86版をインストールしたことが無い方はインストールしてください。<br>
-        <span class="negative">お手持ちのOSが64bitか32bitかには関わりなく、x86版のインストールが必要です。</span></p>
-        <li>
-        <h4>Microsoft .NET</h4>
-        <p>.NET Framework 4.0以上。<br>
-        </p>
-        <li>
-        <h4>秀丸エディタ 64bit版について</h4>
-        <p>秀丸エディタ64bit版をご利用の方は、<a href="/other_soft/hm_ecmascript/hmV8_x64.zip">hmV8_x64.zip</a>をダウンロードし、ファイルを差し替えてください。<br>
-        (又、この場合は、Microsoft VC++ 再頒布可能パッケージは、64bit版をインストールしてください。)</p>
-    </ul>
-    <li>
-    <h3>インストール</h3>
-    <ul>
-        <li>hmV8.zipを解凍する。
-        <li><span class="negative">「hmV8.dll、ClearScript.dll、ClearScriptV8-32.dll、v8-ia32.dll」を秀丸エディタのディレクトリ内(hidemaru.exeと同じ場所)へと コピー</span>する。<br>
-        (<span class="negative">原則的には、hidemaru.exeと同じ場所である必要があります。これは.NET FrameWorkのdllを動作させる仕組みに拠るためです。)</span>
-    </ul>
-
-    <li>
-    <h3>各種説明は、hmJSとの差分のみ</h3>
-    <p>hmJSとhmV8は、ECMAScriptの「旧」と「新」という関係ですので、基本的にはhmV8はhmJSの上位の互換となります。<br>
-    このため、このhmV8では、<span class="negative">hmJSに対する差分のみの情報を掲載</span>しています。<br>
-    基本的な機能の説明等は、<a href="?page=nobu_tool_hm_javascript">秀丸マクロ用 .NET & ActiveXObject ライブラリ via JavaScript</a>を参照してください。<br>
-    (繰り返しとなりますが、hmV8ではhmJSには存在するActiveXObjectに対する特別なサポート構文はありません。)</p>
-    <li>
-    <h3>hmV8の意義</h3>
-    <ul class="pointlist">
-        <li>
-        <h4>新JavaScriptの基軸・ECMAScript6</h4>
-        <p>ECMAScript6によって、JavaScriptは、「古い設計思想の言語をむりくりこねくり回す」形から、<br>
-        「現代的な機能の多くを搭載した優れたプログラムが組みやすい言語」へと昇格し、<br>
-        オブジェクト指向、関数型、手続き型の、どれもを十分にサポートする言語へと成長しました。<br>
-        <h4>誰もが触れる機会が多くなっていくECMAScript6</h4>
-        <p>Web系のみならず、アプリやデスクトップ系にもECMAScriptはどんどん進出していっています。<br>
-        2020年ごろから各所で本格的に使われ初め、2024年頃には、「新規のJavaScriptはECMAScript6系で書くのが常識」といった流れになるのは間違いないところです。<br>
-        これまで以上に、ますます多くの人が「それほど深くは知らないが、ある程度なら書ける広く馴染みのある言語」としての地位を確立していくことでしょう。</p>
-        <h4>巨大なライブラリ</h4>
-        <p>ECMAScript6そのものは、ライブラリが極めて貧弱であるため、今やWindowsの共通ライブラリとも言える「.NET Framework」ライブラリを使用可能としました。<br>
-        このメリットはECMAScript6の唯一の大きな弱点を完全にカバーして余りあるため、とても大きいと言えるでしょう。<br>
-        <h4>秀丸独自の機能をECMAScript6の中で</h4>
-        <p>秀丸マクロの変数とECMAScript6の変数の値を自由にやりとり出来るとともに、ECMAScript6の中からも秀丸マクロを実行可能です。<br>
-    </ul>
-    <li>
-    <h3>秀丸マクロファイルや「.js」ファイルの文字コード</h3>
-    <p>hmV8を利用する<b>秀丸マクロファイルや、.jsファイルは、全て「utf8」の「BOM付き」</b>を前提としています。<br>
-    但し、他の文字コードでのファイルも扱うことが可能です。<br>
-    </p>
-    <p>詳細は、「<a href="?page=nobu_tool_hm_javascript_api_lv0">hmJSの基礎中の基礎のAPI</a>」の「SetCodePage」の項目を参照してください。</p>
-    <li>
-    <h3>ソース例</h3>
-    <div class="code"><pre class="brush:ruby">
+        <h3>ソース例</h3>
+        <div class="code">
+            <pre class="brush:ruby">
 #JS = loaddll( hidemarudir + @&quot;\hmV8.dll&quot; );
 
 #_ = dllfuncw( #JS, &quot;DoString&quot;, R&quot;(
@@ -178,43 +202,53 @@ f.Show();
 message(&quot;ボタンは&quot; + $count + &quot;回クリックされました&quot;);
 
 freedll(#JS);
-</pre></div>
+</pre>
+        </div>
     <li>
-    <h3>Google Chromeに搭載されている V8 エンジンとのバージョン比較</h3>
-    <p>ChromeのURLアドレスバーに「chrome://version」などと入力することにより、<br>
-    V8 エンジンのバージョンを知ることが出来ます。<br>
-    このバージョンと、v8-ia32.dll(もしくはv8-x64.dll)のバージョンとを比較すれば、<br>
-    どの程度バージョンが類似しているか(使用できる文法が一致するか)、概ね想像が出来るかと思います。<br>
-    </p>
-    <p>V8のサイトを詳細に追えば、どのバージョンで何が実装されたのか追うことも不可能ではないですが、<br>
-    V8のソースコードは、年中途絶えることなく、数時間おきぐらいにReleaseバージョンが更新され続けていますので、<br>
-    V8のマニアでもない限り、追っても追いつかないため、無駄だと思われます。</p>
-    <li>
-    <h3>学習用のREPL(インタラクティブシェル)</h3>
-    <p><a href="/other_soft/hm_ecmascript/iv8.zip">iv8.zip</a>は上記hmV8.zipに含まれるClearScript.dll用に調整されたインタラクティブシェルとなります。<br>
-    <b>「hmV8 x86 版 の一式」と同じフォルダ(原則、hidemaru.exeと同じフォルダ)に配置</b>して使用すれば、<br>
-    「ClearScript + V8」の軽いトライ＆エラーや機能確認がやりやすくなります。<br>
-    iv8.exeのライセンスは、hmV8+ClearScript と同じです。<br>
-    <img src="./other_soft/hm_ecmascript/cnt_hm_ecmascript_iv8_02.png"></p>
-    <li>
-    <h3>ライセンス</h3>
-    <ul class="pointlist">
-        <li>
-        <h4>hmV8</h4>
-        <p>hmV8は、Apache License 2.0となります。<br>
+        <h3>Google Chromeに搭載されている V8 エンジンとのバージョン比較</h3>
+        <p>
+            ChromeのURLアドレスバーに「chrome://version」などと入力することにより、<br>
+            V8 エンジンのバージョンを知ることが出来ます。<br>
+            このバージョンと、v8-ia32.dll(もしくはv8-x64.dll)のバージョンとを比較すれば、<br>
+            どの程度バージョンが類似しているか(使用できる文法が一致するか)、概ね想像が出来るかと思います。<br>
         </p>
-        <h4>ソースの場所</h4>
-        <p><a href="https://github.com/tenshoukijp/xn--rssu31gj1g.jp/tree/master/other_soft/hm_ecmascript6">Github</a>にソースがあります。<br>
+        <p>
+            V8のサイトを詳細に追えば、どのバージョンで何が実装されたのか追うことも不可能ではないですが、<br>
+            V8のソースコードは、年中途絶えることなく、数時間おきぐらいにReleaseバージョンが更新され続けていますので、<br>
+            V8のマニアでもない限り、追っても追いつかないため、無駄だと思われます。
         </p>
-        <li>
-        <h4>ClearScript</h4>
-        <p>hmV8はClearScriptが利用されています。<br>
-        ClearScriptはMicrosoft Public License (MS-PL)ライセンスとなります。
-        <p>詳細は、<a href="https://clearscript.codeplex.com/">https://clearscript.codeplex.com/</a>を見てください。</p>
-        <li>
-        <h4>V8</h4>
-        <p>V8は修正BSDライセンスとなります。また、V8自体も他のライセンス物を含んでいます。<br>
-        詳細はV8の公式 github等を参照してください。
-        <p><a href="https://github.com/v8/v8">V8の公式Github</a>を見てください。</p>
-    </ul>
+    <li>
+        <h3>学習用のREPL(インタラクティブシェル)</h3>
+        <p>
+            <a href="/other_soft/hm_ecmascript/iv8.zip">iv8.zip</a>は上記hmV8.zipに含まれるClearScript.dll用に調整されたインタラクティブシェルとなります。<br>
+            <b>「hmV8 x86 版 の一式」と同じフォルダ(原則、hidemaru.exeと同じフォルダ)に配置</b>して使用すれば、<br>
+            「ClearScript + V8」の軽いトライ＆エラーや機能確認がやりやすくなります。<br>
+            iv8.exeのライセンスは、hmV8+ClearScript と同じです。<br>
+            <img src="./other_soft/hm_ecmascript/cnt_hm_ecmascript_iv8_02.png">
+        </p>
+    <li>
+        <h3>ライセンス</h3>
+        <ul class="pointlist">
+            <li>
+                <h4>hmV8</h4>
+                <p>
+                    hmV8は、Apache License 2.0となります。<br>
+                </p>
+                <h4>ソースの場所</h4>
+                <p>
+                    <a href="https://github.com/vscode-life/hidemaru-net/tree/master/win-hidemaru-app/hm_ecmascript6">Github</a>にソースがあります。<br>
+                </p>
+            <li>
+                <h4>ClearScript</h4>
+                <p>
+                    hmV8はClearScriptが利用されています。<br>
+                    ClearScriptはMicrosoft Public License (MS-PL)ライセンスとなります。
+                <p>詳細は、<a href="https://clearscript.codeplex.com/">https://clearscript.codeplex.com/</a>を見てください。</p>
+            <li>
+                <h4>V8</h4>
+                <p>
+                    V8は修正BSDライセンスとなります。また、V8自体も他のライセンス物を含んでいます。<br>
+                    詳細はV8の公式 github等を参照してください。
+                <p><a href="https://github.com/v8/v8">V8の公式Github</a>を見てください。</p>
+        </ul>
 </ul>

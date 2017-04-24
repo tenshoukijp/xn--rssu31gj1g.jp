@@ -10,7 +10,7 @@
     <h3>ダウンロード</h3>
     <dl>
         <dt>
-        <div class="download_file"><img src="./other_soft/hm_luajit/cnt_hm_luajit_minizip.png" attr="noedge" align="middle"> ⇒ <a href="%(file)s">hmLJ.zip</a>ファイル。ver 2.042</div>
+        <div class="download_file"><img src="./other_soft/hm_luajit/cnt_hm_luajit_minizip.png" attr="noedge" align="middle"> ⇒ <a href="%(file)s">hmLJ.zip</a>ファイル。ver 2.050</div>
         </dt>
         <dd>
         <div class="update_time">└更新日 %(year)04d/%(mon)02d/%(mday)02d</div>
@@ -79,7 +79,7 @@
     <h3>一番簡単なソース例</h3>
     <p>「a」に「3」、「b」に「10」を定義し、足しこんで表示。</p>
     <ul>
-        <div class="code"><pre class="brush:python">
+        <div class="code"><pre class="brush:hmmacro">
 #L = loaddll( hidemarudir + &quot;\\&quot; + &quot;hmLJ.dll&quot; );
 
 // 以下の文字列を「luajitの環境スコープへと追加書き込みし、追加分だけ実行する」
@@ -110,7 +110,7 @@ freedll(#L);
     <h3>Win32 API を使った簡単なソース例</h3>
     <p>Win32 APIを使って、実行中のモジュール(通常秀丸本体)のフルパスを得る</p>
     <ul>
-        <div class="code"><pre class="brush:python">
+        <div class="code"><pre class="brush:hmmacro">
 
 
 #L = loaddll( hidemarudir + &quot;\\hmLJ.dll&quot;);
@@ -146,7 +146,7 @@ freedll(#L)
     <p>秀丸エディタ8.66以降では、ヒアドキュメントのようなものを利用することが出来ますので、<br>
     以下のようにもマクロ内にLuaをそのまま記述できます。</p>
     <ul>
-        <div class="code"><pre class="brush:lua">
+        <div class="code"><pre class="brush:hmmacro">
 #L = loaddll( hidemarudir + &quot;\\hmLJ.dll&quot;);
 
 // ffiを利用することで、typedefで基本型名にwin32の名前に沿ったエイリアスを付ける
@@ -184,7 +184,7 @@ freedll(#L)
         <h4>hmLJ</h4>
         <p>hmLJは、MITライセンスとなります。<br>
 
-        ソースは<a href="https://github.com/tenshoukijp/xn--rssu31gj1g.jp/blob/master/other_soft/hm_luajit/hmLJ.src.zip">github</a>にあります。</p>
+        ソースは<a href="https://github.com/vscode-life/hidemaru-net/tree/master/win-hidemaru-app/hm_luajit">github</a>にあります。</p>
         <li>
         <h4>LuaJIT</h4>
         <p>LuaJITについても、MITライセンスです。<br>

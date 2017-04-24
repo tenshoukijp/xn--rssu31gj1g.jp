@@ -1,0 +1,44 @@
+%(hilight)s
+<h2><i class="fa fa-book fa-fw"></i>NGenのススメ ～読み込み実行の高速化～</h2>
+
+<ul class="checklist">
+    <li>
+    <h3>概要</h3>
+    <p>Powershellはモジュールとして非常に多数のアセンブリを読み込むため、<br>
+    スクリプトを実行しはじめるまでに少し時間がかかります。<br>
+    </p>
+    <p>実際に、hmPS.dllを利用したマクロ(IronRubyスクリプト)を実行すると、<br>
+    少し待ち時間を体感出来るハズです。<br>
+	これは、hmPS.dllだけではなく、PowerShellを実行した際に、<br>
+	とても起動時間がかかるのと同じです。
+    </p>
+    <p>同じスクリプトを２回目以降実行する分には、この時間は大幅に短縮されます。<br>
+    <h3>NGenを利用し、待ち時間を大幅短縮</h3>
+    <p>NGen(ネイティブ イメージ ジェネレーター)を利用することで、<span class="positive">この最初の待ち時間を大幅にカット</span>することが出来ます。<br>
+        (但し、PowerShellの場合はそれでも結構遅いです)</p>
+    <ul class="pointlist">
+        <li>
+        <h4>「管理者権限」でPowerShellを実行</h4>
+        <p>管理者権限でPowerShellを実行します。管理者権限であることが必須です。</p>
+        <div class="code"><pre class="brush:ps">
+Set-Alias ngen @(
+  dir (join-path ${env:\windir} &quot;Microsoft.NET\Framework&quot;) ngen.exe -recurse |
+  sort -descending lastwritetime
+)[0].fullName 
+
+Set-Alias ngen64 @(
+  dir (join-path ${env:\windir} “Microsoft.NET\Framework64”) ngen.exe -recurse |
+  sort -descending lastwritetime
+)[0].fullName
+
+[appdomain]::currentdomain.getassemblies() | % {
+  if($_.location -match $(‘\\assembly\\GAC_64’)){
+    ngen64 install $_.location
+  } else {
+    ngen install $_.location
+  }
+}
+</pre></div>
+            <p><img src="./other_soft/hm_powershell/cnt_hm_powershell_26.png"></p>
+    </ul>
+</ul>

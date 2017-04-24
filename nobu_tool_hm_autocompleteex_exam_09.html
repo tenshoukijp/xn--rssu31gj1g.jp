@@ -1,5 +1,5 @@
 %(hilight)s
-<h2><i class="fa fa-list fa-fw"></i>チュートリアル⑥ 候補が１つなら…</h2>
+<h2><i class="fa fa-book fa-fw"></i>チュートリアル⑥ 候補が１つなら…</h2>
 
 <ul class="checklist">
     <li>
@@ -7,7 +7,8 @@
     <p>さて、チュートリアル⑤のソースにさらに１つ加えることで、完成させましょう。<br>
     最後に１つ加える内容とは、</p>
     <ul>
-        <li><b>リストの候補がすでに「１つだけ」なら、対応する詳細メッセージを出せそうなら出す</b>
+        <li><b>リストの候補がすでに「１つだけ」なら、まだその単語候補を選んでいなくても、<br>
+            (１つしかないわけですから)対応する詳細メッセージを出せそうなら出す</b>
     </ul>
     <p>というものです。</p>
     <li>
@@ -16,7 +17,7 @@
     選択肢が１つの時は、「詳細が出せそうなら出す」といった形へと辻褄を合わせることができることでしょう。</p>
     <div class="code"><pre class="brush:cpp;">
 struct AUTOCOMPLETELIST {
-  LPTSTR string_ptr_list[1000]; // やり取りするのは1000個まで
+  LPTSTR wstring_ptr_list[1000]; // やり取りするのは1000個まで
   size_t list_size;
 };
 extern &quot;C&quot; __declspec(dllexport) AUTOCOMPLETELIST* OnQueryListBoxCustomAdded(HWND hWnd, AUTOCOMPLETELIST *pAutoCompleteOriginalList) {
@@ -24,7 +25,7 @@ extern &quot;C&quot; __declspec(dllexport) AUTOCOMPLETELIST* OnQueryListBoxCusto
   if (pAutoCompleteOriginalList-&gt;list_size == 1) {
     int ix = 0;
     int iItemHeight = SendMessage(hWnd, LB_GETITEMHEIGHT, ix, 0); // 最初の項目のアイテムの高さ
-    String^ strItemText = gcnew String(pAutoCompleteOriginalList-&gt;string_ptr_list[ix]); // 最初の項目のテキスト
+    String^ strItemText = gcnew String(pAutoCompleteOriginalList-&gt;wstring_ptr_list[ix]); // 最初の項目のテキスト
     ACHelpForm::f-&gt;Update(hWnd, ix, strItemText, iItemHeight);
   }
 

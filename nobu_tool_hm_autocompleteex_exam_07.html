@@ -1,5 +1,5 @@
 %(hilight)s
-<h2><i class="fa fa-list fa-fw"></i>その他① キー入力</h2>
+<h2><i class="fa fa-book fa-fw"></i>その他① キー入力</h2>
 
 <ul class="checklist">
     <li>
@@ -18,12 +18,12 @@
 using namespace System;
 
 extern &quot;C&quot; __declspec(dllexport) int OnKeyDown(HWND hWnd, WPARAM wParam) {
-    OutputDebugStream(&quot;%c&quot;, wParam);
+    OutputDebugStream(L&quot;%c&quot;, wParam);
     if (wParam == VK_OEM_PERIOD){
-        OutputDebugStream(&quot;「ピリオド」来ました&quot;);
+        OutputDebugStream(L&quot;「ピリオド」来ました&quot;);
     }
     if (wParam == 'A'){
-        OutputDebugStream(&quot;「A」来ました&quot;);
+        OutputDebugStream(L&quot;「A」来ました&quot;);
     }
 
     return true;

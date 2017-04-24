@@ -1,48 +1,71 @@
 <h2><i class="fa fa-list fa-fw"></i>「単語のリスト」とマッチする「１つの正規表現」を生成する ～秀丸セット～</h2>
 <ul class="checklist">
     <li>
-    <h3>概要</h3>
-    <p>このプログラムは<a href="?page=nobu_mod_the_wordlist_regex_compress">単語リストの正規表現圧縮</a>のプログラムと秀丸を<br>
-    連動させるための秀丸マクロセットです。</p>
-    <p>例えば「秀丸の強調表示用のファイル」など、容量を節約するようなシーンで利用してください。</p>
+        <h3>概要</h3>
+        <p>
+            このプログラムは「単語のリスト」を「１つの正規表現」とするものです。<br>
+        </p>
+        <p>例えば「秀丸の強調表示用のファイル」など、容量を節約するようなシーンで利用してください。</p>
     <li>
-    <h3>ダウンロード</h3>
-    <dl>
-        <dt>
-        <div class="download_file">DOWNLOAD ⇒ <a href="%(file)s">HmWordListRegexCompress</a>ファイル。ver 1.00</div>
-        </dt>
-        <dd>
-        <div class="update_time">└更新日 %(year)04d/%(mon)02d/%(mday)02d</div>
-        </dd>
-    </dl>
+        <h3>ダウンロード</h3>
+        <dl>
+            <dt>
+                <div class="download_file">DOWNLOAD ⇒ <a href="%(file)s">HmWordListRegexCompress</a>ファイル。ver 1.001</div>
+            </dt>
+            <dd>
+                <div class="update_time">└更新日 %(year)04d/%(mon)02d/%(mday)02d</div>
+            </dd>
+        </dl>
     <li>
-    <h4>使用イメージ①</h4>
-    <p><img src="./other_soft/wordlistregexcompress/cnt_wordlistregexcompress_hm_01.png"><br>
-    <br>↓マクロ実行↓<br><br>
-    <img src="./other_soft/wordlistregexcompress/cnt_wordlistregexcompress_hm_02.png"></p>
-    <h4>使用イメージ②</h4>
-    <p>文字列を選択している場合は、該当の選択範囲を対象とした正規表現を生成します。</p>
-    <p><img src="./other_soft/wordlistregexcompress/cnt_wordlistregexcompress_hm_03.png"><br>
-    <br>↓マクロ実行↓<br><br>
-    <img src="./other_soft/wordlistregexcompress/cnt_wordlistregexcompress_hm_04.png"></p>
+        <h4>使用イメージ①</h4>
+        <p>
+            <img src="./other_soft/wordlistregexcompress/cnt_wordlistregexcompress_hm_01.png"><br>
+            <br>↓マクロ実行↓<br><br>
+            <img src="./other_soft/wordlistregexcompress/cnt_wordlistregexcompress_hm_02.png">
+        </p>
+        <h4>使用イメージ②</h4>
+        <p>文字列を選択している場合は、該当の選択範囲を対象とした正規表現を生成します。</p>
+        <p>
+            <img src="./other_soft/wordlistregexcompress/cnt_wordlistregexcompress_hm_03.png"><br>
+            <br>↓マクロ実行↓<br><br>
+            <img src="./other_soft/wordlistregexcompress/cnt_wordlistregexcompress_hm_04.png">
+        </p>
 
     <li>
-    <h3>使い方</h3>
-    <ul>
-        <li>マクロとなる「WordListRegexCompress.mac」と「WordListRegexCompress.exe」を都合の良いディレクトリにコピーします。
-        <li>秀丸に「WordListRegexCompress.mac」のマクロをマクロ登録します。
-        <li>適当に新規ファイル（無題でも良い）を作成し、単語のリストを用意します。
-        <li>マクロを実行します。
-    </ul>
+        <h3>使い方</h3>
+        <ul>
+            <li>マクロとなる「HmWordListRegexCompress.mac」と「HmWordListRegexCompress.exe」を都合の良いディレクトリにコピーします。
+            <li>秀丸に「HmWordListRegexCompress.mac」のマクロをマクロ登録します。
+            <li>適当に新規ファイル（無題でも良い）を作成し、単語のリストを用意します。
+            <li>マクロを実行します。
+        </ul>
     <li>
-    <h3>カスタム</h3>
-    <ul>
-        <li>「WordListRegexCompress.mac」マクロ中の「#output_type」の値を変更することで、「アウトプット枠」に出すなど、<br>
-        挙動の変更が可能です。
-        <li>「WordListRegexCompress.mac」マクロ中の「#line_climit」の値を変更することで、生成された正規表現を区切る最大文字数を変更可能です。<br>
-        デフォルトでは、「秀丸の強調定義ファイル」などの使用シーンを考慮して<span class="positive">240</span>となっています。<br><br>
-        例えば、12個単語リストのうち10の単語で構成した正規表現が245文字となる際、<br>
-        9単語までを１つの正規表現を出力し、残り３つの単語でまた別の１つの正規表現を出力します。
-        </p>
-    </ul>
+        <h3>カスタム</h3>
+        <ul>
+            <li>
+                「HmWordListRegexCompress.mac」マクロ中の「#output_type」の値を変更することで、「アウトプット枠」に出すなど、<br>
+                挙動の変更が可能です。
+            <li>
+                「HmWordListRegexCompress.mac」マクロ中の「#line_climit」の値を変更することで、生成された正規表現を区切る最大文字数を変更可能です。<br>
+                デフォルトでは、「秀丸の強調定義ファイル」などの使用シーンを考慮して<span class="positive">240</span>となっています。<br><br>
+                例えば、12個単語リストのうち10の単語で構成した正規表現が245文字となる際、<br>
+                9単語までを１つの正規表現を出力し、残り３つの単語でまた別の１つの正規表現を出力します。
+                </p>
+        </ul>
+    <li>
+        <h3>ライセンス</h3>
+        <ul class="pointlist">
+            <li>
+                <h4>HmWordListRegexCompress.exe</h4>について…
+                <p>本プログラム中で利用している<a href="http://www.perl.org">Perl</a>や<a href="http://search.cpan.org/~jhi/Regex-PreSuf-1.17/PreSuf.pm"><b>Regex::PreSuf</b></a>同様、GPLライセンスです。</p>
+            <li>
+                <h4>HmWordListRegexCompress.mac</h4>について…
+                <p>パブリックドメインとなります。<br></p>
+            <li>
+                <h4>ソースの場所</h4>
+                <p>
+                    <a href="https://github.com/vscode-life/hidemaru-net/tree/master/win-hidemaru-app/hm_wordlistregexcompress">Github</a>にソースがあります。<br>
+                </p>
+
+        </ul>
 </ul>

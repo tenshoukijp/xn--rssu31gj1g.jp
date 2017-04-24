@@ -1,0 +1,70 @@
+﻿%(hilight)s
+<h2><i class="fa fa-book fa-fw"></i>C#のソースやモジュールを、秀丸用のC++/CLIの.dllへとスタティックにリンクする</h2>
+
+<ul class="checklist">
+    <li>
+        <h3>概要</h3>
+        <p>
+            マネージド.dllは、Windowsのみならず、Androidでもものすごい勢いで利用されています。
+        </p>
+        <p>
+            このため、開発者は、「ネイティブな上、理解しずらく、特定のCPUでしか動作しない、C++ライブラリ」の作成を敬遠し、<br>
+            複数のプラットフォーム、CPUビット数に関係なく動作することが期待できるマネージドdll、<br>
+            とりわけソースコードが理解しやすいC#でのdll作成を好むようになってきます。<br>
+        </p>
+        <p>
+            よって、マネージドなdllを秀丸で作るC++の.dllに直接スタティックリンクしてしまう、といった手段を知っておくと便利です。<br>
+        </p>
+    <li>
+        <h3>C++/CLIとC#の混在プロジェクト</h3>
+        <p>
+            WindowsのC++には、C++/CLIという混成アセンブリを作成出来る言語が存在するため、<br>
+            C++プロジェクトとC#プロジェクトを一緒のソリューションの中に入れ、<br>
+            そのまま１つの.dllとしてコンパイルしてしまうことが可能となっています。
+        </p>
+        <p><img src="./cnt_cpp_language/cnt_reference/cs_static_link/cnt_cpp_cs_static_link_01.png"></p>
+
+    <li>
+        <h3>C#側とC++/CLI側の.NETのバージョンは一致させること</h3>
+        <p>
+            C#側とC++/CLI側の.NETのバージョンは一致させる必要があります。<br>
+            例えば、.NET Framework 4.5.2であれば、両方ともそのバージョンを指定します。
+        </p>
+
+    <li>
+        <h3>C#側はANYCPUのModuleでのコンパイル</h3>
+        <p>
+            C#側は「ANYCPU」でコンパイルします。<br>
+            そして、「Module」の指定をします。<br>
+            Moduleの指定はGUI上ではできません、「.vcxproj」ファイルを直接編集します。
+        <p><img src="./cnt_cpp_language/cnt_reference/cs_static_link/cnt_cpp_cs_static_link_03.png"></p>
+        <p>
+            「Module」という指定をしておくことで、C#側はコンパイル時に、<br>
+            「.dll」ではなく、「.netmodule」という拡張子のファイルとなります。
+        </p>
+
+    <li>
+        <h3>C++側はC#側のプロジェクトを参照しておく</h3>
+        <p>C++/CLI側の参照には、C#側の「プロジェクト」そのものを参照で追加しておきましょう。<br></p>
+        <p><img src="./cnt_cpp_language/cnt_reference/cs_static_link/cnt_cpp_cs_static_link_04.png"></p>
+
+    <li>
+        <h3>C++/CLI側は、「リンカー」の「追加依存のファイル」にC#側で作られる「.netmodule」を追加指定しておく</h3>
+        <p>C++/CLI上でC#のクラスを利用した場合、当然その実態がC++側に存在しないことになりますので、<br>
+        静的リンクの対象として、.netmoduleを指定します。</p>
+        <p><img src="./cnt_cpp_language/cnt_reference/cs_static_link/cnt_cpp_cs_static_link_02.png"></p>
+
+    <li>
+        <h3>１つの.dllとなる</h3>
+        <p>以上で、C++/CLIとC#がソース中に混ざっていても、１つの.dllにコンパイル出来ます。<br></p>
+    <li>
+        <h3>このテクニックが使われているソースコードの代表例</h3>
+        <p><a href="https://github.com/vscode-life/hidemaru-net/tree/master/win-hidemaru-app/hm_htmlpreview">HmHtmlPreview</a>のソースコードが代表例となるでしょう。</p>
+    <li>
+        <h3>備考</h3>
+        <p>
+            C#のdynamic型はC++/CLIには存在していません。<br>
+            とりわけC#側のメソッドの返り値が<span class="keyword">dynamic型</span>である場合には、C++/CLI側で対処しようとはせず、<br>
+            C#側で一旦「dynamic型が無いメソッドの形へとラップ」し、<br>そのラップしたメソッドをC++/CLI側から利用するようにしてください。
+        </p>
+</ul>

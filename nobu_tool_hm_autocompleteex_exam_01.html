@@ -1,5 +1,5 @@
 %(hilight)s
-<h2><i class="fa fa-list fa-fw"></i>チュートリアル① ～「HmAutoCompleteEx.dll」利用方法 開発準備編～</h2>
+<h2><i class="fa fa-book fa-fw"></i>チュートリアル① ～「HmAutoCompleteEx.dll」利用方法 開発準備編～</h2>
 
 <ul class="checklist">
   <li>
@@ -28,7 +28,7 @@
   <h3>SDKのダウンロード</h3>
   <dl>
     <dt>
-    <div class="download_file">DOWNLOAD ⇒ <a href="%(file)s">HmAutoCompleteExPlug.zip</a>ファイル。ver 0.502</div>
+    <div class="download_file">DOWNLOAD ⇒ <a href="%(file)s">HmAutoCompleteExPlug.zip</a>ファイル。ver 0.802</div>
     </dt>
     <dd>
     <div class="update_time">└更新日 %(year)04d/%(mon)02d/%(mday)02d</div>
@@ -45,30 +45,33 @@
 #include &lt;windows.h&gt;
 #include &quot;OutputDebugStream.h&quot;
 
-extern &quot;C&quot; __declspec(dllexport) int OnCreate(HWND hWnd, LPCTSTR szFileName) {
-  OutputDebugStream(&quot;OnCreate:%s\n&quot;, szFileName );
-  return TRUE;
+#define MACRO_DLL extern &quot;C&quot; __declspec(dllexport)
+
+
+MACRO_DLL int OnCreate(HWND hWnd, LPCTSTR pwszFileName) {
+	OutputDebugStream(L&quot;OnCreate:%s\n&quot;, pwszFileName);
+	return TRUE;
+}
+ 
+MACRO_DLL int OnListBoxSelectedIndexChanged(HWND hWnd, int iListBoxSelectedIndex, LPCTSTR pwszListBoxSelectedItem, int iItemHeight) {
+	OutputDebugStream(L&quot;OnListBoxSelectedIndexChanged:%s\n&quot;, pwszListBoxSelectedItem);
+	return TRUE;
 }
 
-extern &quot;C&quot; __declspec(dllexport) int OnListBoxSelectedIndexChanged(HWND hWnd, int iListBoxSelectedIndex, LPCTSTR szListBoxSelectedItem, int iItemHeight) {
-  OutputDebugStream(&quot;OnListBoxSelectedIndexChanged:%s\n&quot;, szListBoxSelectedItem);
-  return TRUE;
-}
-
-extern &quot;C&quot; __declspec(dllexport) int OnDestroy(HWND hWnd) {
-  OutputDebugStream(&quot;OnDestroy\n&quot;);
-  return TRUE;
+MACRO_DLL int OnDestroy(HWND hWnd) {
+	OutputDebugStream(L&quot;OnDestroy\n&quot;);
+	return TRUE;
 }
 
 using AUTOCOMPLETELIST = void;
-extern &quot;C&quot; __declspec(dllexport) AUTOCOMPLETELIST* OnQueryListBoxCustomAdded(HWND hWnd, AUTOCOMPLETELIST *pAutoCompleteOriginalList) {
-  OutputDebugStream(&quot;OnQueryListBoxCustomAdded:\n&quot;);
-  return NULL;
+MACRO_DLL AUTOCOMPLETELIST* OnQueryListBoxCustomAdded(HWND hWnd, AUTOCOMPLETELIST *pAutoCompleteOriginalList) {
+	OutputDebugStream(L&quot;OnQueryListBoxCustomAdded:\n&quot;);
+	return NULL;
 }
 
-extern &quot;C&quot; __declspec(dllexport) int OnKeyDown(HWND hWnd, WPARAM wParam) {
-  OutputDebugStream(&quot;OnKeyDown:%c\n&quot;, wParam );
-  return TRUE;
+MACRO_DLL int OnKeyDown(HWND hWnd, WPARAM wParam) {
+	OutputDebugStream(L&quot;OnKeyDown:%c\n&quot;, wParam);
+	return TRUE;
 }
 </pre></div>
   <li>
@@ -93,12 +96,12 @@ extern &quot;C&quot; __declspec(dllexport) int OnKeyDown(HWND hWnd, WPARAM wPara
   <li>
   <h3>マクロ内容</h3>
   <div class="code"><pre class="brush:hmmacro;">
-#hmace = loaddll( hidemarudir + &quot;\\hmAutoCompleteEx.dll&quot; );
-if (#hmace) {
-  #_ = dllfunc( #hmace, &quot;SetHidemaruHandle&quot;, hidemaruhandle(0), filename2 );
-  #_ = dllfunc( #hmace, &quot;BindAutoCompleter&quot;, hidemarudir + &quot;\\HmAutoCompleteExPlug.dll&quot;, &quot;\\.pl$&quot; );
+#HMACE = loaddll( hidemarudir + @&quot;\HmAutoCompleteEx.dll&quot; );
+if (#HMACE) {
+    #_ = dllfuncw( #HMACE, &quot;SetHidemaruHandle&quot;, hidemaruhandle(0), filename2 );
+    #_ = dllfuncw( #HMACE, &quot;BindAutoCompleter&quot;, hidemarudir + &quot;\\HmAutoCompleteExPlug.dll&quot;, &quot;\\.pl$&quot; );
 } else {
-  message(&quot;dllが無い&quot;);
+    message(&quot;dllが無い&quot;);
 }
 </pre></div>
   <p>#hmaceをfreedll(FreeLibrary)しないよう注意してください。<br>
