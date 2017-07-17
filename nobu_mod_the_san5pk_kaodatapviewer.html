@@ -1,15 +1,15 @@
-<h2><i class="fa fa-image fa-fw"></i>三国志V with PK用 kaodatap.s5 ビューワー</h2>
+<h2><i class="fa fa-image fa-fw"></i>三国志V with PK用 kaodatap.s5 / kaoex.s5 ビューワー</h2>
 <ul class="checklist">
     <li>
         <h3>概要</h3>
         <p>
-            三国志Ｖの顔グラとなる kaodatap.s5 の内容を「閲覧・出力・取込」するためのツールです。<br>
+            三国志Ｖの顔グラとなる 「kaodatap.s5」と「kaoex.s5」 の内容を「閲覧・出力・取込」するためのツールです。<br>
         </p>
     <li>
         <h3>ダウンロード</h3>
         <dl>
             <dt>
-                <div class="download_file">DOWNLOAD ⇒ <a href="%(file)s">KaoDataPFaceViewer.zip</a>ファイル。</div>
+                <div class="download_file">DOWNLOAD ⇒ <a href="%(file)s">KaoDataPFaceViewer.zip</a> v1.08 ファイル。</div>
             </dt>
             <dd>
                 <div class="update_time">└更新日 %(year)04d/%(mon)02d/%(mday)02d</div>
@@ -21,14 +21,14 @@
                 <div class="update_time">└更新日 %(year)04d/%(mon)02d/%(mday)02d</div>
             </dd>
         </dl>
-    <p><img src="./other_title/san05/cnt_face_kaodatapfaceviewer.png"> <br></p>
+        <p><img src="./other_title/san05/cnt_face_kaodatapfaceviewer.png"> <br></p>
     <li>
         <h3>動作環境</h3>
         <ul class="pointlist">
             <li>
                 <h4>Microsoft VC++ 再頒布可能パッケージ</h4>
                 <p>
-                    <a href="https://www.microsoft.com/ja-jp/download/details.aspx?id=40784">Visual Studio 2013 C++ ランタイム</a><br>
+                    <a href="%(vs2013runtime)s">Visual Studio 2013 C++ ランタイム</a><br>
                     x86版をインストールしたことが無い方はインストールしてください。<br>
                     <span class="negative">お手持ちのOSが64bitか32bitかには関わりなく、x86版のインストールが必要です。</span>
                 </p>
@@ -42,13 +42,18 @@
         <h3>インストール</h3>
         <ul class="pointlist">
             <li>KaoDataPFaceViewer.exeを「三国志Ｖのフォルダ(San5WPK.exeやSan5W95.exe)があるディレクトリに入れる。
-            <li><h4>KaoDataPFaceImporterも必要</h4>
-                <p><a href="?page=nobu_face_kaoswap_importer_san5">KaoDataPFaceImporter.exe</a> が無い場合は、それも導入してください。</p>
         </ul>
     <li>
         <h3>使い方</h3>
-        <p>主に以下の３つの機能があります。</p>
+        <p>主に以下の４つの機能があります。</p>
+
     <li>
+        <h3>閲覧・編集対象の選択</h3>
+        <p>
+            「kaodatap.s5」もしくは「kaoex.s5」を、KaoDataPFaceViewer.exe へとドラッグ＆ドロップして起動します。<br>
+            ドラッグ＆ドロップしたファイルが、閲覧・編集対象となります。<br>
+            何もドラッグ＆ドロップせずに、KaoDataPFaceViewer.exe を実行した場合は、「kaodatap.s5」が対象となります。
+        </p>
         <h3>閲覧</h3>
         <p>普通に起動すると、閲覧状態となります。</p>
         <ul class="pointlist">
@@ -64,7 +69,7 @@
             <li>
                 <h4>「end」キー</h4>
                 <p>最後のページの顔グラ一覧を表示</p>
-</ul>
+        </ul>
     <li>
         <h3>出力</h3>
         <p>
@@ -74,16 +79,79 @@
         <ul class="pointlist">
             <li>
                 <h4>「o」キー</h4>
-                <p>kaodatap.s5 の 顔グラを全部「kao_3bit」フォルダへと出力</p>
+                <p>
+                    kaodatap.s5 が対象であれば、顔グラを全部「kaodatap」フォルダへと出力、<br>
+                    kaoex.s5 が対象であれば、顔グラを全部「kaoex」フォルダへと出力
+                </p>
         </ul>
 
     <li>
         <h3>取込</h3>
-        <p>「i(アイ)」のキーを押すと、KaoDataPFaceImporter.exe を実行できます。</p>
         <ul class="pointlist">
             <li>
                 <h4>「i」キー</h4>
-                <p>「kao_3bit」フォルダにあるxxxx.bmp を kaodatap.s5 へと 取込</p>
+                <p>
+                    kaodatap.s5 が対象であれば、「kaodatap」フォルダにあるxxxx.bmp を kaodatap.s5 へと 取込、<br>
+                    kaoex.s5 が対象であれば、「kaoex」フォルダにあるxxxx.bmp を kaoex.s5 へと 取込
+                </p>
         </ul>
 
+        <ul class="pointlist">
+            <li>
+                <h4>取込についての詳細</h4>
+                <p>
+                    以下長々と続く配置関係の説明は、先述した「<span class="positive">出力</span>」をやってみれば、<br>
+                    「ああ、そういうことですか」とすぐにわかります。
+                </p>
+                <ul>
+                    <li>0001.bmp～783.bmpなど連番となっている８色の顔グラを、対象の*****.s5へと取り込みます。<br>
+                    <li>
+                        *****.s5へと取り込みたい顔画像は｢*****｣ディレクトリに置く。<br>
+
+                        多えば「kaodatap.s5」に取込たいなら、「kaodatapディレクトリ」に連番のbmpファイルを置く。<br>
+                        例えば「kaoex.s5」に取込たいなら、「kaoexディレクトリ」にファイルを置く。<br>
+                        <br>
+                </ul>
+            <li>
+                <h4>主なエラー</h4>
+                <p>
+                    主に起きるのは２つのエラーです。<br>
+                    <span class="negative">コンソールウィンドウの方にフォーカスし、内容を確認してください。</span>
+                </p>
+                <p><img src="./other_title/san05/cnt_face_kaodatapfaceviewer_console.png"> <br></p>
+                <ul>
+                    <li>
+                        <b>ErrUsedColorPaletteOutOfRange</b><br>
+                        └画像内容の<b>パレット</b>の使用が９色目以上を指定している。<br>
+                        極めて高確率で256色やフルカラーになっている。もしくは8色ではなく、16色を使って画像を描いている。
+                    <li>
+                        <b>ErrWrongWidthHeightPixel</b><br>
+                        └<b>64x80</b>の画像になっていない。<br>
+                    <li><a href="?page=nobu_face_subcolor_san5">三国志Ｖ用の減色版顔</a>の作成方法に従えば、このようなエラーはまず出ません。
+                </ul>
+            <li>
+                <h4>動作説明</h4>
+                <ul class="arrowlist">
+                    <li>
+                        <h5>「取込」の挙動</h5>
+                        <p>現状の*****.s5のデータベースとし、*****ディレクトリの中にxxxx.bmpがあれば、対応する所だけ読み込む。<br></p>
+                        <p>
+                        例えば、現状のkaodatap.s5のデータをベースとし、kaodatapフォルダの中に0003.bmpと0008.bmpと0300.bmpの３つがあれば、<br>
+                        kaodatap.s5の中で、この３つに対応するところへと読み込み、kaodatap.s5を上書きする。</p>
+                </ul>
+            <li>
+                <h4>備考</h4>
+                <ul class="arrowlist">
+                    <li>
+                        <h5>１個だけの顔グラでも、783全部の顔グラでも、どちらでも大丈夫</h5>
+                        <p>
+                            全ての連番ファイルがそろっている必要は<b>ありません。</b> <br>
+                            番号が歯抜けになっていても大丈夫ですし、<br>
+                            たった１つだけの顔画像(例:0003.bmpだけ)などがあってもＯＫです。
+                        </p>
+                        <p>
+                            ｢xxxx.bmp｣(xxxxは4桁の数字で0001以上～0783以下)という命名規則に沿った画像のみが全て取り込み対象となります。
+                        </p>
+                </ul>
+        </ul>
 </ul>

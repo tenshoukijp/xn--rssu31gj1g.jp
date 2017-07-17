@@ -1,0 +1,78 @@
+%(hilight)s
+<h2><i class="fa fa-book fa-fw"></i>AS条件::戦争::非戦死攻撃受動者兵士消失時死亡可否</h2>
+<div class="code"><pre class="brush:cpp;">
+int カスタム::On_カスタム条件(string 条件名, カスタム条件パラメタ型 パラメタ) {
+  if ( 条件名 == &quot;AS条件::戦争::非戦死攻撃受動者兵士消失時死亡可否&quot; ) {
+  }
+
+  // 変更しない場合-1
+  return -1;
+}
+</pre></div>
+<ul class="checklist">
+<li><h3>引数の補足</h3>
+<ul class="pointlist">
+<li><h4>パラメタ.整数1:</h4>
+整数1は攻撃をした武将の武将番号
+<li><h4>パラメタ.整数2:</h4>
+整数2は攻撃されて兵数が０となった武将の武将番号
+<li><h4>パラメタ.整数3:</h4>
+現在予定されている死亡結果
+<li><h4>パラメタ.浮動小数1:</h4>
+その時の、攻撃者の「攻撃方法番号」。<br>
+    「攻撃方法::攻撃」もしくは「攻撃方法::一斉攻撃」が入っている。
+</ul>
+<li><h3>タイミング</h3>
+<ul>
+<li>このカスタム条件は、戦闘中いずれかの武将が「本来天翔記の仕様では死亡することがない攻撃方法」で、<br>
+    兵数が０になった際に呼び出される。<br>
+    「本来天翔記の仕様では死亡することがない攻撃方法」とは、<br>
+    「通常攻撃」「一斉攻撃」と、その跳ね返りダメージである。
+<br>
+</ul>
+<li><h3>一般的用途</h3>
+<ul>
+    <li>特定の武将の、通常攻撃・一斉攻撃などの死亡確率を変更を目的として使用する。<br>
+    <li>武将全体の、通常攻撃・一斉攻撃などの死亡確率を、<br>
+    「武将同士」「戦況全体」「対象武将達の隣接状況」を総合的に判断し、変更することを目的として使用する。<br>
+</ul>
+<li><h3>例①</h3>
+<div class="code"><pre class="brush:cpp;">
+int カスタム::On_カスタム条件(string 条件名, カスタム条件パラメタ型 パラメタ) {
+
+    if (条件名 == &quot;AS条件::戦争::非戦死攻撃受動者兵士消失時死亡可否&quot;) {
+        int iBushouID = パラメタ.整数1 -1;
+        int iDefendID = パラメタ.整数2 -1;
+        BOOL b死亡予定 = パラメタ.整数3;
+        int n攻撃方法 = (int)パラメタ.浮動小数1;
+        if (n攻撃方法 == 攻撃方法::攻撃) {
+            デバッグ出力 &lt;&lt; &quot;通常攻撃によって&quot; &lt;&lt; Get_名前(iDefendID) &lt;&lt; &quot;の兵は消失&quot; &lt;&lt; endl;
+            if (rand() % 2 == 0) {
+                デバッグ出力 &lt;&lt; &quot;TSMod処理をさらに上書き、この武将を死亡へ&quot; &lt;&lt; endl;
+                return true;
+            }
+            else {
+                デバッグ出力 &lt;&lt; &quot;元のTSMod死亡判定に委譲&quot; &lt;&lt; endl;
+                return b死亡予定;
+            }
+        }
+        else if (n攻撃方法 == 攻撃方法::一斉攻撃) {
+            デバッグ出力 &lt;&lt; &quot;一斉攻撃によって&quot; &lt;&lt; Get_名前(iDefendID) &lt;&lt; &quot;の兵は消失&quot; &lt;&lt; endl;
+            if (rand() % 2 == 0) {
+                デバッグ出力 &lt;&lt; &quot;TSMod処理をさらに上書き、この武将を死亡へ&quot; &lt;&lt; endl;
+                return true;
+            }
+            else {
+                デバッグ出力 &lt;&lt; &quot;元のTSMod死亡判定に委譲&quot; &lt;&lt; endl;
+                return b死亡予定;
+            }
+        }
+    }
+
+    // 変更しない場合-1
+    return -1;
+}
+</pre></div>
+</ul>
+
+

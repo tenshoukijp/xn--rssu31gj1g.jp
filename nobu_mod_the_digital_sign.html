@@ -2,113 +2,141 @@
 <h2><i class="fa fa-key fa-fw"></i>ドライバをデジタル署名する方法</h2>
 <ul class="checklist">
     <li>
-    <h3>概要</h3>
-    <p>SafeDiskなど、Windows10では、国内KOEIゲームを中心に利用されていたドライバが動作しなくなりました。 <br>
-    これはセキュリティーの問題からマイクロソフト社が意図して外したものと公表済であり、 <br>
-    再びサポートが復活する、といったことはまずないでしょう。 <br>
-    <br>
-    このため、Windows10でこれらのゲームをプレイするためには、 <br>
-    ・「仮想環境に古いOSを別途用意して、そこにゲームをインストールする」か、 <br>
-    ・もしくは「ドライバのデジタル署名を書き換えて、Windows10のテストモードでプレイする」か <br>
-    どちらかしか手段がありません。 <br>
-    <br>
-    ここでは、おそらく殆どの人が経験したことがないであろう、「ドライバのデジタル署名の書き換え」を説明します。 <br>
-    <br>
-    </p>
+        <h3>概要</h3>
+        <p>
+            SafeDiskなど、Windows10では、国内KOEIゲームを中心に利用されていたドライバが動作しなくなりました。 <br>
+            これはセキュリティーの問題からマイクロソフト社が意図して外したものと公表済であり、 <br>
+            再びサポートが復活する、といったことはまずないでしょう。 <br>
+            <br>
+            このため、Windows10でこれらのゲームをプレイするためには、 <br>
+            ・「仮想環境に古いOSを別途用意して、そこにゲームをインストールする」か、 <br>
+            ・もしくは「ドライバのデジタル署名を書き換えて、Windows10のテストモードでプレイする」か <br>
+            どちらかしか手段がありません。 <br>
+            <br>
+            ここでは、おそらく殆どの人が経験したことがないであろう、「ドライバのデジタル署名の書き換え」を説明します。 <br>
+            <br>
+        </p>
     <li>
-    <h3>やり方は大きく分けて２つ存在する</h3>
-    <p>ドライバを署名する方法は大きく分けて２つあり</p>
-    <ul class="pointlist">
-        <li>
-        <h4>正規の自己署名の方法(リスクはほぼない)</h4>
-        <p>１つはMicrosoftの開発ツールを使い、<b>正規の手順で自己署名</b>すること</p>
-        <li>
-        <h4>ネット上の他者署名(明確にリスクがある)</h4>
-        <p>もうひとつはネット上の配布ツールを利用し、他者署名をしてお茶を濁す方法です。<br>
-        代表的なものとしては<a href="http://www.ngohq.com/?page=dseo">dseo</a>などがそれに相当します。</p>
-        <fieldset class="alert alert-warn"><legend>dseoはリスクを伴うので自己責任で</legend> dseoツールによる署名は、VS周辺ツールを使った自己署名とは異なり、<br>
-        Windowsにハッキリとした穴を開ける行為ですのでリスクを伴います。<br>
-        </fieldset>
-    </ul>
-    <p>ここでは、応用が効き、リスクも特に無い知識を手に入れるという目的も兼ねて、正規の手順のみを紹介します。</p>
-    <li>
-    <h3>正規の手順</h3>
-    <ul>
-        正規の手順はMicrosoftの開発系ツールを使って、コマンドにてドライバを自分自身のアカウントにてデジタル署名してしまう、というものです。
-        <br>
-        <br>
-        この方法は数年やそこらで変わるものではなく、長期に渡って有効な手順だと思われます。
-        <br>
-        <br>
+        <h3>やり方は大きく分けて２つ存在する</h3>
+        <p>ドライバを署名する方法は大きく分けて２つあり</p>
         <ul class="pointlist">
             <li>
-            <h4>署名の手順</h4>
-            <ul>
-                <li>まずは、Visual Studio Community をインストールしたことがない人はインストールしてください。<br>
-                おそらく、Visual Studio 2008 以降ぐらいなら問題ないかと思いますが、ここではVisual Studio 2015を例にして話を進めます。<br>
-                すでに PCにVisual Studio がインストールされている場合、特に新規インストールは不要です。<br>
-                <br>
-                <img src="./other_soft/digitalsign/cnt_digital_sign_01.png"><br>
-                <br>
-                Visual Studio Community 2015は、上の赤丸のように、「日本語版」本体と「日本語版」言語パックを導入してください。<br>
-                <br>
-                <li>又、「<a href="https://developer.microsoft.com/ja-jp/windows/downloads/windows-10-sdk">Windows10 SDK</a>」もインストールしておきましょう。<br>
-                <br>
-                <li>インストールをし終わったら、スタートメニューから、「VS2015 x64 Native Tool コマンドプロンプト」を右クリックから<b><font color="red">管理者権限で</font></b>実行してください。<br>
-                (「VS2015 x86 Native Tool コマンドプロンプト」等でも同じことです。) <img src="./other_soft/digitalsign/cnt_digital_sign_02.png"><br>
-                <br>
-                探すのが大変なら、スタートメニューのところに「VS2015」などと打つと、探しやすいです。<br>
-                <img src="./other_soft/digitalsign/cnt_digital_sign_03.png"><br>
-                <br>
-                <li>コマンドプロンプトで、適当に「ファイルを作っても良いディレクトリ」へと移動します。<br>
-                今回の例では、D:\usr\koei\taikou5\test フォルダ で作業を行います。<br>
-                <b>ここに デジタル署名したいドライバとして secdrv.sysがあることと仮定します。</b><br>
-                <img src="./other_soft/digitalsign/cnt_digital_sign_04.png"><br>
-                <br>
-
-                <li>コマンドプロンプトで、適当に「ファイルを作っても良いディレクトリ」へと移動します。<br>
-                まずは、「個人署名」をPCへと登録します。<br>
-                <pre class="brush:lua;">
+                <h4>正規の自己署名の方法(リスクはほぼない)</h4>
+                <p>１つはMicrosoftの開発ツールを使い、<b>正規の手順で自己署名</b>すること</p>
+            <li>
+                <h4>ネット上の他者署名(明確にリスクがある)</h4>
+                <p>
+                    もうひとつはネット上の配布ツールを利用し、他者署名をしてお茶を濁す方法です。<br>
+                    代表的なものとしては<a href="http://www.ngohq.com/?page=dseo">dseo</a>などがそれに相当します。
+                </p>
+                <fieldset class="alert alert-warn">
+                    <legend>dseoはリスクを伴うので自己責任で</legend> dseoツールによる署名は、VS周辺ツールを使った自己署名とは異なり、<br>
+                    Windowsにハッキリとした穴を開ける行為ですのでリスクを伴います。<br>
+                </fieldset>
+        </ul>
+        <p>ここでは、応用が効き、リスクも特に無い知識を手に入れるという目的も兼ねて、正規の手順のみを紹介します。</p>
+    <li>
+        <h3>正規の手順</h3>
+        <ul>
+            正規の手順はMicrosoftの開発系ツールを使って、コマンドにてドライバを自分自身のアカウントにてデジタル署名してしまう、というものです。
+            <br>
+            <br>
+            この方法は数年やそこらで変わるものではなく、長期に渡って有効な手順だと思われます。
+            <br>
+            <br>
+            <ul class="pointlist">
+                <li>
+                    <h4>署名の手順</h4>
+                    <ul>
+                        <li>
+                            まずは、Visual Studio Community をインストールしたことがない人はインストールしてください。<br>
+                            おそらく、Visual Studio 2008 以降ぐらいなら問題ないかと思いますが、ここではVisual Studio 2015を例にして話を進めます。<br>
+                            すでに PCにVisual Studio がインストールされている場合、特に新規インストールは不要です。<br>
+                            <br>
+                            <img src="./other_soft/digitalsign/cnt_digital_sign_01.png"><br>
+                            <br>
+                            Visual Studio Community 2015は、上の赤丸のように、「日本語版」本体と「日本語版」言語パックを導入してください。<br>
+                            <br>
+                        <li>
+                            又、「<a href="https://developer.microsoft.com/ja-jp/windows/downloads/windows-10-sdk">Windows10 SDK</a>」もインストールしておきましょう。<br>
+                            <br>
+                        <li>
+                            インストールをし終わったら、スタートメニューから、「VS2015 x64 Native Tool コマンドプロンプト」を右クリックから<b><font color="red">管理者権限で</font></b>実行してください。<br>
+                            (「VS2015 x86 Native Tool コマンドプロンプト」等でも同じことです。) <img src="./other_soft/digitalsign/cnt_digital_sign_02.png"><br>
+                            <br>
+                            探すのが大変なら、スタートメニューのところに「<span class="positive">Native</span>」もしくは「<span class="positive">VS2015</span>」などと打つと、探しやすいです。<br>
+                            <img src="./other_soft/digitalsign/cnt_digital_sign_03.png"><br>
+                            <br>
+                        <li>
+                            コマンドプロンプトで、適当に「ファイルを作っても良いディレクトリ」へと移動します。<br>
+                            今回の例では、D:\usr\koei\taikou5\test フォルダ で作業を行います。<br>
+                            <b>ここに デジタル署名したいドライバとして secdrv.sysがあることと仮定します。</b><br>
+                            <img src="./other_soft/digitalsign/cnt_digital_sign_04.png"><br>
+                            <br>
+                        <li>
+                            コマンドプロンプトで、適当に「ファイルを作っても良いディレクトリ」へと移動します。<br>
+                            まずは、「個人署名」をPCへと登録します。<br>
+                            <pre class="brush:lua;">
 makecert -r -pe -ss my -n "CN=%username%" %username%.cer
 certmgr.exe -add %username%.cer -s -r localMachine root
 certmgr.exe -add %username%.cer -s -r localMachine trustedpublisher
     </pre> 以上で、署名がPCへと登録されました。<br>
-                <br>
-                <b>１度登録してしまえば、OSを再インストールでもしない限り、２度と登録する必要はありません。<br>
-                </b> <b>何度も実行すると、どんどん重複した証明書が登録され、<br>
-                後で証明書を掃除するハメになりますので、１度限り実行するつもりでいきましょう。<br>
-                </b> <br>
-                この%username%で登録した、署名を使って、ドライバにデジタル署名します。<br>
-                <pre class="brush:lua;">
+                            <br>
+                            <b>
+                                １度登録してしまえば、OSを再インストールでもしない限り、２度と登録する必要はありません。<br>
+                            </b> <b>
+                                何度も実行すると、どんどん重複した証明書が登録され、<br>
+                                後で証明書を掃除するハメになりますので、１度限り実行するつもりでいきましょう。<br>
+                            </b> <br>
+                            この%username%で登録した、署名を使って、ドライバにデジタル署名します。<br>
+                            <pre class="brush:lua;">
 signtool sign -v -s my -n %username% secdrv.sys
     </pre> <img src="./other_soft/digitalsign/cnt_digital_sign_05.png">
-            </ul>
-            <li>
-            <h4>最後のドライバ署名で重複系の警告エラーが出た場合</h4>
-            <li>
-            <ul>
-                <li>一番最後のドライバに署名をするコマンドで「複数の同じドライバ署名がかぶってるので選べ」といった趣旨のメッセージが出た場合、<br>
-                ドライバの署名が重複していますのでカットしましょう。<br>
-                <br>
-                <br>
-                <li>スタートメニューのところに <pre class="brush:lua;">
+                    </ul>
+                <li>
+                    <h4>最後のドライバ署名で重複系の警告エラーが出た場合</h4>
+                <li>
+                    <ul>
+                        <li>
+                            一番最後のドライバに署名をするコマンドで「複数の同じドライバ署名がかぶってるので選べ」といった趣旨のメッセージが出た場合、<br>
+                            ドライバの署名が重複していますのでカットしましょう。<br>
+                            <br>
+                            <br>
+                        <li>
+                            スタートメニューのところに <pre class="brush:lua;">
 certmgr.msc
     </pre> と入力します。<br>
-                <img src="./other_soft/digitalsign/cnt_digital_sign_06.png"><br>
-                <br>
-                <br>
-                <li>下図では、「個人」=>「証明書」の所の今しがた登録した個人署名(例ではadmin)が１つだけですが、<br>
-                「複数の同じドライバ署名がかぶってるので選べ」といった選択の趣旨のメッセージが出た人は<b>２つ以上<font color="red">同じ名前で並んでいる</font>はず</b>です。<br>
-                <br>
-                <li><b>個人署名(例ではadmin)を１つだけを残し、他<font color="red">重複している同じ名前のものは削除</font>しましょう。</b><br>
-                <img src="./other_soft/digitalsign/cnt_digital_sign_07.png"><br>
-                <br>
-                <br>
-                <li>この状態で、再び <pre class="brush:lua;">
+                            <img src="./other_soft/digitalsign/cnt_digital_sign_06.png"><br>
+                            <br>
+                            <br>
+                        <li>
+                            下図では、「個人」=>「証明書」の所の今しがた登録した個人署名(例ではadmin)が１つだけですが、<br>
+                            「複数の同じドライバ署名がかぶってるので選べ」といった選択の趣旨のメッセージが出た人は<b>２つ以上<font color="red">同じ名前で並んでいる</font>はず</b>です。<br>
+                            <br>
+                        <li>
+                            <b>個人署名(例ではadmin)を１つだけを残し、他<font color="red">重複している同じ名前のものは削除</font>しましょう。</b><br>
+                            <img src="./other_soft/digitalsign/cnt_digital_sign_07.png"><br>
+                            <br>
+                            <br>
+                        <li>
+                            この状態で、再び <pre class="brush:lua;">
 signtool sign -v -s my -n %username% secdrv.sys
     </pre> とすると、成功するはずです。
+                    </ul>
+                <li>
+                    <h4>重複した署名を削除したくない場合</h4>
+                    <p>
+                        本筋は上述のように「重複している」署名を整理するべきなのですが、<br>
+                        何かに別目的で利用している、状況が不明、といった事情等で整理がどうしてもためらわれる場合は、
+                    </p>
+                    <pre class="brush:lua;">
+signtool sign -a -v -s my -n %username% secdrv.sys
+</pre>
+                    <p>というように「-a」オプションを付け加えれば、適当に１つが自動で選択されるので、<br>
+                    大抵はうまく通すことが出来ると思われます。</p>
+
             </ul>
+
+            正規手順は以上です。
         </ul>
-        正規手順は以上です。
-    </ul>
 </ul>

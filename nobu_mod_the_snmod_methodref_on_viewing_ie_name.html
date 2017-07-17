@@ -1,0 +1,51 @@
+%(hilight)s
+<h2><i class="fa fa-book fa-fw"></i>string カスタム::On_家名表示直前(int 武将番号, string 家名)</h2>
+<div class="code"><pre class="brush:cpp;">
+string カスタム::On_家名表示直前(int 武将番号, string 家名) {
+  return "";
+}
+</pre></div>
+<ul class="checklist">
+<li><h3>引数の補足</h3>
+<ul class="pointlist">
+    <li>
+        <h4>武将番号:</h4>
+        表示しようとしている「家名」の大名の武将番号が渡ってくる。<br>
+        個々の武将の情報を表示する際でも、該当武将が帰属する大名の<br>
+        武将番号が渡ってくることとなる。
+    <li>
+        <h4>家名:</h4>
+        特に変更しなければ、この「家名」となる。<br>
+    <li>
+        <h4>返り値:</h4>
+        新たな家名に変更したければ、なんらかの文字列を返す。<br>
+        最大で全角４文字まで。<br>
+</ul>
+<li><h3>タイミング</h3>
+<ul>
+    <li>このメソッドは「家」が表示される直前のタイミングで呼び出される。<br>
+    <li>具体的には、各種戦略画面や戦術画面、地図、武将画面他、非常に多くの画面にて、呼び出される。
+</ul>
+<p><img src="./cnt_mod/mod_snmod/cnt_mod_scenario_mod_ref_096.png"></p>
+<p><img src="./cnt_mod/mod_snmod/cnt_mod_scenario_mod_ref_099.png"></p>
+<li><h3>一般的用途</h3>
+<ul>
+    <li>自作のオリジナルな武将など作った場合、独自の家名にしたい場合等という目的で利用する。<br>
+</ul>
+<li><h3>例①</h3>
+<div class="code"><pre class="brush:cpp;">
+string カスタム::On_家名表示直前(int 武将番号, string 家名) {
+    int iBushouID = 武将番号 - 1;
+
+    if (0 &lt;= iBushouID &amp;&amp; iBushouID &lt; 最大数::武将情報::配列数) {
+        // 名字(姓)が求められている武将(原則的には大名)が、長尾景虎ならば
+        // ( =今表示しようとしている武将が長尾景虎に帰属しているならば )
+        if(p武将戸籍情報[iBushouID].顔番号 == 顔番号::長尾景虎) {
+            return &quot;聖将軍&quot;;
+        }
+    }
+
+    // 変更しない場合&quot;&quot;
+    return &quot;&quot;;
+}
+</pre></div></ul>

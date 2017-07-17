@@ -1,0 +1,132 @@
+<h2><i class="fa fa-image fa-fw"></i>天翔記95 with PK用 kaoswap.n6p ビューワー</h2>
+<ul class="checklist">
+    <li>
+        <h3>概要</h3>
+        <p>
+            天翔記95 with PKの顔グラとなる kaoswap.n6p の内容を「閲覧・出力・取込」するためのツールです。<br>
+        </p>
+    <li>
+        <h3>ダウンロード</h3>
+        <dl>
+            <dt>
+                <div class="download_file">DOWNLOAD ⇒ <a href="%(file)s">KaoswapFaceViewer.zip</a>ファイル。</div>
+            </dt>
+            <dd>
+                <div class="update_time">└更新日 %(year)04d/%(mon)02d/%(mday)02d</div>
+            </dd>
+            <dt>
+                <div class="download_file">DOWNLOAD ⇒ <a href="./cnt_mod/mod_graphic/KaoswapFaceViewer.src.zip">ソース</a>ファイル。(プログラム書ける人用)</div>
+            </dt>
+            <dd>
+                <div class="update_time">└更新日 %(year)04d/%(mon)02d/%(mday)02d</div>
+            </dd>
+        </dl>
+        <p><img src="./cnt_mod/mod_graphic/cnt_face_kaoswapfaceviewer_01.png"> <br></p>
+    <li>
+        <h3>動作環境</h3>
+        <ul class="pointlist">
+            <li>
+                <h4>Microsoft VC++ 再頒布可能パッケージ</h4>
+                <p>
+                    <a href="%(vs2013runtime)s">Visual Studio 2013 C++ ランタイム</a><br>
+                    x86版をインストールしたことが無い方はインストールしてください。<br>
+                    <span class="negative">お手持ちのOSが64bitか32bitかには関わりなく、x86版のインストールが必要です。</span>
+                </p>
+            <li>
+                <h4>Microsoft .NET</h4>
+                <p>
+                    .NET Framework 4.0以上。<br>
+                </p>
+        </ul>
+    <li>
+        <h3>インストール</h3>
+        <ul class="pointlist">
+            <li>KaoswapFaceViewer.exeを「天翔記フォルダ」に入れる。
+            <li>
+                <h4>KaoswapFaceImporterも必要</h4>
+                <p><a href="?page=nobu_face_kaoswap_importer">KaoswapFaceImporter.exe</a> が無い場合は、それも導入してください。</p>
+        </ul>
+    <li>
+        <h3>使い方</h3>
+        <p>主に以下の３つの機能があります。</p>
+    <li>
+        <h3>閲覧</h3>
+        <p>普通に起動すると、閲覧状態となります。</p>
+        <ul class="pointlist">
+            <li>
+                <h4>「→」キー、「↓」キー、「PageDown」</h4>
+                <p>次のページの顔グラ一覧を表示</p>
+            <li>
+                <h4>「←」キー、「↑」キー、「PageUp」</h4>
+                <p>前のページの顔グラ一覧を表示</p>
+            <li>
+                <h4>「home」キー</h4>
+                <p>最初のページの顔グラ一覧を表示</p>
+            <li>
+                <h4>「end」キー</h4>
+                <p>最後のページの顔グラ一覧を表示</p>
+        </ul>
+    <li>
+        <h3>出力</h3>
+        <p>
+            「o(オー)」のキーを押すと、顔グラ全部を出力出来ます。<br>
+            (output)の頭文字。
+        </p>
+        <ul class="pointlist">
+            <li>
+                <h4>「o」キー</h4>
+                <p>
+                    kaoswap.n6p の 顔グラを全部「kao_3bit」フォルダへと出力<br>
+                    (<span class="negative">すでにkao_3bitフォルダにファイルが存在したとしても容赦なく上書きするので注意!!</span>
+                </p>
+        </ul>
+
+    <li>
+        <h3>取込</h3>
+        <p>「i(アイ)」のキーを押すと、KaoswapFaceImporter.exe を実行できます。</p>
+        <ul class="pointlist">
+            <li>
+                <h4>「i」キー</h4>
+                <p>「kao_3bit」フォルダにあるxxxx.bmp を kaoswap.n6p へと 取込</p>
+        </ul>
+    <li>
+        <h3>kaoswap.n6p以外のファイルを対象とする</h3>
+        <p>
+            例えば、「KaoswapEx.n6p」は1332人用ではなく、1932人用ですが、<br>
+            <span class="positive">このKaoswapEx.n6pを、KaoswapFaceViewer.exeへとドラッグ＆ドロップすることで、KaoswapEx.n6pが閲覧の対象となります。</span><br>
+            2932人用のKaoswapUx.n6pも同様です。
+        </p>
+    <li>
+        <h3>エラーが出た</h3>
+        <p><img src="./cnt_mod/mod_graphic/cnt_face_kaoswapfaceviewer_02.png"> <br></p>
+        <p>
+            KaoSwapFaceImporter.exe を実行してみてください。<br>
+            これによってサイズが正規化され、KaoSwapFaceViewer.exeが機能するようになります。<br>
+        </p>
+
+    <li>
+        <h3>「フルカラーの顔グラ」 ⇒ ８色カラーの顔グラ ⇒ kaoswap.n6p の流れを確立せよ!!</h3>
+        <ul class="pointlist">
+            <li>
+                <h4>全転写系の機能しか用意していない理由</h4>
+                <p>
+                    「kao_3bit」のxxxx.bmpの一覧と、「kaoswap.n6p」の中身は、<br>
+                    その管理上、全て一致していることが極めて望ましいため、<br>
+                    KaoswapFaceViewerでは、kaoswap.n6p ⇔ kao_3bit は<span class="positive">全て転写するコマンドのみが用意</span>されています。<br>
+                </p>
+                <p>
+                    １つ１つ顔グラを選択して変更するものは実装されていません。<br>
+                    そのようなものを実装すると、一見手軽なようでいて、その実は、全体の管理フローを大きく損なうからです。
+                </p>
+            <li>
+                <h4>「kao_3bit」⇒ 全自動取込 ⇒ 「kaoswap.n6p」という流れを作るべし!!</h4>
+                <p>こうすることで、「kao_3bit」の中身を変更すれば「kaoswap.n6p」はそれに自動的に従う、というフローを確立できます。<br></p>
+            <li>
+                <h4>「kao_24bit」⇒ 全自動減色 ⇒ 「kao_3bit」という流れを作るべし!!</h4>
+                <p>
+                    結果、「kao_24bit」⇒ 全自動減色 ⇒「kao_3bit」⇒全自動取込⇒「kaoswap.n6p」というように<br>
+                    顔グラ管理全体を、一方通行の単純なフローに出来ます。
+                </p>
+                <p>変更する時は、「kao_24bit」だけ意識すれば良く、⇒ kao_24bitで変更した顔に対応する減色顔をkao_3bitへ転写、⇒ 自動で取り込んでkaoswap.n6pを更新、という単純な流れに出来ます。</p>
+        </ul>
+</ul>
